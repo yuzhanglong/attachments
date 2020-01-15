@@ -5,10 +5,12 @@ import store from './store'
 import ElementUI from 'element-ui';
 import echarts from './utils/echarts';
 import 'element-ui/lib/theme-chalk/index.css';
+import messageBox from "@/utils/messageBox";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(echarts);
+Vue.use(messageBox);
 
 
 new Vue({
