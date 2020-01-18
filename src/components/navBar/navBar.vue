@@ -28,6 +28,7 @@
 
   .nav-left, .nav-right {
     width: 60px;
+    background-color: #ffffff;
   }
 
   .nav-center {

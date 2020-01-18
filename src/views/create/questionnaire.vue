@@ -23,15 +23,20 @@
         </nav-bar>
       </div>
     </el-row>
-
-
     <el-row>
       <el-col :span="2">
         <!--侧边栏-->
         <div id="left-nav-container">
           <left-nav-bar id="left-nav">
-
-            <problem-type-item itemicon="el-icon-menu" problem-type="单选题"></problem-type-item>
+            <pop-over pop-width="300">
+              <template v-slot:contentdata>
+                <img src="../../../src/assets/img/problemType/single_select.png" alt="Smiley face" width="300"
+                     height="110">
+              </template>
+              <template v-slot:ref>
+                <problem-type-item itemicon="el-icon-menu" problem-type="单选题"></problem-type-item>
+              </template>
+            </pop-over>
 
             <pop-over pop-width="300">
               <template v-slot:contentdata>
@@ -86,6 +91,8 @@
           <scroll-bar>
             <div id="problems-container">
               <!--此处动态添加问题-->
+              <basic-info @passData="refleshBasicData"></basic-info>
+              <single-select></single-select>
             </div>
           </scroll-bar>
         </div>
@@ -93,39 +100,58 @@
       <!--右侧设置-->
       <el-col :span="2">
         <div id="right-setting">
-        <!--右侧动态添加设置项-->
+          <!--右侧动态添加设置项-->
+          <div id="right-setting-contain">
+            <el-tag>Question{{}}设置</el-tag>
+          </div>
         </div>
       </el-col>
     </el-row>
-
-
   </div>
 </template>
 
 <script>
+  //基本组件
   import navBar from "@/components/navBar/navBar";
   import leftNavBar from "@/components/leftNavBar/leftNavBar";
   import problemTypeItem from "@/views/create/childComp/problemTypeItem";
   import popOver from "@/views/create/childComp/popOver";
   import scrollBar from "@/components/scrollBar/scrollBar";
 
+
+  //题目组件
+  import basicInfo from "@/views/create/childComp/questionnaireItems/basicInfo";
+  import singleSelect from "@/views/create/childComp/questionnaireItems/singleSelect";
+
   export default {
     name: "questionnaire",
     components: {
+      //基本组件
       navBar,
       leftNavBar,
       problemTypeItem,
       popOver,
-      scrollBar
+      scrollBar,
+
+      //题目组件
+      basicInfo,
+      singleSelect
+    },
+    created() {
+      this.questionnaireSendingData.sender = this.$store.state.user
     },
     methods: {
       goBack() {
         this.$router.replace('/manage');
       },
+      refleshBasicData(res) {
+        this.questionnaireSendingData.title = res.title;
+        this.questionnaireSendingData.subTitle = res.subTitle;
+      },
     },
     data() {
-      //问卷表--基本表 传出最基本的信息 *包括所有的题目 不包含发布信息*
       return {
+        //问卷表--基本表 传出最基本的信息 *包括所有的题目 不包含发布信息*
         questionnaireSendingData: {
           sender: "",
           title: "",
@@ -133,21 +159,24 @@
           problems: []
         }
       }
-    }
-
+    },
   }
 </script>
 
 <style scoped>
-
+  #right-setting-contain{
+    padding-top: 20px;
+    padding-left: 18px;
+  }
   #questionnaire {
     overflow: hidden;
+    background-color: #f3f5f6;
   }
 
   #scrollwrap {
     margin-left: 100px;
     width: 88%;
-    margin-top: 64px;
+    margin-top: 55px;
     height: calc(100vh - 76px);
   }
 
@@ -172,15 +201,14 @@
 
   #left-nav-container {
     position: fixed;
-    top: 70px;
+    top: 85px;
     left: 0;
     right: 0;
-    width: 160px;
   }
 
 
   #left-nav {
-    width: 150px;
+    width: 160px;
   }
 
   #problems-container {
@@ -194,10 +222,11 @@
 
   #right-setting {
     position: fixed;
-    top: 69px;
+    top: 85px;
     right: 20px;
     width: 400px;
     height: 100%;
-    /*background-color: rgba(11, 49, 34, 0.53);*/
+    background-color: #ffffff;
+
   }
 </style>
