@@ -32,11 +32,14 @@
           this.$messageBox.showErrorMessage(this, "用户名格式错误");
         } else {
           userLogin(this.loginData.userName, this.loginData.userPassword)
-                  .then(() => {
-
+                  .then(res => {
+                    this.$messageBox.showSuccessMessage(this, res['information']);
+                    this.$store.commit("setToken", res['token']);
+                    this.$store.commit("setUser", this.loginData.userName);
+                    this.$router.replace('/manage')
                   })
-                  .catch(() => {
-
+                  .catch(res => {
+                    this.$messageBox.showErrorMessage(this, res['information']);
                   })
         }
 

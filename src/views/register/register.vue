@@ -32,17 +32,18 @@
       userRegister() {
         if (this.loginData.userName === '' || this.loginData.userPassword === '') {
           this.$messageBox.showErrorMessage(this, "请完成所有必填项！");
-        } else if(this.loginData.userPasswordAgain !== this.loginData.userPassword){
+        } else if (this.loginData.userPasswordAgain !== this.loginData.userPassword) {
           this.$messageBox.showErrorMessage(this, "请检查两次密码是否重复!");
-        } else if(this.loginData.userName.length < 5 || this.loginData.userName.length > 10 || this.loginData.userPassword.length < 6) {
+        } else if (this.loginData.userName.length < 5 || this.loginData.userName.length > 10 || this.loginData.userPassword.length < 6) {
           this.$messageBox.showErrorMessage(this, "格式错误!");
         } else {
           userRegister(this.loginData.userName, this.loginData.userEmail, this.loginData.userPassword)
-                  .then(() => {
-
+                  .then(res => {
+                    this.$messageBox.showSuccessMessage(this, res['information']);
+                    this.$router.replace('/login')
                   })
-                  .catch(() => {
-
+                  .catch(res => {
+                    this.$messageBox.showErrorMessage(this, res['information']);
                   })
         }
 

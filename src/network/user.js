@@ -22,3 +22,13 @@ export function userRegister(userName, userEmail, userPassword) {
     }
   })
 }
+
+export function checkToken(token) {
+  return request({
+    method: 'post',
+    url: '/users/token',
+    data: {
+      token: token,
+    }
+  })
+}
