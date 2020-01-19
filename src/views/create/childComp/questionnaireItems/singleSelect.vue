@@ -11,7 +11,8 @@
         <el-radio value="false">选项{{getProblemNumber(index)}}</el-radio>
         <label><input class="choiceInput" v-model="data.value"></label>
         <el-button type="danger" icon="el-icon-delete" circle size="small" class="delete-button"
-                   @click="removeChoice(data)"></el-button>
+                   @click="removeChoice(data)">
+        </el-button>
       </div>
     </div>
     <div id="singleSelect-bottom">
@@ -27,8 +28,7 @@
       return {
         singleSelect: {
           type: "singleSelect",
-          index: "",
-          title: "请输入问题标题",
+          title: "this.title",
           options: []
         },
         titleInputBgc: {
@@ -58,26 +58,7 @@
       }
     },
   }
-  //单选题样例
-  // {
-  //   "type": "单选题",
-  //         "title": "这是题目的标题",
-  //         "index": 1,
-  //         //这是题号
-  //         "options": [
-  //   {
-  //     //选项序号
-  //     "text": "第一个选项"
-  //     //选项描述
-  //   },
-  //   {
-  //     "text": "第二个选项"
-  //   },
-  //   {
-  //     "text": "第三个选项"
-  //   }
-  // ]
-  // }
+
 </script>
 
 <style scoped>
@@ -98,7 +79,7 @@
     display: flex;
     padding-top: 10px;
     padding-left: 60px;
-    flex-direction: column;;
+    flex-direction: column;
   }
 
   #singleSelect {

@@ -98,7 +98,7 @@
     display: flex;
     padding-top: 10px;
     padding-left: 60px;
-    flex-direction: column;;
+    flex-direction: column;
   }
 
   .choiceInput {

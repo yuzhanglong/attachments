@@ -80,7 +80,11 @@
                 <img src="../../../src/assets/img/problemType/score.png" alt="Smiley face" width="300" height="100">
               </template>
               <template v-slot:ref>
-                <problem-type-item itemicon="el-icon-menu" problem-type="评价题"></problem-type-item>
+                <problem-type-item itemicon="el-icon-menu"
+                                   problem-type="评价题"
+                                   @click.native="appendOneProblem('score')">
+
+                </problem-type-item>
               </template>
             </pop-over>
             <pop-over pop-width="300">
@@ -88,7 +92,11 @@
                 <img src="../../../src/assets/img/problemType/nps.png" alt="Smiley face" width="300" height="110">
               </template>
               <template v-slot:ref>
-                <problem-type-item itemicon="el-icon-menu" problem-type="NPS题"></problem-type-item>
+                <problem-type-item itemicon="el-icon-menu"
+                                   problem-type="NPS题"
+                                   @click.native="appendOneProblem('nps')">
+
+                </problem-type-item>
               </template>
             </pop-over>
             <problem-type-item itemicon="el-icon-menu" problem-type="文件上传"></problem-type-item>
@@ -104,11 +112,14 @@
             <div id="problems-container">
               <!--此处动态添加问题-->
               <basic-info @passData="refleshBasicData"></basic-info>
+
               <div v-for="(problem, index) in questionnaireSendingData.problems" :key="index">
                 <single-select v-if="problem.type === 'singleSelect'"></single-select>
                 <multiply-select v-if="problem.type === 'multiplySelect'"></multiply-select>
                 <blank-fill v-if="problem.type === 'blankFill'"></blank-fill>
                 <drop-down v-if="problem.type === 'dropDown'"></drop-down>
+                <score v-if="problem.type === 'score'"></score>
+                <nps v-if="problem.type === 'nps'"></nps>
               </div>
             </div>
           </scroll-bar>
@@ -142,6 +153,8 @@
   import multiplySelect from "@/views/create/childComp/questionnaireItems/multiplySelect";
   import blankFill from "@/views/create/childComp/questionnaireItems/blankFill";
   import dropDown from "@/views/create/childComp/questionnaireItems/dropDown";
+  import score from "@/views/create/childComp/questionnaireItems/score";
+  import nps from "@/views/create/childComp/questionnaireItems/nps";
 
   export default {
     name: "questionnaire",
@@ -158,7 +171,9 @@
       singleSelect,
       multiplySelect,
       blankFill,
-      dropDown
+      dropDown,
+      score,
+      nps
     },
     created() {
       this.questionnaireSendingData.sender = this.$store.state.user
@@ -167,6 +182,7 @@
       goBack() {
         this.$router.replace('/manage');
       },
+      //绑定标题 副标题 数据
       refleshBasicData(res) {
         this.questionnaireSendingData.title = res.title;
         this.questionnaireSendingData.subTitle = res.subTitle;
@@ -174,10 +190,9 @@
       appendOneProblem(problemName) {
         this.questionnaireSendingData.problems.push({
           type: problemName,
-          index: "",
           title: "请输入问题标题",
           options: []
-        })
+        });
       }
     },
     data() {
@@ -259,6 +274,5 @@
     width: 400px;
     height: 100%;
     background-color: #ffffff;
-
   }
 </style>
