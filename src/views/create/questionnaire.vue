@@ -71,7 +71,6 @@
                 <problem-type-item itemicon="el-icon-menu"
                                    problem-type="下拉题"
                                    @click.native="appendOneProblem('dropDown')">
-
                 </problem-type-item>
               </template>
             </pop-over>
@@ -83,7 +82,6 @@
                 <problem-type-item itemicon="el-icon-menu"
                                    problem-type="评价题"
                                    @click.native="appendOneProblem('score')">
-
                 </problem-type-item>
               </template>
             </pop-over>
@@ -95,12 +93,12 @@
                 <problem-type-item itemicon="el-icon-menu"
                                    problem-type="NPS题"
                                    @click.native="appendOneProblem('nps')">
-
                 </problem-type-item>
               </template>
             </pop-over>
             <problem-type-item itemicon="el-icon-menu" problem-type="文件上传"></problem-type-item>
             <problem-type-item itemicon="el-icon-menu" problem-type="信息表"></problem-type-item>
+
 
           </left-nav-bar>
         </div>
@@ -111,15 +109,14 @@
           <scroll-bar>
             <div id="problems-container">
               <!--此处动态添加问题-->
-              <basic-info @passData="refleshBasicData"></basic-info>
-
-              <div v-for="(problem, index) in questionnaireSendingData.problems" :key="index">
-                <single-select v-if="problem.type === 'singleSelect'"></single-select>
-                <multiply-select v-if="problem.type === 'multiplySelect'"></multiply-select>
-                <blank-fill v-if="problem.type === 'blankFill'"></blank-fill>
-                <drop-down v-if="problem.type === 'dropDown'"></drop-down>
-                <score v-if="problem.type === 'score'"></score>
-                <nps v-if="problem.type === 'nps'"></nps>
+              <basic-info></basic-info>
+              <div v-for="problem in this.$store.state.questionnaireSendingData.problems" :key="problem.key">
+                <single-select v-if="problem.common.type === 'singleSelect'"></single-select>
+                <multiply-select v-if="problem.common.type === 'multiplySelect'"></multiply-select>
+                <blank-fill v-if="problem.common.type === 'blankFill'"></blank-fill>
+                <drop-down v-if="problem.common.type === 'dropDown'"></drop-down>
+                <score v-if="problem.common.type === 'score'"></score>
+                <nps v-if="problem.common.type === 'nps'"></nps>
               </div>
             </div>
           </scroll-bar>
@@ -176,34 +173,24 @@
       nps
     },
     created() {
-      this.questionnaireSendingData.sender = this.$store.state.user
+      //组件创建完成 renew基本框架
+      this.$store.commit('questionnaireDataInit')
     },
     methods: {
       goBack() {
         this.$router.replace('/manage');
       },
-      //绑定标题 副标题 数据
-      refleshBasicData(res) {
-        this.questionnaireSendingData.title = res.title;
-        this.questionnaireSendingData.subTitle = res.subTitle;
-      },
       appendOneProblem(problemName) {
-        this.questionnaireSendingData.problems.push({
-          type: problemName,
-          title: "请输入问题标题",
-          options: []
+        this.$store.commit('appendProblemToQuestionnaire', {
+          globalSetting: {
+            required: true
+          },
+          common: {
+            type: problemName,
+            title: "请输入问题标题",
+            options: []
+          }
         });
-      }
-    },
-    data() {
-      return {
-        //问卷表--基本表 传出最基本的信息 *包括所有的题目 不包含发布信息*
-        questionnaireSendingData: {
-          sender: "",
-          title: "",
-          subTitle: "",
-          problems: []
-        }
       }
     },
   }

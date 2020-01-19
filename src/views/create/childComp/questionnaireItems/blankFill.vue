@@ -21,20 +21,37 @@
 <script>
   export default {
     name: "blank",
+    created() {
+      this.index = this.$store.state.questionnaireSendingData.problems.length;
+    },
+    watch: {
+      blankFill: {
+        handler() {
+          this.submitDataToStore()
+        },
+        deep: true
+      }
+    },
     data() {
       return {
+        index: "",
         titleInputBgc: {
           "background-color": "#ffffff"
         },
         blankFill: {
           type: "blankFill",
-          index: "",
           title: "请输入问题标题",
           value: ""
         }
       }
     },
     methods: {
+      submitDataToStore() {
+        this.$store.commit('appendOption', {
+          index: this.index - 1,
+          data: this.blankFill
+        })
+      },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
         this.titleInputBgc["background-color"] = color[index]

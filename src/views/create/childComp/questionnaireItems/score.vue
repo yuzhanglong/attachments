@@ -31,11 +31,22 @@
 <script>
   export default {
     name: "score",
+    created() {
+      this.index = this.$store.state.questionnaireSendingData.problems.length;
+    },
+    watch: {
+      score: {
+        handler() {
+          this.submitDataToStore()
+        },
+        deep: true
+      }
+    },
     data() {
       return {
+        index: "",
         score: {
           type: "score",
-          index: "",
           title: "请给本项打分",
           options: []
         },
@@ -45,6 +56,12 @@
       }
     },
     methods: {
+      submitDataToStore() {
+        this.$store.commit('appendOption', {
+          index: this.index - 1,
+          data: this.score
+        })
+      },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
         this.titleInputBgc["background-color"] = color[index]

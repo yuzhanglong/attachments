@@ -24,11 +24,25 @@
 <script>
   export default {
     name: "singleSelect",
+    created() {
+      //拿到index(就是题号)方便定位 *题号减一就是下标
+      this.index = this.$store.state.questionnaireSendingData.problems.length;
+      // console.log(this.index);
+    },
+    watch: {
+      singleSelect: {
+        handler() {
+          this.submitDataToStore()
+        },
+        deep: true
+      }
+    },
     data() {
       return {
+        index: "",
         singleSelect: {
           type: "singleSelect",
-          title: "this.title",
+          title: "这是问题的标题 点我进行修改",
           options: []
         },
         titleInputBgc: {
@@ -37,6 +51,12 @@
       }
     },
     methods: {
+      submitDataToStore() {
+        this.$store.commit('appendOption', {
+          index: this.index - 1,
+          data: this.singleSelect
+        })
+      },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
         this.titleInputBgc["background-color"] = color[index]

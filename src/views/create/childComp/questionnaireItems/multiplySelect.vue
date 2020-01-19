@@ -24,11 +24,22 @@
 <script>
   export default {
     name: "multiplySelect",
+    created() {
+      this.index = this.$store.state.questionnaireSendingData.problems.length;
+    },
+    watch: {
+      multiplySelect: {
+        handler() {
+          this.submitDataToStore()
+        },
+        deep: true
+      }
+    },
     data() {
       return {
+        index: "",
         multiplySelect: {
           type: "multiplySelect",
-          index: "",
           title: "请输入问题标题",
           options: []
         },
@@ -38,6 +49,12 @@
       }
     },
     methods: {
+      submitDataToStore() {
+        this.$store.commit('appendOption', {
+          index: this.index - 1,
+          data: this.multiplySelect
+        })
+      },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
         this.titleInputBgc["background-color"] = color[index]

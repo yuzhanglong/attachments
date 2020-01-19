@@ -23,11 +23,22 @@
 <script>
   export default {
     name: "dropDown",
+    created() {
+      this.index = this.$store.state.questionnaireSendingData.problems.length;
+    },
+    watch: {
+      dropDown: {
+        handler() {
+          this.submitDataToStore()
+        },
+        deep: true
+      }
+    },
     data() {
       return {
+        index: "",
         dropDown: {
           type: "dropDown",
-          index: "",
           title: "请选择一个选项",
           options: []
         },
@@ -37,6 +48,12 @@
       }
     },
     methods: {
+      submitDataToStore() {
+        this.$store.commit('appendOption', {
+          index: this.index - 1,
+          data: this.dropDown
+        })
+      },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
         this.titleInputBgc["background-color"] = color[index]

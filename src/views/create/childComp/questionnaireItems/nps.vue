@@ -32,11 +32,22 @@
 <script>
   export default {
     name: "nps",
+    created() {
+      this.index = this.$store.state.questionnaireSendingData.problems.length;
+    },
+    watch: {
+      nps: {
+        handler() {
+          this.submitDataToStore()
+        },
+        deep: true
+      }
+    },
     data() {
       return {
+        index: "",
         nps: {
           type: "nps",
-          index: "",
           title: "请对下面几项给出您的评价或期望",
           options: []
         },
@@ -46,6 +57,12 @@
       }
     },
     methods: {
+      submitDataToStore() {
+        this.$store.commit('appendOption', {
+          index: this.index - 1,
+          data: this.nps
+        })
+      },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
         this.titleInputBgc["background-color"] = color[index]

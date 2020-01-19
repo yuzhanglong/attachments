@@ -35,7 +35,7 @@
     },
     methods: {
       passData() {
-        this.$emit("passData", this.basicInfo);
+        this.$store.commit('renewQuestionnaireBasicInfo', this.basicInfo)
       },
       bgc1Change(index) {
         let color = ['#ffffff', '#f4f4f4'];
