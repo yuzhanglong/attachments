@@ -1,20 +1,21 @@
 <template>
-  <div id="singleSelect">
+  <div id="multiplySelect">
     <label>
-      <input v-model="singleSelect.title"
+      <input v-model="multiplySelect.title"
              @focus="bgcChange(1)"
              @blur="bgcChange(0)"
              :style="titleInputBgc" class="titleInput">
     </label>
+
     <div id="choices">
-      <div class="selection" v-for="(data, index) in singleSelect.options" :key="data.key">
-        <el-radio value="false">选项{{getProblemNumber(index)}}</el-radio>
+      <div class="selection" v-for="(data, index) in multiplySelect.options" :key="data.key">
+        <el-checkbox value="false">选项{{getProblemNumber(index)}}</el-checkbox>
         <label><input class="choiceInput" v-model="data.value"></label>
         <el-button type="danger" icon="el-icon-delete" circle size="small" class="delete-button"
                    @click="removeChoice(data)"></el-button>
       </div>
     </div>
-    <div id="singleSelect-bottom">
+    <div id="multiplySelect-bottom">
       <el-link type="primary" icon="el-icon-plus" @click="addChoice" class="plus-tag">添加选项</el-link>
     </div>
   </div>
@@ -22,11 +23,11 @@
 
 <script>
   export default {
-    name: "singleSelect",
+    name: "multiplySelect",
     data() {
       return {
-        singleSelect: {
-          type: "singleSelect",
+        multiplySelect: {
+          type: "multiplySelect",
           index: "",
           title: "请输入问题标题",
           options: []
@@ -42,15 +43,15 @@
         this.titleInputBgc["background-color"] = color[index]
       },
       addChoice() {
-        this.singleSelect.options.push({
+        this.multiplySelect.options.push({
           //将新的题号赋给他
           value: ""
         })
       },
       removeChoice(item) {
-        let index = this.singleSelect.options.indexOf(item);
+        let index = this.multiplySelect.options.indexOf(item);
         if (index !== -1) {
-          this.singleSelect.options.splice(index, 1);
+          this.multiplySelect.options.splice(index, 1);
         }
       },
       getProblemNumber(index) {
@@ -58,26 +59,6 @@
       }
     },
   }
-  //单选题样例
-  // {
-  //   "type": "单选题",
-  //         "title": "这是题目的标题",
-  //         "index": 1,
-  //         //这是题号
-  //         "options": [
-  //   {
-  //     //选项序号
-  //     "text": "第一个选项"
-  //     //选项描述
-  //   },
-  //   {
-  //     "text": "第二个选项"
-  //   },
-  //   {
-  //     "text": "第三个选项"
-  //   }
-  // ]
-  // }
 </script>
 
 <style scoped>
@@ -101,7 +82,7 @@
     flex-direction: column;;
   }
 
-  #singleSelect {
+  #multiplySelect {
     margin-top: 20px;
     padding-bottom: 20px;
     background-color: #fff;

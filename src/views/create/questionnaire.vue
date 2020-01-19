@@ -34,17 +34,22 @@
                      height="110">
               </template>
               <template v-slot:ref>
-                <problem-type-item itemicon="el-icon-menu" problem-type="单选题"></problem-type-item>
+                <problem-type-item itemicon="el-icon-menu"
+                                   problem-type="单选题"
+                                   @click.native="appendOneProblem('singleSelect')">
+                </problem-type-item>
               </template>
             </pop-over>
-
             <pop-over pop-width="300">
               <template v-slot:contentdata>
                 <img src="../../../src/assets/img/problemType/multiple_select.png" alt="Smiley face" width="300"
                      height="110">
               </template>
               <template v-slot:ref>
-                <problem-type-item itemicon="el-icon-menu" problem-type="多选题"></problem-type-item>
+                <problem-type-item itemicon="el-icon-menu" problem-type="多选题"
+                                   @click.native="appendOneProblem('multiplySelect')">
+
+                </problem-type-item>
               </template>
             </pop-over>
             <pop-over pop-width="300">
@@ -52,7 +57,10 @@
                 <img src="../../../src/assets/img/problemType/blank.png" alt="Smiley face" width="300" height="100">
               </template>
               <template v-slot:ref>
-                <problem-type-item itemicon="el-icon-menu" problem-type="填空题"></problem-type-item>
+                <problem-type-item itemicon="el-icon-menu"
+                                   problem-type="填空题"
+                                   @click.native="appendOneProblem('blankFill')">
+                </problem-type-item>
               </template>
             </pop-over>
             <pop-over pop-width="300">
@@ -60,7 +68,11 @@
                 <img src="../../../src/assets/img/problemType/dropdown.png" alt="Smiley face" width="300" height="200">
               </template>
               <template v-slot:ref>
-                <problem-type-item itemicon="el-icon-menu" problem-type="下拉题"></problem-type-item>
+                <problem-type-item itemicon="el-icon-menu"
+                                   problem-type="下拉题"
+                                   @click.native="appendOneProblem('dropDown')">
+
+                </problem-type-item>
               </template>
             </pop-over>
             <pop-over pop-width="300">
@@ -92,7 +104,12 @@
             <div id="problems-container">
               <!--此处动态添加问题-->
               <basic-info @passData="refleshBasicData"></basic-info>
-              <single-select></single-select>
+              <div v-for="(problem, index) in questionnaireSendingData.problems" :key="index">
+                <single-select v-if="problem.type === 'singleSelect'"></single-select>
+                <multiply-select v-if="problem.type === 'multiplySelect'"></multiply-select>
+                <blank-fill v-if="problem.type === 'blankFill'"></blank-fill>
+                <drop-down v-if="problem.type === 'dropDown'"></drop-down>
+              </div>
             </div>
           </scroll-bar>
         </div>
@@ -122,6 +139,9 @@
   //题目组件
   import basicInfo from "@/views/create/childComp/questionnaireItems/basicInfo";
   import singleSelect from "@/views/create/childComp/questionnaireItems/singleSelect";
+  import multiplySelect from "@/views/create/childComp/questionnaireItems/multiplySelect";
+  import blankFill from "@/views/create/childComp/questionnaireItems/blankFill";
+  import dropDown from "@/views/create/childComp/questionnaireItems/dropDown";
 
   export default {
     name: "questionnaire",
@@ -135,7 +155,10 @@
 
       //题目组件
       basicInfo,
-      singleSelect
+      singleSelect,
+      multiplySelect,
+      blankFill,
+      dropDown
     },
     created() {
       this.questionnaireSendingData.sender = this.$store.state.user
@@ -148,6 +171,14 @@
         this.questionnaireSendingData.title = res.title;
         this.questionnaireSendingData.subTitle = res.subTitle;
       },
+      appendOneProblem(problemName) {
+        this.questionnaireSendingData.problems.push({
+          type: problemName,
+          index: "",
+          title: "请输入问题标题",
+          options: []
+        })
+      }
     },
     data() {
       return {
@@ -164,10 +195,11 @@
 </script>
 
 <style scoped>
-  #right-setting-contain{
+  #right-setting-contain {
     padding-top: 20px;
     padding-left: 18px;
   }
+
   #questionnaire {
     overflow: hidden;
     background-color: #f3f5f6;
