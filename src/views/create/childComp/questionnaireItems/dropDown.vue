@@ -1,11 +1,15 @@
 <template>
   <div id="dropDown">
-    <label>
-      <input v-model="dropDown.title"
-             @focus="bgcChange(1)"
-             @blur="bgcChange(0)"
-             :style="titleInputBgc" class="dropDownTitleInput">
-    </label>
+    <div id="problem-header">
+      <label>
+        <input v-model="dropDown.title"
+               @focus="bgcChange(1)"
+               @blur="bgcChange(0)"
+               :style="titleInputBgc" class="dropDownTitleInput">
+      </label>
+      <el-tag id="problem-right-type-tag">下拉题</el-tag>
+    </div>
+
 
     <div id="choices">
       <div class="selection" v-for="(data, index) in dropDown.options" :key="data.key">
@@ -78,6 +82,10 @@
 </script>
 
 <style scoped>
+  #problem-header {
+    display: flex;
+  }
+
   .choice-title {
     padding-left: 8px;
   }
@@ -98,7 +106,7 @@
   .dropDownTitleInput {
     font-size: 18px;
     border: none;
-    width: 1200px;
+    width: 1120px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

@@ -1,11 +1,15 @@
 <template>
   <div id="nps">
-    <label>
-      <input v-model="nps.title"
-             @focus="bgcChange(1)"
-             @blur="bgcChange(0)"
-             :style="titleInputBgc" class="titleInput">
-    </label>
+    <div id="problem-header">
+      <label>
+        <input v-model="nps.title"
+               @focus="bgcChange(1)"
+               @blur="bgcChange(0)"
+               :style="titleInputBgc" class="titleInput">
+      </label>
+      <el-tag id="problem-right-type-tag">NPS题</el-tag>
+    </div>
+
 
     <div id="choices">
       <div class="selection" v-for="(data, index) in nps.options" :key="data.key">
@@ -91,6 +95,10 @@
 </script>
 
 <style scoped>
+  #problem-header {
+    display: flex;
+  }
+
   .choice-input {
     border: none;
     padding-left: 8px;
@@ -120,7 +128,7 @@
   .titleInput {
     font-size: 18px;
     border: none;
-    width: 1200px;
+    width: 1120px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

@@ -1,11 +1,15 @@
 <template>
   <div id="score">
-    <label>
-      <input v-model="score.title"
-             @focus="bgcChange(1)"
-             @blur="bgcChange(0)"
-             :style="titleInputBgc" class="titleInput">
-    </label>
+    <div id="problem-header">
+      <label>
+        <input v-model="score.title"
+               @focus="bgcChange(1)"
+               @blur="bgcChange(0)"
+               :style="titleInputBgc" class="titleInput">
+      </label>
+      <el-tag id="problem-right-type-tag">评价题</el-tag>
+    </div>
+
 
     <div id="choices">
       <div class="selection" v-for="(data, index) in score.options" :key="data.key">
@@ -86,6 +90,10 @@
 </script>
 
 <style scoped>
+  #problem-header {
+    display: flex;
+  }
+
   #score {
     margin-top: 20px;
     padding-bottom: 20px;
@@ -97,7 +105,7 @@
   .titleInput {
     font-size: 18px;
     border: none;
-    width: 1200px;
+    width: 1120px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

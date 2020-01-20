@@ -1,17 +1,21 @@
 <template>
   <div id="blankFill">
-    <label>
-      <input v-model="blankFill.title"
-             @focus="bgcChange(1)"
-             @blur="bgcChange(0)"
-             :style="titleInputBgc" class="blankFillTitleInput">
-    </label>
+    <div id="problem-header">
+      <label>
+        <input v-model="blankFill.title"
+               @focus="bgcChange(1)"
+               @blur="bgcChange(0)"
+               :style="titleInputBgc" class="blankFillTitleInput">
+      </label>
+      <el-tag id="problem-right-type-tag">填空题</el-tag>
+    </div>
+
 
     <el-input
             type="textarea"
             autosize
             placeholder="本题应在此处进行作答"
-            v-model="blankFill.value"  class="blankFillInput">
+            v-model="blankFill.value" class="blankFillInput">
     </el-input>
 
 
@@ -61,6 +65,10 @@
 </script>
 
 <style scoped>
+  #problem-header {
+    display: flex;
+  }
+
   #blankFill {
     margin-top: 20px;
     padding-bottom: 20px;
@@ -68,10 +76,11 @@
     width: 1300px;
     height: auto;
   }
+
   .blankFillTitleInput {
     font-size: 18px;
     border: none;
-    width: 1200px;
+    width: 1120px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;
@@ -79,7 +88,8 @@
     background-color: #ffffff;
     height: 40px;
   }
-  .blankFillInput{
+
+  .blankFillInput {
     width: 800px;
     padding-left: 15px;
     margin-left: 40px;

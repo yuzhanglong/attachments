@@ -1,11 +1,16 @@
 <template>
   <div id="singleSelect">
-    <label>
-      <input v-model="singleSelect.title"
-             @focus="bgcChange(1)"
-             @blur="bgcChange(0)"
-             :style="titleInputBgc" class="titleInput">
-    </label>
+    <div id="problem-header">
+      <label>
+        <input v-model="singleSelect.title"
+               @focus="bgcChange(1)"
+               @blur="bgcChange(0)"
+               :style="titleInputBgc" class="titleInput">
+      </label>
+      <el-tag id="problem-right-type-tag">单选题</el-tag>
+      <div id="delete-problem-button-wrap">
+      </div>
+    </div>
     <div id="choices">
       <div class="selection" v-for="(data, index) in singleSelect.options" :key="data.key">
         <el-radio value="false">选项{{getProblemNumber(index)}}</el-radio>
@@ -24,23 +29,23 @@
 <script>
   export default {
     name: "singleSelect",
-    created() {
-      //拿到index(就是题号)方便定位 *题号减一就是下标
-      this.index = this.$store.state.questionnaireSendingData.problems.length;
-      // console.log(this.index);
+    props: {
+      problemIndex: {
+        required: true,
+      },
     },
     watch: {
       singleSelect: {
         handler() {
-          this.submitDataToStore()
+          this.submitDataToQuestionnaire()
         },
         deep: true
       }
     },
     data() {
       return {
-        index: "",
         singleSelect: {
+          index: this.problemIndex,
           type: "singleSelect",
           title: "这是问题的标题 点我进行修改",
           options: []
@@ -51,11 +56,9 @@
       }
     },
     methods: {
-      submitDataToStore() {
-        this.$store.commit('appendOption', {
-          index: this.index - 1,
-          data: this.singleSelect
-        })
+      //监听改变 上传数据
+      submitDataToQuestionnaire() {
+        this.$emit('passData', this.singleSelect);
       },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
@@ -63,7 +66,6 @@
       },
       addChoice() {
         this.singleSelect.options.push({
-          //将新的题号赋给他
           value: ""
         })
       },
@@ -75,13 +77,17 @@
       },
       getProblemNumber(index) {
         return index <= 8 ? "0" + String(index + 1) : index + 1;
-      }
+      },
     },
   }
 
 </script>
 
 <style scoped>
+  #problem-header {
+    display: flex;
+  }
+
   .plus-tag {
     margin-top: 20px;
     margin-left: 60px;
@@ -113,7 +119,7 @@
   .titleInput {
     font-size: 18px;
     border: none;
-    width: 1200px;
+    width: 1120px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

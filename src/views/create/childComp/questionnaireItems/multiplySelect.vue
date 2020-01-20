@@ -1,12 +1,14 @@
 <template>
   <div id="multiplySelect">
-    <label>
-      <input v-model="multiplySelect.title"
-             @focus="bgcChange(1)"
-             @blur="bgcChange(0)"
-             :style="titleInputBgc" class="titleInput">
-    </label>
-
+    <div id="problem-header">
+      <label>
+        <input v-model="multiplySelect.title"
+               @focus="bgcChange(1)"
+               @blur="bgcChange(0)"
+               :style="titleInputBgc" class="titleInput">
+      </label>
+      <el-tag id="problem-right-type-tag">多选题</el-tag>
+    </div>
     <div id="choices">
       <div class="selection" v-for="(data, index) in multiplySelect.options" :key="data.key">
         <el-checkbox value="false">选项{{getProblemNumber(index)}}</el-checkbox>
@@ -73,12 +75,27 @@
       },
       getProblemNumber(index) {
         return index <= 8 ? "0" + String(index + 1) : index + 1;
-      }
+      },
+      // getTypeChineseName(englishName) {
+      //   let typechart = {
+      //     'singleSelect': "单选题",
+      //     'multiplySelect': "多选题",
+      //     'blankFill': "填空题",
+      //     'dropDown': '下拉题',
+      //     'score': '评价题',
+      //     'nps': 'nps题'
+      //   };
+      //   return typechart[englishName]
+      // }
     },
   }
 </script>
 
 <style scoped>
+  #problem-header {
+    display: flex;
+  }
+
   .plus-tag {
     margin-top: 20px;
     margin-left: 60px;
@@ -110,7 +127,7 @@
   .titleInput {
     font-size: 18px;
     border: none;
-    width: 1200px;
+    width: 1120px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

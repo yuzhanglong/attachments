@@ -98,8 +98,6 @@
             </pop-over>
             <problem-type-item itemicon="el-icon-menu" problem-type="文件上传"></problem-type-item>
             <problem-type-item itemicon="el-icon-menu" problem-type="信息表"></problem-type-item>
-
-
           </left-nav-bar>
         </div>
         <!--中间题目-->
@@ -109,14 +107,23 @@
           <scroll-bar>
             <div id="problems-container">
               <!--此处动态添加问题-->
-              <basic-info></basic-info>
-              <div v-for="problem in this.$store.state.questionnaireSendingData.problems" :key="problem.key">
-                <single-select v-if="problem.common.type === 'singleSelect'"></single-select>
-                <multiply-select v-if="problem.common.type === 'multiplySelect'"></multiply-select>
-                <blank-fill v-if="problem.common.type === 'blankFill'"></blank-fill>
-                <drop-down v-if="problem.common.type === 'dropDown'"></drop-down>
-                <score v-if="problem.common.type === 'score'"></score>
-                <nps v-if="problem.common.type === 'nps'"></nps>
+              <basic-info @passData="getBasicInfo"></basic-info>
+              <!--这里的index应该是动态的-->
+              <div v-for="(problem, index) in questionnaireData.problems" :key="problem.tag">
+                <single-select v-if="problem.common.type === 'singleSelect'"
+                               @click.native="getActiveProblem(index)"
+                               :problem-index="index" @passData="getProblemData">
+                </single-select>
+                <multiply-select v-if="problem.common.type === 'multiplySelect'"
+                                 @click.native="getActiveProblem(index)"></multiply-select>
+                <blank-fill v-if="problem.common.type === 'blankFill'"
+                            @click.native="getActiveProblem(index)"></blank-fill>
+                <drop-down v-if="problem.common.type === 'dropDown'"
+                           @click.native="getActiveProblem(index)"></drop-down>
+                <score v-if="problem.common.type === 'score'"
+                       @click.native="getActiveProblem(index)"></score>
+                <nps v-if="problem.common.type === 'nps'"
+                     @click.native="getActiveProblem(index)"></nps>
               </div>
             </div>
           </scroll-bar>
@@ -127,8 +134,9 @@
         <div id="right-setting">
           <!--右侧动态添加设置项-->
           <div id="right-setting-contain">
-            <el-tag>Question{{}}设置</el-tag>
+            <el-tag type="info" effect="dark">Question {{activeProblem + 1}} 设置</el-tag>
           </div>
+          <el-button @click="deleteOneProblem(activeProblem)">删除</el-button>
         </div>
       </el-col>
     </el-row>
@@ -142,7 +150,6 @@
   import problemTypeItem from "@/views/create/childComp/problemTypeItem";
   import popOver from "@/views/create/childComp/popOver";
   import scrollBar from "@/components/scrollBar/scrollBar";
-
 
   //题目组件
   import basicInfo from "@/views/create/childComp/questionnaireItems/basicInfo";
@@ -172,26 +179,55 @@
       score,
       nps
     },
-    created() {
-      //组件创建完成 renew基本框架
-      this.$store.commit('questionnaireDataInit')
+    data() {
+      return {
+        activeProblem: "",
+        questionnaireData: {
+          sender: this.$store.state.user,
+          basicInfo: {
+            title: "",
+            subTitle: ""
+          },
+          problems: []
+        }
+      }
     },
     methods: {
+      //实时更新problem数据
+      getProblemData(res) {
+        // console.log(res);
+        this.questionnaireData.problems[res.index].common.title = res.title;
+        this.questionnaireData.problems[res.index].common.options = res.options;
+      },
+      //添加一个problem
+      appendOneProblem(problemType) {
+        this.questionnaireData.problems.push({
+          tag: new Date().getTime(),
+          globalSetting: {
+            required: false
+          },
+          common: {
+            type: problemType,
+            title: "",
+            options: []
+          }
+        })
+      },
+      //删除一个problem 需要传入要删除的下标
+      deleteOneProblem(index) {
+        this.questionnaireData.problems.splice(index, 1);
+      },
+      //获取当前鼠标点击下的问题 并传入data.activeProblem
+      getBasicInfo(res) {
+        this.questionnaireData.basicInfo.title = res.title;
+        this.questionnaireData.basicInfo.subTitle = res.subTitle;
+      },
+      getActiveProblem(index) {
+        this.activeProblem = index;
+      },
       goBack() {
         this.$router.replace('/manage');
       },
-      appendOneProblem(problemName) {
-        this.$store.commit('appendProblemToQuestionnaire', {
-          globalSetting: {
-            required: true
-          },
-          common: {
-            type: problemName,
-            title: "请输入问题标题",
-            options: []
-          }
-        });
-      }
     },
   }
 </script>
