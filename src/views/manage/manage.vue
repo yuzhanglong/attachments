@@ -14,12 +14,43 @@
               </div>
             </template>
           </data-card>
-          <data-card v-for="i in 10"
-                     card-name="name"
-                     :card-style="getCardStyle(250)" :key="i"
+          <data-card v-for="(questionnaire, index) in myQuestionnaire"
+                     :key="questionnaire.questionnaireFlag"
+                     :card-name="questionnaire['questionnaireBasicData'].basicInfo.title"
+                     :card-style="getCardStyle(250)"
                      class="myProjectItem">
             <template v-slot:cardHead>
               <el-tag size="mini" class="cardTags">问卷</el-tag>
+            </template>
+            <template v-slot:cardBody>
+              <div id="card-body">
+                <el-link style="font-size: 9px" :type="showConditionStyle(index)" :underline="false">
+                  {{showCondition(index)}}
+                </el-link>
+              </div>
+            </template>
+            <template v-slot:cardFoot>
+              <div id="card-foot">
+                <div style="width: 140px;" v-show="false">
+                  <el-link style="font-size: 9px;" type="info" :underline="false">
+                    {{showParticipants(index)}}份数据
+                  </el-link>
+                </div>
+                <div v-show="false">
+                  <el-link style="font-size: 12px" type="info" :underline="false">
+                    {{showRenewTime(index)}}
+                  </el-link>
+                </div>
+                <div class="card-icon-wrap">
+                  <i class="el-icon-edit" style="font-size: 15px;"> 编辑</i>
+                </div>
+                <div class="card-icon-wrap">
+                  <i class="el-icon-position" style="font-size: 15px"> 发布</i>
+                </div>
+                <div class="card-icon-wrap">
+                  <i class="el-icon-copy-document" style="font-size: 15px"> 数据</i>
+                </div>
+              </div>
             </template>
           </data-card>
         </div>
@@ -31,15 +62,51 @@
 </template>
 
 <script>
+  //公共组件
   import dataCard from "@/components/dataCard/dataCard";
-  import {checkToken} from "@/network/user";
+
+
+  //数据处理
+  import {getQuesionNaire} from "@/network/questionnaire";
 
   export default {
     name: "manage",
     components: {
       dataCard,
     },
+    created() {
+      getQuesionNaire(this.$store.state.user, this.$store.state.token)
+              .then(res => {
+                this.myQuestionnaire = res['information']
+              })
+              .catch(() => {
+                this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
+                this.$router.replace('/login');
+                this.$store.commit("removeTokenAndUser");
+              })
+    },
+    data() {
+      return {
+        myQuestionnaire: []
+      }
+    },
     methods: {
+      showCondition(index) {
+        let conditiondata = ["未发布", "发布中", "已截止"];
+        let code = this.myQuestionnaire[index]['questionnaireBasicData'].condition;
+        return conditiondata[code];
+      },
+      showConditionStyle(index) {
+        let conditionStyledata = ["warning", "success", "danger"];
+        let code = this.myQuestionnaire[index]['questionnaireBasicData'].condition;
+        return conditionStyledata[code];
+      },
+      showParticipants(index) {
+        return this.myQuestionnaire[index]['questionnaireBasicData'].participants;
+      },
+      showRenewTime(index) {
+        return this.myQuestionnaire[index]['questionnaireRenewTime'].$date;
+      },
       getCardStyle(width) {
         return {
           "width": width + "px"
@@ -49,18 +116,18 @@
         this.$router.replace('/questionnaire');
       }
     },
-    created() {
-      checkToken(this.$store.state.token)
-              .catch(() => {
-                this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
-                this.$router.replace('/login');
-                this.$store.commit("removeTokenAndUser");
-              })
-    }
   }
 </script>
 
 <style scoped>
+  #card-body {
+    height: 50px;
+  }
+
+  #card-foot {
+    display: flex;
+  }
+
   #boxcontainer {
     display: flex;
     justify-content: center;
@@ -78,7 +145,6 @@
   }
 
   .cardTags {
-    margin-left: 110px;
     padding-left: 12px;
     padding-right: 12px;
   }
@@ -90,6 +156,9 @@
   #icon-wrap {
     padding-left: 85px;
     font-size: 40px;
+  }
+  .card-icon-wrap{
+    width: 100px;
   }
 
 </style>

@@ -166,8 +166,8 @@
             </div>
             <div id="is-required-wrap">
               <el-link class="is-required-title">是否为必填项</el-link>
-              <el-switch v-model="questionnaireData.problems[activeProblem].globalSetting.required"
-                         active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              <el-switch
+                      active-color="#13ce66" inactive-color="#ff4949"></el-switch>
             </div>
             <div>
               <el-button type="danger" @click="deleteOneProblem(activeProblem)" size="mini">删除这道题目</el-button>
@@ -239,7 +239,9 @@
         questionnaireData: {
           //创建好就给flag 防止用户多次保存而出现一大堆问卷
           questionnaireFlag: new Date().getTime(),
-          isSpread: false,
+          //0 未发布    1 发布中    2 已截止   3 运行在
+          condition: 0,
+          participants: 0,
           sender: this.$store.state.user,
           basicInfo: {
             title: "",
@@ -255,6 +257,10 @@
       * */
       saveQuestionNaire() {
         //发送请求
+        if (!this.questionnaireData.problems.length) {
+          this.$messageBox.showInfoMessage(this, "请至少添加一道题目~");
+          return
+        }
         sendQuesionNaire(this.$store.state.user, this.questionnaireData, this.$store.state.token, this.questionnaireData.questionnaireFlag)
                 .then(() => {
                   this.$messageBox.showSuccessMessage(this, "保存成功,可以在【我的项目】页面中查看");
