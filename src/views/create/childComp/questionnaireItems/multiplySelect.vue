@@ -7,7 +7,7 @@
                @blur="bgcChange(0)"
                :style="titleInputBgc" class="titleInput">
       </label>
-      <el-tag id="problem-right-type-tag">多选题</el-tag>
+      <el-tag id="problem-right-type-tag">问题{{problemIndex + 1}}: 多选题</el-tag>
     </div>
     <div id="choices">
       <div class="selection" v-for="(data, index) in multiplySelect.options" :key="data.key">
@@ -26,21 +26,23 @@
 <script>
   export default {
     name: "multiplySelect",
-    created() {
-      this.index = this.$store.state.questionnaireSendingData.problems.length;
+    props: {
+      problemIndex: {
+        required: true,
+      },
     },
     watch: {
       multiplySelect: {
         handler() {
-          this.submitDataToStore()
+          this.submitDataToQuestionnaire()
         },
         deep: true
       }
     },
     data() {
       return {
-        index: "",
         multiplySelect: {
+          index: this.problemIndex,
           type: "multiplySelect",
           title: "请输入问题标题",
           options: []
@@ -51,11 +53,8 @@
       }
     },
     methods: {
-      submitDataToStore() {
-        this.$store.commit('appendOption', {
-          index: this.index - 1,
-          data: this.multiplySelect
-        })
+      submitDataToQuestionnaire() {
+        this.$emit('passData', this.multiplySelect);
       },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
@@ -76,17 +75,6 @@
       getProblemNumber(index) {
         return index <= 8 ? "0" + String(index + 1) : index + 1;
       },
-      // getTypeChineseName(englishName) {
-      //   let typechart = {
-      //     'singleSelect': "单选题",
-      //     'multiplySelect': "多选题",
-      //     'blankFill': "填空题",
-      //     'dropDown': '下拉题',
-      //     'score': '评价题',
-      //     'nps': 'nps题'
-      //   };
-      //   return typechart[englishName]
-      // }
     },
   }
 </script>
@@ -127,7 +115,7 @@
   .titleInput {
     font-size: 18px;
     border: none;
-    width: 1120px;
+    width: 1100px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

@@ -22,15 +22,16 @@
   #nav-bar {
     display: flex;
     line-height: 64px;
-    text-align: center;
     box-shadow: 0 1px rgba(100, 100, 0, 0.1);
   }
-
-  .nav-left, .nav-right {
-    width: 60px;
+  .nav-left {
+    width: 260px;
     background-color: #ffffff;
   }
-
+  .nav-right{
+    width: 300px;
+    background-color: #ffffff;
+  }
   .nav-center {
     flex: 1;
   }

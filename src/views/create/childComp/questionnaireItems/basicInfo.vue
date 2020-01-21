@@ -2,13 +2,13 @@
 <template>
   <div id="basic-info">
     <label>
-      <input v-model="basicInfo.title" @input="passData"
+      <input v-model="basicInfo.title" @input="passbasicInfoData"
              @focus="bgc1Change(1)"
              @blur="bgc1Change(0)"
              :style="titleInput1Bgc">
     </label>
     <label>
-      <input v-model="basicInfo.subTitle" id="sub-input" @input="passData"
+      <input v-model="basicInfo.subTitle" id="sub-input" @input="passbasicInfoData"
              @focus="bgc2Change(1)"
              @blur="bgc2Change(0)"
              :style="titleInput2Bgc">
@@ -34,8 +34,8 @@
       }
     },
     methods: {
-      passData() {
-        this.$store.commit('renewQuestionnaireBasicInfo', this.basicInfo)
+      passbasicInfoData() {
+        this.$emit('passData', this.basicInfo)
       },
       bgc1Change(index) {
         let color = ['#ffffff', '#f4f4f4'];

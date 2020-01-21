@@ -45,7 +45,7 @@
           "width": width + "px"
         }
       },
-      gotoCreatequestionnaire(){
+      gotoCreatequestionnaire() {
         this.$router.replace('/questionnaire');
       }
     },

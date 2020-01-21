@@ -7,7 +7,7 @@
                @blur="bgcChange(0)"
                :style="titleInputBgc" class="dropDownTitleInput">
       </label>
-      <el-tag id="problem-right-type-tag">下拉题</el-tag>
+      <el-tag id="problem-right-type-tag">问题{{problemIndex + 1}}: 下拉题</el-tag>
     </div>
 
 
@@ -27,21 +27,23 @@
 <script>
   export default {
     name: "dropDown",
-    created() {
-      this.index = this.$store.state.questionnaireSendingData.problems.length;
+    props: {
+      problemIndex: {
+        required: true,
+      },
     },
     watch: {
       dropDown: {
         handler() {
-          this.submitDataToStore()
+          this.submitDataToQuestionnaire()
         },
         deep: true
       }
     },
     data() {
       return {
-        index: "",
         dropDown: {
+          index: this.problemIndex,
           type: "dropDown",
           title: "请选择一个选项",
           options: []
@@ -52,11 +54,8 @@
       }
     },
     methods: {
-      submitDataToStore() {
-        this.$store.commit('appendOption', {
-          index: this.index - 1,
-          data: this.dropDown
-        })
+      submitDataToQuestionnaire() {
+        this.$emit('passData', this.dropDown);
       },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
@@ -106,7 +105,7 @@
   .dropDownTitleInput {
     font-size: 18px;
     border: none;
-    width: 1120px;
+    width: 1100px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

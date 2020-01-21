@@ -7,7 +7,7 @@
                @blur="bgcChange(0)"
                :style="titleInputBgc" class="blankFillTitleInput">
       </label>
-      <el-tag id="problem-right-type-tag">填空题</el-tag>
+      <el-tag id="problem-right-type-tag">问题{{problemIndex + 1}}: 填空题</el-tag>
     </div>
 
 
@@ -25,24 +25,26 @@
 <script>
   export default {
     name: "blank",
-    created() {
-      this.index = this.$store.state.questionnaireSendingData.problems.length;
+    props: {
+      problemIndex: {
+        required: true,
+      },
     },
     watch: {
       blankFill: {
         handler() {
-          this.submitDataToStore()
+          this.submitDataToQuestionnaire()
         },
         deep: true
       }
     },
     data() {
       return {
-        index: "",
         titleInputBgc: {
           "background-color": "#ffffff"
         },
         blankFill: {
+          index: this.problemIndex,
           type: "blankFill",
           title: "请输入问题标题",
           value: ""
@@ -50,11 +52,8 @@
       }
     },
     methods: {
-      submitDataToStore() {
-        this.$store.commit('appendOption', {
-          index: this.index - 1,
-          data: this.blankFill
-        })
+      submitDataToQuestionnaire() {
+        this.$emit('passData', this.blankFill);
       },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
@@ -80,7 +79,7 @@
   .blankFillTitleInput {
     font-size: 18px;
     border: none;
-    width: 1120px;
+    width: 1100px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

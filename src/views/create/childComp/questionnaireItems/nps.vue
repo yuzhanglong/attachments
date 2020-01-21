@@ -7,7 +7,7 @@
                @blur="bgcChange(0)"
                :style="titleInputBgc" class="titleInput">
       </label>
-      <el-tag id="problem-right-type-tag">NPS题</el-tag>
+      <el-tag id="problem-right-type-tag">问题{{problemIndex + 1}}: NPS题</el-tag>
     </div>
 
 
@@ -36,21 +36,23 @@
 <script>
   export default {
     name: "nps",
-    created() {
-      this.index = this.$store.state.questionnaireSendingData.problems.length;
+    props: {
+      problemIndex: {
+        required: true,
+      },
     },
     watch: {
       nps: {
         handler() {
-          this.submitDataToStore()
+          this.submitDataToQuestionnaire()
         },
         deep: true
       }
     },
     data() {
       return {
-        index: "",
         nps: {
+          index: this.problemIndex,
           type: "nps",
           title: "请对下面几项给出您的评价或期望",
           options: []
@@ -61,11 +63,8 @@
       }
     },
     methods: {
-      submitDataToStore() {
-        this.$store.commit('appendOption', {
-          index: this.index - 1,
-          data: this.nps
-        })
+      submitDataToQuestionnaire() {
+        this.$emit('passData', this.nps);
       },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
@@ -128,7 +127,7 @@
   .titleInput {
     font-size: 18px;
     border: none;
-    width: 1120px;
+    width: 1100px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

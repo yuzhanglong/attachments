@@ -7,7 +7,7 @@
                @blur="bgcChange(0)"
                :style="titleInputBgc" class="titleInput">
       </label>
-      <el-tag id="problem-right-type-tag">评价题</el-tag>
+      <el-tag id="problem-right-type-tag">问题{{problemIndex + 1}}: 评价题</el-tag>
     </div>
 
 
@@ -35,21 +35,23 @@
 <script>
   export default {
     name: "score",
-    created() {
-      this.index = this.$store.state.questionnaireSendingData.problems.length;
+    props: {
+      problemIndex: {
+        required: true,
+      },
     },
     watch: {
       score: {
         handler() {
-          this.submitDataToStore()
+          this.submitDataToQuestionnaire()
         },
         deep: true
       }
     },
     data() {
       return {
-        index: "",
         score: {
+          index: this.problemIndex,
           type: "score",
           title: "请给本项打分",
           options: []
@@ -60,11 +62,8 @@
       }
     },
     methods: {
-      submitDataToStore() {
-        this.$store.commit('appendOption', {
-          index: this.index - 1,
-          data: this.score
-        })
+      submitDataToQuestionnaire() {
+        this.$emit('passData', this.score);
       },
       bgcChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
@@ -105,7 +104,7 @@
   .titleInput {
     font-size: 18px;
     border: none;
-    width: 1120px;
+    width: 1100px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

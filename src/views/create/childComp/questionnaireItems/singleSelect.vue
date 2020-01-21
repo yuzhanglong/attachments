@@ -7,14 +7,14 @@
                @blur="bgcChange(0)"
                :style="titleInputBgc" class="titleInput">
       </label>
-      <el-tag id="problem-right-type-tag">单选题</el-tag>
-      <div id="delete-problem-button-wrap">
-      </div>
+      <el-tag id="problem-right-type-tag">问题{{problemIndex + 1}}: 单选题</el-tag>
     </div>
     <div id="choices">
       <div class="selection" v-for="(data, index) in singleSelect.options" :key="data.key">
         <el-radio value="false">选项{{getProblemNumber(index)}}</el-radio>
-        <label><input class="choiceInput" v-model="data.value"></label>
+        <label>
+          <input class="choiceInput" v-model="data.value">
+        </label>
         <el-button type="danger" icon="el-icon-delete" circle size="small" class="delete-button"
                    @click="removeChoice(data)">
         </el-button>
@@ -25,6 +25,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
   export default {
@@ -37,7 +38,7 @@
     watch: {
       singleSelect: {
         handler() {
-          this.submitDataToQuestionnaire()
+          this.submitDataToQuestionnaire();
         },
         deep: true
       }
@@ -119,7 +120,7 @@
   .titleInput {
     font-size: 18px;
     border: none;
-    width: 1120px;
+    width: 1100px;
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;
