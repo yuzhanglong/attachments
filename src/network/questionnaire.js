@@ -24,3 +24,15 @@ export function getQuesionNaire(userName, token) {
     }
   })
 }
+
+export function getQuesionNaireByFlag(userName, token, flag) {
+  return request({
+    method: 'post',
+    url: '/questionnaire/get_data_by_flag',
+    data: {
+      userName: userName,
+      token: token,
+      flag: flag
+    }
+  })
+}

@@ -42,7 +42,7 @@ const routes = [
   },
   //问卷发布
   {
-    path: '/questionnaire',
+    path: '/questionnaire/:situation',
     component: Questionnaire,
   },
 ];

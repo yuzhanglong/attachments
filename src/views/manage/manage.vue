@@ -24,31 +24,23 @@
             </template>
             <template v-slot:cardBody>
               <div id="card-body">
-                <el-link style="font-size: 9px" :type="showConditionStyle(index)" :underline="false">
+                <el-link style="font-size: 9px; margin-left: 10px" :type="showConditionStyle(index)" :underline="false">
                   {{showCondition(index)}}
                 </el-link>
               </div>
             </template>
             <template v-slot:cardFoot>
               <div id="card-foot">
-                <div style="width: 140px;" v-show="false">
-                  <el-link style="font-size: 9px;" type="info" :underline="false">
-                    {{showParticipants(index)}}份数据
-                  </el-link>
-                </div>
-                <div v-show="false">
-                  <el-link style="font-size: 12px" type="info" :underline="false">
-                    {{showRenewTime(index)}}
-                  </el-link>
+                <div class="card-icon-wrap">
+                  <el-button icon="el-icon-edit" type="mini" class="card-bottom-button"
+                             @click="gotoEdit(questionnaire, questionnaire.questionnaireFlag)">编辑
+                  </el-button>
                 </div>
                 <div class="card-icon-wrap">
-                  <i class="el-icon-edit" style="font-size: 15px;"> 编辑</i>
+                  <el-button icon="el-icon-position" type="mini" class="card-bottom-button">发布</el-button>
                 </div>
                 <div class="card-icon-wrap">
-                  <i class="el-icon-position" style="font-size: 15px"> 发布</i>
-                </div>
-                <div class="card-icon-wrap">
-                  <i class="el-icon-copy-document" style="font-size: 15px"> 数据</i>
+                  <el-button icon="el-icon-position" type="mini" class="card-bottom-button">数据</el-button>
                 </div>
               </div>
             </template>
@@ -87,10 +79,16 @@
     },
     data() {
       return {
-        myQuestionnaire: []
+        myQuestionnaire: [],
+        cardActive: []
       }
     },
     methods: {
+      gotoEdit(questionnaire, target) {
+        let q = JSON.stringify(questionnaire);
+        window.localStorage.setItem('data', q);
+        this.$router.push('/questionnaire/' + target);
+      },
       showCondition(index) {
         let conditiondata = ["未发布", "发布中", "已截止"];
         let code = this.myQuestionnaire[index]['questionnaireBasicData'].condition;
@@ -113,7 +111,7 @@
         }
       },
       gotoCreatequestionnaire() {
-        this.$router.replace('/questionnaire');
+        this.$router.push('/questionnaire/new');
       }
     },
   }
@@ -155,10 +153,19 @@
 
   #icon-wrap {
     padding-left: 85px;
+    padding-top: 10px;
+    padding-bottom: 25px;
     font-size: 40px;
   }
-  .card-icon-wrap{
-    width: 100px;
+
+  .card-icon-wrap {
+    width: 90px;
+  }
+
+  .card-bottom-button {
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 0;
   }
 
 </style>

@@ -28,6 +28,10 @@
   export default {
     name: "dropDown",
     props: {
+      recoverData: {
+        type: Object,
+        required: true,
+      },
       problemIndex: {
         required: true,
       },
@@ -45,8 +49,8 @@
         dropDown: {
           index: this.problemIndex,
           type: "dropDown",
-          title: "请选择一个选项",
-          options: []
+          title: this.recoverData.title ? this.recoverData.title : "点我为这道下拉题创建一个标题",
+          options: this.recoverData.options,
         },
         titleInputBgc: {
           "background-color": "#ffffff"

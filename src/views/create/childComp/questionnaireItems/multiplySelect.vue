@@ -30,6 +30,10 @@
       problemIndex: {
         required: true,
       },
+      recoverData: {
+        type: Object,
+        required: true,
+      },
     },
     watch: {
       multiplySelect: {
@@ -44,8 +48,8 @@
         multiplySelect: {
           index: this.problemIndex,
           type: "multiplySelect",
-          title: "请输入问题标题",
-          options: []
+          title: this.recoverData.title ? this.recoverData.title : "点我为这道多选题创建一个标题",
+          options: this.recoverData.options,
         },
         titleInputBgc: {
           "background-color": "#ffffff"

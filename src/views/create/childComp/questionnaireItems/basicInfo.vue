@@ -19,12 +19,15 @@
 <script>
   export default {
     name: "basicInfo",
+    props: {
+      recoverData: {
+        type: Object,
+        required: true
+      }
+    },
     data() {
       return {
-        basicInfo: {
-          title: "请在这里创建一个问卷标题",
-          subTitle: "感谢您能抽出几分钟时间来参加本次问卷调查，现在我们就马上开始吧！"
-        },
+        basicInfo: this.getRecoverData(),
         titleInput1Bgc: {
           "background-color": "#ffffff"
         },
@@ -34,6 +37,9 @@
       }
     },
     methods: {
+      getRecoverData(){
+        return this.recoverData
+      },
       passbasicInfoData() {
         this.$emit('passData', this.basicInfo)
       },

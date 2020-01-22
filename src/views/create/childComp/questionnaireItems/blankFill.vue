@@ -29,6 +29,10 @@
       problemIndex: {
         required: true,
       },
+      recoverData: {
+        type: Object,
+        required: true,
+      },
     },
     watch: {
       blankFill: {
@@ -46,8 +50,8 @@
         blankFill: {
           index: this.problemIndex,
           type: "blankFill",
-          title: "请输入问题标题",
-          value: ""
+          title: this.recoverData.title ? this.recoverData.title : "点我为这道填空题创建一个标题",
+          value: this.recoverData.value
         }
       }
     },

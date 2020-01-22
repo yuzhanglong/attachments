@@ -39,6 +39,10 @@
       problemIndex: {
         required: true,
       },
+      recoverData: {
+        type: Object,
+        required: true,
+      },
     },
     watch: {
       score: {
@@ -53,8 +57,8 @@
         score: {
           index: this.problemIndex,
           type: "score",
-          title: "请给本项打分",
-          options: []
+          title: this.recoverData.title ? this.recoverData.title : "点我为这一组评价题创建标题",
+          options: this.recoverData.options,
         },
         titleInputBgc: {
           "background-color": "#ffffff"

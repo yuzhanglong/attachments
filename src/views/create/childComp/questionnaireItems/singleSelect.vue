@@ -31,6 +31,10 @@
   export default {
     name: "singleSelect",
     props: {
+      recoverData: {
+        type: Object,
+        required: true,
+      },
       problemIndex: {
         required: true,
       },
@@ -48,8 +52,8 @@
         singleSelect: {
           index: this.problemIndex,
           type: "singleSelect",
-          title: "这是问题的标题 点我进行修改",
-          options: []
+          title: this.recoverData.title ? this.recoverData.title : "点我为这道填空题创建一个标题",
+          options: this.recoverData.options,
         },
         titleInputBgc: {
           "background-color": "#ffffff"

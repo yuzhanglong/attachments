@@ -117,38 +117,45 @@
           <scroll-bar>
             <div id="problems-container">
               <!--此处动态添加问题-->
-              <basic-info @passData="getBasicInfo"></basic-info>
+              <basic-info @passData="getBasicInfo"
+                          :recover-data="questionnaireData.basicInfo">
+              </basic-info>
               <!--这里的index是动态的-->
               <div v-for="(problem, index) in questionnaireData.problems" :key="problem.tag">
                 <single-select v-if="problem.common.type === 'singleSelect'"
                                @click.native="getActiveProblem(index)"
-                               :problem-index="index" @passData="getProblemData">
+                               :problem-index="index" @passData="getProblemData"
+                               :recover-data="problem.common">
                 </single-select>
                 <multiply-select v-if="problem.common.type === 'multiplySelect'"
                                  @click.native="getActiveProblem(index)"
                                  :problem-index="index"
-                                 @passData="getProblemData">
+                                 @passData="getProblemData" :recover-data="problem.common">
                 </multiply-select>
                 <blank-fill v-if="problem.common.type === 'blankFill'"
                             @click.native="getActiveProblem(index)"
                             :problem-index="index"
-                            @passData="getProblemDataForBlankFill">
+                            @passData="getProblemDataForBlankFill"
+                            :recover-data="problem.common">
                 </blank-fill>
                 <drop-down v-if="problem.common.type === 'dropDown'"
                            @click.native="getActiveProblem(index)"
                            :problem-index="index"
-                           @passData="getProblemData">
+                           @passData="getProblemData"
+                           :recover-data="problem.common">
 
                 </drop-down>
                 <score v-if="problem.common.type === 'score'"
                        @click.native="getActiveProblem(index)"
                        :problem-index="index"
-                       @passData="getProblemData">
+                       @passData="getProblemData"
+                       :recover-data="problem.common">
                 </score>
                 <nps v-if="problem.common.type === 'nps'"
                      @click.native="getActiveProblem(index)"
                      :problem-index="index"
-                     @passData="getProblemData">
+                     @passData="getProblemData"
+                     :recover-data="problem.common">
                 </nps>
               </div>
             </div>
@@ -222,12 +229,13 @@
       nps
     },
     created() {
+      this.judgeSituation(this.$route.params.situation);
       checkToken(this.$store.state.token)
               .catch(() => {
                 this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
                 this.$router.replace('/login');
                 this.$store.commit("removeTokenAndUser");
-              })
+              });
     },
     data() {
       return {
@@ -239,19 +247,43 @@
         questionnaireData: {
           //创建好就给flag 防止用户多次保存而出现一大堆问卷
           questionnaireFlag: new Date().getTime(),
-          //0 未发布    1 发布中    2 已截止   3 运行在
+          //0 未发布    1 发布中    2 已截止
           condition: 0,
           participants: 0,
           sender: this.$store.state.user,
           basicInfo: {
-            title: "",
-            subTitle: ""
+            title: "请在这里创建一个问卷标题",
+            subTitle: "感谢您能抽出几分钟时间来参加本次问卷调查，现在我们就马上开始吧！"
           },
           problems: []
         }
       }
     },
     methods: {
+      //跳转到此页面情形
+      // 1.新建问卷 2.编辑问卷
+      // 可以用动态路由来区分之
+      judgeSituation(targetRouter) {
+        //新建情况
+        if (targetRouter !== "new") {
+          this.questionnaireData = JSON.parse(window.localStorage.getItem('data'))['questionnaireBasicData'];
+          //通过flag拿到需要编辑的问卷数据
+          this.$notify({
+            title: "系统消息",
+            message: '当前您处在编辑模式',
+            type: 'success',
+            duration: 4000,
+          });
+        } else {
+
+          this.$notify({
+            title: '系统消息',
+            message: '当前您处在新建模式',
+            type: 'success',
+            duration: 4000
+          });
+        }
+      },
       /*问卷发布相关
       *
       * */

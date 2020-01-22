@@ -40,6 +40,10 @@
       problemIndex: {
         required: true,
       },
+      recoverData: {
+        type: Object,
+        required: true,
+      },
     },
     watch: {
       nps: {
@@ -54,8 +58,8 @@
         nps: {
           index: this.problemIndex,
           type: "nps",
-          title: "请对下面几项给出您的评价或期望",
-          options: []
+          title: this.recoverData.title ? this.recoverData.title : "点我为这一组NPS题创建标题",
+          options: this.recoverData.options,
         },
         titleInputBgc: {
           "background-color": "#ffffff"
