@@ -1,6 +1,19 @@
 <template>
   <div id="manage">
-    <el-header></el-header>
+    <nav-bar>
+      <template v-slot:nav-center>
+        <el-menu class="el-menu-demo" mode="horizontal" :default-active="navBarActive">
+          <el-menu-item index="1">我的项目</el-menu-item>
+          <el-menu-item index="2">常用模板</el-menu-item>
+        </el-menu>
+      </template>
+      <template v-slot:nav-right>
+        <div id="profileHead">
+          <el-avatar :src="tempHeadIconLink" style="margin-top: 10px; float: right; margin-right: 50px"></el-avatar>
+        </div>
+
+      </template>
+    </nav-bar>
     <el-main id="manage-main">
       <div id="boxcontainer">
         <div class="myProjectItemBox">
@@ -42,6 +55,18 @@
                 <div class="card-icon-wrap">
                   <el-button icon="el-icon-position" type="mini" class="card-bottom-button">数据</el-button>
                 </div>
+                <div class="card-icon-wrap">
+                  <el-dropdown>
+                    <el-button icon="el-icon-more-outline" type="mini" class="card-bottom-button"
+                               style="font-size: 14px;"></el-button>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item>发布项目</el-dropdown-item>
+                      <el-dropdown-item>预览项目</el-dropdown-item>
+                      <el-dropdown-item @click.native="confirmDelete(questionnaire.questionnaireFlag)">删除项目
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
               </div>
             </template>
           </data-card>
@@ -60,30 +85,57 @@
 
   //数据处理
   import {getQuesionNaire} from "@/network/questionnaire";
+  import NavBar from "@/components/navBar/navBar";
+  import {deleteQuesionNaire} from "@/network/questionnaire";
 
   export default {
     name: "manage",
     components: {
+      NavBar,
       dataCard,
     },
     created() {
-      getQuesionNaire(this.$store.state.user, this.$store.state.token)
-              .then(res => {
-                this.myQuestionnaire = res['information']
-              })
-              .catch(() => {
-                this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
-                this.$router.replace('/login');
-                this.$store.commit("removeTokenAndUser");
-              })
+      this.getQuesionNaire()
     },
     data() {
       return {
+        tempHeadIconLink: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+        navBarActive: "1",
         myQuestionnaire: [],
         cardActive: []
       }
     },
     methods: {
+      getQuesionNaire() {
+        getQuesionNaire(this.$store.state.user, this.$store.state.token)
+                .then(res => {
+                  this.myQuestionnaire = res['information']
+                })
+                .catch(() => {
+                  this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
+                  this.$router.replace('/login');
+                  this.$store.commit("removeTokenAndUser");
+                })
+      },
+      confirmDelete(flag) {
+        this.$confirm('此操作将永久删除该项目, 是否继续?', '注意', {
+          confirmButtonText: '确定删除',
+          cancelButtonText: '我再想想',
+          type: 'warning'
+        }).then(() => {
+          this.deleteQuesionNaire(flag)
+        }).catch(() => {
+          this.$messageBox.showInfoMessage(this, "用户已取消");
+
+        });
+      },
+      deleteQuesionNaire(flag) {
+        deleteQuesionNaire(this.$store.state.user, this.$store.state.token, flag)
+                .then(() => {
+                  this.$messageBox.showSuccessMessage(this, "删除项目成功!");
+                  this.getQuesionNaire()
+                });
+      },
       gotoEdit(questionnaire, target) {
         let q = JSON.stringify(questionnaire);
         window.localStorage.setItem('data', q);
@@ -159,7 +211,7 @@
   }
 
   .card-icon-wrap {
-    width: 90px;
+    width: 80px;
   }
 
   .card-bottom-button {

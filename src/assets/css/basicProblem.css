@@ -8,3 +8,6 @@
 .el-card__body{
   padding-bottom: 8px;
 }
+.el-menu.el-menu--horizontal{
+  border-bottom: 0;
+}

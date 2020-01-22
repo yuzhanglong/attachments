@@ -3,7 +3,7 @@
     <!--顶部导航栏-->
     <el-row>
       <div id="top-nav-container">
-        <nav-bar>
+        <nav-bar line-height="line-height: 64px">
           <template v-slot:nav-left>
             <i class="el-icon-arrow-left" @click="goBack"></i>
           </template>
@@ -18,7 +18,6 @@
                 <i class="el-icon-arrow-right"></i>
               </div>
               <el-link type="primary" :underline="false">统计报表</el-link>
-
             </div>
           </template>
           <template v-slot:nav-right>
@@ -208,6 +207,7 @@
   //数据处理
   import {sendQuesionNaire} from "@/network/questionnaire";
   import {checkToken} from "@/network/user";
+  import {getQuesionNaireByFlag} from "@/network/questionnaire";
 
   export default {
     name: "questionnaire",
@@ -296,6 +296,7 @@
         sendQuesionNaire(this.$store.state.user, this.questionnaireData, this.$store.state.token, this.questionnaireData.questionnaireFlag)
                 .then(() => {
                   this.$messageBox.showSuccessMessage(this, "保存成功,可以在【我的项目】页面中查看");
+                  this.refreshQuestionnaireData();
                 })
                 .catch(() => {
                   this.$messageBox.showErrorMessage(this, "请求失败error");
@@ -313,7 +314,13 @@
         //1.路由跳转到发布界面
         this.$router.push('/spread');
       },
-
+      refreshQuestionnaireData() {
+        getQuesionNaireByFlag(this.$store.state.user, this.$store.state.token, this.questionnaireData.questionnaireFlag)
+                .then(res => {
+                  let q = JSON.stringify(res['information']);
+                  window.localStorage.setItem('data', q);
+                })
+      },
 
       /*实时更新problem数据相关
       *

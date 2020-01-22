@@ -36,3 +36,15 @@ export function getQuesionNaireByFlag(userName, token, flag) {
     }
   })
 }
+
+export function deleteQuesionNaire(userName, token, flag) {
+  return request({
+    method: 'post',
+    url: '/questionnaire/delete',
+    data: {
+      userName: userName,
+      token: token,
+      flag: flag
+    }
+  })
+}
