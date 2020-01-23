@@ -7,7 +7,7 @@ const Register = () => import('@/views/register/register');
 const Login = () => import('@/views/login/login');
 const Manage = () => import('@/views/manage/manage');
 const Questionnaire = () => import('@/views/create/questionnaire');
-
+const Spread = () => import('@/views/spread/spread');
 
 Vue.use(VueRouter);
 
@@ -40,10 +40,20 @@ const routes = [
       requireAuth: true
     }
   },
-  //问卷发布
+  //问卷编辑
   {
     path: '/questionnaire/:situation',
     component: Questionnaire,
+    meta: {
+      //需要权限
+      requireAuth: true
+    }
+  },
+  //问卷发布 flag可能的值
+  // 其他都为时间戳 表示对应的问卷
+  {
+    path: '/spread/:flag',
+    component: Spread,
   },
 ];
 

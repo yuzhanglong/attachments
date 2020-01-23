@@ -247,9 +247,6 @@
         questionnaireData: {
           //创建好就给flag 防止用户多次保存而出现一大堆问卷
           questionnaireFlag: new Date().getTime(),
-          //0 未发布    1 发布中    2 已截止
-          condition: 0,
-          participants: 0,
           sender: this.$store.state.user,
           basicInfo: {
             title: "请在这里创建一个问卷标题",
@@ -402,7 +399,7 @@
     margin-left: 100px;
     width: 88%;
     margin-top: 55px;
-    height: calc(100vh - 76px);
+    height: calc(100vh - 58px);
   }
 
   #top-nav-container {
@@ -450,7 +447,7 @@
     top: 85px;
     right: 20px;
     width: 400px;
-    height: 100%;
+    height: 87%;
     background-color: #ffffff;
   }
 

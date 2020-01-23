@@ -50,17 +50,20 @@
                   </el-button>
                 </div>
                 <div class="card-icon-wrap">
-                  <el-button icon="el-icon-position" type="mini" class="card-bottom-button">发布</el-button>
+                  <el-button icon="el-icon-position" type="mini" class="card-bottom-button"
+                             @click="gotoSpread(questionnaire.questionnaireFlag)">发布
+                  </el-button>
                 </div>
                 <div class="card-icon-wrap">
-                  <el-button icon="el-icon-position" type="mini" class="card-bottom-button">数据</el-button>
+                  <el-button icon="el-icon-document-copy" type="mini" class="card-bottom-button">数据</el-button>
                 </div>
                 <div class="card-icon-wrap">
                   <el-dropdown>
                     <el-button icon="el-icon-more-outline" type="mini" class="card-bottom-button"
                                style="font-size: 14px;"></el-button>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>发布项目</el-dropdown-item>
+                      <el-dropdown-item @click.native=gotoSpread(questionnaire.questionnaireFlag)>发布项目
+                      </el-dropdown-item>
                       <el-dropdown-item>预览项目</el-dropdown-item>
                       <el-dropdown-item @click.native="confirmDelete(questionnaire.questionnaireFlag)">删除项目
                       </el-dropdown-item>
@@ -106,6 +109,9 @@
       }
     },
     methods: {
+      gotoSpread(flag) {
+        this.$router.push('/spread/' + flag);
+      },
       getQuesionNaire() {
         getQuesionNaire(this.$store.state.user, this.$store.state.token)
                 .then(res => {
@@ -142,14 +148,12 @@
         this.$router.push('/questionnaire/' + target);
       },
       showCondition(index) {
-        let conditiondata = ["未发布", "发布中", "已截止"];
-        let code = this.myQuestionnaire[index]['questionnaireBasicData'].condition;
-        return conditiondata[code];
+        let code = this.myQuestionnaire[index]['questionnaireCondition'];
+        return code ? "发布中" : "未发布"
       },
       showConditionStyle(index) {
-        let conditionStyledata = ["warning", "success", "danger"];
-        let code = this.myQuestionnaire[index]['questionnaireBasicData'].condition;
-        return conditionStyledata[code];
+        let code = this.myQuestionnaire[index]['questionnaireCondition'];
+        return code ? "success" : "warning"
       },
       showParticipants(index) {
         return this.myQuestionnaire[index]['questionnaireBasicData'].participants;

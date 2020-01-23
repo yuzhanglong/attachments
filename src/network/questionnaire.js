@@ -48,3 +48,16 @@ export function deleteQuesionNaire(userName, token, flag) {
     }
   })
 }
+
+export function submitQuestionnaireSpreadData(userName, token, flag, dataDict) {
+  return request({
+    method: 'post',
+    url: '/questionnaire/spread',
+    data: {
+      userName: userName,
+      token: token,
+      flag: flag,
+      dataDict: dataDict,
+    }
+  })
+}
