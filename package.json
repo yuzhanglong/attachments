@@ -10,9 +10,12 @@
   "dependencies": {
     "axios": "^0.19.1",
     "core-js": "^3.4.4",
+    "cube-ui": "~1.12.15",
     "echarts": "^4.6.0",
     "element-ui": "^2.13.0",
+    "stylus": "^0.54.7",
     "vue": "^2.6.10",
+    "vue-clipboard2": "^0.3.1",
     "vue-router": "^3.1.4",
     "vuex": "^3.1.2"
   },
@@ -25,6 +28,9 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vue-cli-plugin-cube-ui": "^0.2.5",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
@@ -45,6 +51,15 @@
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions"
-  ]
+    "last 2 versions",
+    "not ie <= 11",
+    "Android >= 4.0",
+    "iOS >= 8"
+  ],
+  "transformModules": {
+    "cube-ui": {
+      "transform": "cube-ui/src/modules/${member}",
+      "kebabCase": true
+    }
+  }
 }

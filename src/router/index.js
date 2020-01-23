@@ -8,8 +8,11 @@ const Login = () => import('@/views/login/login');
 const Manage = () => import('@/views/manage/manage');
 const Questionnaire = () => import('@/views/create/questionnaire');
 const Spread = () => import('@/views/spread/spread');
+const Complete = () => import('@/views/complete/complete');
+
 
 Vue.use(VueRouter);
+
 
 const routes = [
   //欢迎页面
@@ -54,6 +57,10 @@ const routes = [
   {
     path: '/spread/:flag',
     component: Spread,
+  },
+  {
+    path: '/complete/:flag',
+    component: Complete,
   },
 ];
 

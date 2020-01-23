@@ -159,7 +159,7 @@
         return this.myQuestionnaire[index]['questionnaireBasicData'].participants;
       },
       showRenewTime(index) {
-        return this.myQuestionnaire[index]['questionnaireRenewTime'].$date;
+        return this.myQuestionnaire[index]['questionnaireRenewTime'];
       },
       getCardStyle(width) {
         return {

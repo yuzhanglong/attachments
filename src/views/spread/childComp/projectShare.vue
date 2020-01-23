@@ -11,7 +11,7 @@
             <div id="share-link-input">
               <el-input disabled v-model="this.shareLink"></el-input>
             </div>
-            <el-button type="primary" class="share-link-button">复制</el-button>
+            <el-button type="primary" class="share-link-button" v-clipboard="this.shareLink" @click="copySuccess">复制</el-button>
             <el-button class="share-link-button">打开</el-button>
             <el-button id="share-wechat-button"><img src="@/assets/img/icon/Wechat.svg" alt="" width="30px"></el-button>
             <el-button id="share-qq-button"><img src="@/assets/img/icon/QQ.svg" alt="" width="30px"></el-button>
@@ -20,7 +20,7 @@
         </div>
         <div id="project-share-bottom-container">
           <el-button icon="el-icon-picture-outline">制作二维码海报</el-button>
-          <el-button disabled style="padding-left: 15px; padding-right: 15px">useless</el-button>
+          <el-button disabled>useless</el-button>
         </div>
       </div>
       <div id="spilt-line"></div>
@@ -55,6 +55,11 @@
     data() {
       return {
         shareLink: "http://localhost:8080/#/complete/" + this.shareFlag
+      }
+    },
+    methods:{
+      copySuccess(){
+        this.$messageBox.showSuccessMessage(this, '成功将链接复制到剪贴板!')
       }
     }
   }

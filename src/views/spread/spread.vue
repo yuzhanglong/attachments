@@ -92,8 +92,6 @@
                   <el-time-picker placeholder="选择时间" v-model="data['questionnaireDeadline']"
                                   style="width: 100%;"></el-time-picker>
                 </el-menu-item>
-
-
               </el-menu-item-group>
             </el-menu>
           </div>
@@ -139,6 +137,9 @@
       },
       submitQuestionnaireSpreadData() {
         submitQuestionnaireSpreadData(this.$store.state.user, this.$store.state.token, this.$route.params.flag, this.data)
+        .then(() => {
+          this.$messageBox.showSuccessMessage(this, "数据更新成功了")
+        })
       },
       getQuesionNaireByFlag() {
         getQuesionNaireByFlag(this.$store.state.user, this.$store.state.token, this.$route.params.flag)
