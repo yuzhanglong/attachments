@@ -13,3 +13,13 @@ export function getProblems(flag) {
     url: '/complete/get_problems/' + flag,
   })
 }
+
+export function checkSecretKey(flag, key) {
+  return request({
+    method: 'post',
+    url: '/complete/check_key/' + flag,
+    data: {
+      key: key
+    }
+  })
+}
