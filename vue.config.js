@@ -6,11 +6,5 @@ module.exports = {
         'import': []
       }
     }
-  },
-  pluginOptions: {
-    'cube-ui': {
-      postCompile: true,
-      theme: false
-    }
   }
 }
