@@ -94,6 +94,8 @@
     data() {
       return {
         isSecret: true,
+        isSubmit: false,
+        condition: {},
         data: {
           basicInfo: {
             subTitle: "",
@@ -110,11 +112,12 @@
         getCondition(this.$route.params.flag)
                 .then(res => {
                   //问卷过期
-                  if (!res['information']['questionnaireCondition']) {
+                  this.condition = res['information'];
+                  if (!this.condition['questionnaireCondition']) {
                     this.$messageBox.showInfoMessage(this, "这个问卷已经过期");
                     return
                   }
-                  if (res['information']['questionnaireIsSecret']) {
+                  if (this.condition['questionnaireIsSecret']) {
                     this.$messageBox.showInfoMessage(this, "请输入密码以进入");
                     return
                   }
@@ -152,26 +155,39 @@
       },
       submitComplete() {
         //必填项检验
-        for (let i = 0; i < this.data.problems.length; i++) {
-          if (this.data.problems[i].globalSetting.required && !this.problemResults[i].length) {
-            this.$messageBox.showInfoMessage(this, "请完成所有必填项!");
-            return
-          }
-        }
+        if (!this.checkIsComplete()) return;
+        //设备检验 有限制 并且已经提交过
+        if (this.condition['questionnaireEquipmentControl'] && this.checkIsSubmit()) return;
         //提交填报数据
         submitComplete(this.problemResults, this.$route.params.flag)
                 .then(() => {
-                  this.$messageBox.showSuccessMessage(this, "提交成功,感谢您的参与!")
+                  this.$messageBox.showSuccessMessage(this, "提交成功,感谢您的参与!");
+                  this.setIsSubmit();
                   //接下来跳向发布者自定义的结束界面
                 })
-                .catch(res => {
-                  // 下标索引
-                  // [0]其他错误
-                  // [1]ip限制或者设备限制报错
-                  // 更多拒绝功能会不断补充
-                  let condition = ["未知错误", "一个人只能提交一次,请不要重复提交!"];
-                  this.$messageBox.showInfoMessage(this, condition[res['code']]);
+                .catch(() => {
+                  this.$messageBox.showInfoMessage(this, "一个用户只能提交一次，请不要重复提交");
                 })
+      },
+      checkIsComplete() {
+        for (let i = 0; i < this.data.problems.length; i++) {
+          if (this.data.problems[i].globalSetting.required && !this.problemResults[i].length) {
+            this.$messageBox.showInfoMessage(this, "请完成所有必填项!");
+            return false;
+          }
+        }
+        return true;
+      },
+      setIsSubmit() {
+        window.localStorage.setItem('isSubmit', 'true');
+      },
+      checkIsSubmit() {
+        let i = window.localStorage.getItem('isSubmit') !== null;
+        if (i) {
+          this.$messageBox.showInfoMessage(this, "一个人只能提交一次,请不要重复提交!");
+          return true;
+        }
+        return false;
       }
     }
   }

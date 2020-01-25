@@ -9,6 +9,7 @@ const Manage = () => import('@/views/manage/manage');
 const Questionnaire = () => import('@/views/create/questionnaire');
 const Spread = () => import('@/views/spread/spread');
 const Complete = () => import('@/views/complete/complete');
+const Analysis = () => import('@/views/analysis/analysis');
 
 
 Vue.use(VueRouter);
@@ -61,6 +62,15 @@ const routes = [
   {
     path: '/complete/:flag',
     component: Complete,
+  },
+  //问卷数据分析
+  {
+    path: '/analysis/:flag',
+    component: Analysis,
+    meta: {
+      //需要权限
+      requireAuth: true
+    }
   },
 ];
 

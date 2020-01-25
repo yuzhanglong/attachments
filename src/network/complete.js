@@ -25,12 +25,13 @@ export function checkSecretKey(flag, key) {
 }
 
 export function submitComplete(data, flag) {
+  let myDate = new Date();
   return request({
     method: 'post',
-    url: '/complete/submit_data',
+    url: '/complete/submit_data/' + flag,
     data: {
-      flag:flag,
-      completeData: data
+      completeData: data,
+      submitTime: myDate.getTime()
     }
   })
 }
