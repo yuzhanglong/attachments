@@ -19,7 +19,7 @@
         <div class="myProjectItemBox">
           <!-- 根据传来的数据（应该是一个包含对象的数组）v-for即可-->
           <data-card card-name="新的项目..."
-                     :card-style="getCardStyle(250)" :key="0"
+                     :card-style="getCardStyle(275)" :key="0"
                      class="myProjectItem">
             <template v-slot:cardBody>
               <div id="icon-wrap">
@@ -30,7 +30,7 @@
           <data-card v-for="(questionnaire, index) in myQuestionnaire"
                      :key="questionnaire.questionnaireFlag"
                      :card-name="questionnaire['questionnaireBasicData'].basicInfo.title"
-                     :card-style="getCardStyle(250)"
+                     :card-style="getCardStyle(275)"
                      class="myProjectItem">
             <template v-slot:cardHead>
               <el-tag size="mini" class="cardTags">问卷</el-tag>

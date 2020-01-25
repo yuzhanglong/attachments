@@ -1,11 +1,86 @@
 <template>
-  <div id="complete" v-show="isSecret">
-    <secret-input @passkey="checkKeys"></secret-input>
+  <div id="complete">
+    <div id="secret-checker" v-show="isSecret">
+      <secret-input @passkey="checkKeys"></secret-input>
+    </div>
+    <div id="questionnaire" v-show="!isSecret">
+      <div id="title-group">
+        <h3 id="title">{{data.basicInfo.title}}</h3>
+        <h4 id="sub-title">{{data.basicInfo.subTitle}}</h4>
+      </div>
+      <div id="question-group">
+        <div v-for="(problem, index) in data.problems" :key="problem.tag" class="question-items">
+          <div class="single-select" v-if="problem.common.type === 'singleSelect'">
+            <h5>
+              <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
+              [单选题] {{index + 1}}. {{problem.common.title}}
+            </h5>
+            <el-radio-group v-model="problemResults[index][0]">
+              <div v-for="(option, index) in problem.common.options" :key="option.value" class="radio-wrap">
+                <el-radio :label="index">
+                  {{option.value}}
+                </el-radio>
+              </div>
+            </el-radio-group>
+          </div>
+          <div class="multiply-select" v-if="problem.common.type === 'multiplySelect'">
+            <h5>
+              <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
+              [多选题] {{index + 1}}. {{problem.common.title}}
+            </h5>
+            <el-checkbox-group v-model="problemResults[index]">
+              <div v-for="(option, index) in problem.common.options" :key="option.value" class="checkbox-wrap">
+                <el-checkbox :label="index">
+                  {{option.value}}
+                </el-checkbox>
+              </div>
+            </el-checkbox-group>
+          </div>
+          <div class="blank-fill" v-if="problem.common.type === 'blankFill'">
+            <h5>
+              <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
+              [填空题] {{index + 1}}. {{problem.common.title}}
+            </h5>
+            <div class="blank-fill-wrap">
+              <el-input placeholder="请在此处作答" autosize v-model="problemResults[index][0]"></el-input>
+            </div>
+          </div>
+          <div class="drop-down" v-if="problem.common.type === 'dropDown'">
+            <h5>
+              <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
+              [下拉题] {{index + 1}}. {{problem.common.title}}
+            </h5>
+            <el-select v-model="problemResults[index][0]" placeholder="请选择一个选项" class="drop-down-select">
+              <el-option v-for="(option, index) in problem.common.options" :key="option.value" :label="option.value"
+                         :value="index">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mark-score" v-if="problem.common.type === 'score'">
+            <h5>
+              <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
+              [评价题] {{index + 1}}. {{problem.common.title}}
+            </h5>
+            <div v-for="(option, index2) in problem.common.options" :key="option.value" class="score-wrap">
+              <div class="score-item-title"><span>{{index2 + 1}}). {{option.title}}</span></div>
+              <el-rate
+                      v-model="problemResults[index][index2]"
+                      :colors="scoreColor">
+              </el-rate>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="bottom-group">
+        <el-button id="bottom-button" type="primary" @click="submitComplete">提交问卷</el-button>
+      </div>
+    </div>
   </div>
+
 </template>
 
 <script>
-  import {checkSecretKey, getCondition, getProblems} from "../../network/complete";
+  import {checkSecretKey, getCondition, getProblems, submitComplete} from "../../network/complete";
   import secretInput from "./childComp/secretInput";
 
   export default {
@@ -18,7 +93,16 @@
     },
     data() {
       return {
-        isSecret: true
+        isSecret: true,
+        data: {
+          basicInfo: {
+            subTitle: "",
+            title: "",
+          },
+          problems: [],
+        },
+        problemResults: [],
+        scoreColor: ['#99A9BF', '#F7BA2A', '#FF9900']
       }
     },
     methods: {
@@ -54,11 +138,97 @@
       },
       getProblems() {
         this.isSecret = false;
-        getProblems(this.$route.params.flag);
+        getProblems(this.$route.params.flag)
+                .then(res => {
+                  this.data = res['information'];
+                  let pSize = res['information']['problems'].length;
+                  for (let i = 0; i < pSize; i++) {
+                    this.problemResults.push([]);
+                  }
+                })
       },
+      checkIsRequire(requirement) {
+        return requirement ? "*" : "&nbsp;";
+      },
+      submitComplete() {
+        //必填项检验
+        for (let i = 0; i < this.data.problems.length; i++) {
+          if (this.data.problems[i].globalSetting.required && !this.problemResults[i].length) {
+            this.$messageBox.showInfoMessage(this, "请完成所有必填项!");
+            return
+          }
+        }
+        //提交填报数据
+        submitComplete(this.problemResults, this.$route.params.flag)
+                .then(() => {
+                  this.$messageBox.showSuccessMessage(this, "提交成功,感谢您的参与!")
+                  //接下来跳向发布者自定义的结束界面
+                })
+                .catch(res => {
+                  // 下标索引
+                  // [0]其他错误
+                  // [1]ip限制或者设备限制报错
+                  // 更多拒绝功能会不断补充
+                  let condition = ["未知错误", "一个人只能提交一次,请不要重复提交!"];
+                  this.$messageBox.showInfoMessage(this, condition[res['code']]);
+                })
+      }
     }
   }
 </script>
 
 <style scoped>
+  .question-items {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  #bottom-group {
+    display: flex;
+    justify-content: center;
+  }
+
+  #bottom-button {
+    width: 200px;
+    margin-right: 15px;
+  }
+
+  .drop-down-select {
+    padding: 5px;
+    width: 300px;
+  }
+
+  .required-star {
+    color: red;
+  }
+
+  #complete {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    padding: 15px 12px;
+  }
+
+  #sub-title {
+    font-weight: lighter;
+  }
+
+  #title-group {
+    padding-bottom: 8px;
+  }
+
+  .radio-wrap, .checkbox-wrap {
+    padding: 5px;
+  }
+
+  .blank-fill-wrap {
+    width: 300px;
+    padding: 5px;
+  }
+
+  .score-item-title {
+    padding: 5px 5px 20px;
+  }
+
+  .score-wrap {
+    padding: 10px;
+  }
 </style>

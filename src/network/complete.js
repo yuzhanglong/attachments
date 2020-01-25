@@ -23,3 +23,14 @@ export function checkSecretKey(flag, key) {
     }
   })
 }
+
+export function submitComplete(data, flag) {
+  return request({
+    method: 'post',
+    url: '/complete/submit_data',
+    data: {
+      flag:flag,
+      completeData: data
+    }
+  })
+}

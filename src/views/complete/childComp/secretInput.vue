@@ -25,7 +25,7 @@
     methods: {
       //提交密码
       passKey() {
-        this.$emit('passkey', this.secretKey)
+        this.$emit('passkey', this.secretKey);
       }
     }
   }
