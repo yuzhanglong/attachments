@@ -166,18 +166,28 @@
         <div id="right-setting">
           <!--右侧动态添加设置项-->
           <div id="right-setting-contain" v-if="activeProblem !== ''">
-            <div>
-              <el-tag type="info" effect="dark">Question {{activeProblem + 1}} 题目设置</el-tag>
-              <h3>整题设置</h3>
-            </div>
-            <div id="is-required-wrap">
-              <el-link class="is-required-title">是否为必填项</el-link>
-              <el-switch
-                      active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-            </div>
-            <div>
-              <el-button type="danger" @click="deleteOneProblem(activeProblem)" size="mini">删除这道题目</el-button>
-            </div>
+            <el-menu>
+              <el-submenu index="1">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span>Question {{activeProblem + 1}}题目设置</span>
+                </template>
+              </el-submenu>
+              <el-menu-item-group>
+                <template slot="title">基本设置</template>
+                <el-menu-item>设置为必填项
+                  <el-switch class="setting-switch"
+                             v-model="questionnaireData.problems[activeProblem].globalSetting.required"></el-switch>
+                </el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <template slot="title">危险项</template>
+                <el-menu-item>删除
+                  <el-button class="delete-button" type="danger" size="mini" @click="deleteOneProblem(activeProblem)">删除这道题目</el-button>
+                </el-menu-item>
+              </el-menu-item-group>
+
+            </el-menu>
           </div>
 
         </div>
@@ -349,6 +359,7 @@
       //删除一个problem 需要传入要删除的下标
       deleteOneProblem(index) {
         this.questionnaireData.problems.splice(index, 1);
+        this.activeProblem = ""
       },
       //获取当前鼠标点击下的问题 并传入data.activeProblem
       getBasicInfo(res) {
@@ -385,8 +396,7 @@
 
   #right-setting-contain {
     display: flex;
-    padding-top: 20px;
-    padding-left: 18px;
+    padding-top: 10px;
     flex-direction: column;
   }
 
@@ -453,5 +463,13 @@
 
   .el-icon-arrow-left {
     margin-left: 20px;
+  }
+
+  .setting-switch {
+    padding-left: 18px;
+  }
+
+  .delete-button {
+    margin-left: 70px;
   }
 </style>
