@@ -6,7 +6,8 @@
         <el-divider></el-divider>
       </div>
       <div class="chart-img">
-        <pie-chart :float-text="'Question' + questionNum + 1" :data-dict="getDataDict()" :is-show="checkIsShow(questionData.type)"></pie-chart>
+        <pie-chart :float-text="'Question ' + (questionNum + 1)" :data-dict="getDataDict()"
+                   :is-show="checkIsShow(questionData.type)"></pie-chart>
       </div>
       <div class="chart-table">
         <el-table
@@ -68,6 +69,11 @@
             isShowChart: true,
             labelLeft: "选项",
             labelRight: "选择此项的个数",
+          },
+          score: {
+            isShowChart: true,
+            labelLeft: "等级(1为最低 5为最高)",
+            labelRight: "选择此等级的个数",
           }
         }
       }
@@ -86,10 +92,10 @@
       checkIsShow(type) {
         return this.chartConfig[type].isShowChart
       },
-      checkLeft(type){
+      checkLeft(type) {
         return this.chartConfig[type].labelLeft
       },
-      checkRight(type){
+      checkRight(type) {
         return this.chartConfig[type].labelRight
       }
     }
