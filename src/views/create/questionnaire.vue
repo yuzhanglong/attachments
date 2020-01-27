@@ -90,7 +90,7 @@
               <template v-slot:ref>
                 <problem-type-item itemicon="el-icon-menu"
                                    problem-type="评价题"
-                                   @click.native="appendOneProblem('score')">
+                                   @click="appendOneProblem('score')">
                 </problem-type-item>
               </template>
             </pop-over>
@@ -101,7 +101,7 @@
               <template v-slot:ref>
                 <problem-type-item itemicon="el-icon-menu"
                                    problem-type="NPS题"
-                                   @click.native="appendOneProblem('nps')">
+                                   @click="appendOneProblem('nps')">
                 </problem-type-item>
               </template>
             </pop-over>

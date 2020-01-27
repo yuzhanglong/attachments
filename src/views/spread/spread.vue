@@ -69,7 +69,7 @@
                   <el-switch class="setting-switch" v-model="data['questionnaireIPControl']"></el-switch>
                 </el-menu-item>
                 <el-menu-item>限制每个微信答题次数<i class="el-icon-question"></i>
-                  <el-switch class="setting-switch" v-model="data['questionnaireWechatControl']"></el-switch>
+                  <el-switch class="setting-switch" v-model="data['questionnaireWechatControl']" disabled></el-switch>
                 </el-menu-item>
               </el-menu-item-group>
 
@@ -82,7 +82,7 @@
                   <el-input placeholder="请在此设置您的访问密码" v-model="data['questionnaireSecretKey']"></el-input>
                 </el-menu-item>
                 <el-menu-item>设置结束时间
-                  <el-switch class="setting-switch" v-model="data['questionnaireDeadlineControl']"></el-switch>
+                  <el-switch class="setting-switch" v-model="data['questionnaireDeadlineControl']" disabled></el-switch>
                 </el-menu-item>
                 <el-menu-item v-show="data['questionnaireDeadlineControl']">
                   <el-date-picker placeholder="选择时间" v-model="data['questionnaireDeadline']"

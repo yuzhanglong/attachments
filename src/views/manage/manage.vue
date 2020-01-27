@@ -11,7 +11,6 @@
         <div id="profileHead">
           <el-avatar :src="tempHeadIconLink" style="margin-top: 10px; float: right; margin-right: 50px"></el-avatar>
         </div>
-
       </template>
     </nav-bar>
     <el-main id="manage-main">
@@ -55,7 +54,9 @@
                   </el-button>
                 </div>
                 <div class="card-icon-wrap">
-                  <el-button icon="el-icon-document-copy" type="mini" class="card-bottom-button" @click="gotoAlalysis(questionnaire.questionnaireFlag)">数据</el-button>
+                  <el-button icon="el-icon-document-copy" type="mini" class="card-bottom-button"
+                             @click="gotoAlalysis(questionnaire.questionnaireFlag)">数据
+                  </el-button>
                 </div>
                 <div class="card-icon-wrap">
                   <el-dropdown>
@@ -109,7 +110,7 @@
       }
     },
     methods: {
-      gotoAlalysis(flag){
+      gotoAlalysis(flag) {
         this.$router.push('/analysis/' + flag);
       },
       gotoSpread(flag) {
