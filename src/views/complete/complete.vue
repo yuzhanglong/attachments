@@ -164,6 +164,7 @@
                   this.$messageBox.showSuccessMessage(this, "提交成功,感谢您的参与!");
                   this.setIsSubmit();
                   //接下来跳向发布者自定义的结束界面
+                  this.$router.replace('/success');
                 })
                 .catch(() => {
                   this.$messageBox.showInfoMessage(this, "一个用户只能提交一次，请不要重复提交");

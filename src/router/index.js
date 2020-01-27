@@ -10,7 +10,7 @@ const Questionnaire = () => import('@/views/create/questionnaire');
 const Spread = () => import('@/views/spread/spread');
 const Complete = () => import('@/views/complete/complete');
 const Analysis = () => import('@/views/analysis/analysis');
-
+const Success = () => import('@/views/success/success');
 
 Vue.use(VueRouter);
 
@@ -71,6 +71,10 @@ const routes = [
       //需要权限
       requireAuth: true
     }
+  },
+  {
+    path: '/success',
+    component: Success,
   },
 ];
 
