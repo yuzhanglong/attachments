@@ -5,8 +5,8 @@
         <span class="chart-title-text">Question{{questionNum + 1}}:{{questionData.title}}</span>
         <el-divider></el-divider>
       </div>
-      <div id="chart-img" style="height: 300px;width: 300px">
-
+      <div class="chart-img">
+        <pie-chart :float-text="'Question' + questionNum + 1" :data-dict="getDataDict()" :is-show="checkIsShow(questionData.type)"></pie-chart>
       </div>
       <div class="chart-table">
         <el-table
@@ -15,12 +15,12 @@
                 style="width: 100%">
           <el-table-column
                   prop="title"
-                  label="选项"
+                  :label="checkLeft(questionData.type)"
                   width="550">
           </el-table-column>
           <el-table-column
                   prop="numbers"
-                  label="选择此项的个数">
+                  :label="checkRight(questionData.type)">
           </el-table-column>
         </el-table>
       </div>
@@ -30,12 +30,10 @@
 
 <script>
   import puleDataCard from "../../../components/dataCard/puleDataCard";
+  import pieChart from "../../../components/myCharts/pieChart";
 
   export default {
     name: "chartBackground",
-    mounted() {
-      this.makePieChart();
-    },
     props: {
       questionNum: {
         required: true
@@ -45,19 +43,54 @@
       }
     },
     components: {
-      puleDataCard
+      puleDataCard,
+      pieChart
+    },
+    data() {
+      return {
+        chartConfig: {
+          singleSelect: {
+            isShowChart: true,
+            labelLeft: "选项",
+            labelRight: "选择此项的个数",
+          },
+          multiplySelect: {
+            isShowChart: true,
+            labelLeft: "选项",
+            labelRight: "选择此项的个数",
+          },
+          blankFill: {
+            isShowChart: false,
+            labelLeft: "序号",
+            labelRight: "答案",
+          },
+          dropDown: {
+            isShowChart: true,
+            labelLeft: "选项",
+            labelRight: "选择此项的个数",
+          }
+        }
+      }
     },
     methods: {
-      makePieChart() {
+      getDataDict() {
         let list = [];
-        for (let index in this.questionData.data) {
+        this.questionData.data.forEach(data => {
           list.push({
-            name: this.questionData.data[index].numbers,
-            value: this.questionData.data[index].title
+            value: data.numbers !== 0 ? data.numbers : null,
+            name: data.title
           })
-        }
-        console.log(list);
-        this.$echart.pieChart('chart-img', "iiiii", list)
+        });
+        return list
+      },
+      checkIsShow(type) {
+        return this.chartConfig[type].isShowChart
+      },
+      checkLeft(type){
+        return this.chartConfig[type].labelLeft
+      },
+      checkRight(type){
+        return this.chartConfig[type].labelRight
       }
     }
   }
@@ -79,6 +112,11 @@
 
   .chart-table {
     padding-bottom: 25px;
+  }
+
+  .chart-img {
+    display: flex;
+    justify-content: center;
   }
 
 </style>
