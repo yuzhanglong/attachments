@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.19.1",
+    "better-scroll": "^1.15.2",
     "core-js": "^3.4.4",
     "echarts": "^4.6.0",
     "element-ui": "^2.13.0",

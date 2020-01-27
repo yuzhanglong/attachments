@@ -1,80 +1,83 @@
 <template>
   <div id="complete">
-    <div id="secret-checker" v-show="isSecret">
-      <secret-input @passkey="checkKeys"></secret-input>
-    </div>
-    <div id="questionnaire" v-show="!isSecret">
-      <div id="title-group">
-        <h3 id="title">{{data.basicInfo.title}}</h3>
-        <h4 id="sub-title">{{data.basicInfo.subTitle}}</h4>
+    <b-scroll class="content">
+      <div id="secret-checker" v-show="isSecret">
+        <secret-input @passkey="checkKeys"></secret-input>
       </div>
-      <div id="question-group">
-        <div v-for="(problem, index) in data.problems" :key="problem.tag" class="question-items">
-          <div class="single-select" v-if="problem.common.type === 'singleSelect'">
-            <h5>
-              <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
-              [单选题] {{index + 1}}. {{problem.common.title}}
-            </h5>
-            <el-radio-group v-model="problemResults[index][0]">
-              <div v-for="(option, index) in problem.common.options" :key="option.value" class="radio-wrap">
-                <el-radio :label="index">
-                  {{option.value}}
-                </el-radio>
-              </div>
-            </el-radio-group>
-          </div>
-          <div class="multiply-select" v-if="problem.common.type === 'multiplySelect'">
-            <h5>
-              <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
-              [多选题] {{index + 1}}. {{problem.common.title}}
-            </h5>
-            <el-checkbox-group v-model="problemResults[index]">
-              <div v-for="(option, index) in problem.common.options" :key="option.value" class="checkbox-wrap">
-                <el-checkbox :label="index">
-                  {{option.value}}
-                </el-checkbox>
-              </div>
-            </el-checkbox-group>
-          </div>
-          <div class="blank-fill" v-if="problem.common.type === 'blankFill'">
-            <h5>
-              <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
-              [填空题] {{index + 1}}. {{problem.common.title}}
-            </h5>
-            <div class="blank-fill-wrap">
-              <el-input placeholder="请在此处作答" autosize v-model="problemResults[index][0]"></el-input>
+      <div id="questionnaire" v-show="!isSecret">
+        <div id="title-group">
+          <h3 id="title">{{data.basicInfo.title}}</h3>
+          <h4 id="sub-title">{{data.basicInfo.subTitle}}</h4>
+        </div>
+        <div id="question-group">
+          <div v-for="(problem, index) in data.problems" :key="problem.tag" class="question-items">
+            <div class="single-select" v-if="problem.common.type === 'singleSelect'">
+              <h5>
+                <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
+                [单选题] {{index + 1}}. {{problem.common.title}}
+              </h5>
+              <el-radio-group v-model="problemResults[index][0]">
+                <div v-for="(option, index) in problem.common.options" :key="option.value" class="radio-wrap">
+                  <el-radio :label="index">
+                    {{option.value}}
+                  </el-radio>
+                </div>
+              </el-radio-group>
             </div>
-          </div>
-          <div class="drop-down" v-if="problem.common.type === 'dropDown'">
-            <h5>
-              <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
-              [下拉题] {{index + 1}}. {{problem.common.title}}
-            </h5>
-            <el-select v-model="problemResults[index][0]" placeholder="请选择一个选项" class="drop-down-select">
-              <el-option v-for="(option, index) in problem.common.options" :key="option.value" :label="option.value"
-                         :value="index">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="mark-score" v-if="problem.common.type === 'score'">
-            <h5>
-              <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
-              [评价题] {{index + 1}}. {{problem.common.title}}
-            </h5>
-            <div v-for="(option, index2) in problem.common.options" :key="option.value" class="score-wrap">
-              <div class="score-item-title"><span>{{index2 + 1}}). {{option.title}}</span></div>
-              <el-rate
-                      v-model="problemResults[index][index2]"
-                      :colors="scoreColor">
-              </el-rate>
+            <div class="multiply-select" v-if="problem.common.type === 'multiplySelect'">
+              <h5>
+                <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
+                [多选题] {{index + 1}}. {{problem.common.title}}
+              </h5>
+              <el-checkbox-group v-model="problemResults[index]">
+                <div v-for="(option, index) in problem.common.options" :key="option.value" class="checkbox-wrap">
+                  <el-checkbox :label="index">
+                    {{option.value}}
+                  </el-checkbox>
+                </div>
+              </el-checkbox-group>
+            </div>
+            <div class="blank-fill" v-if="problem.common.type === 'blankFill'">
+              <h5>
+                <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
+                [填空题] {{index + 1}}. {{problem.common.title}}
+              </h5>
+              <div class="blank-fill-wrap">
+                <el-input placeholder="请在此处作答" autosize v-model="problemResults[index][0]"></el-input>
+              </div>
+            </div>
+            <div class="drop-down" v-if="problem.common.type === 'dropDown'">
+              <h5>
+                <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
+                [下拉题] {{index + 1}}. {{problem.common.title}}
+              </h5>
+              <el-select v-model="problemResults[index][0]" placeholder="请选择一个选项" class="drop-down-select">
+                <el-option v-for="(option, index) in problem.common.options" :key="option.value" :label="option.value"
+                           :value="index">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mark-score" v-if="problem.common.type === 'score'">
+              <h5>
+                <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
+                [评价题] {{index + 1}}. {{problem.common.title}}
+              </h5>
+              <div v-for="(option, index2) in problem.common.options" :key="option.value" class="score-wrap">
+                <div class="score-item-title"><span>{{index2 + 1}}). {{option.title}}</span></div>
+                <el-rate
+                        v-model="problemResults[index][index2]"
+                        :colors="scoreColor">
+                </el-rate>
+              </div>
             </div>
           </div>
         </div>
+        <div id="bottom-group">
+          <el-button id="bottom-button" type="primary" @click="submitComplete">提交问卷</el-button>
+        </div>
       </div>
-      <div id="bottom-group">
-        <el-button id="bottom-button" type="primary" @click="submitComplete">提交问卷</el-button>
-      </div>
-    </div>
+    </b-scroll>
+
   </div>
 
 </template>
@@ -82,11 +85,13 @@
 <script>
   import {checkSecretKey, getCondition, getProblems, submitComplete} from "../../network/complete";
   import secretInput from "./childComp/secretInput";
+  import bScroll from "../../components/bScroll/bScroll";
 
   export default {
     name: "complete",
     components: {
-      secretInput
+      secretInput,
+      bScroll
     },
     created() {
       this.getCondition()
@@ -247,5 +252,8 @@
 
   .score-wrap {
     padding: 10px;
+  }
+  .content{
+    height: 90vh;
   }
 </style>
