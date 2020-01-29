@@ -156,7 +156,7 @@
                 })
       },
       checkIsRequire(requirement) {
-        return requirement ? "*" : "&nbsp;";
+        return requirement ? "*" : "";
       },
       submitComplete() {
         //必填项检验

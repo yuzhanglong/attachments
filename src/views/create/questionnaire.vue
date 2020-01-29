@@ -280,6 +280,7 @@
             message: '当前您处在编辑模式',
             type: 'success',
             duration: 4000,
+            offset: 50
           });
         } else {
 
@@ -287,7 +288,8 @@
             title: '系统消息',
             message: '当前您处在新建模式',
             type: 'success',
-            duration: 4000
+            duration: 4000,
+            offset: 50
           });
         }
       },

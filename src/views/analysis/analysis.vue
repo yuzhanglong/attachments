@@ -99,6 +99,13 @@
         getAnalysisData(this.$route.params.flag, this.$store.state.token)
                 .then(res => {
                   this.analysisData = res['information'];
+                  this.$notify({
+                    title: "系统消息",
+                    message: '当前您处在数据分析模式',
+                    type: 'success',
+                    duration: 4000,
+                    offset: 50
+                  });
                 })
                 .catch(() => {
                   this.$messageBox.showErrorMessage(this, "访问错误")
@@ -112,6 +119,7 @@
   #questionnaire-title-container {
     padding: 20px 12px 20px 30px;
     font-size: 17px;
+    width: 500px;
   }
 
   #questionnaire-total-counter-container {

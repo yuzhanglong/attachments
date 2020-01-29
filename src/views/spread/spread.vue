@@ -82,7 +82,7 @@
                   <el-input placeholder="请在此设置您的访问密码" v-model="data['questionnaireSecretKey']"></el-input>
                 </el-menu-item>
                 <el-menu-item>设置结束时间
-                  <el-switch class="setting-switch" v-model="data['questionnaireDeadlineControl']" disabled></el-switch>
+                  <el-switch class="setting-switch" v-model="data['questionnaireDeadlineControl']"></el-switch>
                 </el-menu-item>
                 <el-menu-item v-show="data['questionnaireDeadlineControl']">
                   <el-date-picker placeholder="选择时间" v-model="data['questionnaireDeadline']"
@@ -149,6 +149,7 @@
                     message: '当前您处在发布模式',
                     type: 'success',
                     duration: 4000,
+                    offset: 50
                   });
                   this.deleteDict(res);
                   this.data = res['information']

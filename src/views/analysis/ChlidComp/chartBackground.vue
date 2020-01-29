@@ -110,6 +110,7 @@
 
   .chart-title {
     padding-top: 10px;
+    width: 1000px;
   }
 
   .data-chart-cards {
@@ -124,5 +125,4 @@
     display: flex;
     justify-content: center;
   }
-
 </style>
