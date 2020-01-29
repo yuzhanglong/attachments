@@ -53,18 +53,26 @@
           </template>
           <template v-slot:nav-right>
             <div id="third-nav-container-right">
-              <el-link type="primary">基本图表</el-link>
+              <el-link type="primary" @click="changeShow('showCommonChart')">基本图表</el-link>
               <el-divider direction="vertical"></el-divider>
               <el-link type="primary">答卷详情</el-link>
+              <el-divider direction="vertical"></el-divider>
+              <el-link type="primary" @click="changeShow('showGlobalChart')">数据总览</el-link>
             </div>
           </template>
         </nav-bar>
       </div>
     </el-row>
     <div id="chart-container">
-      <div :class="getClassName(index)" v-for="(data, index) in analysisData['completes']"
-           :key="index + new Date().getTime()">
-        <chart-background :question-num="index" :question-data="data"></chart-background>
+      <div id="common-chart" v-show="this.showControl.showCommonChart">
+        <div :class="getClassName(index)" v-for="(data, index) in analysisData['completes']"
+             :key="index + new Date().getTime()">
+          <chart-background :question-num="index" :question-data="data"></chart-background>
+        </div>
+      </div>
+      <div id="global-chart" v-show="this.showControl.showGlobalChart">
+        <global-chart-background :g-data="analysisData['placeCondition']" v-if="provinceDataFlag">
+        </global-chart-background>
       </div>
     </div>
   </div>
@@ -73,16 +81,24 @@
   import chartBackground from "./ChlidComp/chartBackground";
   import navBar from "../../components/navBar/navBar";
   import {getAnalysisData} from "../../network/analysis";
+  import GlobalChartBackground from "./ChlidComp/globalChartBackground";
 
   export default {
     name: "analysis",
     components: {
+      GlobalChartBackground,
       chartBackground,
       navBar
     },
     data() {
       return {
-        analysisData: {}
+        analysisData: {},
+        showControl: {
+          showCommonChart: true,
+          showDetailedChart: false,
+          showGlobalChart: false
+        },
+        provinceDataFlag: false
       }
     },
     created() {
@@ -106,12 +122,19 @@
                     duration: 4000,
                     offset: 50
                   });
+                  this.provinceDataFlag = true;
                 })
                 .catch(() => {
                   this.$messageBox.showErrorMessage(this, "访问错误")
                 })
+      },
+      changeShow(showWhat) {
+        let showItems = ['showCommonChart', 'showDetailedChart', 'showGlobalChart'];
+        showItems.forEach(item => {
+          showWhat === item ? this.showControl[item] = true : this.showControl[item] = false;
+        })
       }
-    }
+    },
   }
 </script>
 
@@ -139,8 +162,7 @@
   }
 
   #third-nav-container-right {
-    padding-left: 55px;
-    padding-top: 12px;
+    padding-top: 15px;
     display: flex;
   }
 
@@ -200,6 +222,11 @@
 
   .chart-card-wrap {
     padding-bottom: 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #global-chart {
     display: flex;
     justify-content: center;
   }

@@ -183,7 +183,9 @@
               <el-menu-item-group>
                 <template slot="title">危险项</template>
                 <el-menu-item>删除
-                  <el-button class="delete-button" type="danger" size="mini" @click="deleteOneProblem(activeProblem)">删除这道题目</el-button>
+                  <el-button class="delete-button" type="danger" size="mini" @click="deleteOneProblem(activeProblem)">
+                    删除这道题目
+                  </el-button>
                 </el-menu-item>
               </el-menu-item-group>
 
@@ -263,7 +265,8 @@
             subTitle: "感谢您能抽出几分钟时间来参加本次问卷调查，现在我们就马上开始吧！"
           },
           problems: []
-        }
+        },
+        questionnaireCompleteResult: []
       }
     },
     methods: {
@@ -273,7 +276,9 @@
       judgeSituation(targetRouter) {
         //新建情况
         if (targetRouter !== "new") {
-          this.questionnaireData = JSON.parse(window.localStorage.getItem('data'))['questionnaireBasicData'];
+          let tmp = JSON.parse(window.localStorage.getItem('data'));
+          this.questionnaireData = tmp['questionnaireBasicData'];
+          this.questionnaireCompleteResult = tmp['questionnaireCompleteResult'];
           //通过flag拿到需要编辑的问卷数据
           this.$notify({
             title: "系统消息",
