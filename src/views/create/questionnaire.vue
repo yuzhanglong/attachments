@@ -313,7 +313,7 @@
       },
       goToSendQuestionNaire() {
         //1.先保存
-        sendQuesionNaire(this.$store.state.user, this.questionnaireData, this.$store.token)
+        sendQuesionNaire(this.$store.state.user, this.questionnaireData, this.$store.state.token, this.questionnaireData.questionnaireFlag)
                 .then(() => {
                   this.$messageBox.showSuccessMessage(this, "项目已保存");
                 })
@@ -321,7 +321,7 @@
                   this.$messageBox.showErrorMessage(this, "请求失败error");
                 });
         //1.路由跳转到发布界面
-        this.$router.push('/spread');
+        this.$router.push('/spread/' + this.$route.params.situation);
       },
       refreshQuestionnaireData() {
         getQuesionNaireByFlag(this.$store.state.user, this.$store.state.token, this.questionnaireData.questionnaireFlag)
