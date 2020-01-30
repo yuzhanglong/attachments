@@ -30,7 +30,7 @@
           <span>扫码分享答题页</span>
         </div>
         <div id="qr-code-container">
-          <el-image src="" class="qr-code-image">
+          <el-image :src="shareQRCode" class="qr-code-image">
           </el-image>
         </div>
         <div class="qr-code-text-bottom">
@@ -49,13 +49,11 @@
       shareFlag: {
         type: String,
       },
-      shareQrCode: {
-        type: String
-      }
     },
     data() {
       return {
-        shareLink: "http://localhost:8080/#/complete/" + this.shareFlag
+        shareLink: "http://192.168.0.129:8081/complete/" + this.shareFlag,
+        shareQRCode:"http://192.168.0.129:5000/utils/qrcode?flag=" + this.shareFlag
       }
     },
     methods: {
