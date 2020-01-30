@@ -14,14 +14,64 @@
             <el-button type="primary" class="share-link-button" v-clipboard="this.shareLink" @click="copySuccess">复制
             </el-button>
             <el-button class="share-link-button" @click="openTargetLink()">打开</el-button>
-            <el-button id="share-wechat-button" disabled><img src="@/assets/img/icon/Wechat.svg" alt="" width="30px"></el-button>
-            <el-button id="share-qq-button" disabled><img src="@/assets/img/icon/QQ.svg" alt="" width="30px" ></el-button>
+            <el-button id="share-wechat-button" disabled><img src="@/assets/img/icon/Wechat.svg" alt="" width="30px">
+            </el-button>
+            <el-button id="share-qq-button" disabled><img src="@/assets/img/icon/QQ.svg" alt="" width="30px">
+            </el-button>
           </div>
 
         </div>
         <div id="project-share-bottom-container">
-          <el-button icon="el-icon-picture-outline" disabled>制作二维码海报</el-button>
+          <el-button icon="el-icon-picture-outline" @click="dialogVisible = true">制作二维码海报</el-button>
           <el-button disabled>useless</el-button>
+
+          <el-dialog title="二维码海报" :visible.sync="dialogVisible" width="60%">
+            <div id="qr-code-post-container">
+              <div id="qr-code-post-left">
+                <div class="qr-code-post-types">
+                  <div v-for="(index) in 5"
+                       class="qr-code-post-types-items" @click="changeIndex(index)" :key="index">
+                    <img :src="require(`@/assets/img/postsMaker/poster_group_${index}.png`)" alt="" width="70px"
+                         v-show="!checkIsShow(index)">
+                    <img :src="require(`@/assets/img/postsMaker/poster_group_${index}_h.png`)" alt="" width="70px"
+                         v-show="checkIsShow(index)">
+                  </div>
+                </div>
+              </div>
+              <div id="qr-code-post-mid">
+                <div id="qr-code-post-mid-title">
+                  <span>可选背景图片</span>
+                </div>
+                <div id="qr-bgc-container">
+                  <div :class="getQRCodeBgcActive(index)" v-for="(index) in 10" :key="index"
+                       @click="activeBgcImg = index">
+                    <img :src="`http://127.0.0.1:5000/utils/qr_pictures/${index}`" alt="" width="80px" height="145px">
+                  </div>
+                </div>
+
+              </div>
+              <div id="qr-code-post-right">
+                <div id="qr-code-post-right-phone-wrap">
+                  <div id="qr-code-post-right-phone-text">
+                    <span>ahhahahahahaha</span>
+                  </div>
+                  <div id="qr-code-post-right-phone-qr">
+                    <img :src="shareQRCode" alt="" width="85px">
+                  </div>
+                  <div id="qr-code-post-right-phone-img">
+                    <img :src="`http://127.0.0.1:5000/utils/qr_pictures/${activeBgcImg}`" alt="" width="197px">
+                  </div>
+                  <div id="qr-code-post-right-phone-base">
+                    <img src="@/assets/img/postsMaker/iphonex.png" alt="" width="220px">
+                  </div>
+                </div>
+                <div id="make-post-button-wrap">
+                  <el-button type="primary">下 载 海 报</el-button>
+                </div>
+              </div>
+            </div>
+          </el-dialog>
+
         </div>
       </div>
       <div id="spilt-line"></div>
@@ -34,7 +84,7 @@
           </el-image>
         </div>
         <div class="qr-code-text-bottom">
-          <el-link>下载二维码</el-link>
+          <el-link :href="shareQRCode" target="_blank">下载二维码</el-link>
         </div>
       </div>
 
@@ -52,22 +102,121 @@
     },
     data() {
       return {
-        shareLink: "http://192.168.0.129:8081/complete/" + this.shareFlag,
-        shareQRCode:"http://192.168.0.129:5000/utils/qrcode?flag=" + this.shareFlag
+        dialogVisible: false,
+        shareLink: "http://192.168.0.129:8080/complete/" + this.shareFlag,
+        shareQRCode: "http://192.168.0.129:5000/utils/qrcode?flag=" + this.shareFlag,
+        activeIndex: 1,
+        activeBgcImg: 1
       }
     },
     methods: {
+      checkIsShow(index) {
+        return this.activeIndex === index
+      },
+      changeIndex(index) {
+        this.activeIndex = index
+      },
       copySuccess() {
         this.$messageBox.showSuccessMessage(this, '成功将链接复制到剪贴板!')
       },
       openTargetLink() {
         window.open(this.shareLink)
+      },
+      getQRCodeBgcActive(index) {
+        return index === this.activeBgcImg ? "qr-code-bgc-items-active" : "qr-code-bgc-items";
       }
     }
   }
 </script>
 
 <style scoped>
+  #qr-code-post-right-phone-text{
+    color: black;
+    position: absolute;
+    padding-top: 360px;
+    z-index: 3;
+    padding-left: 30px;
+    padding-right: 95px;
+
+  }
+  #qr-code-post-right-phone-qr {
+    position: absolute;
+    padding-top: 32px;
+    z-index: 3;
+    padding-right: 95px;
+  }
+
+  #qr-code-post-right-phone-base {
+    position: relative;
+    z-index: 2;
+  }
+
+  #qr-code-post-right-phone-img {
+    position: absolute;
+    padding-top: 12px;
+    z-index: 1;
+  }
+
+  #qr-code-post-mid-title {
+    padding: 15px;
+    font-size: 20px;
+  }
+
+  .qr-code-bgc-items {
+    padding: 4px;
+    border-radius: 5px;
+    border: 2px solid #ffffff;
+  }
+
+  .qr-code-bgc-items-active {
+    padding: 4px;
+    border-radius: 5px;
+    border: 2px solid #2672ff;
+  }
+
+  #qr-bgc-container {
+    display: flex;
+    width: 500px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
+  #qr-code-post-container {
+    display: flex;
+    height: 600px;
+  }
+
+  #qr-code-post-left {
+    width: 82px;
+    background-color: #eeeeee;
+    display: flex;
+    justify-content: center;
+  }
+
+  #qr-code-post-mid {
+    flex: 1;
+    background-color: #ffffff;
+  }
+
+  #qr-code-post-right {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    background-color: #eeeeee;
+  }
+
+  #qr-code-post-right-phone-wrap {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #make-post-button-wrap {
+    display: flex;
+    justify-content: center;
+    padding-top: 60px;
+  }
+
   #spilt-line {
     margin-left: 20px;
     border-left: solid 2px #eaeaea;
