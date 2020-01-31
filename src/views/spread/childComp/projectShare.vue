@@ -45,28 +45,31 @@
                 <div id="qr-bgc-container">
                   <div :class="getQRCodeBgcActive(index)" v-for="(index) in 10" :key="index"
                        @click="activeBgcImg = index">
-                    <img :src="`http://127.0.0.1:5000/utils/qr_pictures/${index}`" alt="" width="80px" height="145px">
+                    <img :src="`http://127.0.0.1:5000/utils/qrcode/qr_pictures/${index}`" alt="" width="80px" height="145px">
                   </div>
                 </div>
 
               </div>
               <div id="qr-code-post-right">
                 <div id="qr-code-post-right-phone-wrap">
+                  <!--图片上的一些文字-->
                   <div id="qr-code-post-right-phone-text">
-                    <span>ahhahahahahaha</span>
+                    <span>{{questionnaireTitle}}</span>
+                    <p></p>
                   </div>
+                  <!--图片上的二维码-->
                   <div id="qr-code-post-right-phone-qr">
-                    <img :src="shareQRCode" alt="" width="85px">
+                    <img :src="shareQRCode" alt="" width="70px">
                   </div>
                   <div id="qr-code-post-right-phone-img">
-                    <img :src="`http://127.0.0.1:5000/utils/qr_pictures/${activeBgcImg}`" alt="" width="197px">
+                    <img :src="`http://127.0.0.1:5000/utils/qrcode/qr_pictures/${activeBgcImg}`" alt="" width="197px">
                   </div>
                   <div id="qr-code-post-right-phone-base">
                     <img src="@/assets/img/postsMaker/iphonex.png" alt="" width="220px">
                   </div>
                 </div>
                 <div id="make-post-button-wrap">
-                  <el-button type="primary">下 载 海 报</el-button>
+                  <el-button type="primary" @click="getQRPost">下 载 海 报</el-button>
                 </div>
               </div>
             </div>
@@ -99,17 +102,28 @@
       shareFlag: {
         type: String,
       },
+      questionnaireTitle: {
+        type: String
+      }
     },
+
     data() {
       return {
         dialogVisible: false,
         shareLink: "http://192.168.0.129:8080/complete/" + this.shareFlag,
-        shareQRCode: "http://192.168.0.129:5000/utils/qrcode?flag=" + this.shareFlag,
+        shareQRCode: "http://192.168.0.129:5000/utils/qrcode/get_code?flag=" + this.shareFlag,
         activeIndex: 1,
         activeBgcImg: 1
       }
     },
     methods: {
+      getQRPost() {
+        let bgcId = this.activeBgcImg;
+        let styleType = this.activeIndex - 1;
+        let title = this.questionnaireTitle;
+        let flag = this.shareFlag;
+        window.open("http://192.168.0.129:5000/utils/qrcode/get_post?bgcid=" + bgcId + '&styletype=' + styleType + '&flag=' + flag + '&title=' + title)
+      },
       checkIsShow(index) {
         return this.activeIndex === index
       },
@@ -130,20 +144,21 @@
 </script>
 
 <style scoped>
-  #qr-code-post-right-phone-text{
-    color: black;
+  #qr-code-post-right-phone-text {
+    color: #ffffff;
     position: absolute;
     padding-top: 360px;
     z-index: 3;
-    padding-left: 30px;
-    padding-right: 95px;
-
+    padding-right: 20px;
+    font-size: 18px;
+    width: 150px;
   }
+
   #qr-code-post-right-phone-qr {
     position: absolute;
-    padding-top: 32px;
+    padding-top: 35px;
     z-index: 3;
-    padding-right: 95px;
+    padding-right: 110px;
   }
 
   #qr-code-post-right-phone-base {

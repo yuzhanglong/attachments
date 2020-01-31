@@ -36,7 +36,9 @@
         <div id="scrollwrap">
           <scroll-bar>
             <div id="spread-setting-container">
-              <project-share :share-flag="$route.params.flag"></project-share>
+              <project-share :share-flag="$route.params.flag"
+                             :questionnaireTitle="data['questionnaireBasicData']['basicInfo']['title']">
+              </project-share>
             </div>
           </scroll-bar>
         </div>
@@ -129,7 +131,6 @@
     },
     methods: {
       deleteDict(dict) {
-        delete dict['information']['questionnaireBasicData'];
         delete dict['information']['questionnaireFlag'];
         delete dict['information']['questionnaireRenewTime'];
         delete dict['information']['questionnaireUserId'];
@@ -137,9 +138,9 @@
       },
       submitQuestionnaireSpreadData() {
         submitQuestionnaireSpreadData(this.$store.state.user, this.$store.state.token, this.$route.params.flag, this.data)
-        .then(() => {
-          this.$messageBox.showSuccessMessage(this, "数据更新成功了")
-        })
+                .then(() => {
+                  this.$messageBox.showSuccessMessage(this, "数据更新成功了")
+                })
       },
       getQuesionNaireByFlag() {
         getQuesionNaireByFlag(this.$store.state.user, this.$store.state.token, this.$route.params.flag)
