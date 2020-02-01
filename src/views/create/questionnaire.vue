@@ -130,19 +130,22 @@
                 <multiply-select v-if="problem.common.type === 'multiplySelect'"
                                  @click.native="getActiveProblem(index)"
                                  :problem-index="index"
-                                 @passData="getProblemData" :recover-data="problem.common">
+                                 @passData="getProblemData" :recover-data="problem.common"
+                                 :questionnaireFlag="questionnaireData.questionnaireFlag">
                 </multiply-select>
                 <blank-fill v-if="problem.common.type === 'blankFill'"
                             @click.native="getActiveProblem(index)"
                             :problem-index="index"
                             @passData="getProblemDataForBlankFill"
-                            :recover-data="problem.common">
+                            :recover-data="problem.common"
+                            :questionnaireFlag="questionnaireData.questionnaireFlag">
                 </blank-fill>
                 <drop-down v-if="problem.common.type === 'dropDown'"
                            @click.native="getActiveProblem(index)"
                            :problem-index="index"
                            @passData="getProblemData"
-                           :recover-data="problem.common">
+                           :recover-data="problem.common"
+                           :questionnaireFlag="questionnaireData.questionnaireFlag">
 
                 </drop-down>
                 <score v-if="problem.common.type === 'score'"
@@ -364,6 +367,9 @@
             options: []
           }
         };
+        if (problemType === 'blankFill') {
+          delete pushData.common.options
+        }
         this.questionnaireData.problems.push(pushData);
         appendOneProblem(this.$store.state.token, this.questionnaireData.questionnaireFlag, pushData.common, pushData.problemId);
       },

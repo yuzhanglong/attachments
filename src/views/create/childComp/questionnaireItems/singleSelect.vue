@@ -49,14 +49,6 @@
         required: true,
       }
     },
-    watch: {
-      singleSelect: {
-        handler() {
-          this.submitDataToQuestionnaire();
-        },
-        deep: true
-      }
-    },
     data() {
       return {
         singleSelect: {
@@ -73,10 +65,6 @@
     methods: {
       editOptionValue(index, value) {
         editOptionValue(this.$store.state.token, this.questionnaireFlag, this.problemIndex, index, value);
-      },
-      //监听改变 上传数据
-      submitDataToQuestionnaire() {
-        this.$emit('passData', this.singleSelect);
       },
       inputChange(index) {
         let color = ['#ffffff', '#f4f4f4'];

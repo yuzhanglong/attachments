@@ -3,8 +3,8 @@
     <div id="problem-header">
       <label>
         <input v-model="multiplySelect.title"
-               @focus="bgcChange(1)"
-               @blur="bgcChange(0)"
+               @focus="inputChange(1)"
+               @blur="inputChange(0)"
                :style="titleInputBgc" class="titleInput">
       </label>
       <el-tag id="problem-right-type-tag">问题{{problemIndex + 1}}: 多选题</el-tag>
@@ -12,7 +12,9 @@
     <div id="choices">
       <div class="selection" v-for="(data, index) in multiplySelect.options" :key="data.key">
         <el-checkbox value="false">选项{{getProblemNumber(index)}}</el-checkbox>
-        <label><input class="choiceInput" v-model="data.value"></label>
+        <label>
+          <input class="choiceInput" v-model="data.value" @blur="editOptionValue(index, data.value)">
+        </label>
         <el-button type="danger" icon="el-icon-delete" circle size="small" class="delete-button"
                    @click="removeChoice(data)"></el-button>
       </div>
@@ -24,6 +26,13 @@
 </template>
 
 <script>
+  import {
+    appendOneOption,
+    deleteOneOption,
+    editOptionValue,
+    editProblemBasicInfo
+  } from "../../../../network/questionnaireEdition";
+
   export default {
     name: "multiplySelect",
     props: {
@@ -34,6 +43,9 @@
         type: Object,
         required: true,
       },
+      questionnaireFlag: {
+        required: true,
+      }
     },
     watch: {
       multiplySelect: {
@@ -57,24 +69,34 @@
       }
     },
     methods: {
+      editOptionValue(index, value) {
+        editOptionValue(this.$store.state.token, this.questionnaireFlag, this.problemIndex, index, value);
+      },
       submitDataToQuestionnaire() {
         this.$emit('passData', this.multiplySelect);
       },
-      bgcChange(index) {
+      inputChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
-        this.titleInputBgc["background-color"] = color[index]
+        this.titleInputBgc["background-color"] = color[index];
+        if (!index) {
+          editProblemBasicInfo(this.$store.state.token, this.questionnaireFlag, this.problemIndex, this.multiplySelect.title, "None");
+        }
       },
       addChoice() {
-        this.multiplySelect.options.push({
-          //将新的题号赋给他
+        let choiceData = {
+          //为每个选项分配一个id
+          optionId: new Date().getTime(),
           value: ""
-        })
+        };
+        this.multiplySelect.options.push(choiceData);
+        appendOneOption(this.$store.state.token, this.questionnaireFlag, this.problemIndex, choiceData);
       },
       removeChoice(item) {
         let index = this.multiplySelect.options.indexOf(item);
         if (index !== -1) {
           this.multiplySelect.options.splice(index, 1);
         }
+        deleteOneOption(this.$store.state.token, this.questionnaireFlag, this.problemIndex, index);
       },
       getProblemNumber(index) {
         return index <= 8 ? "0" + String(index + 1) : index + 1;
