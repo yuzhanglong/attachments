@@ -120,7 +120,7 @@
                           :recover-data="questionnaireData.basicInfo">
               </basic-info>
               <!--这里的index是动态的-->
-              <div v-for="(problem, index) in questionnaireData.problems" :key="problem.tag">
+              <div v-for="(problem, index) in questionnaireData.problems" :key="problem.problemId">
                 <single-select v-if="problem.common.type === 'singleSelect'"
                                @click.native="getActiveProblem(index)"
                                :problem-index="index" @passData="getProblemData"
@@ -352,7 +352,7 @@
       appendOneProblem(problemType) {
         this.questionnaireData.problems.push({
           //制造唯一id
-          tag: new Date().getTime(),
+          problemId: new Date().getTime(),
           globalSetting: {
             required: false
           },

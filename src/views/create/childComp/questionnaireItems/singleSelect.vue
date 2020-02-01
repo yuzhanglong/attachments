@@ -52,7 +52,7 @@
         singleSelect: {
           index: this.problemIndex,
           type: "singleSelect",
-          title: this.recoverData.title ? this.recoverData.title : "点我为这道填空题创建一个标题",
+          title: this.recoverData.title ? this.recoverData.title : "点我为这道单选题创建一个标题",
           options: this.recoverData.options,
         },
         titleInputBgc: {
@@ -71,6 +71,8 @@
       },
       addChoice() {
         this.singleSelect.options.push({
+          //为每个选项分配一个id
+          optionId: new Date().getTime(),
           value: ""
         })
       },
@@ -117,14 +119,14 @@
     margin-top: 20px;
     padding-bottom: 20px;
     background-color: #fff;
-    width: 1300px;
+    width: calc(100vw - 620px);
     height: auto;
   }
 
   .titleInput {
     font-size: 18px;
     border: none;
-    width: 1100px;
+    width: calc(100vw - 820px);
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

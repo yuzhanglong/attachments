@@ -37,7 +37,8 @@
           <scroll-bar>
             <div id="spread-setting-container">
               <project-share :share-flag="$route.params.flag"
-                             :questionnaireTitle="data['questionnaireBasicData']['basicInfo']['title']">
+                             :questionnaireTitle="data['questionnaireBasicData']['basicInfo']['title']"
+                             v-if="showInfo">
               </project-share>
             </div>
           </scroll-bar>
@@ -127,6 +128,7 @@
         },
         data: {},
         tempHeadIconLink: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+        showInfo: false,
       }
     },
     methods: {
@@ -153,7 +155,9 @@
                     offset: 50
                   });
                   this.deleteDict(res);
-                  this.data = res['information']
+                  this.showInfo = true;
+                  this.data = res['information'];
+
                 })
       },
       goBack() {
