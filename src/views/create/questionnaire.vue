@@ -123,27 +123,24 @@
               <div v-for="(problem, index) in questionnaireData.problems" :key="problem.problemId">
                 <single-select v-if="problem.common.type === 'singleSelect'"
                                @click.native="getActiveProblem(index)"
-                               :problem-index="index" @passData="getProblemData"
+                               :problem-index="index"
                                :recover-data="problem.common"
                                :questionnaireFlag="questionnaireData.questionnaireFlag">
                 </single-select>
                 <multiply-select v-if="problem.common.type === 'multiplySelect'"
                                  @click.native="getActiveProblem(index)"
-                                 :problem-index="index"
-                                 @passData="getProblemData" :recover-data="problem.common"
+                                 :problem-index="index" :recover-data="problem.common"
                                  :questionnaireFlag="questionnaireData.questionnaireFlag">
                 </multiply-select>
                 <blank-fill v-if="problem.common.type === 'blankFill'"
                             @click.native="getActiveProblem(index)"
                             :problem-index="index"
-                            @passData="getProblemDataForBlankFill"
                             :recover-data="problem.common"
                             :questionnaireFlag="questionnaireData.questionnaireFlag">
                 </blank-fill>
                 <drop-down v-if="problem.common.type === 'dropDown'"
                            @click.native="getActiveProblem(index)"
                            :problem-index="index"
-                           @passData="getProblemData"
                            :recover-data="problem.common"
                            :questionnaireFlag="questionnaireData.questionnaireFlag">
 
@@ -151,13 +148,11 @@
                 <score v-if="problem.common.type === 'score'"
                        @click.native="getActiveProblem(index)"
                        :problem-index="index"
-                       @passData="getProblemData"
                        :recover-data="problem.common">
                 </score>
                 <nps v-if="problem.common.type === 'nps'"
                      @click.native="getActiveProblem(index)"
                      :problem-index="index"
-                     @passData="getProblemData"
                      :recover-data="problem.common">
                 </nps>
               </div>
@@ -181,7 +176,8 @@
                 <template slot="title">基本设置</template>
                 <el-menu-item>设置为必填项
                   <el-switch class="setting-switch"
-                             v-model="questionnaireData.problems[activeProblem].globalSetting.required"></el-switch>
+                             v-model="questionnaireData.problems[activeProblem].globalSetting.required"
+                             @change="editProblemBasicInfo"></el-switch>
                 </el-menu-item>
               </el-menu-item-group>
               <el-menu-item-group>
@@ -226,7 +222,7 @@
   import {getQuesionNaireByFlag} from "@/network/questionnaire";
   import {
     appendOneProblem,
-    deleteOneProblem,
+    deleteOneProblem, editProblemBasicInfo,
     editQuestionnaireBasicInfo,
     newQuestionnaire
   } from "../../network/questionnaireEdition";
@@ -309,6 +305,10 @@
       /*问卷发布相关
       *
       * */
+      editProblemBasicInfo() {
+        let globalSet = this.questionnaireData.problems[this.activeProblem].globalSetting;
+        editProblemBasicInfo(this.$store.state.token, this.questionnaireData.questionnaireFlag, this.activeProblem, "None", globalSet);
+      },
       saveQuestionNaire() {
         //发送请求
         if (!this.questionnaireData.problems.length) {
@@ -340,19 +340,6 @@
                 .catch(() => {
                   this.$messageBox.showErrorMessage(this, "ERROR!");
                 })
-      },
-      /*实时更新problem数据相关
-      *
-      * */
-      getProblemData(res) {
-        //针对  单选题 多选题 下拉题
-        this.questionnaireData.problems[res.index].common.title = res.title;
-        this.questionnaireData.problems[res.index].common.options = res.options;
-      },
-      //针对填空题(没有动态option)
-      getProblemDataForBlankFill(res) {
-        this.questionnaireData.problems[res.index].common.title = res.title;
-        this.questionnaireData.problems[res.index].common.value = res.value;
       },
       appendOneProblem(problemType) {
         let pushData = {
