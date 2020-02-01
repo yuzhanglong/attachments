@@ -59,7 +59,7 @@
   input {
     font-size: 20px;
     border: none;
-    width: 1200px;
+    width: calc(100vw - 820px);
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;
@@ -76,7 +76,7 @@
   #basic-info {
     margin-top: 31px;
     background-color: #ffffff;
-    width: 1300px;
+    width: calc(100vw - 620px);
     height: 140px;
   }
 </style>

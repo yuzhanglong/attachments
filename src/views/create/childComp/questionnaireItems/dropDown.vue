@@ -102,14 +102,14 @@
     margin-top: 20px;
     padding-bottom: 20px;
     background-color: #fff;
-    width: 1300px;
+    width: calc(100vw - 620px);
     height: auto;
   }
 
   .dropDownTitleInput {
     font-size: 18px;
     border: none;
-    width: 1100px;
+    width: calc(100vw - 820px);
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;
