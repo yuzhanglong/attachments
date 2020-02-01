@@ -220,6 +220,7 @@
   import {sendQuesionNaire} from "@/network/questionnaire";
   import {checkToken} from "@/network/user";
   import {getQuesionNaireByFlag} from "@/network/questionnaire";
+  import {appendOneProblem, deleteOneProblem, newQuestionnaire} from "../../network/questionnaireEdition";
 
   export default {
     name: "questionnaire",
@@ -266,7 +267,6 @@
           },
           problems: []
         },
-        questionnaireCompleteResult: []
       }
     },
     methods: {
@@ -278,7 +278,6 @@
         if (targetRouter !== "new") {
           let tmp = JSON.parse(window.localStorage.getItem('data'));
           this.questionnaireData = tmp['questionnaireBasicData'];
-          this.questionnaireCompleteResult = tmp['questionnaireCompleteResult'];
           //通过flag拿到需要编辑的问卷数据
           this.$notify({
             title: "系统消息",
@@ -288,7 +287,7 @@
             offset: 50
           });
         } else {
-
+          this.newQuestionnaire();
           this.$notify({
             title: '系统消息',
             message: '当前您处在新建模式',
@@ -335,7 +334,12 @@
                   window.localStorage.setItem('data', q);
                 })
       },
-
+      newQuestionnaire() {
+        newQuestionnaire(this.$store.state.user, this.$store.state.token, this.questionnaireData.questionnaireFlag, this.questionnaireData)
+                .catch(() => {
+                  this.$messageBox.showErrorMessage(this, "ERROR!");
+                })
+      },
       /*实时更新problem数据相关
       *
       * */
@@ -350,7 +354,7 @@
         this.questionnaireData.problems[res.index].common.value = res.value;
       },
       appendOneProblem(problemType) {
-        this.questionnaireData.problems.push({
+        let pushData = {
           //制造唯一id
           problemId: new Date().getTime(),
           globalSetting: {
@@ -361,12 +365,15 @@
             title: "",
             options: []
           }
-        })
+        };
+        this.questionnaireData.problems.push(pushData);
+        appendOneProblem(this.$store.state.token, this.questionnaireData.questionnaireFlag, pushData.common, pushData.problemId);
       },
       //删除一个problem 需要传入要删除的下标
       deleteOneProblem(index) {
         this.questionnaireData.problems.splice(index, 1);
-        this.activeProblem = ""
+        this.activeProblem = "";
+        deleteOneProblem(this.$store.state.token, this.questionnaireData.questionnaireFlag, index);
       },
       //获取当前鼠标点击下的问题 并传入data.activeProblem
       getBasicInfo(res) {
