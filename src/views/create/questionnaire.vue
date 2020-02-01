@@ -24,7 +24,7 @@
             <div id="nav-right-setting">
               <el-button size="medium" @click="saveQuestionNaire">保存</el-button>
               <el-button type="primary" size="medium" style="margin-right: 30px"
-                         @click="goToSendQuestionNaire">发布并分享
+                         @click="goToSendQuestionnaire">发布并分享
               </el-button>
               <el-avatar :src="tempHeadIconLink"></el-avatar>
             </div>
@@ -124,7 +124,8 @@
                 <single-select v-if="problem.common.type === 'singleSelect'"
                                @click.native="getActiveProblem(index)"
                                :problem-index="index" @passData="getProblemData"
-                               :recover-data="problem.common">
+                               :recover-data="problem.common"
+                               :questionnaireFlag="questionnaireData.questionnaireFlag">
                 </single-select>
                 <multiply-select v-if="problem.common.type === 'multiplySelect'"
                                  @click.native="getActiveProblem(index)"
@@ -220,7 +221,12 @@
   import {sendQuesionNaire} from "@/network/questionnaire";
   import {checkToken} from "@/network/user";
   import {getQuesionNaireByFlag} from "@/network/questionnaire";
-  import {appendOneProblem, deleteOneProblem, newQuestionnaire} from "../../network/questionnaireEdition";
+  import {
+    appendOneProblem,
+    deleteOneProblem,
+    editQuestionnaireBasicInfo,
+    newQuestionnaire
+  } from "../../network/questionnaireEdition";
 
   export default {
     name: "questionnaire",
@@ -315,16 +321,8 @@
                   this.$messageBox.showErrorMessage(this, "请求失败error");
                 })
       },
-      goToSendQuestionNaire() {
-        //1.先保存
-        sendQuesionNaire(this.$store.state.user, this.questionnaireData, this.$store.state.token, this.questionnaireData.questionnaireFlag)
-                .then(() => {
-                  this.$messageBox.showSuccessMessage(this, "项目已保存");
-                })
-                .catch(() => {
-                  this.$messageBox.showErrorMessage(this, "请求失败error");
-                });
-        //1.路由跳转到发布界面
+      goToSendQuestionnaire() {
+        //路由跳转到发布界面
         this.$router.push('/spread/' + this.$route.params.situation);
       },
       refreshQuestionnaireData() {
@@ -379,6 +377,7 @@
       getBasicInfo(res) {
         this.questionnaireData.basicInfo.title = res.title;
         this.questionnaireData.basicInfo.subTitle = res.subTitle;
+        editQuestionnaireBasicInfo(this.$store.state.token, this.questionnaireData.questionnaireFlag, res);
       },
       getActiveProblem(index) {
         this.activeProblem = index;

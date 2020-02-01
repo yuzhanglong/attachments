@@ -2,15 +2,15 @@
 <template>
   <div id="basic-info">
     <label>
-      <input v-model="basicInfo.title" @input="passbasicInfoData"
-             @focus="bgc1Change(1)"
-             @blur="bgc1Change(0)"
+      <input v-model="basicInfo.title"
+             @focus="input1Change(1)"
+             @blur="input1Change(0)"
              :style="titleInput1Bgc">
     </label>
     <label>
-      <input v-model="basicInfo.subTitle" id="sub-input" @input="passbasicInfoData"
-             @focus="bgc2Change(1)"
-             @blur="bgc2Change(0)"
+      <input v-model="basicInfo.subTitle" id="sub-input"
+             @focus="input2Change(1)"
+             @blur="input2Change(0)"
              :style="titleInput2Bgc">
     </label>
   </div>
@@ -37,19 +37,25 @@
       }
     },
     methods: {
-      getRecoverData(){
+      getRecoverData() {
         return this.recoverData
       },
       passbasicInfoData() {
         this.$emit('passData', this.basicInfo)
       },
-      bgc1Change(index) {
+      input1Change(index) {
         let color = ['#ffffff', '#f4f4f4'];
-        this.titleInput1Bgc["background-color"] = color[index]
+        this.titleInput1Bgc["background-color"] = color[index];
+        if (!index) {
+          this.passbasicInfoData();
+        }
       },
-      bgc2Change(index) {
+      input2Change(index) {
         let color = ['#ffffff', '#f4f4f4'];
-        this.titleInput2Bgc["background-color"] = color[index]
+        this.titleInput2Bgc["background-color"] = color[index];
+        if (!index) {
+          this.passbasicInfoData();
+        }
       }
     }
   }
