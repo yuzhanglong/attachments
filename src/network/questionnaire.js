@@ -1,18 +1,5 @@
 import {request} from "@/network/request";
 
-export function sendQuesionNaire(userName, questionnaireData, token, questionnaireFlag) {
-  return request({
-    method: 'post',
-    url: '/questionnaire/send_data',
-    data: {
-      userName: userName,
-      questionnaireData: questionnaireData,
-      token: token,
-      //确保问卷唯一性
-      questionnaireFlag: questionnaireFlag
-    }
-  })
-}
 
 export function getQuesionNaire(userName, token) {
   return request({
@@ -21,6 +8,10 @@ export function getQuesionNaire(userName, token) {
     data: {
       userName: userName,
       token: token,
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 0
     }
   })
 }

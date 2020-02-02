@@ -11,6 +11,10 @@ export function newQuestionnaire(userName, token, flag, basicData) {
       //确保问卷唯一性
       questionnaireFlag: flag,
       questionnaireBasicData: basicData
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 0
     }
   })
 }
@@ -27,6 +31,10 @@ export function editQuestionnaireBasicInfo(token, flag, basicInfo) {
       editConfig: {
         basicInfo: basicInfo,
       }
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 1
     }
   })
 }
@@ -43,6 +51,10 @@ export function appendOneProblem(token, flag, common, id) {
         common: common,
         problemId: id
       }
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 1
     }
   })
 }
@@ -58,6 +70,10 @@ export function deleteOneProblem(token, flag, problemIndex) {
       editConfig: {
         problemIndex: problemIndex
       }
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 1
     }
   })
 }
@@ -74,6 +90,10 @@ export function editProblemBasicInfo(token, flag, problemIndex, title, globalSet
         title: title,
         globalSetting: globalSetting,
       }
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 1
     }
   })
 }
@@ -91,6 +111,10 @@ export function appendOneOption(token, flag, problemIndex, optiondata) {
         problemIndex: problemIndex,
         optionData: optiondata
       }
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 1
     }
   })
 }
@@ -107,6 +131,10 @@ export function deleteOneOption(token, flag, problemIndex, optionIndex) {
         problemIndex: problemIndex,
         optionIndex: optionIndex
       }
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 1
     }
   })
 }
@@ -124,6 +152,10 @@ export function editOptionValue(token, flag, problemIndex, optionIndex, value) {
         optionIndex: optionIndex,
         value: value
       }
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 1
     }
   })
 }

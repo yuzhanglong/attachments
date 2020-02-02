@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {hideLoading, showLoading} from "../utils/loading";
 
 export function request(config) {
   const instance = axios.create({
@@ -8,6 +9,9 @@ export function request(config) {
   // 添加请求拦截器
   instance.interceptors.request.use(config => {
     // 在发送请求之前做些什么
+    if (config.headers.showLoading) {
+      showLoading(config.headers.showLoadingType);
+    }
     return config;
   }, error => {
     // 对请求错误做些什么
@@ -15,9 +19,12 @@ export function request(config) {
   });
 
   // 添加响应拦截器
-  instance.interceptors.response.use(res => {
+  instance.interceptors.response.use(response => {
     // 对响应数据做点什么
-    return res.data;
+    setTimeout(() => {
+      hideLoading();
+    }, 400);
+    return response.data;
   }, error => {
     // 对响应错误做点什么
     return Promise.reject(error.response.data);

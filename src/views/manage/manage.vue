@@ -106,7 +106,7 @@
         tempHeadIconLink: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         navBarActive: "1",
         myQuestionnaire: [],
-        cardActive: []
+        cardActive: [],
       }
     },
     methods: {
@@ -119,7 +119,7 @@
       getQuesionNaire() {
         getQuesionNaire(this.$store.state.user, this.$store.state.token)
                 .then(res => {
-                  this.myQuestionnaire = res['information']
+                  this.myQuestionnaire = res['information'];
                 })
                 .catch(() => {
                   this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
@@ -158,12 +158,6 @@
       showConditionStyle(index) {
         let code = this.myQuestionnaire[index]['questionnaireCondition'];
         return code ? "success" : "warning"
-      },
-      showParticipants(index) {
-        return this.myQuestionnaire[index]['questionnaireBasicData'].participants;
-      },
-      showRenewTime(index) {
-        return this.myQuestionnaire[index]['questionnaireRenewTime'];
       },
       getCardStyle(width) {
         return {

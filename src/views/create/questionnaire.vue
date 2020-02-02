@@ -22,7 +22,6 @@
           </template>
           <template v-slot:nav-right>
             <div id="nav-right-setting">
-              <el-button size="medium" @click="saveQuestionNaire">保存</el-button>
               <el-button type="primary" size="medium" style="margin-right: 30px"
                          @click="goToSendQuestionnaire">发布并分享
               </el-button>
@@ -217,7 +216,6 @@
   import nps from "@/views/create/childComp/questionnaireItems/nps";
 
   //数据处理
-  import {sendQuesionNaire} from "@/network/questionnaire";
   import {checkToken} from "@/network/user";
   import {getQuesionNaireByFlag} from "@/network/questionnaire";
   import {
@@ -308,21 +306,6 @@
       editProblemBasicInfo() {
         let globalSet = this.questionnaireData.problems[this.activeProblem].globalSetting;
         editProblemBasicInfo(this.$store.state.token, this.questionnaireData.questionnaireFlag, this.activeProblem, "None", globalSet);
-      },
-      saveQuestionNaire() {
-        //发送请求
-        if (!this.questionnaireData.problems.length) {
-          this.$messageBox.showInfoMessage(this, "请至少添加一道题目~");
-          return
-        }
-        sendQuesionNaire(this.$store.state.user, this.questionnaireData, this.$store.state.token, this.questionnaireData.questionnaireFlag)
-                .then(() => {
-                  this.$messageBox.showSuccessMessage(this, "保存成功,可以在【我的项目】页面中查看");
-                  this.refreshQuestionnaireData();
-                })
-                .catch(() => {
-                  this.$messageBox.showErrorMessage(this, "请求失败error");
-                })
       },
       goToSendQuestionnaire() {
         //路由跳转到发布界面
