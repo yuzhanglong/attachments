@@ -3,8 +3,8 @@
     <div id="problem-header">
       <label>
         <input v-model="dropDown.title"
-               @focus="bgcChange(1)"
-               @blur="bgcChange(0)"
+               @focus="inputChange(1)"
+               @blur="inputChange(0)"
                :style="titleInputBgc" class="dropDownTitleInput">
       </label>
       <el-tag id="problem-right-type-tag">问题{{problemIndex + 1}}: 下拉题</el-tag>
@@ -14,7 +14,12 @@
     <div id="choices">
       <div class="selection" v-for="(data, index) in dropDown.options" :key="data.key">
         <i class="el-icon-caret-bottom"></i>
-        <label><input class="choiceInput" v-model="data.value" :placeholder="getProblemNumber(index)"></label>
+        <label>
+          <input class="choiceInput"
+                 v-model="data.value"
+                 :placeholder="getProblemNumber(index)"
+                 @blur="editOptionValue(index, data.value)">
+        </label>
         <i type="danger" class="el-icon-close" @click="removeChoice(data)"></i>
       </div>
     </div>
@@ -25,6 +30,8 @@
 </template>
 
 <script>
+  import {appendOneOption, editOptionValue, editProblemBasicInfo} from "../../../../network/questionnaireEdition";
+
   export default {
     name: "dropDown",
     props: {
@@ -35,13 +42,8 @@
       problemIndex: {
         required: true,
       },
-    },
-    watch: {
-      dropDown: {
-        handler() {
-          this.submitDataToQuestionnaire()
-        },
-        deep: true
+      questionnaireFlag: {
+        required: true,
       }
     },
     data() {
@@ -58,18 +60,24 @@
       }
     },
     methods: {
-      submitDataToQuestionnaire() {
-        this.$emit('passData', this.dropDown);
+      editOptionValue(index, value) {
+        editOptionValue(this.$store.state.token, this.questionnaireFlag, this.problemIndex, index, value);
       },
-      bgcChange(index) {
+      inputChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
-        this.titleInputBgc["background-color"] = color[index]
+        this.titleInputBgc["background-color"] = color[index];
+        if (!index) {
+          editProblemBasicInfo(this.$store.state.token, this.questionnaireFlag, this.problemIndex, this.dropDown.title, "None");
+        }
       },
       addChoice() {
-        this.dropDown.options.push({
-          //将新的题号赋给他
+        let choiceData = {
+          //为每个选项分配一个id
+          optionId: new Date().getTime(),
           value: ""
-        })
+        };
+        this.dropDown.options.push(choiceData);
+        appendOneOption(this.$store.state.token, this.questionnaireFlag, this.problemIndex, choiceData);
       },
       removeChoice(item) {
         let index = this.dropDown.options.indexOf(item);
@@ -102,14 +110,14 @@
     margin-top: 20px;
     padding-bottom: 20px;
     background-color: #fff;
-    width: 1300px;
+    width: calc(100vw - 620px);
     height: auto;
   }
 
   .dropDownTitleInput {
     font-size: 18px;
     border: none;
-    width: 1100px;
+    width: calc(100vw - 820px);
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

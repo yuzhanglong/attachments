@@ -16,7 +16,7 @@
                 <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
                 [单选题] {{index + 1}}. {{problem.common.title}}
               </h5>
-              <el-radio-group v-model="problemResults[index][0]">
+              <el-radio-group v-model="problemResults[index]['resolution'][0]">
                 <div v-for="(option, index) in problem.common.options" :key="option.value" class="radio-wrap">
                   <el-radio :label="index">
                     {{option.value}}
@@ -29,7 +29,7 @@
                 <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
                 [多选题] {{index + 1}}. {{problem.common.title}}
               </h5>
-              <el-checkbox-group v-model="problemResults[index]">
+              <el-checkbox-group v-model="problemResults[index]['resolution']">
                 <div v-for="(option, index) in problem.common.options" :key="option.value" class="checkbox-wrap">
                   <el-checkbox :label="index">
                     {{option.value}}
@@ -43,7 +43,7 @@
                 [填空题] {{index + 1}}. {{problem.common.title}}
               </h5>
               <div class="blank-fill-wrap">
-                <el-input placeholder="请在此处作答" autosize v-model="problemResults[index][0]"></el-input>
+                <el-input placeholder="请在此处作答" autosize v-model="problemResults[index]['resolution'][0]"></el-input>
               </div>
             </div>
             <div class="drop-down" v-if="problem.common.type === 'dropDown'">
@@ -51,24 +51,11 @@
                 <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
                 [下拉题] {{index + 1}}. {{problem.common.title}}
               </h5>
-              <el-select v-model="problemResults[index][0]" placeholder="请选择一个选项" class="drop-down-select">
+              <el-select v-model="problemResults[index]['resolution'][0]" placeholder="请选择一个选项" class="drop-down-select">
                 <el-option v-for="(option, index) in problem.common.options" :key="option.value" :label="option.value"
                            :value="index">
                 </el-option>
               </el-select>
-            </div>
-            <div class="mark-score" v-if="problem.common.type === 'score'">
-              <h5>
-                <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
-                [评价题] {{index + 1}}. {{problem.common.title}}
-              </h5>
-              <div v-for="(option, index2) in problem.common.options" :key="option.value" class="score-wrap">
-                <div class="score-item-title"><span>{{index2 + 1}}). {{option.title}}</span></div>
-                <el-rate
-                        v-model="problemResults[index][index2]"
-                        :colors="scoreColor">
-                </el-rate>
-              </div>
             </div>
           </div>
         </div>
@@ -151,7 +138,10 @@
                   this.data = res['information'];
                   let pSize = res['information']['problems'].length;
                   for (let i = 0; i < pSize; i++) {
-                    this.problemResults.push([]);
+                    this.problemResults.push({
+                      targetProblemId: this.data['problems'][i]['problemId'],
+                      resolution: [],
+                    });
                   }
                 })
       },
@@ -253,7 +243,8 @@
   .score-wrap {
     padding: 10px;
   }
-  .content{
+
+  .content {
     height: 90vh;
   }
 </style>

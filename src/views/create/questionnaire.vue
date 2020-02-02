@@ -24,7 +24,7 @@
             <div id="nav-right-setting">
               <el-button size="medium" @click="saveQuestionNaire">保存</el-button>
               <el-button type="primary" size="medium" style="margin-right: 30px"
-                         @click="goToSendQuestionNaire">发布并分享
+                         @click="goToSendQuestionnaire">发布并分享
               </el-button>
               <el-avatar :src="tempHeadIconLink"></el-avatar>
             </div>
@@ -120,40 +120,39 @@
                           :recover-data="questionnaireData.basicInfo">
               </basic-info>
               <!--这里的index是动态的-->
-              <div v-for="(problem, index) in questionnaireData.problems" :key="problem.tag">
+              <div v-for="(problem, index) in questionnaireData.problems" :key="problem.problemId">
                 <single-select v-if="problem.common.type === 'singleSelect'"
                                @click.native="getActiveProblem(index)"
-                               :problem-index="index" @passData="getProblemData"
-                               :recover-data="problem.common">
+                               :problem-index="index"
+                               :recover-data="problem.common"
+                               :questionnaireFlag="questionnaireData.questionnaireFlag">
                 </single-select>
                 <multiply-select v-if="problem.common.type === 'multiplySelect'"
                                  @click.native="getActiveProblem(index)"
-                                 :problem-index="index"
-                                 @passData="getProblemData" :recover-data="problem.common">
+                                 :problem-index="index" :recover-data="problem.common"
+                                 :questionnaireFlag="questionnaireData.questionnaireFlag">
                 </multiply-select>
                 <blank-fill v-if="problem.common.type === 'blankFill'"
                             @click.native="getActiveProblem(index)"
                             :problem-index="index"
-                            @passData="getProblemDataForBlankFill"
-                            :recover-data="problem.common">
+                            :recover-data="problem.common"
+                            :questionnaireFlag="questionnaireData.questionnaireFlag">
                 </blank-fill>
                 <drop-down v-if="problem.common.type === 'dropDown'"
                            @click.native="getActiveProblem(index)"
                            :problem-index="index"
-                           @passData="getProblemData"
-                           :recover-data="problem.common">
+                           :recover-data="problem.common"
+                           :questionnaireFlag="questionnaireData.questionnaireFlag">
 
                 </drop-down>
                 <score v-if="problem.common.type === 'score'"
                        @click.native="getActiveProblem(index)"
                        :problem-index="index"
-                       @passData="getProblemData"
                        :recover-data="problem.common">
                 </score>
                 <nps v-if="problem.common.type === 'nps'"
                      @click.native="getActiveProblem(index)"
                      :problem-index="index"
-                     @passData="getProblemData"
                      :recover-data="problem.common">
                 </nps>
               </div>
@@ -177,7 +176,8 @@
                 <template slot="title">基本设置</template>
                 <el-menu-item>设置为必填项
                   <el-switch class="setting-switch"
-                             v-model="questionnaireData.problems[activeProblem].globalSetting.required"></el-switch>
+                             v-model="questionnaireData.problems[activeProblem].globalSetting.required"
+                             @change="editProblemBasicInfo"></el-switch>
                 </el-menu-item>
               </el-menu-item-group>
               <el-menu-item-group>
@@ -220,6 +220,12 @@
   import {sendQuesionNaire} from "@/network/questionnaire";
   import {checkToken} from "@/network/user";
   import {getQuesionNaireByFlag} from "@/network/questionnaire";
+  import {
+    appendOneProblem,
+    deleteOneProblem, editProblemBasicInfo,
+    editQuestionnaireBasicInfo,
+    newQuestionnaire
+  } from "../../network/questionnaireEdition";
 
   export default {
     name: "questionnaire",
@@ -266,7 +272,6 @@
           },
           problems: []
         },
-        questionnaireCompleteResult: []
       }
     },
     methods: {
@@ -278,7 +283,6 @@
         if (targetRouter !== "new") {
           let tmp = JSON.parse(window.localStorage.getItem('data'));
           this.questionnaireData = tmp['questionnaireBasicData'];
-          this.questionnaireCompleteResult = tmp['questionnaireCompleteResult'];
           //通过flag拿到需要编辑的问卷数据
           this.$notify({
             title: "系统消息",
@@ -288,7 +292,7 @@
             offset: 50
           });
         } else {
-
+          this.newQuestionnaire();
           this.$notify({
             title: '系统消息',
             message: '当前您处在新建模式',
@@ -301,6 +305,10 @@
       /*问卷发布相关
       *
       * */
+      editProblemBasicInfo() {
+        let globalSet = this.questionnaireData.problems[this.activeProblem].globalSetting;
+        editProblemBasicInfo(this.$store.state.token, this.questionnaireData.questionnaireFlag, this.activeProblem, "None", globalSet);
+      },
       saveQuestionNaire() {
         //发送请求
         if (!this.questionnaireData.problems.length) {
@@ -316,16 +324,8 @@
                   this.$messageBox.showErrorMessage(this, "请求失败error");
                 })
       },
-      goToSendQuestionNaire() {
-        //1.先保存
-        sendQuesionNaire(this.$store.state.user, this.questionnaireData, this.$store.state.token, this.questionnaireData.questionnaireFlag)
-                .then(() => {
-                  this.$messageBox.showSuccessMessage(this, "项目已保存");
-                })
-                .catch(() => {
-                  this.$messageBox.showErrorMessage(this, "请求失败error");
-                });
-        //1.路由跳转到发布界面
+      goToSendQuestionnaire() {
+        //路由跳转到发布界面
         this.$router.push('/spread/' + this.$route.params.situation);
       },
       refreshQuestionnaireData() {
@@ -335,24 +335,16 @@
                   window.localStorage.setItem('data', q);
                 })
       },
-
-      /*实时更新problem数据相关
-      *
-      * */
-      getProblemData(res) {
-        //针对  单选题 多选题 下拉题
-        this.questionnaireData.problems[res.index].common.title = res.title;
-        this.questionnaireData.problems[res.index].common.options = res.options;
-      },
-      //针对填空题(没有动态option)
-      getProblemDataForBlankFill(res) {
-        this.questionnaireData.problems[res.index].common.title = res.title;
-        this.questionnaireData.problems[res.index].common.value = res.value;
+      newQuestionnaire() {
+        newQuestionnaire(this.$store.state.user, this.$store.state.token, this.questionnaireData.questionnaireFlag, this.questionnaireData)
+                .catch(() => {
+                  this.$messageBox.showErrorMessage(this, "ERROR!");
+                })
       },
       appendOneProblem(problemType) {
-        this.questionnaireData.problems.push({
+        let pushData = {
           //制造唯一id
-          tag: new Date().getTime(),
+          problemId: new Date().getTime(),
           globalSetting: {
             required: false
           },
@@ -361,17 +353,24 @@
             title: "",
             options: []
           }
-        })
+        };
+        if (problemType === 'blankFill') {
+          delete pushData.common.options
+        }
+        this.questionnaireData.problems.push(pushData);
+        appendOneProblem(this.$store.state.token, this.questionnaireData.questionnaireFlag, pushData.common, pushData.problemId);
       },
       //删除一个problem 需要传入要删除的下标
       deleteOneProblem(index) {
         this.questionnaireData.problems.splice(index, 1);
-        this.activeProblem = ""
+        this.activeProblem = "";
+        deleteOneProblem(this.$store.state.token, this.questionnaireData.questionnaireFlag, index);
       },
       //获取当前鼠标点击下的问题 并传入data.activeProblem
       getBasicInfo(res) {
         this.questionnaireData.basicInfo.title = res.title;
         this.questionnaireData.basicInfo.subTitle = res.subTitle;
+        editQuestionnaireBasicInfo(this.$store.state.token, this.questionnaireData.questionnaireFlag, res);
       },
       getActiveProblem(index) {
         this.activeProblem = index;

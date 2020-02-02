@@ -3,8 +3,8 @@
     <div id="problem-header">
       <label>
         <input v-model="singleSelect.title"
-               @focus="bgcChange(1)"
-               @blur="bgcChange(0)"
+               @focus="inputChange(1)"
+               @blur="inputChange(0)"
                :style="titleInputBgc" class="titleInput">
       </label>
       <el-tag id="problem-right-type-tag">问题{{problemIndex + 1}}: 单选题</el-tag>
@@ -13,7 +13,7 @@
       <div class="selection" v-for="(data, index) in singleSelect.options" :key="data.key">
         <el-radio value="false">选项{{getProblemNumber(index)}}</el-radio>
         <label>
-          <input class="choiceInput" v-model="data.value">
+          <input class="choiceInput" v-model="data.value" @blur="editOptionValue(index, data.value)">
         </label>
         <el-button type="danger" icon="el-icon-delete" circle size="small" class="delete-button"
                    @click="removeChoice(data)">
@@ -28,6 +28,13 @@
 
 
 <script>
+  import {
+    appendOneOption,
+    deleteOneOption,
+    editOptionValue,
+    editProblemBasicInfo
+  } from "../../../../network/questionnaireEdition";
+
   export default {
     name: "singleSelect",
     props: {
@@ -38,13 +45,8 @@
       problemIndex: {
         required: true,
       },
-    },
-    watch: {
-      singleSelect: {
-        handler() {
-          this.submitDataToQuestionnaire();
-        },
-        deep: true
+      questionnaireFlag: {
+        required: true,
       }
     },
     data() {
@@ -52,7 +54,7 @@
         singleSelect: {
           index: this.problemIndex,
           type: "singleSelect",
-          title: this.recoverData.title ? this.recoverData.title : "点我为这道填空题创建一个标题",
+          title: this.recoverData.title ? this.recoverData.title : "点我为这道单选题创建一个标题",
           options: this.recoverData.options,
         },
         titleInputBgc: {
@@ -61,24 +63,31 @@
       }
     },
     methods: {
-      //监听改变 上传数据
-      submitDataToQuestionnaire() {
-        this.$emit('passData', this.singleSelect);
+      editOptionValue(index, value) {
+        editOptionValue(this.$store.state.token, this.questionnaireFlag, this.problemIndex, index, value);
       },
-      bgcChange(index) {
+      inputChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
-        this.titleInputBgc["background-color"] = color[index]
+        this.titleInputBgc["background-color"] = color[index];
+        if (!index) {
+          editProblemBasicInfo(this.$store.state.token, this.questionnaireFlag, this.problemIndex, this.singleSelect.title, "None");
+        }
       },
       addChoice() {
-        this.singleSelect.options.push({
+        let choiceData = {
+          //为每个选项分配一个id
+          optionId: new Date().getTime(),
           value: ""
-        })
+        };
+        this.singleSelect.options.push(choiceData);
+        appendOneOption(this.$store.state.token, this.questionnaireFlag, this.problemIndex, choiceData);
       },
       removeChoice(item) {
         let index = this.singleSelect.options.indexOf(item);
         if (index !== -1) {
           this.singleSelect.options.splice(index, 1);
         }
+        deleteOneOption(this.$store.state.token, this.questionnaireFlag, this.problemIndex, index);
       },
       getProblemNumber(index) {
         return index <= 8 ? "0" + String(index + 1) : index + 1;
@@ -117,14 +126,14 @@
     margin-top: 20px;
     padding-bottom: 20px;
     background-color: #fff;
-    width: 1300px;
+    width: calc(100vw - 620px);
     height: auto;
   }
 
   .titleInput {
     font-size: 18px;
     border: none;
-    width: 1100px;
+    width: calc(100vw - 820px);
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;

@@ -3,8 +3,8 @@
     <div id="problem-header">
       <label>
         <input v-model="blankFill.title"
-               @focus="bgcChange(1)"
-               @blur="bgcChange(0)"
+               @focus="inputChange(1)"
+               @blur="inputChange(0)"
                :style="titleInputBgc" class="blankFillTitleInput">
       </label>
       <el-tag id="problem-right-type-tag">问题{{problemIndex + 1}}: 填空题</el-tag>
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+  import {editProblemBasicInfo} from "../../../../network/questionnaireEdition";
+
   export default {
     name: "blank",
     props: {
@@ -33,13 +35,8 @@
         type: Object,
         required: true,
       },
-    },
-    watch: {
-      blankFill: {
-        handler() {
-          this.submitDataToQuestionnaire()
-        },
-        deep: true
+      questionnaireFlag: {
+        required: true,
       }
     },
     data() {
@@ -56,12 +53,12 @@
       }
     },
     methods: {
-      submitDataToQuestionnaire() {
-        this.$emit('passData', this.blankFill);
-      },
-      bgcChange(index) {
+      inputChange(index) {
         let color = ['#ffffff', '#f4f4f4'];
-        this.titleInputBgc["background-color"] = color[index]
+        this.titleInputBgc["background-color"] = color[index];
+        if (!index) {
+          editProblemBasicInfo(this.$store.state.token, this.questionnaireFlag, this.problemIndex, this.blankFill.title, "None");
+        }
       }
     },
   }
@@ -76,14 +73,14 @@
     margin-top: 20px;
     padding-bottom: 20px;
     background-color: #fff;
-    width: 1300px;
+    width: calc(100vw - 620px);
     height: auto;
   }
 
   .blankFillTitleInput {
     font-size: 18px;
     border: none;
-    width: 1100px;
+    width: calc(100vw - 820px);
     margin-top: 20px;
     padding-left: 15px;
     margin-left: 40px;
@@ -93,7 +90,7 @@
   }
 
   .blankFillInput {
-    width: 800px;
+    width: calc(100vw - 820px);
     padding-left: 15px;
     margin-left: 40px;
     margin-top: 10px;
