@@ -1,5 +1,5 @@
 <template>
-  <div id="questionnaire">
+  <div id="questionnaire" v-if="dataIsSuccess">
     <!--顶部导航栏-->
     <el-row>
       <div id="top-nav-container">
@@ -255,6 +255,7 @@
     },
     data() {
       return {
+        dataIsSuccess: false,
         tempHeadIconLink: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         activeProblem: "",
         setting: {
@@ -279,8 +280,11 @@
       judgeSituation(targetRouter) {
         //新建情况
         if (targetRouter !== "new") {
-          let tmp = JSON.parse(window.localStorage.getItem('data'));
-          this.questionnaireData = tmp['questionnaireBasicData'];
+          getQuesionNaireByFlag(this.$store.state.user, this.$store.state.token, targetRouter)
+                  .then(res => {
+                    this.questionnaireData = res['information']['questionnaireBasicData'];
+                    this.dataIsSuccess = true;
+                  });
           //通过flag拿到需要编辑的问卷数据
           this.$notify({
             title: "系统消息",
@@ -291,6 +295,7 @@
           });
         } else {
           this.newQuestionnaire();
+          this.dataIsSuccess = true;
           this.$notify({
             title: '系统消息',
             message: '当前您处在新建模式',
@@ -310,13 +315,6 @@
       goToSendQuestionnaire() {
         //路由跳转到发布界面
         this.$router.push('/spread/' + this.$route.params.situation);
-      },
-      refreshQuestionnaireData() {
-        getQuesionNaireByFlag(this.$store.state.user, this.$store.state.token, this.questionnaireData.questionnaireFlag)
-                .then(res => {
-                  let q = JSON.stringify(res['information']);
-                  window.localStorage.setItem('data', q);
-                })
       },
       newQuestionnaire() {
         newQuestionnaire(this.$store.state.user, this.$store.state.token, this.questionnaireData.questionnaireFlag, this.questionnaireData)

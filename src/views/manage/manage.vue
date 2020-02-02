@@ -45,7 +45,7 @@
               <div id="card-foot">
                 <div class="card-icon-wrap">
                   <el-button icon="el-icon-edit" type="mini" class="card-bottom-button"
-                             @click="gotoEdit(questionnaire, questionnaire.questionnaireFlag)">编辑
+                             @click="gotoEdit(questionnaire.questionnaireFlag)">编辑
                   </el-button>
                 </div>
                 <div class="card-icon-wrap">
@@ -146,9 +146,7 @@
                   this.getQuesionNaire()
                 });
       },
-      gotoEdit(questionnaire, target) {
-        let q = JSON.stringify(questionnaire);
-        window.localStorage.setItem('data', q);
+      gotoEdit(target) {
         this.$router.push('/questionnaire/' + target);
       },
       showCondition(index) {
