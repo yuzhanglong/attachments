@@ -177,7 +177,7 @@
       },
       checkIsComplete() {
         for (let i = 0; i < this.data.problems.length; i++) {
-          if (this.data.problems[i].globalSetting.required && !this.problemResults[i].length) {
+          if (this.data.problems[i].globalSetting.required && !this.problemResults[i]['resolution'].length) {
             this.$messageBox.showInfoMessage(this, "请完成所有必填项!");
             return false;
           }
