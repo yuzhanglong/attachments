@@ -11,7 +11,7 @@
       </div>
       <div class="chart-table">
         <el-table
-                :data="questionData.data"
+                :data="questionData.static"
                 stripe
                 style="width: 100%">
           <el-table-column
@@ -81,7 +81,7 @@
     methods: {
       getDataDict() {
         let list = [];
-        this.questionData.data.forEach(data => {
+        this.questionData.static.forEach(data => {
           list.push({
             value: data.numbers !== 0 ? data.numbers : null,
             name: data.title

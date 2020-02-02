@@ -67,7 +67,7 @@
       <div id="common-chart" v-show="this.showControl.showCommonChart">
         <div :class="getClassName(index)" v-for="(data, index) in analysisData['completes']"
              :key="index + new Date().getTime()">
-          <chart-background :question-num="index" :question-data="data"></chart-background>
+          <chart-background :question-num="index" :question-data="data" v-if="showChart"></chart-background>
         </div>
       </div>
       <div id="global-chart" v-show="this.showControl.showGlobalChart">
@@ -98,7 +98,8 @@
           showDetailedChart: false,
           showGlobalChart: false
         },
-        provinceDataFlag: false
+        provinceDataFlag: false,
+        showChart: false
       }
     },
     created() {
@@ -123,6 +124,7 @@
                     offset: 50
                   });
                   this.provinceDataFlag = true;
+                  this.showChart = true;
                 })
                 .catch(() => {
                   this.$messageBox.showErrorMessage(this, "访问错误")

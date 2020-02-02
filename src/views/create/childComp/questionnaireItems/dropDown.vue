@@ -30,7 +30,12 @@
 </template>
 
 <script>
-  import {appendOneOption, editOptionValue, editProblemBasicInfo} from "../../../../network/questionnaireEdition";
+  import {
+    appendOneOption,
+    deleteOneOption,
+    editOptionValue,
+    editProblemBasicInfo
+  } from "../../../../network/questionnaireEdition";
 
   export default {
     name: "dropDown",
@@ -84,6 +89,7 @@
         if (index !== -1) {
           this.dropDown.options.splice(index, 1);
         }
+        deleteOneOption(this.$store.state.token, this.questionnaireFlag, this.problemIndex, index);
       },
       getProblemNumber(index) {
         return index <= 8 ? "选项 " + "0" + String(index + 1) : "选项 " + String(index + 1);
