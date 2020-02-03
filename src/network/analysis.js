@@ -6,6 +6,10 @@ export function getAnalysisData(flag, token) {
     url: '/analysis/get_result/' + flag,
     data: {
       token: token
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 0
     }
   })
 }

@@ -15,6 +15,10 @@ export function request(config) {
     return config;
   }, error => {
     // 对请求错误做些什么
+    //防止请求过快loading一闪而过或者根本没有 增加微小的延迟
+    setTimeout(() => {
+      hideLoading();
+    }, 300);
     return error;
   });
 
@@ -23,10 +27,13 @@ export function request(config) {
     // 对响应数据做点什么
     setTimeout(() => {
       hideLoading();
-    }, 400);
+    }, 300);
     return response.data;
   }, error => {
     // 对响应错误做点什么
+    setTimeout(() => {
+      hideLoading();
+    }, 300);
     return Promise.reject(error.response.data);
   });
   return instance(config);

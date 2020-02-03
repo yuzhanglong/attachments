@@ -119,7 +119,7 @@
                           :recover-data="questionnaireData.basicInfo">
               </basic-info>
               <!--这里的index是动态的-->
-              <div v-for="(problem, index) in questionnaireData.problems" :key="problem.problemId">
+              <div v-for="(problem, index) in questionnaireData.problems" :key="index + new Date().getTime()">
                 <single-select v-if="problem.common.type === 'singleSelect'"
                                @click.native="getActiveProblem(index)"
                                :problem-index="index"
@@ -283,6 +283,7 @@
           getQuesionNaireByFlag(this.$store.state.user, this.$store.state.token, targetRouter)
                   .then(res => {
                     this.questionnaireData = res['information']['questionnaireBasicData'];
+                    console.log(this.questionnaireData);
                     this.dataIsSuccess = true;
                   });
           //通过flag拿到需要编辑的问卷数据

@@ -53,3 +53,27 @@ export function submitQuestionnaireSpreadData(userName, token, flag, dataDict) {
   })
 }
 
+export function getQuestionnaireTemplates() {
+  return request({
+    method: 'get',
+    url: '/questionnaire/get_templates',
+  })
+}
+
+
+export function copyTemplates(userName, token, targetFlag) {
+  return request({
+    method: 'post',
+    url: '/questionnaire/copy_templates',
+    data: {
+      user: userName,
+      token: token,
+      flag: targetFlag,
+    },
+    headers: {
+      showLoading: true,
+      showLoadingType: 0
+    }
+  })
+}
+

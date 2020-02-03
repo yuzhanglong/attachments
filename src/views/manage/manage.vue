@@ -4,7 +4,7 @@
       <template v-slot:nav-center>
         <el-menu class="el-menu-demo" mode="horizontal" :default-active="navBarActive">
           <el-menu-item index="1">我的项目</el-menu-item>
-          <el-menu-item index="2">常用模板</el-menu-item>
+          <el-menu-item index="2" @click="showTemplateContainer">常用模板</el-menu-item>
         </el-menu>
       </template>
       <template v-slot:nav-right>
@@ -14,70 +14,94 @@
       </template>
     </nav-bar>
     <el-main id="manage-main">
-      <div id="boxcontainer">
-        <div class="myProjectItemBox">
-          <!-- 根据传来的数据（应该是一个包含对象的数组）v-for即可-->
-          <data-card card-name="新的项目..."
-                     :card-style="getCardStyle(260)" :key="0"
-                     class="myProjectItem">
-            <template v-slot:cardBody>
-              <div id="icon-wrap">
-                <i class="el-icon-plus" @click="gotoCreatequestionnaire"></i>
-              </div>
-            </template>
-          </data-card>
-          <data-card v-for="(questionnaire, index) in myQuestionnaire"
-                     :key="questionnaire.questionnaireFlag"
-                     :card-name="questionnaire['questionnaireBasicData'].basicInfo.title"
-                     :card-style="getCardStyle(260)"
-                     class="myProjectItem">
-            <template v-slot:cardHead>
-              <el-tag size="mini" class="cardTags">问卷</el-tag>
-            </template>
-            <template v-slot:cardBody>
-              <div id="card-body">
-                <el-link style="font-size: 9px; margin-left: 10px" :type="showConditionStyle(index)" :underline="false">
-                  {{showCondition(index)}}
-                </el-link>
-              </div>
-            </template>
-            <template v-slot:cardFoot>
-              <div id="card-foot">
-                <div class="card-icon-wrap">
-                  <el-button icon="el-icon-edit" type="mini" class="card-bottom-button"
-                             @click="gotoEdit(questionnaire.questionnaireFlag)">编辑
-                  </el-button>
+      <scroll-bar>
+        <div id="boxcontainer">
+          <div class="myProjectItemBox">
+            <!-- 根据传来的数据（应该是一个包含对象的数组）v-for即可-->
+            <data-card card-name="新的项目..."
+                       :card-style="getCardStyle(260)" :key="0"
+                       class="myProjectItem">
+              <template v-slot:cardBody>
+                <div id="icon-wrap">
+                  <i class="el-icon-plus" @click="gotoCreatequestionnaire"></i>
                 </div>
-                <div class="card-icon-wrap">
-                  <el-button icon="el-icon-position" type="mini" class="card-bottom-button"
-                             @click="gotoSpread(questionnaire.questionnaireFlag)">发布
-                  </el-button>
+              </template>
+            </data-card>
+            <data-card v-for="(questionnaire, index) in myQuestionnaire"
+                       :key="questionnaire.questionnaireFlag"
+                       :card-name="questionnaire['questionnaireBasicData'].basicInfo.title"
+                       :card-style="getCardStyle(260)"
+                       class="myProjectItem">
+              <template v-slot:cardHead>
+                <el-tag size="mini" class="cardTags">问卷</el-tag>
+              </template>
+              <template v-slot:cardBody>
+                <div id="card-body">
+                  <el-link style="font-size: 9px; margin-left: 10px" :type="showConditionStyle(index)"
+                           :underline="false">
+                    {{showCondition(index)}}
+                  </el-link>
                 </div>
-                <div class="card-icon-wrap">
-                  <el-button icon="el-icon-document-copy" type="mini" class="card-bottom-button"
-                             @click="gotoAlalysis(questionnaire.questionnaireFlag)">数据
-                  </el-button>
+              </template>
+              <template v-slot:cardFoot>
+                <div id="card-foot">
+                  <div class="card-icon-wrap">
+                    <el-button icon="el-icon-edit" type="mini" class="card-bottom-button"
+                               @click="gotoEdit(questionnaire.questionnaireFlag)">编辑
+                    </el-button>
+                  </div>
+                  <div class="card-icon-wrap">
+                    <el-button icon="el-icon-position" type="mini" class="card-bottom-button"
+                               @click="gotoSpread(questionnaire.questionnaireFlag)">发布
+                    </el-button>
+                  </div>
+                  <div class="card-icon-wrap">
+                    <el-button icon="el-icon-document-copy" type="mini" class="card-bottom-button"
+                               @click="gotoAlalysis(questionnaire.questionnaireFlag)">数据
+                    </el-button>
+                  </div>
+                  <div class="card-icon-wrap">
+                    <el-dropdown>
+                      <el-button icon="el-icon-more-outline" type="mini" class="card-bottom-button"
+                                 style="font-size: 14px;"></el-button>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item @click.native=gotoSpread(questionnaire.questionnaireFlag)>发布项目
+                        </el-dropdown-item>
+                        <el-dropdown-item>预览项目</el-dropdown-item>
+                        <el-dropdown-item @click.native="confirmDelete(questionnaire.questionnaireFlag)">删除项目
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </div>
                 </div>
-                <div class="card-icon-wrap">
-                  <el-dropdown>
-                    <el-button icon="el-icon-more-outline" type="mini" class="card-bottom-button"
-                               style="font-size: 14px;"></el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item @click.native=gotoSpread(questionnaire.questionnaireFlag)>发布项目
-                      </el-dropdown-item>
-                      <el-dropdown-item>预览项目</el-dropdown-item>
-                      <el-dropdown-item @click.native="confirmDelete(questionnaire.questionnaireFlag)">删除项目
-                      </el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </div>
-              </div>
-            </template>
-          </data-card>
+              </template>
+            </data-card>
+          </div>
         </div>
-      </div>
-    </el-main>
+      </scroll-bar>
 
+    </el-main>
+    <el-dialog title="问卷模板(注意：所有数据均来源于爬虫 仅供学习交流使用)" :visible.sync="templateContainerVisiable" width="75%">
+      <el-table :data="templateData">
+        <el-table-column property="time" label="更新日期" width="200"></el-table-column>
+        <el-table-column property="name" label="问卷名称" width="300"></el-table-column>
+        <el-table-column property="info" label="信息" width="350"></el-table-column>
+        <el-table-column
+                fixed="right"
+                label="操作" width="300">
+          <template slot-scope="scope">
+            <el-button type="primary" size="small"
+                       @click="priviewTempate(scope.row.flag)"
+                       class="preview-button">
+              预览这个模板
+            </el-button>
+            <el-button type="primary" size="small" @click="addTempate(scope.row.flag)">
+              添加到"我的项目"
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
 
   </div>
 </template>
@@ -85,16 +109,19 @@
 <script>
   //公共组件
   import dataCard from "@/components/dataCard/dataCard";
+  import scrollBar from "../../components/scrollBar/scrollBar";
 
 
   //数据处理
   import {getQuesionNaire} from "@/network/questionnaire";
   import NavBar from "@/components/navBar/navBar";
   import {deleteQuesionNaire} from "@/network/questionnaire";
+  import {copyTemplates, getQuestionnaireTemplates} from "../../network/questionnaire";
 
   export default {
     name: "manage",
     components: {
+      scrollBar,
       NavBar,
       dataCard,
     },
@@ -107,9 +134,27 @@
         navBarActive: "1",
         myQuestionnaire: [],
         cardActive: [],
+        templateContainerVisiable: false,
+        templateData: []
+
       }
     },
     methods: {
+      priviewTempate(flag) {
+        console.log(flag);
+      },
+      addTempate(flag) {
+        copyTemplates(this.$store.state.user, this.$store.state.token, flag)
+                .then(() => {
+                  this.$messageBox.showSuccessMessage(this, "添加成功!请刷新页面查看");
+                })
+                .catch(() => {
+                  this.$messageBox.showErrorMessage(this, "添加失败!");
+                })
+      },
+      showTemplateContainer() {
+        this.templateContainerVisiable = true
+      },
       gotoAlalysis(flag) {
         this.$router.push('/analysis/' + flag);
       },
@@ -120,11 +165,18 @@
         getQuesionNaire(this.$store.state.user, this.$store.state.token)
                 .then(res => {
                   this.myQuestionnaire = res['information'];
+                  this.getQuestionnaireTemplates();
                 })
                 .catch(() => {
                   this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
                   this.$router.replace('/login');
                   this.$store.commit("removeTokenAndUser");
+                })
+      },
+      getQuestionnaireTemplates() {
+        getQuestionnaireTemplates()
+                .then(res => {
+                  this.templateData = res['information']
                 })
       },
       confirmDelete(flag) {
@@ -136,14 +188,13 @@
           this.deleteQuesionNaire(flag)
         }).catch(() => {
           this.$messageBox.showInfoMessage(this, "用户已取消");
-
         });
       },
       deleteQuesionNaire(flag) {
         deleteQuesionNaire(this.$store.state.user, this.$store.state.token, flag)
                 .then(() => {
                   this.$messageBox.showSuccessMessage(this, "删除项目成功!");
-                  this.getQuesionNaire()
+                  this.getQuesionNaire();
                 });
       },
       gotoEdit(target) {
@@ -170,6 +221,11 @@
 </script>
 
 <style scoped>
+  .preview-button {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
   #card-body {
     height: 50px;
   }
@@ -181,12 +237,14 @@
   #boxcontainer {
     display: flex;
     justify-content: center;
+
   }
 
   .myProjectItemBox {
     display: flex;
     flex-wrap: wrap;
     width: 1200px;
+    height: 90vh;
     /*background-color: red;*/
   }
 
@@ -202,6 +260,7 @@
   #manage-main {
     background-color: #f7f8fa;
     height: 100vh;
+    overflow: hidden;
   }
 
   #icon-wrap {
@@ -219,6 +278,10 @@
     padding-left: 10px;
     padding-right: 10px;
     border: 0;
+  }
+  #manage{
+    overflow:hidden;
+    height: 100vh;
   }
 
 </style>

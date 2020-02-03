@@ -188,9 +188,9 @@
 
   #right-setting {
     position: fixed;
-    top: 100px;
+    top: 90px;
     right: 20px;
-    width: 400px;
+    width: 350px;
     height: 86%;
     background-color: #ffffff;
   }
