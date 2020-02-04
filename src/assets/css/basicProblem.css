@@ -18,3 +18,13 @@
 .el-scrollbar__thumb {
   display: none;
 }
+
+/*全局隐藏elementui表单不美观的滚动条*/
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}

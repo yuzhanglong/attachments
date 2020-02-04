@@ -53,10 +53,13 @@ export function submitQuestionnaireSpreadData(userName, token, flag, dataDict) {
   })
 }
 
-export function getQuestionnaireTemplates() {
+export function getQuestionnaireTemplates(page) {
   return request({
     method: 'get',
     url: '/questionnaire/get_templates',
+    params: {
+      page: page
+    }
   })
 }
 

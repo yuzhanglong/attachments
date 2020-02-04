@@ -81,26 +81,15 @@
       </scroll-bar>
 
     </el-main>
-    <el-dialog title="问卷模板(注意：所有数据均来源于爬虫 仅供学习交流使用)" :visible.sync="templateContainerVisiable" width="75%">
-      <el-table :data="templateData">
-        <el-table-column property="time" label="更新日期" width="200"></el-table-column>
-        <el-table-column property="name" label="问卷名称" width="300"></el-table-column>
-        <el-table-column property="info" label="信息" width="350"></el-table-column>
-        <el-table-column
-                fixed="right"
-                label="操作" width="300">
-          <template slot-scope="scope">
-            <el-button type="primary" size="small"
-                       @click="priviewTempate(scope.row.flag)"
-                       class="preview-button">
-              预览这个模板
-            </el-button>
-            <el-button type="primary" size="small" @click="addTempate(scope.row.flag)">
-              添加到"我的项目"
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+    <el-dialog title="问卷模板(注意：所有数据均来源于爬虫 仅供学习交流使用)" :visible.sync="templatesConfig.templateContainerVisiable"
+               width="75%" top="8vh" center>
+      <template-list :template-data="this.templatesConfig.templateData"></template-list>
+      <div id="templates-pagination">
+        <el-pagination
+                layout="prev, pager, next"
+                :total="this.templatesConfig.totalPage * 10" :current-page.sync="templatesConfig.templateCurrentPage" @current-change="getNewPageData">
+        </el-pagination>
+      </div>
     </el-dialog>
 
   </div>
@@ -117,10 +106,12 @@
   import NavBar from "@/components/navBar/navBar";
   import {deleteQuesionNaire} from "@/network/questionnaire";
   import {copyTemplates, getQuestionnaireTemplates} from "../../network/questionnaire";
+  import TemplateList from "./childComp/templateList";
 
   export default {
     name: "manage",
     components: {
+      TemplateList,
       scrollBar,
       NavBar,
       dataCard,
@@ -134,12 +125,21 @@
         navBarActive: "1",
         myQuestionnaire: [],
         cardActive: [],
-        templateContainerVisiable: false,
-        templateData: []
-
+        templatesConfig: {
+          templateContainerVisiable: false,
+          templateData: [],
+          templateCurrentPage: 1,
+          totalPage: 0
+        }
       }
     },
     methods: {
+      getNewPageData() {
+        getQuestionnaireTemplates(this.templatesConfig.templateCurrentPage)
+                .then(res => {
+                  this.templatesConfig.templateData = res['information'];
+                })
+      },
       priviewTempate(flag) {
         console.log(flag);
       },
@@ -153,7 +153,7 @@
                 })
       },
       showTemplateContainer() {
-        this.templateContainerVisiable = true
+        this.templatesConfig.templateContainerVisiable = true
       },
       gotoAlalysis(flag) {
         this.$router.push('/analysis/' + flag);
@@ -165,6 +165,7 @@
         getQuesionNaire(this.$store.state.user, this.$store.state.token)
                 .then(res => {
                   this.myQuestionnaire = res['information'];
+                  this.templatesConfig.totalPage = res['pages'];
                   this.getQuestionnaireTemplates();
                 })
                 .catch(() => {
@@ -174,9 +175,9 @@
                 })
       },
       getQuestionnaireTemplates() {
-        getQuestionnaireTemplates()
+        getQuestionnaireTemplates(1)
                 .then(res => {
-                  this.templateData = res['information']
+                  this.templatesConfig.templateData = res['information']
                 })
       },
       confirmDelete(flag) {
@@ -221,10 +222,7 @@
 </script>
 
 <style scoped>
-  .preview-button {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
+
 
   #card-body {
     height: 50px;
@@ -237,6 +235,7 @@
   #boxcontainer {
     display: flex;
     justify-content: center;
+    height: 90vh;
 
   }
 
@@ -244,7 +243,6 @@
     display: flex;
     flex-wrap: wrap;
     width: 1200px;
-    height: 90vh;
     /*background-color: red;*/
   }
 
@@ -279,9 +277,15 @@
     padding-right: 10px;
     border: 0;
   }
-  #manage{
-    overflow:hidden;
+
+  #manage {
+    overflow: hidden;
     height: 100vh;
   }
 
+  #templates-pagination {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
 </style>
