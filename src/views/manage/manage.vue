@@ -67,7 +67,8 @@
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native=gotoSpread(questionnaire.questionnaireFlag)>发布项目
                         </el-dropdown-item>
-                        <el-dropdown-item>预览项目</el-dropdown-item>
+                        <el-dropdown-item @click.native="gotoPreview(questionnaire.questionnaireFlag)">预览项目
+                        </el-dropdown-item>
                         <el-dropdown-item @click.native="confirmDelete(questionnaire.questionnaireFlag)">删除项目
                         </el-dropdown-item>
                       </el-dropdown-menu>
@@ -79,7 +80,6 @@
           </div>
         </div>
       </scroll-bar>
-
     </el-main>
     <el-dialog title="问卷模板(注意：所有数据均来源于爬虫 仅供学习交流使用)" :visible.sync="templatesConfig.templateContainerVisiable"
                width="75%" top="8vh" center>
@@ -87,7 +87,8 @@
       <div id="templates-pagination">
         <el-pagination
                 layout="prev, pager, next"
-                :total="this.templatesConfig.totalPage * 10" :current-page.sync="templatesConfig.templateCurrentPage" @current-change="getNewPageData">
+                :total="this.templatesConfig.totalPage * 10" :current-page.sync="templatesConfig.templateCurrentPage"
+                @current-change="getNewPageData">
         </el-pagination>
       </div>
     </el-dialog>
@@ -134,6 +135,9 @@
       }
     },
     methods: {
+      gotoPreview(flag) {
+        window.open("http://192.168.0.129:8080/complete/" + flag + "?type=preview");
+      },
       getNewPageData() {
         getQuestionnaireTemplates(this.templatesConfig.templateCurrentPage)
                 .then(res => {
@@ -243,6 +247,7 @@
     display: flex;
     flex-wrap: wrap;
     width: 1200px;
+    height: 200px;
     /*background-color: red;*/
   }
 

@@ -23,7 +23,7 @@
         </div>
         <div id="project-share-bottom-container">
           <el-button icon="el-icon-picture-outline" @click="dialogVisible = true">制作二维码海报</el-button>
-          <el-button disabled>useless</el-button>
+          <el-button @click="gotoPreview">预览这个问卷</el-button>
 
           <el-dialog title="二维码海报" :visible.sync="dialogVisible" width="60%">
             <div id="qr-code-post-container">
@@ -110,13 +110,16 @@
     data() {
       return {
         dialogVisible: false,
-        shareLink: "http://192.168.0.129:8080/complete/" + this.shareFlag,
+        shareLink: "http://192.168.0.129:8080/complete/" + this.shareFlag + "?type=fill",
         shareQRCode: "http://192.168.0.129:5000/utils/qrcode/get_code?flag=" + this.shareFlag,
         activeIndex: 1,
         activeBgcImg: 1
       }
     },
     methods: {
+      gotoPreview(){
+        window.open("http://192.168.0.129:8080/complete/" + this.shareFlag + "?type=preview");
+      },
       getQRPost() {
         let bgcId = this.activeBgcImg;
         let styleType = this.activeIndex - 1;

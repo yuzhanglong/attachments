@@ -51,7 +51,8 @@
                 <span class="required-star">{{checkIsRequire(problem.globalSetting.required)}}</span>
                 [下拉题] {{index + 1}}. {{problem.common.title}}
               </h5>
-              <el-select v-model="problemResults[index]['resolution'][0]" placeholder="请选择一个选项" class="drop-down-select">
+              <el-select v-model="problemResults[index]['resolution'][0]" placeholder="请选择一个选项"
+                         class="drop-down-select">
                 <el-option v-for="(option, index) in problem.common.options" :key="option.value" :label="option.value"
                            :value="index">
                 </el-option>
@@ -73,6 +74,7 @@
   import {checkSecretKey, getCondition, getProblems, submitComplete} from "../../network/complete";
   import secretInput from "./childComp/secretInput";
   import bScroll from "../../components/bScroll/bScroll";
+  import {checkToken} from "../../network/user";
 
   export default {
     name: "complete",
@@ -81,7 +83,7 @@
       bScroll
     },
     created() {
-      this.getCondition()
+      this.judgeSituation(this.situation);
     },
     data() {
       return {
@@ -95,11 +97,24 @@
           },
           problems: [],
         },
+        situation: this.$route.query.type,
         problemResults: [],
         scoreColor: ['#99A9BF', '#F7BA2A', '#FF9900']
       }
     },
     methods: {
+      //判断情况 如果type为preview -> 鉴权 然后拉取数据 是发布者的逻辑
+      //如果type为fill -> 执行getCondition 也就是填写者的逻辑
+      judgeSituation(type) {
+        if (type === "fill") {
+          this.getCondition();
+        } else if (type === "preview") {
+          checkToken(this.$store.state.token).then(() => {
+            this.showPreviewNotice();
+            this.getProblems();
+          })
+        }
+      },
       getCondition() {
         getCondition(this.$route.params.flag)
                 .then(res => {
@@ -120,6 +135,15 @@
                   //问卷不存在
                   this.$messageBox.showErrorMessage(this, "这个问卷不存在,请确认链接无误!");
                 })
+      },
+      showPreviewNotice(){
+        this.$notify({
+          title: "系统消息",
+          message: '当前您处在预览模式<p>注意：所有的提交都不会被保存',
+          type: 'success',
+          duration: 4000,
+          dangerouslyUseHTMLString: true,
+        });
       },
       checkKeys(res) {
         checkSecretKey(this.$route.params.flag, res)
@@ -149,6 +173,10 @@
         return requirement ? "*" : "";
       },
       submitComplete() {
+        if(this.situation === "preview"){
+          this.$messageBox.showInfoMessage(this, "当前是预览模式 提交不会被保存");
+          return;
+        }
         //必填项检验
         if (!this.checkIsComplete()) return;
         //设备检验 有限制 并且已经提交过
