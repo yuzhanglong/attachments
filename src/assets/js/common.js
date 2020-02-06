@@ -1,6 +1,6 @@
 const development = {
   serverBaseUrl: "http://192.168.0.129:5000",
-  webBaseUrl: "http://192.168.0.129:8080"
+  webBaseUrl: "http://localhost:8080"
 };
 
 const production = {

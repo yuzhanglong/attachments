@@ -38,12 +38,12 @@
     },
     methods: {
       priviewTempate(flag) {
-        console.log(flag);
+        window.open(this.globalData.webBaseUrl + "/complete/" + flag + "?type=preview");
       },
       addTempate(flag) {
         copyTemplates(this.$store.state.user, this.$store.state.token, flag)
                 .then(() => {
-                  this.$messageBox.showSuccessMessage(this, "添加成功!请刷新页面查看");
+                  window.location.reload();
                 })
                 .catch(() => {
                   this.$messageBox.showErrorMessage(this, "添加失败!");
@@ -57,6 +57,7 @@
   #template-list {
     height: 71vh;
   }
+
   .preview-button {
     padding-left: 24px;
     padding-right: 24px;
