@@ -136,7 +136,7 @@
     },
     methods: {
       gotoPreview(flag) {
-        window.open("http://192.168.0.129:8080/complete/" + flag + "?type=preview");
+        window.open(this.globalData.webBaseUrl + "/complete/" + flag + "?type=preview");
       },
       getNewPageData() {
         getQuestionnaireTemplates(this.templatesConfig.templateCurrentPage)

@@ -45,7 +45,8 @@
                 <div id="qr-bgc-container">
                   <div :class="getQRCodeBgcActive(index)" v-for="(index) in 10" :key="index"
                        @click="activeBgcImg = index">
-                    <img :src="`http://127.0.0.1:5000/utils/qrcode/qr_pictures/${index}`" alt="" width="80px" height="145px">
+                    <img :src="getQRmakerBgc(index)" alt="" width="80px"
+                         height="145px">
                   </div>
                 </div>
 
@@ -62,7 +63,7 @@
                     <img :src="shareQRCode" alt="" width="70px">
                   </div>
                   <div id="qr-code-post-right-phone-img">
-                    <img :src="`http://127.0.0.1:5000/utils/qrcode/qr_pictures/${activeBgcImg}`" alt="" width="197px">
+                    <img :src="activeBgcImgLink" alt="" width="197px">
                   </div>
                   <div id="qr-code-post-right-phone-base">
                     <img src="@/assets/img/postsMaker/iphonex.png" alt="" width="220px">
@@ -110,22 +111,30 @@
     data() {
       return {
         dialogVisible: false,
-        shareLink: "http://192.168.0.129:8080/complete/" + this.shareFlag + "?type=fill",
-        shareQRCode: "http://192.168.0.129:5000/utils/qrcode/get_code?flag=" + this.shareFlag,
+        shareLink: this.globalData.webBaseUrl + "/complete/" + this.shareFlag + "?type=fill",
+        shareQRCode: this.globalData.serverBaseUrl + "/utils/qrcode/get_code?flag=" + this.shareFlag,
         activeIndex: 1,
         activeBgcImg: 1
       }
     },
+    computed:{
+      activeBgcImgLink:function () {
+        return this.globalData.serverBaseUrl + '/utils/qrcode/qr_pictures/' + this.activeBgcImg
+      }
+    },
     methods: {
-      gotoPreview(){
-        window.open("http://192.168.0.129:8080/complete/" + this.shareFlag + "?type=preview");
+      getQRmakerBgc(index) {
+        return this.globalData.serverBaseUrl + "/utils/qrcode/qr_pictures/" + index;
+      },
+      gotoPreview() {
+        window.open(this.globalData.webBaseUrl + "/complete/" + this.shareFlag + "?type=preview");
       },
       getQRPost() {
         let bgcId = this.activeBgcImg;
         let styleType = this.activeIndex - 1;
         let title = this.questionnaireTitle;
         let flag = this.shareFlag;
-        window.open("http://192.168.0.129:5000/utils/qrcode/get_post?bgcid=" + bgcId + '&styletype=' + styleType + '&flag=' + flag + '&title=' + title)
+        window.open(this.globalData.serverBaseUrl + "/utils/qrcode/get_post?bgcid=" + bgcId + '&styletype=' + styleType + '&flag=' + flag + '&title=' + title)
       },
       checkIsShow(index) {
         return this.activeIndex === index

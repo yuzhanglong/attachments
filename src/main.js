@@ -8,9 +8,11 @@ import VueClipboard from 'vue-clipboard2'
 import messageBox from "./utils/messageBox";
 import '@/assets/css/normalize.css'
 import '@/assets/css/basicProblem.css'
+import globalData from '@/assets/js/common'
 
 
 Vue.config.productionTip = false;
+Vue.prototype.globalData = globalData.development;
 Vue.use(ElementUI);
 Vue.use(messageBox);
 Vue.use(VueClipboard);
