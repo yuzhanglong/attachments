@@ -5,7 +5,7 @@ const development = {
 
 const production = {
   serverBaseUrl: "http://api.yuzzl.top",
-  webBaseUrl: "http://yuzzl.top/questionnaire"
+  webBaseUrl: "http://wenjuan.yuzzl.top"
 };
 
 export default {
