@@ -4,9 +4,7 @@
 </template>
 
 <script>
-  import echarts from "echarts/lib/echarts";
-  import 'echarts/lib/component/tooltip'
-  import 'echarts/lib/component/legend'
+  import echarts from 'echarts'
   import 'echarts/map/js/china'
 
   export default {

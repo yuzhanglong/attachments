@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/',
   css: {
     loaderOptions: {
       stylus: {
@@ -6,5 +7,13 @@ module.exports = {
         'import': []
       }
     }
-  }
+  },
+  configureWebpack: {
+    externals: {
+      'echarts': 'echarts',
+      'element-ui': 'ELEMENT',
+      'vue': 'Vue',
+      'vue-router': 'VueRouter'
+    }
+  },
 }

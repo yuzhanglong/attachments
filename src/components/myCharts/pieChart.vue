@@ -16,12 +16,7 @@
 
 <script>
   // 基本组件
-  import echarts from 'echarts/lib/echarts'
-  //饼图
-  import 'echarts/lib/chart/pie'
-  // 提示框and图例
-  import 'echarts/lib/component/tooltip'
-  import 'echarts/lib/component/legend'
+  import echarts from 'echarts'
 
   export default {
     name: "pieChart",
@@ -41,13 +36,13 @@
     },
     created() {
       this.uniqueId = this.generateUniqueId();
-      if(!this.DataDict.length){
+      if (!this.DataDict.length) {
         this.chartsShow = false
       }
     },
     data() {
       return {
-        chartsShow:this.isShow,
+        chartsShow: this.isShow,
         uniqueId: "",
         reason: "这道题目没有人填写数据或者这道题目暂时不支持数据可视化展示"
       }
