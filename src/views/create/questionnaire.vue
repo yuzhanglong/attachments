@@ -260,6 +260,7 @@
       judgeSituation(targetRouter) {
         //新建情况
         if (targetRouter !== "new") {
+          document.title = "问卷设计-编辑";
           getQuesionNaireByFlag(this.$store.state.user, this.$store.state.token, targetRouter)
                   .then(res => {
                     this.questionnaireData = res['information']['questionnaireBasicData'];
@@ -275,6 +276,7 @@
             offset: 50
           });
         } else {
+          document.title = "问卷设计-新建";
           this.newQuestionnaire();
           this.dataIsSuccess = true;
           this.$notify({

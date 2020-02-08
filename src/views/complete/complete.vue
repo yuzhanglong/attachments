@@ -103,6 +103,13 @@
       }
     },
     methods: {
+      renewTitle() {
+        if (this.situation === 'fill') {
+          document.title = this.data.basicInfo.title
+        } else if (this.situation === 'preview') {
+          document.title = "预览-" + this.data.basicInfo.title;
+        }
+      },
       //判断情况 如果type为preview -> 鉴权 然后拉取数据 是发布者的逻辑
       //如果type为fill -> 执行getCondition 也就是填写者的逻辑
       judgeSituation(type) {
@@ -121,10 +128,12 @@
                   //问卷过期
                   this.condition = res['information'];
                   if (!this.condition['questionnaireCondition']) {
+                    document.title = "问卷已过期";
                     this.$messageBox.showInfoMessage(this, "这个问卷已经过期");
                     return
                   }
                   if (this.condition['questionnaireIsSecret']) {
+                    document.title = "身份验证";
                     this.$messageBox.showInfoMessage(this, "请输入密码以进入");
                     return
                   }
@@ -133,10 +142,11 @@
                 })
                 .catch(() => {
                   //问卷不存在
+                  document.title = "问卷不存在";
                   this.$messageBox.showErrorMessage(this, "这个问卷不存在,请确认链接无误!");
                 })
       },
-      showPreviewNotice(){
+      showPreviewNotice() {
         this.$notify({
           title: "系统消息",
           message: '当前您处在预览模式<p>注意：所有的提交都不会被保存',
@@ -160,6 +170,7 @@
         getProblems(this.$route.params.flag)
                 .then(res => {
                   this.data = res['information'];
+                  this.renewTitle();
                   let pSize = res['information']['problems'].length;
                   for (let i = 0; i < pSize; i++) {
                     this.problemResults.push({
@@ -173,7 +184,7 @@
         return requirement ? "*" : "";
       },
       submitComplete() {
-        if(this.situation === "preview"){
+        if (this.situation === "preview") {
           this.$messageBox.showInfoMessage(this, "当前是预览模式 提交不会被保存");
           return;
         }

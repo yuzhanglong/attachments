@@ -2,29 +2,7 @@
   <div id="analysis">
     <el-row>
       <div id="top-nav-container">
-        <nav-bar line-height="line-height: 64px">
-          <template v-slot:nav-left>
-            <i class="el-icon-arrow-left" @click="goBack"></i>
-          </template>
-          <template v-slot:nav-center>
-            <div id="step-bar">
-              <el-link type="primary" :underline="false">编辑项目</el-link>
-              <div class="icon-wrap">
-                <i class="el-icon-arrow-right"></i>
-              </div>
-              <el-link type="primary" :underline="false">发布项目</el-link>
-              <div class="icon-wrap">
-                <i class="el-icon-arrow-right"></i>
-              </div>
-              <el-link type="primary" :underline="false">统计报表</el-link>
-            </div>
-          </template>
-          <template v-slot:nav-right>
-            <div id="nav-right-setting">
-              <el-avatar></el-avatar>
-            </div>
-          </template>
-        </nav-bar>
+        <step-bar active-tag="3"></step-bar>
       </div>
     </el-row>
     <el-row>
@@ -82,10 +60,12 @@
   import navBar from "../../components/navBar/navBar";
   import {getAnalysisData} from "../../network/analysis";
   import GlobalChartBackground from "./ChlidComp/globalChartBackground";
+  import StepBar from "../../components/stepBar/stepBar";
 
   export default {
     name: "analysis",
     components: {
+      StepBar,
       GlobalChartBackground,
       chartBackground,
       navBar
@@ -108,9 +88,6 @@
     methods: {
       getClassName(index) {
         return index !== 0 ? "chart-card-wrap" : "chart-card-wrap-top"
-      },
-      goBack() {
-        this.$router.replace('/manage');
       },
       getAnalysisData() {
         getAnalysisData(this.$route.params.flag, this.$store.state.token)
@@ -194,26 +171,6 @@
     height: 63px;
   }
 
-  .icon-wrap {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  #nav-right-setting {
-    padding-top: 12px;
-    display: flex;
-    justify-content: center;
-  }
-
-  #step-bar {
-    display: flex;
-    justify-content: center;
-    background-color: #fff;
-  }
-
-  .el-icon-arrow-left {
-    margin-left: 20px;
-  }
 
   .chart-card-wrap-top {
     padding-top: 25vh;
@@ -232,4 +189,5 @@
     display: flex;
     justify-content: center;
   }
+
 </style>

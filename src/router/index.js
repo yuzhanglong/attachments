@@ -24,16 +24,25 @@ const routes = [
   {
     path: '/home',
     component: Home,
+    meta: {
+      title: '问卷调查平台'
+    }
   },
   //登录界面
   {
     path: '/login',
     component: Login,
+    meta: {
+      title: '问卷调查平台-登录'
+    }
   },
   //注册界面
   {
     path: '/register',
     component: Register,
+    meta: {
+      title: '问卷调查平台-注册'
+    }
   },
   //管理界面
   {
@@ -41,7 +50,8 @@ const routes = [
     component: Manage,
     meta: {
       //需要权限
-      requireAuth: true
+      requireAuth: true,
+      title: '问卷调查平台-管理'
     }
   },
   //问卷编辑
@@ -49,16 +59,19 @@ const routes = [
     path: '/questionnaire/:situation',
     component: Questionnaire,
     meta: {
-      //需要权限
-      requireAuth: true
+      requireAuth: true,
+      title: '问卷设计'
     }
   },
-  //问卷发布 flag可能的值
-  // 其他都为时间戳 表示对应的问卷
+  //问卷发布
   {
     path: '/spread/:flag',
     component: Spread,
+    meta: {
+      title: '问卷调查平台-发布'
+    }
   },
+  //问卷填写
   {
     path: '/complete/:flag',
     component: Complete,
@@ -69,12 +82,17 @@ const routes = [
     component: Analysis,
     meta: {
       //需要权限
-      requireAuth: true
+      requireAuth: true,
+      title: '问卷调查平台-数据分析'
     }
   },
+  //提交成功页面
   {
     path: '/success',
     component: Success,
+    meta: {
+      title: '提交成功啦'
+    }
   },
 ];
 
@@ -85,6 +103,9 @@ const router = new VueRouter({
 
 //注册一个全局前置守卫
 router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
   // 需要权限的路由跳转
   Store.state.token = localStorage.getItem('token');
   if (to.meta.requireAuth) { //判断接下来的页面是否需要权限
