@@ -18,7 +18,7 @@
     props: {
       lineHeight: {
         required: false,
-      }
+      },
     }
   }
 </script>

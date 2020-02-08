@@ -2,33 +2,14 @@
   <div id="spread">
     <el-row>
       <div id="top-nav-container">
-        <nav-bar line-height="line-height: 64px">
-          <template v-slot:nav-left>
-            <i class="el-icon-arrow-left" @click="goBack"></i>
+        <step-bar active-tag="2">
+          <template v-slot:step-right>
+            <el-button size="medium" type="primary" style="background-color:transparent; color: #2672ff"
+                       @click="submitQuestionnaireSpreadData">保存以下设置
+            </el-button>
+            <div style="margin-right: 30px"></div>
           </template>
-          <template v-slot:nav-center>
-            <div id="step-bar">
-              <el-link type="primary" :underline="false">编辑项目</el-link>
-              <div class="icon-wrap">
-                <i class="el-icon-arrow-right"></i>
-              </div>
-              <el-link type="primary" :underline="false">发布项目</el-link>
-              <div class="icon-wrap">
-                <i class="el-icon-arrow-right"></i>
-              </div>
-              <el-link type="primary" :underline="false">统计报表</el-link>
-            </div>
-          </template>
-          <template v-slot:nav-right>
-            <div id="nav-right-setting">
-              <el-button size="medium" type="primary" style="background-color:transparent; color: #2672ff"
-                         @click="submitQuestionnaireSpreadData">保存以下设置
-              </el-button>
-              <div style="margin-right: 30px"></div>
-              <el-avatar :src="tempHeadIconLink"></el-avatar>
-            </div>
-          </template>
-        </nav-bar>
+        </step-bar>
       </div>
     </el-row>
     <el-row>
@@ -105,16 +86,16 @@
 </template>
 
 <script>
-  import navBar from "@/components/navBar/navBar";
   import scrollBar from "@/components/scrollBar/scrollBar";
   import projectShare from "@/views/spread/childComp/projectShare";
   import {getQuesionNaireByFlag} from "@/network/questionnaire";
   import {submitQuestionnaireSpreadData} from "@/network/questionnaire";
+  import StepBar from "../../components/stepBar/stepBar";
 
   export default {
     name: "spread",
     components: {
-      navBar,
+      StepBar,
       scrollBar,
       projectShare
     },
@@ -127,7 +108,6 @@
           "padding-top": "40px"
         },
         data: {},
-        tempHeadIconLink: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         showInfo: false,
       }
     },
@@ -200,11 +180,6 @@
     background-color: #f3f5f6;
   }
 
-  #nav-right-setting {
-    padding-top: 12px;
-    display: flex;
-    justify-content: center;
-  }
 
   #top-nav-container {
     position: fixed;
@@ -214,20 +189,6 @@
     z-index: 10;
   }
 
-  #step-bar {
-    display: flex;
-    justify-content: center;
-    background-color: #fff;
-  }
-
-  .icon-wrap {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .el-icon-arrow-left {
-    margin-left: 20px;
-  }
 
   .setting-switch {
     padding-left: 18px;

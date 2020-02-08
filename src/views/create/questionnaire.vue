@@ -3,32 +3,13 @@
     <!--顶部导航栏-->
     <el-row>
       <div id="top-nav-container">
-        <nav-bar line-height="line-height: 64px">
-          <template v-slot:nav-left>
-            <i class="el-icon-arrow-left" @click="goBack"></i>
+        <step-bar active-tag="1">
+          <template v-slot:step-right>
+            <el-button type="primary" size="medium" style="margin-right: 30px"
+                       @click="goToSendQuestionnaire">发布并分享
+            </el-button>
           </template>
-          <template v-slot:nav-center>
-            <div id="step-bar">
-              <el-link type="primary" :underline="false">编辑项目</el-link>
-              <div class="icon-wrap">
-                <i class="el-icon-arrow-right"></i>
-              </div>
-              <el-link type="primary" :underline="false">发布项目</el-link>
-              <div class="icon-wrap">
-                <i class="el-icon-arrow-right"></i>
-              </div>
-              <el-link type="primary" :underline="false">统计报表</el-link>
-            </div>
-          </template>
-          <template v-slot:nav-right>
-            <div id="nav-right-setting">
-              <el-button type="primary" size="medium" style="margin-right: 30px"
-                         @click="goToSendQuestionnaire">发布并分享
-              </el-button>
-              <el-avatar :src="tempHeadIconLink"></el-avatar>
-            </div>
-          </template>
-        </nav-bar>
+        </step-bar>
       </div>
     </el-row>
     <el-row>
@@ -200,7 +181,6 @@
 
 <script>
   //基本组件
-  import navBar from "@/components/navBar/navBar";
   import leftNavBar from "@/components/leftNavBar/leftNavBar";
   import problemTypeItem from "@/views/create/childComp/problemTypeItem";
   import popOver from "@/views/create/childComp/popOver";
@@ -224,12 +204,13 @@
     editQuestionnaireBasicInfo,
     newQuestionnaire
   } from "../../network/questionnaireEdition";
+  import StepBar from "../../components/stepBar/stepBar";
 
   export default {
     name: "questionnaire",
     components: {
+      StepBar,
       //基本组件
-      navBar,
       leftNavBar,
       problemTypeItem,
       popOver,
@@ -256,7 +237,6 @@
     data() {
       return {
         dataIsSuccess: false,
-        tempHeadIconLink: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         activeProblem: "",
         setting: {
           requireSwitchAbility: false
@@ -408,16 +388,6 @@
     z-index: 10;
   }
 
-  #step-bar {
-    display: flex;
-    justify-content: center;
-    background-color: #fff;
-  }
-
-  .icon-wrap {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
 
   #left-nav-container {
     position: fixed;
@@ -449,9 +419,6 @@
     background-color: #ffffff;
   }
 
-  .el-icon-arrow-left {
-    margin-left: 20px;
-  }
 
   .setting-switch {
     padding-left: 18px;

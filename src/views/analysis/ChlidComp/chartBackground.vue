@@ -7,7 +7,8 @@
       </div>
       <div class="chart-img">
         <pie-chart :float-text="'Question ' + (questionNum + 1)" :data-dict="getDataDict()"
-                   :is-show="checkIsShow(questionData.type)"></pie-chart>
+                   :is-show="checkIsShow(questionData.type)">
+        </pie-chart>
       </div>
       <div class="chart-table">
         <el-table
@@ -82,8 +83,9 @@
       getDataDict() {
         let list = [];
         this.questionData.static.forEach(data => {
+          if (!data.numbers) return true;
           list.push({
-            value: data.numbers !== 0 ? data.numbers : null,
+            value: data.numbers,
             name: data.title
           })
         });
