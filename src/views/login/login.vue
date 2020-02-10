@@ -24,7 +24,15 @@
         }
       }
     },
+    created() {
+      this.checkLogin();
+    },
     methods: {
+      checkLogin() {
+        if (window.localStorage.getItem('token') != null) {
+          this.$router.replace('/manage');
+        }
+      },
       userLogin() {
         if (this.loginData.userName === '' || this.loginData.userPassword === '') {
           this.$messageBox.showErrorMessage(this, "请完成所有必填项！");
