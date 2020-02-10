@@ -88,7 +88,7 @@
           </el-image>
         </div>
         <div class="qr-code-text-bottom">
-          <el-link :href="shareQRCode" target="_blank">下载二维码</el-link>
+          <el-link :href="downloadQRCode" target="_blank">下载二维码</el-link>
         </div>
       </div>
 
@@ -112,13 +112,14 @@
       return {
         dialogVisible: false,
         shareLink: this.globalData.webBaseUrl + "/complete/" + this.shareFlag + "?type=fill",
-        shareQRCode: this.globalData.serverBaseUrl + "/utils/qrcode/get_code?flag=" + this.shareFlag,
+        shareQRCode: this.globalData.serverBaseUrl + "/utils/qrcode/get_qr_code?flag=" + this.shareFlag,
+        downloadQRCode: this.globalData.serverBaseUrl + "/utils/qrcode/download_qr_code?flag=" + this.shareFlag,
         activeIndex: 1,
         activeBgcImg: 1
       }
     },
-    computed:{
-      activeBgcImgLink:function () {
+    computed: {
+      activeBgcImgLink: function () {
         return this.globalData.serverBaseUrl + '/utils/qrcode/qr_pictures/' + this.activeBgcImg
       }
     },
@@ -134,7 +135,7 @@
         let styleType = this.activeIndex - 1;
         let title = this.questionnaireTitle;
         let flag = this.shareFlag;
-        window.open(this.globalData.serverBaseUrl + "/utils/qrcode/get_post?bgcid=" + bgcId + '&styletype=' + styleType + '&flag=' + flag + '&title=' + title)
+        window.open(`${this.globalData.serverBaseUrl}/utils/qrcode/download_qr_post?backgroundid=${bgcId}&styletype=${styleType}&flag=${flag}&title=${title}`)
       },
       checkIsShow(index) {
         return this.activeIndex === index
