@@ -32,6 +32,7 @@
       this.scroll = new BScroll(this.$refs.wrap, {
         //注意这里必须设置 click: true 否则原生事件无法点击
         click: true,
+        tap: true,
         probeType: this.probeType,
         pullUpLoad: this.pullUpLoad
       });
