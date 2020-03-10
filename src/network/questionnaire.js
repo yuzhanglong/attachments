@@ -49,3 +49,22 @@ export function getAllQuestionnire() {
     auth: {username: Authentication.getToken()}
   })
 }
+
+
+export function deleteQuestionnire(qid) {
+  return request({
+    method: 'post',
+    url: 'questionnaires/delete',
+    headers: {
+      showLoading: true,
+      showLoadingType: 0,
+    },
+    data: {
+      "questionnaireId": qid
+    },
+    auth: {username: Authentication.getToken()}
+  })
+}
+
+
+

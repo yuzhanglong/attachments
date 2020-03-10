@@ -1,3 +1,11 @@
+class Questionnaire {
+  constructor(json) {
+    this.basicInfo = new QuestionnaireCondition(json['basicInfo']);
+    this.problems = json['problems'];
+  }
+}
+
+
 class QuestionnaireCondition {
   constructor(json) {
     this.condition = json['condition'];
@@ -16,11 +24,12 @@ class QuestionnaireCondition {
 }
 
 export {
-  QuestionnaireCondition
+  QuestionnaireCondition,
+  Questionnaire
 }
 
 /*
-* "condition": false,
+*   "condition": false,
     "deadline": "Mon, 27 Jan 2020 11:29:18 GMT",
     "deadlineControl": true,
     "equipmentControl": true,

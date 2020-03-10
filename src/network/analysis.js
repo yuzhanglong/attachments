@@ -1,4 +1,4 @@
-import {request} from "@/network/request";
+import {request} from "../network/request";
 
 export function getAnalysisData(flag, token) {
   return request({

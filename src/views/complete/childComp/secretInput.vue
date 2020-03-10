@@ -37,6 +37,8 @@
     padding-top: 30vh;
     display: flex;
     flex-direction: column;
+    align-content: center;
+    align-items: center;
   }
 
   #the-secret-input {
@@ -50,5 +52,9 @@
     padding-top: 20px;
     display: flex;
     justify-content: center;
+  }
+
+  #secret-input-group {
+    width: 30vw;
   }
 </style>

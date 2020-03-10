@@ -102,7 +102,7 @@
 
 
   //数据处理
-  import {getAllQuestionnire} from "../../network/questionnaire";
+  import {deleteQuestionnire, getAllQuestionnire} from "../../network/questionnaire";
   import navBar from "../../components/navBar/navBar";
   import TemplateList from "./childComp/templateList";
   import {QuestionnaireCondition} from "../../models/questionnaire_model";
@@ -154,15 +154,19 @@
         //     this.$messageBox.showErrorMessage(this, "添加失败!");
         //   })
       },
+
       showTemplateContainer() {
         this.templatesConfig.templateContainerVisiable = true
       },
+
       gotoAlalysis(flag) {
         this.$router.push('/analysis/' + flag);
       },
+
       gotoSpread(flag) {
         this.$router.push('/spread/' + flag);
       },
+
       getQuesionNaire() {
         getAllQuestionnire()
           .then(res => {
@@ -172,43 +176,51 @@
             }
           })
           .catch(() => {
-            this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
+            this.$messageBox.showInfoMessage(this, "当前还没有问卷 快去创建一个吧");
           })
       },
-      confirmDelete(flag) {
+
+      confirmDelete(qid) {
         this.$confirm('此操作将永久删除该项目, 是否继续?', '注意', {
           confirmButtonText: '确定删除',
           cancelButtonText: '我再想想',
           type: 'warning'
         }).then(() => {
-          this.deleteQuesionNaire(flag)
+          this.deleteQuesionNaire(qid)
         }).catch(() => {
           this.$messageBox.showInfoMessage(this, "用户已取消");
         });
       },
-      deleteQuesionNaire() {
-        // deleteQuesionNaire(this.$store.state.user, this.$store.state.token, flag)
-        //   .then(() => {
-        //     this.$messageBox.showSuccessMessage(this, "删除项目成功!");
-        //     this.getQuesionNaire();
-        //   });
+
+      deleteQuesionNaire(qid) {
+        deleteQuestionnire(qid)
+          .then(() => {
+            this.$messageBox.showSuccessMessage(this, "删除项目成功!");
+            this.myQuestionnaire = [];
+            this.getQuesionNaire();
+          });
       },
+
       gotoEdit(target) {
         this.$router.push('/questionnaire/' + target);
       },
+
       showCondition(index) {
-        let code = this.myQuestionnaire[index]['questionnaireCondition'];
+        let code = this.myQuestionnaire[index].condition;
         return code ? "发布中" : "未发布"
       },
+
       showConditionStyle(index) {
-        let code = this.myQuestionnaire[index]['questionnaireCondition'];
+        let code = this.myQuestionnaire[index].condition;
         return code ? "success" : "warning"
       },
+
       getCardStyle(width) {
         return {
           "width": width + "px"
         }
       },
+
       gotoCreatequestionnaire() {
         this.$router.push('/questionnaire/new');
       }
