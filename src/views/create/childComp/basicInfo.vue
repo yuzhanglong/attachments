@@ -82,7 +82,7 @@
   #basic-info {
     margin-top: 31px;
     background-color: #ffffff;
-    width: calc(100vw - 620px);
+    width: calc(100vw - 570px);
     height: 140px;
   }
 </style>

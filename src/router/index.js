@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Store from '@/store/index'
 
 const Home = () => import('@/views/home/home');
 const Register = () => import('@/views/register/register');
@@ -102,24 +101,24 @@ const router = new VueRouter({
 });
 
 //注册一个全局前置守卫
-router.beforeEach((to, from, next) => {
-  if (to.meta.title) {
-    document.title = to.meta.title
-  }
-  // 需要权限的路由跳转
-  Store.state.token = localStorage.getItem('token');
-  if (to.meta.requireAuth) { //判断接下来的页面是否需要权限
-    if (Store.state.token !== null) {//token不为空
-      next();   //跳转到对应页面
-    } else {      //没有token,跳转到登录界面
-      next({
-        path: '/login',
-      });
-    }
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.title) {
+//     document.title = to.meta.title
+//   }
+//   // 需要权限的路由跳转
+//   Store.state.token = localStorage.getItem('token');
+//   if (to.meta.requireAuth) { //判断接下来的页面是否需要权限
+//     if (Store.state.token !== null) {//token不为空
+//       next();   //跳转到对应页面
+//     } else {      //没有token,跳转到登录界面
+//       next({
+//         path: '/login',
+//       });
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 
 export default router

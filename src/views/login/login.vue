@@ -13,6 +13,7 @@
 
 <script>
   import {userLogin} from "@/network/user";
+  import {Authentication, ErrorResponse} from "../../models/response_model";
 
   export default {
     name: "login",
@@ -20,7 +21,7 @@
       return {
         loginData: {
           userName: "",
-          userPassword: ""
+          userPassword: "",
         }
       }
     },
@@ -33,25 +34,25 @@
           this.$router.replace('/manage');
         }
       },
+
       userLogin() {
         if (this.loginData.userName === '' || this.loginData.userPassword === '') {
           this.$messageBox.showErrorMessage(this, "请完成所有必填项！");
-        } else if (this.loginData.userName.length < 5 || this.loginData.userName.length > 10) {
+        } else if (this.loginData.userName.length > 10) {
           this.$messageBox.showErrorMessage(this, "用户名格式错误");
         } else {
           userLogin(this.loginData.userName, this.loginData.userPassword)
                   .then(res => {
-                    this.$messageBox.showSuccessMessage(this, res['information']);
-                    this.$store.commit("setToken", res['token']);
-                    this.$store.commit("setUser", this.loginData.userName);
+                    let r = new Authentication(res);
+                    r.saveToken();
+                    this.$messageBox.showSuccessMessage(this, r.information);
                     this.$router.replace('/manage')
                   })
                   .catch(res => {
-                    this.$messageBox.showErrorMessage(this, res['information']);
+                    let r = new ErrorResponse(res);
+                    this.$messageBox.showErrorMessage(this, r.information);
                   })
         }
-
-
       }
     }
   }

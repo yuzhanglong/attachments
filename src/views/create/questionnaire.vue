@@ -1,5 +1,5 @@
 <template>
-  <div id="questionnaire" v-if="dataIsSuccess">
+  <div id="questionnaire">
     <!--顶部导航栏-->
     <el-row>
       <div id="top-nav-container">
@@ -25,7 +25,7 @@
               <template v-slot:ref>
                 <problem-type-item itemicon="el-icon-menu"
                                    problem-type="单选题"
-                                   @click.native="appendOneProblem('singleSelect')">
+                                   @click.native="appendOneProblem('SINGLE_SELECT')">
                 </problem-type-item>
               </template>
             </pop-over>
@@ -36,7 +36,7 @@
               </template>
               <template v-slot:ref>
                 <problem-type-item itemicon="el-icon-menu" problem-type="多选题"
-                                   @click.native="appendOneProblem('multiplySelect')">
+                                   @click.native="appendOneProblem('MULTIPLY_SELECT')">
 
                 </problem-type-item>
               </template>
@@ -48,7 +48,7 @@
               <template v-slot:ref>
                 <problem-type-item itemicon="el-icon-menu"
                                    problem-type="填空题"
-                                   @click.native="appendOneProblem('blankFill')">
+                                   @click.native="appendOneProblem('BLANK_FILL')">
                 </problem-type-item>
               </template>
             </pop-over>
@@ -59,7 +59,7 @@
               <template v-slot:ref>
                 <problem-type-item itemicon="el-icon-menu"
                                    problem-type="下拉题"
-                                   @click.native="appendOneProblem('dropDown')">
+                                   @click.native="appendOneProblem('DROP_DOWN')">
                 </problem-type-item>
               </template>
             </pop-over>
@@ -70,7 +70,7 @@
               <template v-slot:ref>
                 <problem-type-item itemicon="el-icon-menu"
                                    problem-type="评价题"
-                                   @click="appendOneProblem('score')">
+                                   @click.native="appendOneProblem('SCORE')">
                 </problem-type-item>
               </template>
             </pop-over>
@@ -89,6 +89,8 @@
             <problem-type-item itemicon="el-icon-menu" problem-type="信息表"></problem-type-item>
           </left-nav-bar>
         </div>
+
+
         <!--中间题目-->
       </el-col>
       <el-col :span="20">
@@ -99,47 +101,88 @@
               <basic-info @passData="getBasicInfo"
                           :recover-data="questionnaireData.basicInfo">
               </basic-info>
-              <!--这里的index是动态的-->
-              <div v-for="(problem, index) in questionnaireData.problems" :key="index + new Date().getTime()">
-                <single-select v-if="problem.common.type === 'singleSelect'"
-                               @click.native="getActiveProblem(index)"
-                               :problem-index="index"
-                               :recover-data="problem.common"
-                               :questionnaireFlag="questionnaireData.questionnaireFlag">
-                </single-select>
-                <multiply-select v-if="problem.common.type === 'multiplySelect'"
-                                 @click.native="getActiveProblem(index)"
-                                 :problem-index="index" :recover-data="problem.common"
-                                 :questionnaireFlag="questionnaireData.questionnaireFlag">
-                </multiply-select>
-                <blank-fill v-if="problem.common.type === 'blankFill'"
-                            @click.native="getActiveProblem(index)"
-                            :problem-index="index"
-                            :recover-data="problem.common"
-                            :questionnaireFlag="questionnaireData.questionnaireFlag">
-                </blank-fill>
-                <drop-down v-if="problem.common.type === 'dropDown'"
-                           @click.native="getActiveProblem(index)"
-                           :problem-index="index"
-                           :recover-data="problem.common"
-                           :questionnaireFlag="questionnaireData.questionnaireFlag">
 
-                </drop-down>
-                <score v-if="problem.common.type === 'score'"
-                       @click.native="getActiveProblem(index)"
-                       :problem-index="index"
-                       :recover-data="problem.common">
-                </score>
-                <nps v-if="problem.common.type === 'nps'"
-                     @click.native="getActiveProblem(index)"
-                     :problem-index="index"
-                     :recover-data="problem.common">
-                </nps>
+
+              <!--这里的index是动态的-->
+              <div v-for="(problem, problemIndex) in questionnaireData.problems"
+                   :key="problemIndex + new Date().getTime()">
+                <problem-card :problem-type="problem.type"
+                              :question-number="problemIndex" @click.native="getActiveProblem(problemIndex)">
+                  <!--插入问题标题输入框-->
+                  <template v-slot:problem-name>
+                    <label>
+                      <input class="title-input"
+                             v-model="problem.title"
+                             @focus="titleInputFocus(problem)"
+                             @blur="titleInputBlur(problem)">
+                    </label>
+                  </template>
+
+                  <template v-slot:problem-body>
+                    <!--有选项的问题类型 例如 单选 多选题 下拉题-->
+                    <div class="choices" v-if="checkType(problem.type)">
+                      <div class="selection" v-for="(data, optionIndex) in problem.options" :key="data.key">
+
+                        <!--选项前缀-->
+                        <el-radio value="false" v-if="problem.type === 'SINGLE_SELECT'">
+                          选项{{getOptionNumber(optionIndex)}}
+                        </el-radio>
+                        <el-checkbox value="false" v-if="problem.type === 'MULTIPLY_SELECT'">
+                          选项{{getOptionNumber(optionIndex)}}
+                        </el-checkbox>
+                        <i class="el-icon-caret-bottom" v-if="problem.type === 'DROP_DOWN'">
+                          选项{{getOptionNumber(optionIndex)}}
+                        </i>
+                        <!--选项输入框-->
+                        <label>
+                          <input class="choice-input" v-model="data.title" @blur="editOneProblem(problem)">
+                        </label>
+
+                        <!--选项删除按钮框-->
+                        <el-button type="danger" icon="el-icon-delete"
+                                   circle size="small" class="delete-button"
+                                   @click="deleteOneOption(problem, problemIndex, optionIndex)">
+                        </el-button>
+                      </div>
+                    </div>
+
+                    <div class="score-wrap" v-if="problem.type === 'SCORE'">
+                      <div class="star-show-items">
+                        <i class="el-icon-star-off"></i>
+                        <i class="el-icon-star-off"></i>
+                        <i class="el-icon-star-off"></i>
+                        <i class="el-icon-star-off"></i>
+                        <i class="el-icon-star-off"></i>
+                      </div>
+                    </div>
+
+                    <el-input
+                            type="textarea"
+                            v-if="problem.type === 'BLANK_FILL'"
+                            autosize
+                            placeholder="本题应在此处进行作答"
+                            class="blank-fill-input">
+                    </el-input>
+
+
+                  </template>
+
+                  <!--添加选项按钮-->
+                  <template v-slot:problem-bottom v-if="checkType(problem.type)">
+                    <el-link type="primary" icon="el-icon-plus"
+                             class="plus-tag"
+                             @click="appendOneOption(problem, problemIndex)"
+                    >添加选项
+                    </el-link>
+                  </template>
+                </problem-card>
               </div>
             </div>
           </scroll-bar>
         </div>
       </el-col>
+
+
       <!--右侧设置-->
       <el-col :span="2">
         <div id="right-setting">
@@ -156,19 +199,18 @@
                 <template slot="title">基本设置</template>
                 <el-menu-item>设置为必填项
                   <el-switch class="setting-switch"
-                             v-model="questionnaireData.problems[activeProblem].globalSetting.required"
-                             @change="editProblemBasicInfo"></el-switch>
+                             v-model="questionnaireData.problems[activeProblem].isRequire"
+                             @change="setProblemRequired()"></el-switch>
                 </el-menu-item>
               </el-menu-item-group>
               <el-menu-item-group>
                 <template slot="title">危险项</template>
                 <el-menu-item>删除
-                  <el-button class="delete-button" type="danger" size="mini" @click="deleteOneProblem(activeProblem)">
+                  <el-button class="delete-button" type="danger" size="mini" @click="deleteOneProblem()">
                     删除这道题目
                   </el-button>
                 </el-menu-item>
               </el-menu-item-group>
-
             </el-menu>
           </div>
 
@@ -181,34 +223,30 @@
 
 <script>
   //基本组件
-  import leftNavBar from "@/components/leftNavBar/leftNavBar";
-  import problemTypeItem from "@/views/create/childComp/problemTypeItem";
-  import popOver from "@/views/create/childComp/popOver";
-  import scrollBar from "@/components/scrollBar/scrollBar";
+  import leftNavBar from "../../components/leftNavBar/leftNavBar";
+  import problemTypeItem from "./childComp/problemTypeItem";
+  import popOver from "./childComp/popOver";
+  import scrollBar from "../../components/scrollBar/scrollBar";
+  // import {Questionnaire} from "../../models/questionnaire_model";
 
   //题目组件
-  import basicInfo from "@/views/create/childComp/questionnaireItems/basicInfo";
-  import singleSelect from "@/views/create/childComp/questionnaireItems/singleSelect";
-  import multiplySelect from "@/views/create/childComp/questionnaireItems/multiplySelect";
-  import blankFill from "@/views/create/childComp/questionnaireItems/blankFill";
-  import dropDown from "@/views/create/childComp/questionnaireItems/dropDown";
-  import score from "@/views/create/childComp/questionnaireItems/score";
-  import nps from "@/views/create/childComp/questionnaireItems/nps";
+  import basicInfo from "./childComp/basicInfo";
 
   //数据处理
-  import {checkToken} from "@/network/user";
-  import {getQuesionNaireByFlag} from "@/network/questionnaire";
   import {
     appendOneProblem,
-    deleteOneProblem, editProblemBasicInfo,
-    editQuestionnaireBasicInfo,
-    newQuestionnaire
+    createQuestionnaire, deleteOneProblem,
+    editOneProblem,
+    editQuestionnaireBasicInfo
   } from "../../network/questionnaireEdition";
   import StepBar from "../../components/stepBar/stepBar";
+  import ProblemCard from "./childComp/problemCard";
+  import {getQuesionnaire} from "../../network/questionnaire";
 
   export default {
     name: "questionnaire",
     components: {
+      ProblemCard,
       StepBar,
       //基本组件
       leftNavBar,
@@ -218,55 +256,75 @@
 
       //题目组件
       basicInfo,
-      singleSelect,
-      multiplySelect,
-      blankFill,
-      dropDown,
-      score,
-      nps
     },
     created() {
       this.judgeSituation(this.$route.params.situation);
-      checkToken(this.$store.state.token)
-              .catch(() => {
-                this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
-                this.$router.replace('/login');
-                this.$store.commit("removeTokenAndUser");
-              });
     },
     data() {
       return {
-        dataIsSuccess: false,
+        // 用户访问的类型 0表示新建 1 表示编辑
+        choicesProblemType: ["SINGLE_SELECT", "MULTIPLY_SELECT", "DROP_DOWN"],
+        type: 0,
         activeProblem: "",
         setting: {
           requireSwitchAbility: false
         },
         questionnaireData: {
-          //创建好就给flag 防止用户多次保存而出现一大堆问卷
-          questionnaireFlag: new Date().getTime(),
-          sender: this.$store.state.user,
           basicInfo: {
             title: "请在这里创建一个问卷标题",
-            subTitle: "感谢您能抽出几分钟时间来参加本次问卷调查，现在我们就马上开始吧！"
+            subTitle: "感谢您能抽出几分钟时间来参加本次问卷调查，现在我们就马上开始吧！",
+            questionnireId: null
           },
           problems: []
         },
       }
     },
     methods: {
-      //跳转到此页面情形
-      // 1.新建问卷 2.编辑问卷
-      // 可以用动态路由来区分之
+      setProblemRequired() {
+        let data = this.questionnaireData.problems[this.activeProblem];
+        this.editOneProblem(data);
+      },
+      titleInputFocus(problemInfo) {
+        console.log(problemInfo);
+      },
+      titleInputBlur(problemInfo) {
+        this.editOneProblem(problemInfo)
+      },
+
+      // 编辑一个问题
+      editOneProblem(problemInfo) {
+        editOneProblem(problemInfo).catch(() => {
+          console.log("error");
+        });
+      },
+
+      deleteOneOption(problemInfo, problemIndex, optionIndex) {
+        this.questionnaireData.problems[problemIndex].options.splice(optionIndex, 1);
+        this.editOneProblem(problemInfo);
+      },
+      getOptionNumber(index) {
+        return index <= 8 ? "0" + String(index + 1) : index + 1;
+      },
+      checkType(type) {
+        return this.choicesProblemType.indexOf(type) !== -1;
+      },
+      appendOneOption(problemInfo, problemIndex) {
+        this.questionnaireData.problems[problemIndex].options.push({
+          optionId: new Date().getTime(),
+          title: ""
+        });
+        this.editOneProblem(problemInfo);
+      },
+      // 页面初始化
       judgeSituation(targetRouter) {
         //新建情况
         if (targetRouter !== "new") {
           document.title = "问卷设计-编辑";
-          getQuesionNaireByFlag(this.$store.state.user, this.$store.state.token, targetRouter)
-                  .then(res => {
-                    this.questionnaireData = res['information']['questionnaireBasicData'];
-                    console.log(this.questionnaireData);
-                    this.dataIsSuccess = true;
-                  });
+          console.log(targetRouter);
+          getQuesionnaire(targetRouter).then((res) => {
+            this.questionnaireData = res;
+          });
+
           //通过flag拿到需要编辑的问卷数据
           this.$notify({
             title: "系统消息",
@@ -276,9 +334,9 @@
             offset: 50
           });
         } else {
+          this.type = 0;
           document.title = "问卷设计-新建";
-          this.newQuestionnaire();
-          this.dataIsSuccess = true;
+          this.createQuestionnaire();
           this.$notify({
             title: '系统消息',
             message: '当前您处在新建模式',
@@ -288,57 +346,88 @@
           });
         }
       },
+
+
       /*问卷发布相关
       *
       * */
       editProblemBasicInfo() {
-        let globalSet = this.questionnaireData.problems[this.activeProblem].globalSetting;
-        editProblemBasicInfo(this.$store.state.token, this.questionnaireData.questionnaireFlag, this.activeProblem, "None", globalSet);
+        editQuestionnaireBasicInfo(this.questionnaireData.basicInfo).catch(() => {
+          this.$messageBox.showErrorMessage(this, "抱歉 编辑失败 请检查网络状况");
+        })
       },
+
+      //路由跳转到发布界面
       goToSendQuestionnaire() {
-        //路由跳转到发布界面
         this.$router.push('/spread/' + this.$route.params.situation);
       },
-      newQuestionnaire() {
-        newQuestionnaire(this.$store.state.user, this.$store.state.token, this.questionnaireData.questionnaireFlag, this.questionnaireData)
-                .catch(() => {
-                  this.$messageBox.showErrorMessage(this, "ERROR!");
-                })
+
+      createQuestionnaire() {
+        createQuestionnaire()
+          .then((res) => {
+            this.questionnaireData.basicInfo.questionnireId = res['questionnaireId'];
+          })
+          .catch(() => {
+            this.$messageBox.showErrorMessage(this, "抱歉 问卷获取失败");
+          })
       },
-      appendOneProblem(problemType) {
-        let pushData = {
-          //制造唯一id
-          problemId: new Date().getTime(),
-          globalSetting: {
-            required: false
-          },
-          common: {
-            type: problemType,
-            title: "",
-            options: []
-          }
+
+
+      // 添加一个问题
+      async appendOneProblem(problemType) {
+        let problemTypeChineseNameMap = {
+          "SINGLE_SELECT": "单选题",
+          "MULTIPLY_SELECT": "多选题",
+          "BLANK_FILL": "填空题",
+          "DROP_DOWN": "下拉题",
+          "SCORE": "评价题"
         };
-        if (problemType === 'blankFill') {
-          delete pushData.common.options
+
+        let dataToPush = {
+          //制造唯一id
+          type: problemType,
+          title: `点我为这道${problemTypeChineseNameMap[problemType]}创建一个标题`,
+          options: [],
+          targetQuestionnireId: this.questionnaireData.basicInfo.questionnireId,
+          isRequire: false,
+          problemId: null
+        };
+
+        let qid;
+        try {
+          qid = await appendOneProblem(dataToPush);
+        } catch (e) {
+          this.$messageBox.showErrorMessage(this, "抱歉 添加题目失败");
+          return
         }
-        this.questionnaireData.problems.push(pushData);
-        appendOneProblem(this.$store.state.token, this.questionnaireData.questionnaireFlag, pushData.common, pushData.problemId);
+        dataToPush.problemId = qid['problemId'];
+        this.questionnaireData.problems.push(dataToPush);
       },
+
+
       //删除一个problem 需要传入要删除的下标
-      deleteOneProblem(index) {
-        this.questionnaireData.problems.splice(index, 1);
+      async deleteOneProblem() {
+        let problemId = this.questionnaireData.problems[this.activeProblem].problemId;
+        try {
+          await deleteOneProblem(problemId);
+        } catch (e) {
+          this.$messageBox.showErrorMessage(this, "抱歉 删除题目失败");
+          return
+        }
+        this.questionnaireData.problems.splice(this.activeProblem, 1);
         this.activeProblem = "";
-        deleteOneProblem(this.$store.state.token, this.questionnaireData.questionnaireFlag, index);
       },
-      //获取当前鼠标点击下的问题 并传入data.activeProblem
+
       getBasicInfo(res) {
         this.questionnaireData.basicInfo.title = res.title;
         this.questionnaireData.basicInfo.subTitle = res.subTitle;
-        editQuestionnaireBasicInfo(this.$store.state.token, this.questionnaireData.questionnaireFlag, res);
+        this.editProblemBasicInfo();
       },
+
       getActiveProblem(index) {
         this.activeProblem = index;
       },
+
       goBack() {
         this.$router.replace('/manage');
       },
@@ -416,9 +505,16 @@
     position: fixed;
     top: 85px;
     right: 20px;
-    width: 400px;
+    width: 350px;
     height: 87%;
     background-color: #ffffff;
+  }
+
+  .choices {
+    display: flex;
+    padding-top: 10px;
+    padding-left: 60px;
+    flex-direction: column;
   }
 
 
@@ -428,5 +524,51 @@
 
   .delete-button {
     margin-left: 70px;
+  }
+
+  .title-input {
+    font-size: 18px;
+    border: none;
+    width: calc(100vw - 790px);
+    margin-top: 20px;
+    padding-left: 15px;
+    margin-left: 40px;
+    margin-bottom: 8px;
+    background-color: #ffffff;
+    height: 40px;
+  }
+
+  .plus-tag {
+    margin-top: 20px;
+    margin-left: 60px;
+  }
+
+  .selection {
+    padding-bottom: 10px;
+  }
+
+  .blank-fill-input {
+    width: calc(100vw - 820px);
+    padding-left: 15px;
+    margin-left: 40px;
+    margin-top: 10px;
+  }
+
+  .star-show-items {
+    display: flex;
+    width: 200px;
+  }
+
+  .score-wrap {
+    display: flex;
+    padding-top: 10px;
+    padding-left: 60px;
+    flex-direction: column;
+  }
+
+  .el-icon-star-off {
+    flex-grow: 0.5;
+    font-size: 25px;
+    margin-top: 15px;
   }
 </style>

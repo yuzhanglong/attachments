@@ -92,7 +92,6 @@
         </el-pagination>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -166,16 +165,15 @@
         this.$router.push('/spread/' + flag);
       },
       getQuesionNaire() {
-        getQuesionNaire(this.$store.state.user, this.$store.state.token)
+        getQuesionNaire()
                 .then(res => {
-                  this.myQuestionnaire = res['information'];
-                  this.templatesConfig.totalPage = res['pages'];
-                  this.getQuestionnaireTemplates();
+                  console.log(res);
+                  // this.myQuestionnaire = res['information'];
+                  // this.templatesConfig.totalPage = res['pages'];
+                  // this.getQuestionnaireTemplates();
                 })
                 .catch(() => {
                   this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
-                  this.$router.replace('/login');
-                  this.$store.commit("removeTokenAndUser");
                 })
       },
       getQuestionnaireTemplates() {

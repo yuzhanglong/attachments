@@ -1,4 +1,5 @@
 import {request} from "@/network/request";
+import {Authentication} from "../models/response_model";
 
 
 export function getQuesionNaire(userName, token) {
@@ -53,6 +54,18 @@ export function submitQuestionnaireSpreadData(userName, token, flag, dataDict) {
   })
 }
 
+export function getQuesionnaire(qid) {
+  return request({
+    method: 'get',
+    url: '/questionnaires/get_questionnire/' + qid,
+    headers: {
+      showLoading: true,
+      showLoadingType: 0,
+    },
+    auth: {username: Authentication.getToken()}
+  })
+}
+
 export function getQuestionnaireTemplates(page) {
   return request({
     method: 'get',
@@ -79,4 +92,3 @@ export function copyTemplates(userName, token, targetFlag) {
     }
   })
 }
-
