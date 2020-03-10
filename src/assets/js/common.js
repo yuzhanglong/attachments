@@ -1,5 +1,5 @@
 const development = {
-  serverBaseUrl: "http://192.168.0.129:5000",
+  serverBaseUrl: "http://127.0.0.1:5000",
   webBaseUrl: "http://localhost:8080"
 };
 

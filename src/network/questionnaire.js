@@ -1,58 +1,5 @@
-import {request} from "@/network/request";
+import {request} from "../network/request";
 import {Authentication} from "../models/response_model";
-
-
-export function getQuesionNaire(userName, token) {
-  return request({
-    method: 'post',
-    url: '/questionnaire/get_data',
-    data: {
-      userName: userName,
-      token: token,
-    },
-    headers: {
-      showLoading: true,
-      showLoadingType: 0
-    }
-  })
-}
-
-export function getQuesionNaireByFlag(userName, token, flag) {
-  return request({
-    method: 'post',
-    url: '/questionnaire/get_data_by_flag',
-    data: {
-      userName: userName,
-      token: token,
-      flag: flag
-    }
-  })
-}
-
-export function deleteQuesionNaire(userName, token, flag) {
-  return request({
-    method: 'post',
-    url: '/questionnaire/delete',
-    data: {
-      userName: userName,
-      token: token,
-      flag: flag
-    }
-  })
-}
-
-export function submitQuestionnaireSpreadData(userName, token, flag, dataDict) {
-  return request({
-    method: 'post',
-    url: '/questionnaire/spread',
-    data: {
-      userName: userName,
-      token: token,
-      flag: flag,
-      dataDict: dataDict,
-    }
-  })
-}
 
 export function getQuesionnaire(qid) {
   return request({
@@ -66,29 +13,39 @@ export function getQuesionnaire(qid) {
   })
 }
 
-export function getQuestionnaireTemplates(page) {
+export function getQuesionnaireCondition(qid) {
   return request({
     method: 'get',
-    url: '/questionnaire/get_templates',
-    params: {
-      page: page
-    }
+    url: 'questionnaires/get_condition/' + qid,
+    headers: {
+      showLoading: true,
+      showLoadingType: 0,
+    },
+    auth: {username: Authentication.getToken()}
   })
 }
 
-
-export function copyTemplates(userName, token, targetFlag) {
+export function editQuesitonnaire(data) {
   return request({
     method: 'post',
-    url: '/questionnaire/copy_templates',
-    data: {
-      user: userName,
-      token: token,
-      flag: targetFlag,
-    },
+    url: 'questionnaires/edit',
     headers: {
       showLoading: true,
-      showLoadingType: 0
-    }
+      showLoadingType: 0,
+    },
+    data: data,
+    auth: {username: Authentication.getToken()}
+  })
+}
+
+export function getAllQuestionnire() {
+  return request({
+    method: 'get',
+    url: 'questionnaires/get_all_questionnire',
+    headers: {
+      showLoading: true,
+      showLoadingType: 0,
+    },
+    auth: {username: Authentication.getToken()}
   })
 }

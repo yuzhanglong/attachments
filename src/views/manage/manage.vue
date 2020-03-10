@@ -28,8 +28,8 @@
               </template>
             </data-card>
             <data-card v-for="(questionnaire, index) in myQuestionnaire"
-                       :key="questionnaire.questionnaireFlag"
-                       :card-name="questionnaire['questionnaireBasicData'].basicInfo.title"
+                       :key="questionnaire.questionnireId"
+                       :card-name="questionnaire.title"
                        :card-style="getCardStyle(260)"
                        class="myProjectItem">
               <template v-slot:cardHead>
@@ -47,17 +47,17 @@
                 <div id="card-foot">
                   <div class="card-icon-wrap">
                     <el-button icon="el-icon-edit" type="mini" class="card-bottom-button"
-                               @click="gotoEdit(questionnaire.questionnaireFlag)">编辑
+                               @click="gotoEdit(questionnaire.questionnireId)">编辑
                     </el-button>
                   </div>
                   <div class="card-icon-wrap">
                     <el-button icon="el-icon-position" type="mini" class="card-bottom-button"
-                               @click="gotoSpread(questionnaire.questionnaireFlag)">发布
+                               @click="gotoSpread(questionnaire.questionnireId)">发布
                     </el-button>
                   </div>
                   <div class="card-icon-wrap">
                     <el-button icon="el-icon-document-copy" type="mini" class="card-bottom-button"
-                               @click="gotoAlalysis(questionnaire.questionnaireFlag)">数据
+                               @click="gotoAlalysis(questionnaire.questionnireId)">数据
                     </el-button>
                   </div>
                   <div class="card-icon-wrap">
@@ -65,11 +65,11 @@
                       <el-button icon="el-icon-more-outline" type="mini" class="card-bottom-button"
                                  style="font-size: 14px;"></el-button>
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click.native=gotoSpread(questionnaire.questionnaireFlag)>发布项目
+                        <el-dropdown-item @click.native=gotoSpread(questionnaire.questionnireId)>发布项目
                         </el-dropdown-item>
-                        <el-dropdown-item @click.native="gotoPreview(questionnaire.questionnaireFlag)">预览项目
+                        <el-dropdown-item @click.native="gotoPreview(questionnaire.questionnireId)">预览项目
                         </el-dropdown-item>
-                        <el-dropdown-item @click.native="confirmDelete(questionnaire.questionnaireFlag)">删除项目
+                        <el-dropdown-item @click.native="confirmDelete(questionnaire.questionnireId)">删除项目
                         </el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
@@ -102,18 +102,17 @@
 
 
   //数据处理
-  import {getQuesionNaire} from "@/network/questionnaire";
-  import NavBar from "@/components/navBar/navBar";
-  import {deleteQuesionNaire} from "@/network/questionnaire";
-  import {copyTemplates, getQuestionnaireTemplates} from "../../network/questionnaire";
+  import {getAllQuestionnire} from "../../network/questionnaire";
+  import navBar from "../../components/navBar/navBar";
   import TemplateList from "./childComp/templateList";
+  import {QuestionnaireCondition} from "../../models/questionnaire_model";
 
   export default {
     name: "manage",
     components: {
       TemplateList,
       scrollBar,
-      NavBar,
+      navBar,
       dataCard,
     },
     created() {
@@ -138,22 +137,22 @@
         window.open(this.globalData.webBaseUrl + "/complete/" + flag + "?type=preview");
       },
       getNewPageData() {
-        getQuestionnaireTemplates(this.templatesConfig.templateCurrentPage)
-                .then(res => {
-                  this.templatesConfig.templateData = res['information'];
-                })
+        // getQuestionnaireTemplates(this.templatesConfig.templateCurrentPage)
+        //   .then(res => {
+        //     this.templatesConfig.templateData = res['information'];
+        //   })
       },
       priviewTempate(flag) {
         console.log(flag);
       },
-      addTempate(flag) {
-        copyTemplates(this.$store.state.user, this.$store.state.token, flag)
-                .then(() => {
-                  this.$messageBox.showSuccessMessage(this, "添加成功!请刷新页面查看");
-                })
-                .catch(() => {
-                  this.$messageBox.showErrorMessage(this, "添加失败!");
-                })
+      addTempate() {
+        // copyTemplates(this.$store.state.user, this.$store.state.token, flag)
+        //   .then(() => {
+        //     this.$messageBox.showSuccessMessage(this, "添加成功!请刷新页面查看");
+        //   })
+        //   .catch(() => {
+        //     this.$messageBox.showErrorMessage(this, "添加失败!");
+        //   })
       },
       showTemplateContainer() {
         this.templatesConfig.templateContainerVisiable = true
@@ -165,22 +164,16 @@
         this.$router.push('/spread/' + flag);
       },
       getQuesionNaire() {
-        getQuesionNaire()
-                .then(res => {
-                  console.log(res);
-                  // this.myQuestionnaire = res['information'];
-                  // this.templatesConfig.totalPage = res['pages'];
-                  // this.getQuestionnaireTemplates();
-                })
-                .catch(() => {
-                  this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
-                })
-      },
-      getQuestionnaireTemplates() {
-        getQuestionnaireTemplates(1)
-                .then(res => {
-                  this.templatesConfig.templateData = res['information']
-                })
+        getAllQuestionnire()
+          .then(res => {
+            for (let i = 0; i < res['questionnaires'].length; i++) {
+              let q = new QuestionnaireCondition(res['questionnaires'][i]);
+              this.myQuestionnaire.push(q);
+            }
+          })
+          .catch(() => {
+            this.$messageBox.showErrorMessage(this, "404！   !!!∑(ﾟДﾟノ)ノ");
+          })
       },
       confirmDelete(flag) {
         this.$confirm('此操作将永久删除该项目, 是否继续?', '注意', {
@@ -193,12 +186,12 @@
           this.$messageBox.showInfoMessage(this, "用户已取消");
         });
       },
-      deleteQuesionNaire(flag) {
-        deleteQuesionNaire(this.$store.state.user, this.$store.state.token, flag)
-                .then(() => {
-                  this.$messageBox.showSuccessMessage(this, "删除项目成功!");
-                  this.getQuesionNaire();
-                });
+      deleteQuesionNaire() {
+        // deleteQuesionNaire(this.$store.state.user, this.$store.state.token, flag)
+        //   .then(() => {
+        //     this.$messageBox.showSuccessMessage(this, "删除项目成功!");
+        //     this.getQuesionNaire();
+        //   });
       },
       gotoEdit(target) {
         this.$router.push('/questionnaire/' + target);

@@ -112,8 +112,8 @@
       return {
         dialogVisible: false,
         shareLink: this.globalData.webBaseUrl + "/complete/" + this.shareFlag + "?type=fill",
-        shareQRCode: this.globalData.serverBaseUrl + "/utils/qrcode/get_qr_code?flag=" + this.shareFlag,
-        downloadQRCode: this.globalData.serverBaseUrl + "/utils/qrcode/download_qr_code?flag=" + this.shareFlag,
+        shareQRCode: `${this.globalData.serverBaseUrl}/v1/utils/get_qrcode?qid=${this.shareFlag}`,
+        downloadQRCode: `${this.globalData.serverBaseUrl}/v1/utils/download_qrcode?qid=${this.shareFlag}`,
         activeIndex: 1,
         activeBgcImg: 1
       }
@@ -324,6 +324,4 @@
     padding-top: 10px;
     padding-left: 58px;
   }
-
-
 </style>
