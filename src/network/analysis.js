@@ -1,15 +1,16 @@
 import {request} from "../network/request";
+import {Authentication} from "../models/response_model";
 
-export function getAnalysisData(flag, token) {
+
+// 拉取分析数据
+export function getAnalysisData(flag) {
   return request({
-    method: 'post',
-    url: '/analysis/get_result/' + flag,
-    data: {
-      token: token
-    },
+    method: 'get',
+    url: '/analysis/' + flag,
     headers: {
       showLoading: true,
       showLoadingType: 0
-    }
+    },
+    auth: {username: Authentication.getToken()}
   })
 }

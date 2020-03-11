@@ -1,32 +1,36 @@
 <template>
   <div id="analysis">
+
+    <!--顶部导航栏-->
     <el-row>
       <div id="top-nav-container">
         <step-bar active-tag="3"></step-bar>
       </div>
     </el-row>
+
     <el-row>
       <div id="second-nav-container">
         <nav-bar>
           <template v-slot:nav-left>
             <div id="questionnaire-title-container">
-              <span>{{analysisData.title}}</span>
+              <span>{{basicInfo.title}}</span>
             </div>
           </template>
           <template v-slot:nav-right>
             <div id="questionnaire-total-counter-container">
-              <span>当前已收集问卷:{{analysisData["totalComplete"]}}份</span>
+              <span>当前已收集问卷:{{basicInfo.totalComplete}}份</span>
             </div>
           </template>
         </nav-bar>
       </div>
     </el-row>
+
     <el-row>
       <div id="third-nav-container">
         <nav-bar>
           <template v-slot:nav-left>
             <div id="third-nav-container-left">
-              <span>最后更新时间:{{analysisData['renewTime']}}</span>
+              <span>最后更新时间:{{basicInfo.renewTime}}</span>
             </div>
           </template>
           <template v-slot:nav-right>
@@ -41,26 +45,39 @@
         </nav-bar>
       </div>
     </el-row>
+
+
+    <!--图表部分-->
     <div id="chart-container">
       <div id="common-chart" v-show="this.showControl.showCommonChart">
-        <div :class="getClassName(index)" v-for="(data, index) in analysisData['completes']"
+        <div :class="getClassName(index)" v-for="(data, index) in analysisData"
              :key="index + new Date().getTime()">
-          <chart-background :question-num="index" :question-data="data" v-if="showChart"></chart-background>
+          <chart-background :question-num="index"
+                            :question-data="data"
+                            v-if="showChart">
+          </chart-background>
         </div>
       </div>
+
+
+      <!--地图图表 用来统计问卷回答者的地理位置分布-->
       <div id="global-chart" v-show="this.showControl.showGlobalChart">
         <global-chart-background :g-data="analysisData['placeCondition']" v-if="provinceDataFlag">
         </global-chart-background>
       </div>
     </div>
+
   </div>
 </template>
+
+
 <script>
   import chartBackground from "./ChlidComp/chartBackground";
   import navBar from "../../components/navBar/navBar";
   import {getAnalysisData} from "../../network/analysis";
   import GlobalChartBackground from "./ChlidComp/globalChartBackground";
   import StepBar from "../../components/stepBar/stepBar";
+  import {Analysis, BasicInfo} from "../../models/analysis_model";
 
   export default {
     name: "analysis",
@@ -72,7 +89,8 @@
     },
     data() {
       return {
-        analysisData: {},
+        analysisData: [],
+        basicInfo: {},
         showControl: {
           showCommonChart: true,
           showDetailedChart: false,
@@ -89,23 +107,29 @@
       getClassName(index) {
         return index !== 0 ? "chart-card-wrap" : "chart-card-wrap-top"
       },
+
       getAnalysisData() {
-        getAnalysisData(this.$route.params.flag, this.$store.state.token)
-                .then(res => {
-                  this.analysisData = res['information'];
-                  this.$notify({
-                    title: "系统消息",
-                    message: '当前您处在数据分析模式',
-                    type: 'success',
-                    duration: 4000,
-                    offset: 50
-                  });
-                  this.provinceDataFlag = true;
-                  this.showChart = true;
-                })
-                .catch(() => {
-                  this.$messageBox.showErrorMessage(this, "访问错误")
-                })
+        getAnalysisData(this.$route.params.flag)
+          .then(res => {
+            this.basicInfo = new BasicInfo(res['basicInfo']);
+            for (let i = 0; i < res['data'].length; i++) {
+              let result = new Analysis(res['data'][i]);
+              this.analysisData.push(result);
+            }
+            this.$notify({
+              title: "系统消息",
+              message: '当前您处在数据分析模式',
+              type: 'success',
+              duration: 4000,
+              offset: 50
+            });
+            this.provinceDataFlag = true;
+            this.showChart = true;
+
+          })
+          .catch(() => {
+            this.$messageBox.showErrorMessage(this, "访问错误")
+          })
       },
       changeShow(showWhat) {
         let showItems = ['showCommonChart', 'showDetailedChart', 'showGlobalChart'];

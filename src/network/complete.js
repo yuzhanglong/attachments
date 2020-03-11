@@ -21,10 +21,12 @@ export function submitComplete(data, flag) {
   let myDate = new Date();
   return request({
     method: 'post',
-    url: '/complete/submit_data/' + flag,
+    url: '/completes/submit_data/' + flag,
     data: {
       completeData: data,
       submitTime: myDate.getTime()
     }
   })
 }
+
+

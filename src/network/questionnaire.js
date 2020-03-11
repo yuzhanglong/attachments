@@ -4,7 +4,7 @@ import {Authentication} from "../models/response_model";
 export function getQuesionnaire(qid) {
   return request({
     method: 'get',
-    url: '/questionnaires/get_questionnire/' + qid,
+    url: '/questionnaires/get_questionnaire/' + qid,
     headers: {
       showLoading: true,
       showLoadingType: 0,
@@ -38,10 +38,10 @@ export function editQuesitonnaire(data) {
   })
 }
 
-export function getAllQuestionnire() {
+export function getAllQuestionnaire() {
   return request({
     method: 'get',
-    url: 'questionnaires/get_all_questionnire',
+    url: 'questionnaires/get_all_questionnaire',
     headers: {
       showLoading: true,
       showLoadingType: 0,
@@ -51,7 +51,7 @@ export function getAllQuestionnire() {
 }
 
 
-export function deleteQuestionnire(qid) {
+export function deleteQuestionnaire(qid) {
   return request({
     method: 'post',
     url: 'questionnaires/delete',

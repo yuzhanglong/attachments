@@ -28,7 +28,7 @@
               </template>
             </data-card>
             <data-card v-for="(questionnaire, index) in myQuestionnaire"
-                       :key="questionnaire.questionnireId"
+                       :key="questionnaire.questionnaireId"
                        :card-name="questionnaire.title"
                        :card-style="getCardStyle(260)"
                        class="myProjectItem">
@@ -47,17 +47,17 @@
                 <div id="card-foot">
                   <div class="card-icon-wrap">
                     <el-button icon="el-icon-edit" type="mini" class="card-bottom-button"
-                               @click="gotoEdit(questionnaire.questionnireId)">编辑
+                               @click="gotoEdit(questionnaire.questionnaireId)">编辑
                     </el-button>
                   </div>
                   <div class="card-icon-wrap">
                     <el-button icon="el-icon-position" type="mini" class="card-bottom-button"
-                               @click="gotoSpread(questionnaire.questionnireId)">发布
+                               @click="gotoSpread(questionnaire.questionnaireId)">发布
                     </el-button>
                   </div>
                   <div class="card-icon-wrap">
                     <el-button icon="el-icon-document-copy" type="mini" class="card-bottom-button"
-                               @click="gotoAlalysis(questionnaire.questionnireId)">数据
+                               @click="gotoAlalysis(questionnaire.questionnaireId)">数据
                     </el-button>
                   </div>
                   <div class="card-icon-wrap">
@@ -65,11 +65,11 @@
                       <el-button icon="el-icon-more-outline" type="mini" class="card-bottom-button"
                                  style="font-size: 14px;"></el-button>
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click.native=gotoSpread(questionnaire.questionnireId)>发布项目
+                        <el-dropdown-item @click.native=gotoSpread(questionnaire.questionnaireId)>发布项目
                         </el-dropdown-item>
-                        <el-dropdown-item @click.native="gotoPreview(questionnaire.questionnireId)">预览项目
+                        <el-dropdown-item @click.native="gotoPreview(questionnaire.questionnaireId)">预览项目
                         </el-dropdown-item>
-                        <el-dropdown-item @click.native="confirmDelete(questionnaire.questionnireId)">删除项目
+                        <el-dropdown-item @click.native="confirmDelete(questionnaire.questionnaireId)">删除项目
                         </el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
@@ -102,7 +102,7 @@
 
 
   //数据处理
-  import {deleteQuestionnire, getAllQuestionnire} from "../../network/questionnaire";
+  import {deleteQuestionnaire, getAllQuestionnaire} from "../../network/questionnaire";
   import navBar from "../../components/navBar/navBar";
   import TemplateList from "./childComp/templateList";
   import {QuestionnaireCondition} from "../../models/questionnaire_model";
@@ -168,7 +168,7 @@
       },
 
       getQuesionNaire() {
-        getAllQuestionnire()
+        getAllQuestionnaire()
           .then(res => {
             for (let i = 0; i < res['questionnaires'].length; i++) {
               let q = new QuestionnaireCondition(res['questionnaires'][i]);
@@ -193,7 +193,7 @@
       },
 
       deleteQuesionNaire(qid) {
-        deleteQuestionnire(qid)
+        deleteQuestionnaire(qid)
           .then(() => {
             this.$messageBox.showSuccessMessage(this, "删除项目成功!");
             this.myQuestionnaire = [];

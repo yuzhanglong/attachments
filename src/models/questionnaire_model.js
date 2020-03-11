@@ -13,7 +13,7 @@ class QuestionnaireCondition {
     this.equipmentControl = json['equipmentControl'];
     this.ipControl = json['ipControl'];
     this.isSecret = json['isSecret'];
-    this.questionnireId = json['questionnireId'];
+    this.questionnaireId = json['questionnaireId'];
     this.renewTime = json['renewTime'];
     this.secretKey = json['secretKey'];
     this.subTitle = json['subTitle'];
@@ -27,21 +27,3 @@ export {
   QuestionnaireCondition,
   Questionnaire
 }
-
-/*
-*   "condition": false,
-    "deadline": "Mon, 27 Jan 2020 11:29:18 GMT",
-    "deadlineControl": true,
-    "equipmentControl": true,
-    "information": "获取问卷状态成功",
-    "ipControl": true,
-    "isSecret": true,
-    "questionnireId": 15837693799595368,
-    "renewTime": "Mon, 09 Mar 2020 15:56:19 GMT",
-    "secretKey": "333333",
-    "status": "success",
-    "subTitle": "副标题",
-    "title": "个标题",
-    "wechatControl": true
-*
-* */

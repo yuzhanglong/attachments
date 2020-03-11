@@ -273,7 +273,7 @@
           basicInfo: {
             title: "请在这里创建一个问卷标题",
             subTitle: "感谢您能抽出几分钟时间来参加本次问卷调查，现在我们就马上开始吧！",
-            questionnireId: null
+            questionnaireId: null
           },
           problems: []
         },
@@ -365,7 +365,7 @@
       createQuestionnaire() {
         createQuestionnaire()
           .then((res) => {
-            this.questionnaireData.basicInfo.questionnireId = res['questionnaireId'];
+            this.questionnaireData.basicInfo.questionnaireId = res['questionnaireId'];
           })
           .catch(() => {
             this.$messageBox.showErrorMessage(this, "抱歉 问卷获取失败");
@@ -388,7 +388,7 @@
           type: problemType,
           title: `点我为这道${problemTypeChineseNameMap[problemType]}创建一个标题`,
           options: [],
-          targetQuestionnireId: this.questionnaireData.basicInfo.questionnireId,
+          targetQuestionnaireId: this.questionnaireData.basicInfo.questionnaireId,
           isRequire: false,
           problemId: null
         };

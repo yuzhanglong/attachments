@@ -114,7 +114,7 @@
           equipmentControl: false,
           ipControl: false,
           isSecret: false,
-          questionnireId: null,
+          questionnaireId: null,
           renewTime: null,
           secretKey: null,
           subTitle: null,

@@ -70,6 +70,17 @@
               </el-select>
             </div>
 
+            <!--评价题-->
+            <div class="score" v-if="problem.type === 'SCORE'">
+              <h5>
+                <span class="required-star">{{checkIsRequire(problem.isRequire)}}</span>
+                [评价题] {{index + 1}}. {{problem.title}}
+              </h5>
+
+              <el-rate v-model="problemResults[index].resolution[0]" :colors="rateColor">
+              </el-rate>
+            </div>
+
 
           </div>
         </div>
@@ -100,6 +111,7 @@
     },
     data() {
       return {
+        rateColor: ['#99A9BF', '#F7BA2A', '#FF9900'],
         // 是否展示问卷密码输入框
         isShowSecretInput: false,
         // 是否展示问卷填报表单
@@ -210,6 +222,7 @@
           this.problemResults.push({
             targetProblemId: problems[i].problemId,
             resolution: [],
+            type: problems[i].type
           });
         }
         this.isShowCompleteForm = true;
