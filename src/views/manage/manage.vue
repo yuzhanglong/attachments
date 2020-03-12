@@ -13,11 +13,11 @@
         </div>
       </template>
     </nav-bar>
+
     <el-main id="manage-main">
       <scroll-bar>
         <div id="boxcontainer">
           <div class="myProjectItemBox">
-            <!-- 根据传来的数据（应该是一个包含对象的数组）v-for即可-->
             <data-card card-name="新的项目..."
                        :card-style="getCardStyle(260)" :key="0"
                        class="myProjectItem">
@@ -81,7 +81,10 @@
         </div>
       </scroll-bar>
     </el-main>
-    <el-dialog title="问卷模板(注意：所有数据均来源于爬虫 仅供学习交流使用)" :visible.sync="templatesConfig.templateContainerVisiable"
+
+    <!--问卷模板交互界面-->
+    <el-dialog title="问卷模板(注意：所有数据均来源于爬虫 仅供学习交流使用)"
+               :visible.sync="templatesConfig.templateContainerVisiable"
                width="75%" top="8vh" center>
       <template-list :template-data="this.templatesConfig.templateData"></template-list>
       <div id="templates-pagination">
@@ -102,7 +105,7 @@
 
 
   //数据处理
-  import {deleteQuestionnaire, getAllQuestionnaire} from "../../network/questionnaire";
+  import {deleteQuestionnaire, getAllQuestionnaire, getTemplates} from "../../network/questionnaire";
   import navBar from "../../components/navBar/navBar";
   import TemplateList from "./childComp/templateList";
   import {QuestionnaireCondition} from "../../models/questionnaire_model";
@@ -137,10 +140,10 @@
         window.open(this.globalData.webBaseUrl + "/complete/" + flag + "?type=preview");
       },
       getNewPageData() {
-        // getQuestionnaireTemplates(this.templatesConfig.templateCurrentPage)
-        //   .then(res => {
-        //     this.templatesConfig.templateData = res['information'];
-        //   })
+        getTemplates(this.templatesConfig.templateCurrentPage)
+          .then(res => {
+            this.templatesConfig.templateData = res['data'];
+          })
       },
       priviewTempate(flag) {
         console.log(flag);
@@ -156,7 +159,8 @@
       },
 
       showTemplateContainer() {
-        this.templatesConfig.templateContainerVisiable = true
+        this.getNewPageData();
+        this.templatesConfig.templateContainerVisiable = true;
       },
 
       gotoAlalysis(flag) {
@@ -170,6 +174,7 @@
       getQuesionNaire() {
         getAllQuestionnaire()
           .then(res => {
+            this.templatesConfig.totalPage = this.checkPage(res['tAmount']);
             for (let i = 0; i < res['questionnaires'].length; i++) {
               let q = new QuestionnaireCondition(res['questionnaires'][i]);
               this.myQuestionnaire.push(q);
@@ -179,7 +184,9 @@
             this.$messageBox.showInfoMessage(this, "当前还没有问卷 快去创建一个吧");
           })
       },
-
+      checkPage(tot) {
+        return (!(tot % 10)) ? (tot / 10) : (tot / 10 + 1);
+      },
       confirmDelete(qid) {
         this.$confirm('此操作将永久删除该项目, 是否继续?', '注意', {
           confirmButtonText: '确定删除',

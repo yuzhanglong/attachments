@@ -16,7 +16,7 @@
       </div>
 
       <!--表单内容-->
-      <div class="chart-table">
+      <div class="chart-table" v-if="questionData.type !== 'BLANK_FILL'">
         <el-table
                 :data="questionData.resolution"
                 stripe

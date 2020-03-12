@@ -67,4 +67,33 @@ export function deleteQuestionnaire(qid) {
 }
 
 
+export function getTemplates(page) {
+  return request({
+    method: 'get',
+    url: 'questionnaires/get_templates',
+    headers: {
+      showLoading: true,
+      showLoadingType: 0,
+    },
+    params: {
+      page: page
+    },
+    auth: {username: Authentication.getToken()}
+  })
+}
 
+
+export function copyTemplates(tid) {
+  return request({
+    method: 'post',
+    url: 'questionnaires/copy_templates',
+    headers: {
+      showLoading: true,
+      showLoadingType: 0,
+    },
+    data: {
+      templateId: tid
+    },
+    auth: {username: Authentication.getToken()}
+  })
+}

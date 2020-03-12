@@ -62,7 +62,7 @@
 
       <!--地图图表 用来统计问卷回答者的地理位置分布-->
       <div id="global-chart" v-show="this.showControl.showGlobalChart">
-        <global-chart-background :g-data="analysisData['placeCondition']" v-if="provinceDataFlag">
+        <global-chart-background :g-data="provinceInfo" v-if="provinceDataFlag">
         </global-chart-background>
       </div>
     </div>
@@ -96,6 +96,7 @@
           showDetailedChart: false,
           showGlobalChart: false
         },
+        provinceInfo: {},
         provinceDataFlag: false,
         showChart: false
       }
@@ -111,6 +112,7 @@
       getAnalysisData() {
         getAnalysisData(this.$route.params.flag)
           .then(res => {
+            this.provinceInfo = res['provinceInfo'];
             this.basicInfo = new BasicInfo(res['basicInfo']);
             for (let i = 0; i < res['data'].length; i++) {
               let result = new Analysis(res['data'][i]);
