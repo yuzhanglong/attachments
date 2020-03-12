@@ -1,3 +1,7 @@
+<!--问卷海报制作功能暂时弃用-->
+<!--问卷海报制作功能暂时弃用-->
+<!--问卷海报制作功能暂时弃用-->
+<!--问卷海报制作功能暂时弃用-->
 <template>
   <div id="project-share">
     <div id="project-share-title">

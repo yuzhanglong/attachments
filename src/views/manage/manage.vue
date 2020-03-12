@@ -148,16 +148,6 @@
       priviewTempate(flag) {
         console.log(flag);
       },
-      addTempate() {
-        // copyTemplates(this.$store.state.user, this.$store.state.token, flag)
-        //   .then(() => {
-        //     this.$messageBox.showSuccessMessage(this, "添加成功!请刷新页面查看");
-        //   })
-        //   .catch(() => {
-        //     this.$messageBox.showErrorMessage(this, "添加失败!");
-        //   })
-      },
-
       showTemplateContainer() {
         this.getNewPageData();
         this.templatesConfig.templateContainerVisiable = true;
