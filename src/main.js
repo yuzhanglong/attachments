@@ -5,9 +5,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueClipboard from 'vue-clipboard2'
 import messageBox from "./utils/messageBox";
+import globalData from "./config/common";
 import '@/assets/css/normalize.css'
 import '@/assets/css/basicProblem.css'
-import globalData from '@/assets/js/common'
 
 
 Vue.config.productionTip = false;

@@ -1,15 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import {checkToken} from "../network/user";
+import {Authentication} from "../models/response_model";
 
-const Home = () => import('@/views/home/home');
-const Register = () => import('@/views/register/register');
-const Login = () => import('@/views/login/login');
-const Manage = () => import('@/views/manage/manage');
-const Questionnaire = () => import('@/views/create/questionnaire');
-const Spread = () => import('@/views/spread/spread');
-const Complete = () => import('@/views/complete/complete');
-const Analysis = () => import('@/views/analysis/analysis');
-const Success = () => import('@/views/success/success');
+const Home = () => import('../views/home/home');
+const Register = () => import('../views/register/register');
+const Login = () => import('../views/login/login');
+const Manage = () => import('../views/manage/manage');
+const Questionnaire = () => import('../views/create/questionnaire');
+const Spread = () => import('../views/spread/spread');
+const Complete = () => import('../views/complete/complete');
+const Analysis = () => import('../views/analysis/analysis');
+const Success = () => import('../views/success/success');
 
 Vue.use(VueRouter);
 
@@ -27,14 +29,16 @@ const routes = [
       title: '问卷调查平台'
     }
   },
+
   //登录界面
   {
     path: '/login',
     component: Login,
     meta: {
-      title: '问卷调查平台-登录'
+      title: '问卷调查平台-登录',
     }
   },
+
   //注册界面
   {
     path: '/register',
@@ -43,6 +47,7 @@ const routes = [
       title: '问卷调查平台-注册'
     }
   },
+
   //管理界面
   {
     path: '/manage',
@@ -53,6 +58,7 @@ const routes = [
       title: '问卷调查平台-管理'
     }
   },
+
   //问卷编辑
   {
     path: '/questionnaire/:situation',
@@ -62,19 +68,23 @@ const routes = [
       title: '问卷设计'
     }
   },
+
   //问卷发布
   {
     path: '/spread/:flag',
     component: Spread,
     meta: {
+      requireAuth: true,
       title: '问卷调查平台-发布'
     }
   },
+
   //问卷填写
   {
     path: '/complete/:flag',
     component: Complete,
   },
+
   //问卷数据分析
   {
     path: '/analysis/:flag',
@@ -85,6 +95,7 @@ const routes = [
       title: '问卷调查平台-数据分析'
     }
   },
+
   //提交成功页面
   {
     path: '/success',
@@ -100,25 +111,29 @@ const router = new VueRouter({
   mode: 'history'
 });
 
-//注册一个全局前置守卫
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.title) {
-//     document.title = to.meta.title
-//   }
-//   // 需要权限的路由跳转
-//   Store.state.token = localStorage.getItem('token');
-//   if (to.meta.requireAuth) { //判断接下来的页面是否需要权限
-//     if (Store.state.token !== null) {//token不为空
-//       next();   //跳转到对应页面
-//     } else {      //没有token,跳转到登录界面
-//       next({
-//         path: '/login',
-//       });
-//     }
-//   } else {
-//     next();
-//   }
-// });
+// 全局前置守卫
+router.beforeEach((to, from, next) => {
 
+  // 项目标题
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+
+  // 需要权限的路由跳转
+  if (to.meta.requireAuth) {
+    checkToken().then(() => {
+      next();
+    }).catch(() => {
+      // 转向登录页要求用户登录 并带上强制跳转的 query
+      next({path: '/login?type=force'});
+      Authentication.removeToken();
+    });
+  } else {
+    next();
+  }
+
+});
 
 export default router
+
+

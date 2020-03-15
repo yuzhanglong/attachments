@@ -1,4 +1,6 @@
-import {request} from "@/network/request";
+import {request} from "./request";
+import {CLIENT_TYPE} from "../config/baseConfig";
+import {Authentication} from "../models/response_model";
 
 export function userLogin(userName, password) {
   return request({
@@ -6,7 +8,8 @@ export function userLogin(userName, password) {
     url: '/users/login',
     data: {
       userName: userName,
-      password: password,
+      secret: password,
+      type: CLIENT_TYPE
     }
   })
 }
@@ -23,12 +26,10 @@ export function userRegister(userName, userEmail, userPassword) {
   })
 }
 
-export function checkToken(token) {
+export function checkToken() {
   return request({
-    method: 'post',
+    method: 'get',
     url: '/users/token',
-    data: {
-      token: token,
-    }
+    auth: {username: Authentication.getToken()}
   })
 }

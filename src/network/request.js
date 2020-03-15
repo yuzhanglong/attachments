@@ -1,9 +1,10 @@
 import axios from 'axios'
 import {hideLoading, showLoading} from "../utils/loading";
+import {SERVER_BASE_URL} from "../config/baseConfig";
 
 export function request(config) {
   const instance = axios.create({
-    baseURL: 'http://127.0.0.1:5000/v1/',
+    baseURL: SERVER_BASE_URL,
     timeout: 5000,
   });
   // 添加请求拦截器

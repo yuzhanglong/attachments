@@ -13,11 +13,16 @@ class Authentication {
     this.token = json['token'];
   }
 
+
   saveToken() {
     window.localStorage.setItem("token", this.token);
   }
 
-  static getToken(){
+  static removeToken() {
+    window.localStorage.removeItem("token");
+  }
+
+  static getToken() {
     return window.localStorage.getItem("token");
   }
 }

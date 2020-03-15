@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import {userLogin} from "@/network/user";
+  import {userLogin} from "../../network/user";
   import {Authentication, ErrorResponse} from "../../models/response_model";
 
   export default {
@@ -32,6 +32,14 @@
       checkLogin() {
         if (window.localStorage.getItem('token') != null) {
           this.$router.replace('/manage');
+        }else{
+          this.checkCondition();
+        }
+      },
+
+      checkCondition() {
+        if (this.$route.query.type) {
+          this.$messageBox.showErrorMessage(this, "请登录");
         }
       },
 
@@ -42,16 +50,16 @@
           this.$messageBox.showErrorMessage(this, "用户名格式错误");
         } else {
           userLogin(this.loginData.userName, this.loginData.userPassword)
-                  .then(res => {
-                    let r = new Authentication(res);
-                    r.saveToken();
-                    this.$messageBox.showSuccessMessage(this, r.information);
-                    this.$router.replace('/manage')
-                  })
-                  .catch(res => {
-                    let r = new ErrorResponse(res);
-                    this.$messageBox.showErrorMessage(this, r.information);
-                  })
+            .then(res => {
+              let r = new Authentication(res);
+              r.saveToken();
+              this.$messageBox.showSuccessMessage(this, r.information);
+              this.$router.replace('/manage')
+            })
+            .catch(res => {
+              let r = new ErrorResponse(res);
+              this.$messageBox.showErrorMessage(this, r.information);
+            })
         }
       }
     }
