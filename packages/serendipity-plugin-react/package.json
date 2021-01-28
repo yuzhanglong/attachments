@@ -1,6 +1,9 @@
 {
-  "name": "@attachment/serendipity-plugin-react",
+  "name": "@attachments/serendipity-plugin-react",
   "version": "0.0.1",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "run": "tsc -w"
+  }
 }

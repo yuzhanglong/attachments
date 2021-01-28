@@ -1,0 +1,9 @@
+{
+  "name": "@attachments/serendipity-public",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "run": "tsc -w"
+  },
+  "license": "MIT"
+}
