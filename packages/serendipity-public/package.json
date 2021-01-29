@@ -1,12 +1,13 @@
 {
   "name": "@attachments/serendipity-public",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "./bin/index.js",
   "scripts": {
     "run": "tsc -w"
   },
   "license": "MIT",
   "dependencies": {
+    "execa": "^5.0.0",
     "globby": "^11.0.2"
   }
 }

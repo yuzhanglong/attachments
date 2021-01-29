@@ -4,7 +4,8 @@
     "moduleResolution": "Node",
     "removeComments": true,
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "sourceMap": true
   }

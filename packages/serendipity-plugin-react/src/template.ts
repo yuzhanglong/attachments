@@ -17,9 +17,7 @@ const getTemplatePath = (name) => {
 
 
 module.exports = (options: PluginTemplateOptions) => {
-  console.log('serendipity plugin template!')
-
   options.render(getTemplatePath('react-template'), {
-  })
 
+  })
 }

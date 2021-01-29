@@ -24,8 +24,6 @@ import * as path from 'path'
 
 const getTemplatesData = async (templateBasePath: string, targetBasePath: string): Promise<TemplateFilesMapper> => {
   const fsResults = {}
-  console.log(templateBasePath)
-  console.log(targetBasePath)
   // 拿到 template 根路径下的所有文件 包括目录
   const totalFiles = await globby(
     ['**/*'],
@@ -59,7 +57,7 @@ const getTemplatesData = async (templateBasePath: string, targetBasePath: string
 const renderTemplateData = (data: TemplateFilesMapper, options: any) => {
   Object.keys(data).forEach((res) => {
     // TODO: 基于 ejs 渲染数据
-    console.log(res)
+    // console.log(res)
   })
 }
 

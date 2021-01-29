@@ -11,23 +11,35 @@ import { CreateOptions } from './types/options'
 import * as process from 'process'
 import { CliService } from '@attachments/serendipity-public/bin/types/cliService'
 import PluginManager from '@attachments/serendipity-public/bin/core/pluginManager'
+import { execa } from '@attachments/serendipity-public'
 import * as path from 'path'
 import * as fs from 'fs'
 
 
 class CliManager {
   private args
+  private basePath
 
   constructor(args: string[]) {
     this.args = args
   }
 
-  async create(name: string, options: CreateOptions): Promise<void> {
+
+  private async run(command: string, args: string[]): Promise<execa.ExecaChildProcess> {
+    if (!args) {
+      [command, ...args] = command.split(/\s+/)
+    }
+    return execa(command, args, { cwd: this.basePath })
+  }
+
+
+  public async create(name: string, options: CreateOptions): Promise<void> {
 
     // base path 初始化
-    const basePath = path.resolve(process.cwd(), name)
-    if (!fs.existsSync(basePath)) {
-      fs.mkdirSync(basePath)
+    this.basePath = path.resolve(process.cwd(), name)
+
+    if (!fs.existsSync(this.basePath)) {
+      fs.mkdirSync(this.basePath)
     }
 
     // 获取对应 project类型的 service 包
@@ -41,8 +53,15 @@ class CliManager {
     }
 
     // 处理插件
-    const pluginManager = new PluginManager(basePath)
+    const pluginManager = new PluginManager(this.basePath)
 
+    // 初始化 git
+    if (options.initGit) {
+      console.log('正在初始化 git 仓库...')
+      await this.run('git init', [])
+    }
+
+    // 执行 cli Service
     cliService({
       configurations: {},
       operations: {
@@ -52,7 +71,20 @@ class CliManager {
         runPluginsTemplate: pluginManager.runPluginsTemplate.bind(pluginManager)
       }
     })
+
+    // 初始化首次 commit
+    if (options.initGit) {
+      try {
+        await this.run('git add -A', [])
+        await this.run('git', ['commit', '-m', options.commit, '--no-verify'])
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    // 成功提示
+    console.log('创建项目成功~')
   }
+
 }
 
 
