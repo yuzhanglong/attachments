@@ -4,7 +4,7 @@
   "description": "An extensible, out-of-the-box front-end cli.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,16 @@
   "bugs": {
     "url": "https://github.com/yuzhanglong/serendipity/issues"
   },
-  "homepage": "https://github.com/yuzhanglong/serendipity#readme"
+  "homepage": "https://github.com/yuzhanglong/serendipity#readme",
+  "dependencies": {
+    "@types/node": "^14.14.22",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1",
+    "source-map-support": "^0.5.19",
+    "typescript": "^4.1.3"
+  }
 }

@@ -1,7 +1,13 @@
 {
-  "name": "@attachment/serendipity",
+  "name": "@attachments/serendipity",
   "version": "0.0.1",
   "main": "index.js",
+  "bin": {
+    "serendipity": "./bin/serendipity.js"
+  },
+  "scripts": {
+    "start": "tsc -w"
+  },
   "license": "MIT",
   "dependencies": {
     "commander": "^7.0.0"
