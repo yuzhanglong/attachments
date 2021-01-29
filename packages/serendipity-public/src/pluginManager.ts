@@ -7,31 +7,46 @@
  */
 
 
-import { PluginModule, PluginRuntime } from './types/plugin'
+import { PluginModule } from './types/plugin'
+import { ServiceOperations } from './types/cliService'
 
-class PluginManager {
+class PluginManager implements Partial<ServiceOperations> {
+
   // 模块
-  private pluginModules: PluginModule[]
+  pluginModules: PluginModule[] = []
 
-
+  /**
+   * 获得所有的 plugin 模块
+   *
+   * @author yuzhanglong
+   * @date 2021-1-29 11:51:38
+   */
   public getPluginModule(): PluginModule[] {
     return this.pluginModules
   }
 
-
-  public runPlugin(pluginModule: PluginModule): void {
+  /**
+   * 执行 plugin 模板钩子
+   *
+   * @author yuzhanglong
+   * @date 2021-1-29 11:51:36
+   */
+  public runPluginTemplate(pluginModule: PluginModule): void {
     this.pluginModules.push(pluginModule)
-    this.attachPluginRuntime(pluginModule.runTime)
+    console.log(this.pluginModules)
+    pluginModule.template()
   }
 
-  public runPlugins(pluginModules: PluginModule[]): void {
+  /**
+   * 执行 多个 plugin
+   *
+   * @author yuzhanglong
+   * @date 2021-1-29 11:51:42
+   */
+  public runPluginsTemplate(pluginModules: PluginModule[]): void {
     for (const pluginModule of pluginModules) {
-      this.runPlugin(pluginModule)
+      this.runPluginTemplate(pluginModule)
     }
-  }
-
-  public attachPluginRuntime(runtime: PluginRuntime): void {
-    runtime()
   }
 }
 

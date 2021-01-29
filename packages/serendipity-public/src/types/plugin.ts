@@ -8,7 +8,7 @@
 
 
 export interface PluginModule {
-  runTime: PluginRuntime
+  runtime: PluginRuntime
   template: PluginTemplate
 }
 

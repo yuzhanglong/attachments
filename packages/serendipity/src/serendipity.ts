@@ -22,7 +22,7 @@ program.version(`serendipity ${require('../package').version}`)
 program
   .command('create <app-name>')
   .description('开始创建一个前端项目(*^▽^*)~')
-  .option('-t --type', '项目类型')
+  .option('-t --type <projectType>', '项目类型')
   .action(async (name, opt) => {
     await manager.create(name, opt)
   })

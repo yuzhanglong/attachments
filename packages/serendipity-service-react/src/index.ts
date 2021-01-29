@@ -1,13 +1,8 @@
-import { promisify } from 'util'
-import * as fs from 'fs'
 import { ServiceOption } from '@attachments/serendipity-public/bin/types/cliService'
 
 
-const readFilePromise = promisify(fs.readFile)
-
-module.exports = ({ operations, configurations }: ServiceOption) => {
-
-  operations.runPlugin(require('@attachments/serendipity-plugin-react'))
+module.exports = ({ operations }: ServiceOption) => {
+  operations.runPluginTemplate(require('@attachments/serendipity-plugin-react'))
 
   // // 执行插件配置
   // const onRunPlugins = async () => {
