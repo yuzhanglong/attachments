@@ -16,7 +16,6 @@ const getTemplatePath = (name) => {
 }
 
 
-
 module.exports = (options: PluginTemplateOptions) => {
   console.log('serendipity plugin template!')
 

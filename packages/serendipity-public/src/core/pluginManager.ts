@@ -10,10 +10,15 @@
 import { ServiceOperations } from '../types/cliService'
 import { PluginModule } from '../types/plugin'
 import { getTemplatesData, renderTemplateData } from '../utils/template'
-import * as process from 'process'
-import { fileTreeWriting } from '../utils/files'
+import { fileTreeWriting, writeFilePromise } from '../utils/files'
+import * as path from 'path'
 
 class PluginManager implements Partial<ServiceOperations> {
+  basePath: string
+
+  constructor(basePath: string) {
+    this.basePath = basePath
+  }
 
   // 模块
   pluginModules: PluginModule[] = []
@@ -36,9 +41,8 @@ class PluginManager implements Partial<ServiceOperations> {
    */
   public runPluginTemplate(pluginModule: PluginModule): void {
     this.pluginModules.push(pluginModule)
-    console.log(this.pluginModules)
     pluginModule.template({
-      render: PluginManager.render
+      render: this.render.bind(this)
     })
   }
 
@@ -54,15 +58,36 @@ class PluginManager implements Partial<ServiceOperations> {
     }
   }
 
-  static async render(base: string, options: any): Promise<void> {
+  /**
+   * 渲染并写入模板
+   *
+   * @author yuzhanglong
+   * @param base 要写入的绝对路径
+   * @param options 选项
+   * @date 2021-1-29 13:33:43
+   */
+  private async render(base: string, options: any): Promise<void> {
     // 获取映射表
-    const filesMapper = await getTemplatesData(base, process.cwd())
+    const filesMapper = await getTemplatesData(base, this.basePath)
 
     // 渲染模板数据
     renderTemplateData(filesMapper, options)
 
     // 模板拷贝
     await fileTreeWriting(filesMapper)
+  }
+
+  /**
+   * 写入 package.json 到基本路径
+   *
+   * @author yuzhanglong
+   * @date 2021-1-29 13:48:49
+   */
+  async setPackageConfig(config: { [key: string]: unknown }): Promise<void> {
+    await writeFilePromise(
+      path.resolve(this.basePath, 'package.json'),
+      JSON.stringify(config)
+    )
   }
 }
 

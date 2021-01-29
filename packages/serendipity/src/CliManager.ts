@@ -11,6 +11,8 @@ import { CreateOptions } from './types/options'
 import * as process from 'process'
 import { CliService } from '@attachments/serendipity-public/bin/types/cliService'
 import PluginManager from '@attachments/serendipity-public/bin/core/pluginManager'
+import * as path from 'path'
+import * as fs from 'fs'
 
 
 class CliManager {
@@ -22,6 +24,12 @@ class CliManager {
 
   async create(name: string, options: CreateOptions): Promise<void> {
 
+    // base path 初始化
+    const basePath = path.resolve(process.cwd(), name)
+    if (!fs.existsSync(basePath)) {
+      fs.mkdirSync(basePath)
+    }
+
     // 获取对应 project类型的 service 包
     let cliService: CliService
     try {
@@ -32,22 +40,13 @@ class CliManager {
       process.exit(0)
     }
 
-    // 获取包配置，并写文件
-    // const packageConfig = cliService
-    // const targetPath = path.resolve(process.execPath, 'package.json')
-    // await writeFilePromise(targetPath, JSON.stringify(packageConfig))
-
-
     // 处理插件
-    const pluginManager = new PluginManager()
+    const pluginManager = new PluginManager(basePath)
 
     cliService({
       configurations: {},
       operations: {
-        setPackageConfig: () => {
-          // TODO: package.json 配置
-          console.log('package.json!')
-        },
+        setPackageConfig: pluginManager.setPackageConfig.bind(pluginManager),
         // 注意 this 指向
         runPluginTemplate: pluginManager.runPluginTemplate.bind(pluginManager),
         runPluginsTemplate: pluginManager.runPluginsTemplate.bind(pluginManager)

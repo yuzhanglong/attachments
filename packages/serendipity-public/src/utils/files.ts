@@ -42,7 +42,10 @@ const fileTreeWriting = (fileMap: TemplateFilesMapper): boolean => {
 
 const readFilePromise = promisify(fs.readFile)
 
+const writeFilePromise = promisify(fs.writeFile)
+
 export {
   fileTreeWriting,
-  readFilePromise
+  readFilePromise,
+  writeFilePromise
 }
