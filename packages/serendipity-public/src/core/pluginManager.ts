@@ -7,8 +7,11 @@
  */
 
 
-import { PluginModule } from './types/plugin'
-import { ServiceOperations } from './types/cliService'
+import { ServiceOperations } from '../types/cliService'
+import { PluginModule } from '../types/plugin'
+import { getTemplatesData, renderTemplateData } from '../utils/template'
+import * as process from 'process'
+import { fileTreeWriting } from '../utils/files'
 
 class PluginManager implements Partial<ServiceOperations> {
 
@@ -34,7 +37,9 @@ class PluginManager implements Partial<ServiceOperations> {
   public runPluginTemplate(pluginModule: PluginModule): void {
     this.pluginModules.push(pluginModule)
     console.log(this.pluginModules)
-    pluginModule.template()
+    pluginModule.template({
+      render: PluginManager.render
+    })
   }
 
   /**
@@ -47,6 +52,17 @@ class PluginManager implements Partial<ServiceOperations> {
     for (const pluginModule of pluginModules) {
       this.runPluginTemplate(pluginModule)
     }
+  }
+
+  static async render(base: string, options: any): Promise<void> {
+    // 获取映射表
+    const filesMapper = await getTemplatesData(base, process.cwd())
+
+    // 渲染模板数据
+    renderTemplateData(filesMapper, options)
+
+    // 模板拷贝
+    await fileTreeWriting(filesMapper)
   }
 }
 

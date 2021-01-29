@@ -6,6 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-module.exports = async () => {
+
+module.exports = (options: any) => {
   console.log('serendipity plugin runtime!')
 }

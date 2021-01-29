@@ -11,12 +11,16 @@ const path = require('path')
 
 // TODO：将这个操作抽离到 service 中 -- 我们只要约定好目录结构就可以避免这些重复操作
 const getTemplatePath = (name) => {
-  return path.resolve(__dirname, 'templates', name)
+  return path.resolve(__dirname, '../templates', name)
 }
 
 
-module.exports = async () => {
-  // 基本模板
+import { PluginTemplateOptions } from '@attachments/serendipity-public/bin/types/plugin'
+
+module.exports = (options: PluginTemplateOptions) => {
   console.log('serendipity plugin template!')
-  // await options.copyTemplate(getTemplatePath("react-template"), {});
+
+  options.render(getTemplatePath('react-template'), {
+  })
+
 }

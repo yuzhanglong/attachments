@@ -7,14 +7,11 @@
  */
 
 
-import * as fs from 'fs'
-import { promisify } from 'util'
 import { CreateOptions } from './types/options'
-import { CliService } from '@attachments/serendipity-public/bin/types/cliService'
-import PluginManager from '@attachments/serendipity-public/bin/pluginManager'
 import * as process from 'process'
+import { CliService } from '@attachments/serendipity-public/bin/types/cliService'
+import PluginManager from '@attachments/serendipity-public/bin/core/pluginManager'
 
-const writeFilePromise = promisify(fs.writeFile)
 
 class CliManager {
   private args
