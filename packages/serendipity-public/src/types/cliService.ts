@@ -24,7 +24,7 @@ export interface ServiceOption {
 // 操作钩子
 export interface ServiceOperations {
   // 配置 package.json
-  setPackageConfig: (config: never) => void
+  setPackageConfig: (config: any) => void
 
   // 执行单个插件
   runPluginTemplate: (plugin: PluginModule) => void
