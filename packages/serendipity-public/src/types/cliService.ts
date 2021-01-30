@@ -25,16 +25,10 @@ export interface ServiceOption {
 // service 操作钩子
 export interface ServiceOperations {
   // 配置 package.json
-  setPackageConfig: (config: Record<string, unknown>) => void
-
-  // 合并 package.json 配置
-  mergePackageConfig: (data: CommonObject, options?: MergePackageConfigOptions) => void
+  setPackageConfig: (config: CommonObject) => void
 
   // 执行单个插件
-  runPluginTemplate: (plugin: PluginModule) => void
-
-  // 执行多个插件
-  runPluginsTemplate: (plugins: PluginModule[]) => void
+  registerPlugin: (plugin: PluginModule) => void
 }
 
 

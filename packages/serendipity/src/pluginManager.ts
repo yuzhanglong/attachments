@@ -1,46 +1,29 @@
 /*
- * File: ServiceManager.ts
- * Description: Service 层管理
- * Created: 2021-1-30 17:58:46
+ * File: pluginManager.ts
+ * Description: 插件管理器
+ * Created: 2021-1-30 18:56:33
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
 
-
-import {
-  CliService,
-  MergePackageConfigOptions,
-  ServiceOperations
-} from '@attachments/serendipity-public/bin/types/cliService'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
 import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-public/bin/utils/template'
-import { fileTreeWriting, writeFilePromise } from '@attachments/serendipity-public/bin/utils/files'
-import logger from '@attachments/serendipity-public/bin/utils/logger'
-import * as path from 'path'
+import { fileTreeWriting } from '@attachments/serendipity-public/bin/utils/files'
+import { MergePackageConfigOptions } from '@attachments/serendipity-public/bin/types/cliService'
 import * as deepmerge from 'deepmerge'
+import logger from '@attachments/serendipity-public/bin/utils/logger'
 
-class ServiceManager implements Partial<ServiceOperations> {
+class PluginManager {
   private readonly basePath: string
-  private name: string
-  private service: CliService
-  private pluginModules: PluginModule[] = []
+
+  private plugin: PluginModule
   private packageConfig: CommonObject
 
-  constructor(name: string, basePath: string, service: CliService) {
-    this.name = name
-    this.service = service
+  constructor(basePath: string, plugin: PluginModule, packageConfig: CommonObject) {
+    this.plugin = plugin
     this.basePath = basePath
-  }
-
-  /**
-   * 获得所有的 plugin 模块
-   *
-   * @author yuzhanglong
-   * @date 2021-1-29 11:51:38
-   */
-  public getPluginModule(): PluginModule[] {
-    return this.pluginModules
+    this.packageConfig = packageConfig
   }
 
   /**
@@ -48,7 +31,7 @@ class ServiceManager implements Partial<ServiceOperations> {
    *
    * @author yuzhanglong
    * @param base 要写入的绝对路径
-   * @param options 选项
+   * @param options ejs 选项
    * @date 2021-1-29 13:33:43
    */
   private async renderTemplate(base: string, options: CommonObject): Promise<void> {
@@ -60,30 +43,6 @@ class ServiceManager implements Partial<ServiceOperations> {
 
     // 模板拷贝
     await fileTreeWriting(filesMapper)
-  }
-
-  /**
-   * 初始化 package.json
-   *
-   * @author yuzhanglong
-   * @date 2021-1-29 13:48:49
-   */
-  public setPackageConfig(config: CommonObject): void {
-    this.packageConfig = config
-  }
-
-  /**
-   * 执行 plugin 模板钩子
-   *
-   * @author yuzhanglong
-   * @date 2021-1-29 11:51:36
-   */
-  public runPluginTemplate(pluginModule: PluginModule): void {
-    this.pluginModules.push(pluginModule)
-    pluginModule.template({
-      render: this.renderTemplate.bind(this),
-      mergePackageConfig: this.mergePackageConfig.bind(this)
-    })
   }
 
   /**
@@ -125,7 +84,7 @@ class ServiceManager implements Partial<ServiceOperations> {
       // 是依赖包相关字段
       if (typeof val === 'object' && typeof isDependenciesKey) {
         // TODO: 合并依赖
-        this.packageConfig[key] = ServiceManager.mergeDependencies(
+        this.packageConfig[key] = PluginManager.mergeDependencies(
           (oldValue as CommonObject),
           (val as CommonObject)
         )
@@ -173,16 +132,17 @@ class ServiceManager implements Partial<ServiceOperations> {
   }
 
   /**
-   * 写入 package.json
+   * 执行 plugin 模板钩子
    *
    * @author yuzhanglong
-   * @date 2021-1-30 12:33:08
+   * @date 2021-1-30 19:00:35
    */
-  public async writePackageConfig(): Promise<void> {
-    await writeFilePromise(
-      path.resolve(this.basePath, 'package.json'),
-      // 默认 2 缩进
-      JSON.stringify(this.packageConfig, null, 2)
-    )
+  runTemplate(): void {
+    this.plugin.template({
+      render: this.renderTemplate.bind(this),
+      mergePackageConfig: this.mergePackageConfig.bind(this)
+    })
   }
 }
+
+export default PluginManager

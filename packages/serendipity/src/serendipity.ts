@@ -9,13 +9,13 @@
  */
 
 import { program } from 'commander'
-import CliManager from './CliManager'
+import CoreManager from './coreManager'
 import 'source-map-support/register'
 
 const DEFAULT_NAME = 'hello-serendipity'
 
 // 初始化 manager
-const manager = new CliManager(process.argv)
+const manager = new CoreManager(process.argv)
 
 // 版本信息
 program.version(`serendipity ${require('../package').version}`)
