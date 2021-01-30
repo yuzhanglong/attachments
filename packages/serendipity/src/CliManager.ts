@@ -25,35 +25,45 @@ class CliManager {
     this.args = args
   }
 
-
-  private async run(command: string, args: string[]): Promise<execa.ExecaChildProcess> {
-    if (!args) {
-      [command, ...args] = command.split(/\s+/)
+  private initWorkDir(): void {
+    if (!fs.existsSync(this.basePath)) {
+      fs.mkdirSync(this.basePath)
     }
-    return execa(command, args, { cwd: this.basePath })
   }
 
+  private async runCommand(command: string, args: string[]): Promise<execa.ExecaChildProcess> {
+    if (!args) {
+      // \s 匹配任何空白字符，包括空格、制表符、换页符
+      [command, ...args] = command.split(/\s+/)
+    }
+
+    return execa(
+      command,
+      args,
+      {
+        cwd: this.basePath
+      }
+    )
+  }
 
   public async create(name: string, options: CreateOptions): Promise<void> {
-
     // base path 初始化
     this.basePath = path.resolve(process.cwd(), name)
 
     logger.log(`在 ${chalk.yellow(this.basePath)} 创建项目中... `)
 
-    if (!fs.existsSync(this.basePath)) {
-      fs.mkdirSync(this.basePath)
-    }
+    this.initWorkDir()
 
-    // 获取对应 project类型的 service 包
+    // 获取对应 project 类型的 service 包
     let cliService: CliService
     try {
       cliService = require(`@attachments/serendipity-service-${options.type}`)
-      // TODO: 提供自定义 service 接口，允许从其他地方导入包
     } catch (e) {
-      logger.log('获取 service 包失败，请检查类型是否支持！')
+      logger.log('获取 service 包失败，请检查相应的 service 模块是否存在！')
       process.exit(0)
     }
+
+
 
     // 处理插件
     const pluginManager = new PluginManager(this.basePath)
@@ -61,7 +71,7 @@ class CliManager {
     // 初始化 git
     if (options.initGit) {
       logger.log('正在初始化 git 仓库...')
-      await this.run('git init', [])
+      await this.runCommand('git init', [])
     }
 
     // 执行 cli Service
@@ -75,11 +85,13 @@ class CliManager {
       }
     })
 
+    await pluginManager.writePackageConfig()
+
     // 初始化首次 commit
     if (options.initGit) {
       try {
-        await this.run('git add -A', [])
-        await this.run('git', ['commit', '-m', options.commit, '--no-verify'])
+        await this.runCommand('git add -A', [])
+        await this.runCommand('git', ['commit', '-m', options.commit, '--no-verify'])
       } catch (e) {
         console.log(e)
       }

@@ -28,7 +28,7 @@ export interface ServiceOperations {
   setPackageConfig: (config: Record<string, unknown>) => void
 
   // 合并 package.json 配置
-  mergePackageConfig: (data: CommonObject, options: MergePackageConfigOptions) => void
+  mergePackageConfig: (data: CommonObject, options?: MergePackageConfigOptions) => void
 
   // 执行单个插件
   runPluginTemplate: (plugin: PluginModule) => void

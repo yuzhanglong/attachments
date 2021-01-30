@@ -32,5 +32,9 @@ module.exports = ({ operations }: ServiceOption) => {
     require('@attachments/serendipity-plugin-react')
   )
 
+  // babel 插件
+  operations.runPluginTemplate(
+    require('@attachments/serendipity-plugin-babel')
+  )
 }
 

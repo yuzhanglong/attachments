@@ -7,6 +7,8 @@
  */
 
 
+import { ServiceOperations } from './cliService'
+
 export interface PluginModule {
   runtime: PluginRuntime
   template: PluginTemplate
@@ -16,8 +18,8 @@ export type TemplateFilesMapper = Record<string, string>
 
 export type PluginTemplateRender = (path: string, options: Record<string, unknown>) => void
 
-export interface PluginTemplateOptions {
-  // TODO: 细化 options 类型
+// 插件可以继承部分 service 能力
+export interface PluginTemplateOptions extends Omit<ServiceOperations, 'runPluginTemplate' | 'runPluginsTemplate' | 'setPackageConfig'> {
   render: PluginTemplateRender
 }
 
