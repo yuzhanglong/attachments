@@ -28,12 +28,12 @@ module.exports = ({ operations }: ServiceOption) => {
   })
 
   // 初始化模板
-  operations.runPluginTemplate(
+  operations.registerPlugin(
     require('@attachments/serendipity-plugin-react')
   )
 
   // babel 插件
-  operations.runPluginTemplate(
+  operations.registerPlugin(
     require('@attachments/serendipity-plugin-babel')
   )
 }
