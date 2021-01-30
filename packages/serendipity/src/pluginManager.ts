@@ -18,7 +18,7 @@ class PluginManager {
   private readonly basePath: string
 
   private plugin: PluginModule
-  private packageConfig: CommonObject
+  private readonly packageConfig: CommonObject
 
   constructor(basePath: string, plugin: PluginModule, packageConfig: CommonObject) {
     this.plugin = plugin
@@ -142,6 +142,10 @@ class PluginManager {
       render: this.renderTemplate.bind(this),
       mergePackageConfig: this.mergePackageConfig.bind(this)
     })
+  }
+
+  public getPackageConfig(): CommonObject {
+    return this.packageConfig
   }
 }
 
