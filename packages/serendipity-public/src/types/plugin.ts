@@ -12,9 +12,9 @@ export interface PluginModule {
   template: PluginTemplate
 }
 
-export type TemplateFilesMapper = { [key: string]: string }
+export type TemplateFilesMapper = Record<string, string>
 
-export type PluginTemplateRender = (path: string, options: any) => void
+export type PluginTemplateRender = (path: string, options: Record<string, unknown>) => void
 
 export interface PluginTemplateOptions {
   // TODO: 细化 options 类型

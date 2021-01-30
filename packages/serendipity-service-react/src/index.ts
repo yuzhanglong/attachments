@@ -10,22 +10,24 @@ import { ServiceOption } from '@attachments/serendipity-public/bin/types/cliServ
 
 
 module.exports = ({ operations }: ServiceOption) => {
+  // 初始化包配置
   operations.setPackageConfig({
     name: 'test',
     version: '1.0.0',
     description: 'a react cli demo',
     main: 'index.js',
     scripts: {
-      start: 'cli-react-service start',
-      build: 'cli-react-service build'
+      start: 'serendipity-service-react start',
+      build: 'serendipity-service-react build'
     },
-    author: 'yuzhanglong',
+    author: 'serendipity',
     license: 'ISC',
     devDependencies: {
-      'cli-service-react': 'latest'
+      'serendipity-service-react': '0.0.1'
     }
   })
 
+  // 初始化模板
   operations.runPluginTemplate(
     require('@attachments/serendipity-plugin-react')
   )

@@ -8,7 +8,7 @@
 
 
 import { TemplateFilesMapper } from '../types/plugin'
-import globby = require('globby')
+import * as globby from 'globby'
 import { readFilePromise } from './files'
 import * as path from 'path'
 
