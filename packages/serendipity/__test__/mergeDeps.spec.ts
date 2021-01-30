@@ -7,13 +7,14 @@
  */
 
 
-import PluginManager from '../src/core/pluginManager'
+import PluginManager from '../src/pluginManager'
 
 describe('package.json 合并配置', () => {
-  const pluginManager = new PluginManager('test-path')
+  const testPlugin = require('@attachments/serendipity-plugin-react')
+  let pluginManager: PluginManager
 
   beforeEach(() => {
-    pluginManager.setPackageConfig({
+    pluginManager = new PluginManager('test-path', testPlugin, {
       devDependencies: {
         'serendipity-service-react': '0.0.1'
       }
@@ -25,7 +26,7 @@ describe('package.json 合并配置', () => {
       name: 'hello world'
     })
 
-    expect(pluginManager.packageConfig).toStrictEqual({
+    expect(pluginManager.getPackageConfig()).toStrictEqual({
       name: 'hello world',
       devDependencies: {
         'serendipity-service-react': '0.0.1'
@@ -34,13 +35,14 @@ describe('package.json 合并配置', () => {
   })
 
   test('非版本字段合并', () => {
-    expect(pluginManager.packageConfig.name).toBeUndefined()
+    expect(pluginManager.getPackageConfig().name).toBeUndefined()
     pluginManager.mergePackageConfig({
       foo: {
         bar: 'hello',
         baz: [1, 2, 4, 6]
       }
     })
+
     pluginManager.mergePackageConfig({
       foo: {
         bar: 'hello',
@@ -48,7 +50,7 @@ describe('package.json 合并配置', () => {
         quz: 'yzl'
       }
     })
-    expect(pluginManager.packageConfig).toStrictEqual({
+    expect(pluginManager.getPackageConfig()).toStrictEqual({
       foo: {
         bar: 'hello',
         baz: [1, 2, 3, 5],
@@ -73,7 +75,7 @@ describe('package.json 合并配置', () => {
       }
     })
 
-    expect(pluginManager.packageConfig).toStrictEqual({
+    expect(pluginManager.getPackageConfig()).toStrictEqual({
       devDependencies: {
         'foo': '0.2.1',
         'serendipity-service-react': '0.0.1'
