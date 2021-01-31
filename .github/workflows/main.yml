@@ -1,0 +1,19 @@
+name: serendipity actions
+
+on:
+  [ push, pull_request ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install modules
+        run: yarn install
+
+      - name: es-lint
+        run: yarn lint
+
+      - name: jest test
+        run: yarn test
