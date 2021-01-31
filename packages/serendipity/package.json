@@ -6,10 +6,11 @@
     "serendipity": "./bin/serendipity.js"
   },
   "scripts": {
-    "start": "tsc -w"
+    "run": "tsc -w"
   },
   "license": "MIT",
   "dependencies": {
-    "commander": "^7.0.0"
+    "commander": "^7.0.0",
+    "deepmerge": "^4.2.2"
   }
 }

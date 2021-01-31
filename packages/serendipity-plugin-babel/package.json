@@ -1,0 +1,9 @@
+{
+  "name": "@attachments/serendipity-plugin-babel",
+  "version": "0.0.1",
+  "main": "./bin/index.js",
+  "license": "MIT",
+  "scripts": {
+    "tsc": "tsc -w"
+  }
+}

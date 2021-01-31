@@ -9,4 +9,7 @@
 
 export interface CreateOptions {
   type?: string
+  service?: string
+  initGit?: boolean
+  commit?: string
 }
