@@ -10,6 +10,7 @@
     "chalk": "^4.1.0",
     "execa": "^5.0.0",
     "globby": "^11.0.2",
-    "semver": "^7.3.4"
+    "semver": "^7.3.4",
+    "webpack-merge": "^5.7.3"
   }
 }
