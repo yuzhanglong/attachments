@@ -14,8 +14,8 @@ import * as webpack from 'webpack'
 
 // plugin 模块
 export interface PluginModule {
-  runtime: PluginRuntime
-  template: PluginTemplate
+  runtime?: PluginRuntime
+  template?: PluginTemplate
 }
 
 // 模板文件映射表
