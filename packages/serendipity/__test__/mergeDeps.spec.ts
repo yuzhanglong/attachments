@@ -8,7 +8,6 @@
 
 
 import PluginManager from '../src/pluginManager'
-import * as process from 'process'
 
 describe('package.json 合并配置', () => {
   const testPlugin = require('@attachments/serendipity-plugin-react')

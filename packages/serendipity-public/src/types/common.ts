@@ -7,4 +7,21 @@
  */
 
 
+import { Configuration } from 'webpack'
+import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
+
 export type CommonObject = Record<string, unknown>
+
+export type WebpackConfiguration = Configuration
+export type WebpackDevServerConfiguration = DevServerConfiguration
+
+export interface WebpackConfig {
+  devServerConfig?: WebpackDevServerConfiguration
+  webpackConfig?: WebpackConfiguration
+}
+
+export interface AppConfig {
+  plugins?: string[]
+  webpack?: WebpackConfig
+  additional?: CommonObject
+}
