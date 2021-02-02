@@ -7,23 +7,26 @@
  */
 
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
+import { AppConfig, CommonObject } from '@attachments/serendipity-public/bin/types/common'
 import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-public/bin/utils/template'
 import { fileTreeWriting } from '@attachments/serendipity-public/bin/utils/files'
 import { MergePackageConfigOptions } from '@attachments/serendipity-public/bin/types/cliService'
 import * as deepmerge from 'deepmerge'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
+import { webpackMerge } from '@attachments/serendipity-public'
 
 class PluginManager {
   private readonly basePath: string
-
-  private plugin: PluginModule
   private readonly packageConfig: CommonObject
 
-  constructor(basePath: string, plugin: PluginModule, packageConfig: CommonObject) {
+  private plugin: PluginModule
+  public appConfig: AppConfig
+
+  constructor(basePath: string, plugin: PluginModule, appConfig: AppConfig, packageConfig: CommonObject) {
     this.plugin = plugin
     this.basePath = basePath
     this.packageConfig = packageConfig
+    this.appConfig = appConfig
   }
 
   /**
@@ -140,10 +143,29 @@ class PluginManager {
   runTemplate(): void {
     this.plugin.template({
       render: this.renderTemplate.bind(this),
-      mergePackageConfig: this.mergePackageConfig.bind(this)
+      mergePackageConfig: this.mergePackageConfig.bind(this),
+      mergeAppConfig: this.mergeAppConfig.bind(this)
     })
   }
 
+
+  /**
+   * 合并 app 配置
+   *
+   * @author yuzhanglong
+   * @date 2021-2-2 22:05:59
+   */
+  public mergeAppConfig(appConfig: AppConfig): void {
+    this.appConfig = webpackMerge(this.appConfig, appConfig)
+  }
+
+
+  /**
+   * packageConfig getter
+   *
+   * @author yuzhanglong
+   * @date 2021-2-2 22:06:32
+   */
   public getPackageConfig(): CommonObject {
     return this.packageConfig
   }

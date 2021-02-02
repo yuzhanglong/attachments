@@ -7,6 +7,8 @@
  */
 
 
-module.exports = (options: any) => {
-  console.log('serendipity plugin runtime!')
+import { PluginRuntimeOptions } from '@attachments/serendipity-public/bin/types/plugin'
+
+module.exports = (options: PluginRuntimeOptions) => {
+  return
 }

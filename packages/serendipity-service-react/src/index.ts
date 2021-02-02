@@ -17,13 +17,12 @@ module.exports = ({ operations }: ServiceOption) => {
     description: 'a react cli demo',
     main: 'index.js',
     scripts: {
-      start: 'serendipity-service-react start',
-      build: 'serendipity-service-react build'
+      start: 'serendipity-service-react start'
     },
     author: 'serendipity',
     license: 'ISC',
     devDependencies: {
-      'serendipity-service-react': '0.0.1'
+      'serendipity-service-react': '../../packages/serendipity-service-react'
     }
   })
 
@@ -32,9 +31,8 @@ module.exports = ({ operations }: ServiceOption) => {
     require('@attachments/serendipity-plugin-react')
   )
 
-  // babel 插件
+  // babel 配置插件
   operations.registerPlugin(
     require('@attachments/serendipity-plugin-babel')
   )
 }
-
