@@ -11,9 +11,8 @@ import { AppConfig, CommonObject } from '@attachments/serendipity-public/bin/typ
 import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-public/bin/utils/template'
 import { fileTreeWriting } from '@attachments/serendipity-public/bin/utils/files'
 import { MergePackageConfigOptions } from '@attachments/serendipity-public/bin/types/cliService'
-import * as deepmerge from 'deepmerge'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
-import { webpackMerge } from '@attachments/serendipity-public'
+import { deepmerge, webpackMerge } from '@attachments/serendipity-public'
 
 class PluginManager {
   private readonly basePath: string
@@ -156,7 +155,7 @@ class PluginManager {
    * @date 2021-2-2 22:05:59
    */
   public mergeAppConfig(appConfig: AppConfig): void {
-    this.appConfig = webpackMerge(this.appConfig, appConfig)
+    this.appConfig = webpackMerge({}, this.appConfig, appConfig)
   }
 
 

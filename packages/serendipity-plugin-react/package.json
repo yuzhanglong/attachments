@@ -4,7 +4,7 @@
   "main": "bin/index.js",
   "license": "MIT",
   "scripts": {
-    "run": "tsc -w"
+    "start": "tsc -w"
   }
 }
 

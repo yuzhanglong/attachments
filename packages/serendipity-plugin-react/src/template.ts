@@ -16,7 +16,12 @@ const getTemplatePath = (name) => {
 
 
 module.exports = (options: PluginTemplateOptions) => {
-  options.render(getTemplatePath('react-template'), {
+  options.render(getTemplatePath('react-template'), {})
 
+  // 合并 app 配置
+  options.mergeAppConfig({
+    plugins: [
+      '@attachments/serendipity-plugin-babel'
+    ]
   })
 }

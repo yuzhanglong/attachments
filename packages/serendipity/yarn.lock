@@ -6,8 +6,3 @@ commander@^7.0.0:
   version "7.0.0"
   resolved "https://registry.npm.taobao.org/commander/download/commander-7.0.0.tgz?cache=0&sync_timestamp=1610702145547&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-7.0.0.tgz#3e2bbfd8bb6724760980988fb5b22b7ee6b71ab2"
   integrity sha1-Piu/2LtnJHYJgJiPtbIrfua3GrI=
-
-deepmerge@^4.2.2:
-  version "4.2.2"
-  resolved "https://registry.npm.taobao.org/deepmerge/download/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
-  integrity sha1-RNLqNnm49NT/ujPwPYZfwee/SVU=

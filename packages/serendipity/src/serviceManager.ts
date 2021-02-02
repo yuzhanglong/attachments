@@ -16,16 +16,16 @@ import { writeFilePromise } from '@attachments/serendipity-public/bin/utils/file
 import * as path from 'path'
 import PluginManager from './pluginManager'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
-import { runCommand } from '@attachments/serendipity-public'
+import { runCommand, webpackMerge } from '@attachments/serendipity-public'
 
 class ServiceManager {
   private readonly basePath: string
   private readonly service: CliService
+  private readonly appConfig: AppConfig
 
   private name: string
   private pluginManagers: PluginManager[] = []
   private packageConfig: CommonObject
-  private appConfig: AppConfig
 
   constructor(name: string, basePath: string, service: CliService) {
     this.name = name
@@ -99,12 +99,30 @@ class ServiceManager {
    * @date 2021-2-2 20:32:45
    */
   public async writeAppConfig(): Promise<void> {
-    const jsonifyResult = JSON.stringify(this.appConfig)
+    // 由于 webpackMerge 库返回的对象是一个新的对象，
+    // this.appConfig 不会被插件接口修改，所以我们还要再遍历一遍并合并
+    const lastResult = this.collectAppConfig()
+
+    const jsonifyResult = JSON.stringify(lastResult, null, 2)
     const result = `module.exports = ${jsonifyResult}`
     await writeFilePromise(
       path.resolve(this.basePath, 'serendipity.js'),
       result
     )
+  }
+
+  /**
+   * 收集 app 配置
+   *
+   * @author yuzhanglong
+   * @date 2021-2-3 00:13:02
+   */
+  collectAppConfig(): AppConfig {
+    const reducer = ((previousValue: PluginManager, currentValue: PluginManager) => {
+      return webpackMerge(previousValue, currentValue)
+    })
+    // @ts-ignore
+    return this.pluginManagers.reduce(reducer).appConfig
   }
 
   /**

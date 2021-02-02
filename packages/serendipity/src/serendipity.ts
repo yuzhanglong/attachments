@@ -11,6 +11,7 @@
 import { program } from 'commander'
 import CoreManager from './coreManager'
 import 'source-map-support/register'
+import { CreateOptions } from './types/options'
 
 const DEFAULT_NAME = 'hello-serendipity'
 
@@ -28,7 +29,7 @@ program
   .option('-s --service <serviceName>', '自定义项目管理包')
   .option('-g --initGit', '初始化 git', false)
   .option('-c --commit', '初始化 commit 信息，只有选择初始化 git 时有效', 'initial commit')
-  .action(async (name, opt) => {
+  .action(async (name: string, opt: CreateOptions) => {
     if (!name) {
       name = DEFAULT_NAME
     }
