@@ -8,13 +8,14 @@
 
 
 import PluginManager from '../src/pluginManager'
+import * as process from 'process'
 
 describe('package.json 合并配置', () => {
   const testPlugin = require('@attachments/serendipity-plugin-react')
   let pluginManager: PluginManager
 
   beforeEach(() => {
-    pluginManager = new PluginManager('test-path', testPlugin, {
+    pluginManager = new PluginManager('test-path', testPlugin, {}, {
       devDependencies: {
         'serendipity-service-react': '0.0.1'
       }
@@ -79,6 +80,90 @@ describe('package.json 合并配置', () => {
       devDependencies: {
         'foo': '0.2.1',
         'serendipity-service-react': '0.0.1'
+      }
+    })
+  })
+})
+
+describe('app 配置合并测试', () => {
+  const testPlugin = require('@attachments/serendipity-plugin-react')
+  let pluginManager: PluginManager
+
+  beforeEach(() => {
+    pluginManager = new PluginManager('test-path', testPlugin, {
+      webpack: {
+        devServerConfig: {
+          port: 8081
+        }
+      }
+    }, {})
+  })
+
+
+  test('尝试 webpack 配置合并', () => {
+    pluginManager.mergeAppConfig({
+      webpack: {
+        devServerConfig: {
+          port: 8080
+        },
+        webpackConfig: {
+          module: {
+            rules: [
+              {
+                loader: 'foo-loader'
+              }
+            ]
+          }
+        }
+      }
+    })
+
+    expect(pluginManager.appConfig).toStrictEqual({
+      webpack: {
+        devServerConfig: {
+          port: 8080
+        },
+        webpackConfig: {
+          module: {
+            rules: [
+              {
+                loader: 'foo-loader'
+              }
+            ]
+          }
+        }
+      }
+    })
+  })
+
+
+  test('尝试项目内 app 配置合并(plugins)', () => {
+    pluginManager.mergeAppConfig({
+      plugins: [
+        'foo-plugin',
+        'bar-plugin'
+      ]
+    })
+    pluginManager.mergeAppConfig({
+      plugins: [
+        'foo2-plugin',
+        'bar2-plugin',
+        'hello-plugin'
+      ]
+    })
+
+    expect(pluginManager.appConfig).toStrictEqual({
+      'plugins': [
+        'foo-plugin',
+        'bar-plugin',
+        'foo2-plugin',
+        'bar2-plugin',
+        'hello-plugin'
+      ],
+      'webpack': {
+        'devServerConfig': {
+          'port': 8081
+        }
       }
     })
   })

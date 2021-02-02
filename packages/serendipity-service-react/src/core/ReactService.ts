@@ -8,8 +8,6 @@
 
 
 import { configFile } from '../utils/paths'
-import { AppConfig } from '../types/appConfig'
-import merge from 'webpack-merge'
 import baseConfig from '../webpack/webpackBase'
 import { Configuration, webpack } from 'webpack'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
@@ -17,12 +15,18 @@ import logger from '@attachments/serendipity-public/bin/utils/logger'
 import * as WebpackDevServer from 'webpack-dev-server'
 import devServerConfig from '../webpack/devServer'
 import * as fs from 'fs'
+import {
+  AppConfig,
+  WebpackConfiguration,
+  WebpackDevServerConfiguration
+} from '@attachments/serendipity-public/bin/types/common'
+import { webpackMerge } from '@attachments/serendipity-public'
 
 class ReactService {
   private readonly appConfig: AppConfig
-  private readonly devServerConfig: unknown
+  private readonly devServerConfig: WebpackDevServerConfiguration
 
-  private webpackConfig: Configuration
+  private webpackConfig: WebpackConfiguration
 
   constructor() {
     this.appConfig = fs.existsSync(configFile) ? require(configFile) : {}
@@ -30,8 +34,8 @@ class ReactService {
     this.devServerConfig = devServerConfig
   }
 
-  private mergeWebpackConfig(...configurations: Configuration[]): void {
-    this.webpackConfig = merge(this.webpackConfig, ...configurations)
+  private mergeWebpackConfig(...configurations: WebpackConfiguration[]): void {
+    this.webpackConfig = webpackMerge(this.webpackConfig, ...configurations)
   }
 
 
@@ -51,12 +55,12 @@ class ReactService {
     this.runRuntimePlugins()
 
     // 尝试从用户配置文件中获取配置，它的优先级较高
-    if (this.appConfig && this.appConfig.webpackConfig) {
-      this.mergeWebpackConfig(this.appConfig.webpackConfig)
+    if (this.appConfig?.webpack?.webpackConfig) {
+      this.mergeWebpackConfig(this.appConfig.webpack.webpackConfig)
     }
 
     // 初始化 webpack compiler 见 webpack node.js API
-    const compiler = webpack(this.webpackConfig)
+    const compiler = webpack(this.webpackConfig as Configuration)
 
     // devServer 选项合并
     const devServerOptions = Object.assign({}, this.devServerConfig, {
@@ -64,6 +68,7 @@ class ReactService {
     })
 
     // 启动 webpackDevServer 服务器
+    // @ts-ignore
     const server = new WebpackDevServer(compiler, devServerOptions)
 
     // 监听端口

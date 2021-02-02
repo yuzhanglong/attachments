@@ -11,7 +11,7 @@ import {
   CliService
 } from '@attachments/serendipity-public/bin/types/cliService'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
+import { AppConfig, CommonObject } from '@attachments/serendipity-public/bin/types/common'
 import { writeFilePromise } from '@attachments/serendipity-public/bin/utils/files'
 import * as path from 'path'
 import PluginManager from './pluginManager'
@@ -25,11 +25,13 @@ class ServiceManager {
   private name: string
   private pluginManagers: PluginManager[] = []
   private packageConfig: CommonObject
+  private appConfig: AppConfig
 
   constructor(name: string, basePath: string, service: CliService) {
     this.name = name
     this.service = service
     this.basePath = basePath
+    this.appConfig = {}
   }
 
   /**
@@ -59,7 +61,7 @@ class ServiceManager {
    * @date 2021-1-30 19:14:42
    */
   public registerPlugin(pluginModule: PluginModule): void {
-    const manager = new PluginManager(this.basePath, pluginModule, this.packageConfig)
+    const manager = new PluginManager(this.basePath, pluginModule, this.appConfig, this.packageConfig)
     this.pluginManagers.push(manager)
   }
 
@@ -97,13 +99,11 @@ class ServiceManager {
    * @date 2021-2-2 20:32:45
    */
   public async writeAppConfig(): Promise<void> {
-    const defaultData = 'module.exports = {\n' +
-      '  // write your configuration here O(∩_∩)O\n' +
-      '}'
-
+    const jsonifyResult = JSON.stringify(this.appConfig)
+    const result = `module.exports = ${jsonifyResult}`
     await writeFilePromise(
       path.resolve(this.basePath, 'serendipity.js'),
-      defaultData
+      result
     )
   }
 
