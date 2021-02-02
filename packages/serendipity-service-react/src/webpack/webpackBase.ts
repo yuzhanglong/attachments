@@ -7,15 +7,15 @@
  */
 
 
-import { Configuration } from 'webpack'
 import { appBuild, appEntry, appHtml } from '../utils/paths'
 import * as HtmlWebpackPlugin from 'html-webpack-plugin'
+import { WebpackConfiguration } from '@attachments/serendipity-public/bin/types/common'
 
 const WebpackBar = require('webpackbar')
 
 // TODO: 区分开发和生产环境
 
-const baseConfig: Configuration = {
+const baseConfig: WebpackConfiguration = {
   entry: {
     app: appEntry
   },
