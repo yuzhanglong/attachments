@@ -7,10 +7,15 @@
  */
 
 
-const devServerConfig = {
-  contentBase: './build',
+import { Configuration } from 'webpack-dev-server'
+
+const devServerConfig: Configuration = {
+  // 采用自定义输出而不是 webpack-dev-server 的默认输出
+  // quiet: true,
+  // clientLogLevel: 'none',
   compress: true,
-  port: 9000
+  port: 9000,
+  hot: true
 }
 
 export default devServerConfig

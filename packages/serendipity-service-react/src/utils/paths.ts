@@ -40,7 +40,7 @@ const appHtml = resolveAppPath('public/index.html')
 // 配置目录
 const configFile = resolveAppPath('serendipity.js')
 
-
+// app 入口
 const appEntry = resolveAppPath('src/index.js')
 
 export {
