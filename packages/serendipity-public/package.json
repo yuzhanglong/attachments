@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "./bin/index.js",
   "scripts": {
-    "run": "tsc -w"
+    "start": "tsc -w"
   },
   "license": "MIT",
   "dependencies": {
+    "@types/webpack": "^4.41.26",
     "chalk": "^4.1.0",
     "execa": "^5.0.0",
     "globby": "^11.0.2",

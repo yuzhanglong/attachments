@@ -38,10 +38,10 @@ const appYarnLockFile = resolveAppPath('yarn.lock')
 const appHtml = resolveAppPath('public/index.html')
 
 // 配置目录
-const configFile = resolveAppPath('serendipity.json')
+const configFile = resolveAppPath('serendipity.js')
 
 
-const appEntry = resolveAppPath('index')
+const appEntry = resolveAppPath('src/index.js')
 
 export {
   resolveAppPath,

@@ -1,4 +1,4 @@
-name: serendipity actions
+name: Code Lint
 
 on:
   [ pull_request ]
