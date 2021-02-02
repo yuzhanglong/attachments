@@ -7,33 +7,25 @@
  */
 
 
+import { Configuration } from 'webpack'
 import { appBuild, appEntry } from '../utils/paths'
+import * as HtmlWebpackPlugin from 'html-webpack-plugin'
 
-const baseConfig = {
+const baseConfig: Configuration = {
   entry: {
     app: appEntry
   },
+  mode: 'development',
   output: {
-    path: appBuild,
-    publicPath: 'build',
-    filename: '[name].js',
-    chunkFilename: '[name].js'
+    filename: 'index.js',
+    path: appBuild
   },
   resolve: {
     extensions: ['.js', '.jsx']
   },
-  module: {
-    rules: [
-      {
-        test: /\.s[ac]ss$/i,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
-      }
-    ]
-  }
+  plugins: [
+    new HtmlWebpackPlugin({})
+  ]
 }
 
 export default baseConfig

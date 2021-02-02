@@ -11,4 +11,5 @@ import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
 
 export interface AppConfig {
   webpackConfig: CommonObject
+  plugins: string[]
 }

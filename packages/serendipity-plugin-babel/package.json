@@ -4,6 +4,9 @@
   "main": "./bin/index.js",
   "license": "MIT",
   "scripts": {
-    "tsc": "tsc -w"
+    "start": "tsc -w"
+  },
+  "dependencies": {
+    "babel-loader": "^8.2.2"
   }
 }
