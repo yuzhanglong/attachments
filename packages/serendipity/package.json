@@ -6,7 +6,7 @@
     "serendipity": "./bin/serendipity.js"
   },
   "scripts": {
-    "run": "tsc -w"
+    "start": "tsc -w"
   },
   "license": "MIT",
   "dependencies": {

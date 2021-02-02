@@ -90,6 +90,24 @@ class ServiceManager {
   }
 
   /**
+   * 写入 app 配置文件，这个配置文件面向用户
+   * 用户可以在这个配置文件中进行一些操作，例如修改 webpack 配置等
+   *
+   * @author yuzhanglong
+   * @date 2021-2-2 20:32:45
+   */
+  public async writeAppConfig(): Promise<void> {
+    const defaultData = 'module.exports = {\n' +
+      '  // write your configuration here O(∩_∩)O\n' +
+      '}'
+
+    await writeFilePromise(
+      path.resolve(this.basePath, 'serendipity.js'),
+      defaultData
+    )
+  }
+
+  /**
    * 执行工程创建时 service 的能力，例如初始化 package.json 配置
    *
    * @author yuzhanglong
@@ -125,6 +143,16 @@ class ServiceManager {
   public async initFirstCommit(message: string): Promise<void> {
     await runCommand('git add -A', [], this.basePath)
     await runCommand('git', ['commit', '-m', message, '--no-verify'], this.basePath)
+  }
+
+  /**
+   * 安装所有依赖
+   *
+   * @author yuzhanglong
+   * @date 2021-2-2 19:50:10
+   */
+  public async install(): Promise<void> {
+    await runCommand('yarn install', [], this.basePath)
   }
 }
 

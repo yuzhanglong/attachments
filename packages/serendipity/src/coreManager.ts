@@ -56,6 +56,7 @@ class CoreManager {
     if (options.initGit) {
       logger.log('正在初始化 git 仓库...')
       await serviceManager.initServiceGit()
+      logger.done('git 初始化完成！')
     }
 
     // 执行 cli Service 构建时业务逻辑
@@ -67,17 +68,25 @@ class CoreManager {
     // 写入 package.json 文件
     await serviceManager.writePackageConfig()
 
+    // 写入项目配置文件
+    await serviceManager.writeAppConfig()
+
     // 初始化首次 commit
     if (options.initGit) {
       try {
         await serviceManager.initFirstCommit(options.commit)
       } catch (e) {
-        console.log(e)
+        logger.error(e)
       }
     }
 
+    // 安装所有依赖
+    await serviceManager.install()
+
+    console.log('install success!')
+
     // 成功提示
-    logger.log(`创建项目 ${name} 成功~`)
+    logger.done(`创建项目 ${name} 成功~, happy coding!`)
   }
 }
 

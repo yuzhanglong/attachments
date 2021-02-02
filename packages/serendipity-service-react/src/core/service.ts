@@ -12,14 +12,14 @@
 import ReactService from './ReactService'
 import * as program from 'commander'
 
-const reactService = new ReactService()
 
+// 初始化 service
+const reactService = new ReactService()
 
 program
   .command('start')
   .description('执行开发 server')
   .action(() => {
-    console.log('dev server 被执行了~')
     reactService.start()
   })
 
@@ -30,3 +30,5 @@ program
   .action(() => {
     console.log('build 被执行了~')
   })
+
+program.parse(process.argv)
