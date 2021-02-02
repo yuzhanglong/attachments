@@ -10,7 +10,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "commander": "^7.0.0",
-    "deepmerge": "^4.2.2"
+    "commander": "^7.0.0"
   }
 }
