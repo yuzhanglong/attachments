@@ -7,7 +7,7 @@
  */
 
 
-import { CommonObject } from './common'
+import { AppConfig, CommonObject } from './common'
 import { MergePackageConfigOptions } from './cliService'
 import * as webpack from 'webpack'
 
@@ -27,6 +27,7 @@ export type PluginTemplateRender = (path: string, options: CommonObject) => void
 export interface PluginTemplateOptions {
   render: PluginTemplateRender
   mergePackageConfig: (data: CommonObject, options?: MergePackageConfigOptions) => void
+  mergeAppConfig: (appConfig: AppConfig) => void
 }
 
 // runtime plugin 选项
