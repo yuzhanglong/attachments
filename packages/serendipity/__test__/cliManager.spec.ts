@@ -3,10 +3,11 @@ import * as process from 'process'
 import * as path from 'path'
 import * as fs from 'fs'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
+import { setProjectDevelopment } from '@attachments/serendipity-public/bin/utils/env'
 
 describe('cli Manager 模块测试', () => {
   beforeEach(() => {
-    process.env.SERENDIPITY_CONFIG = 'DEVELOPMENT'
+    setProjectDevelopment()
   })
 
 

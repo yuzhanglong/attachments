@@ -123,7 +123,7 @@ const getBaseConfig = (): WebpackConfiguration => {
       serendipityEnv.isProjectDevelopment() && new ReactRefreshWebpackPlugin()
 
       // TODO: 开发环境 plugin 例如 eslint plugin 等
-    ],
+    ].filter((e) => e),
 
     // 该选项决定了如何处理项目中的不同类型的模块
     // 项目基于 webpack 5 我们不采用 url-loader / raw-loader / file-loader 之类的配置
