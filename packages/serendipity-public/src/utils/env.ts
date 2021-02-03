@@ -6,11 +6,39 @@
  * Email: yuzl1123@163.com
  */
 
-// 脚手架开发者使用，判断当前是否为开发环境，便于 jest 测试更加优雅地执行
-export const isSerendipityDevelopment = (): boolean => process.env.SERENDIPITY_CONFIG === 'DEVELOPMENT'
+
+interface SerendipityEnv extends NodeJS.ProcessEnv {
+  SERENDIPITY_CONFIG: 'DEVELOPMENT' | 'PRODUCTION'
+  PROJECT_CONDITION: 'DEVELOPMENT' | 'PRODUCTION'
+}
+
+const __processEnv__: SerendipityEnv = process.env as SerendipityEnv
+
+
+// 脚手架开发者使用，判断当前是否为开发环境，便于 部分 jest 测试更加优雅地执行
+export const isSerendipityDevelopment = (): boolean => __processEnv__.PROJECT_CONDITION === 'DEVELOPMENT'
+
+// 生产环境
+export const isProjectDevelopment = (): boolean => __processEnv__.PROJECT_CONDITION === 'DEVELOPMENT'
+
+// 开发环境
+export const isProjectProduction = (): boolean => __processEnv__.PROJECT_CONDITION === 'PRODUCTION'
+
+
+export const setProjectDevelopment = (): void => {
+  __processEnv__.PROJECT_CONDITION = 'DEVELOPMENT'
+}
+
+export const setProjectProduction = (): void => {
+  __processEnv__.PROJECT_CONDITION = 'PRODUCTION'
+}
 
 const serendipityEnv = {
-  isSerendipityDevelopment
+  isSerendipityDevelopment,
+  isProjectDevelopment,
+  isProjectProduction,
+  setProjectDevelopment,
+  setProjectProduction
 }
 
 export default serendipityEnv

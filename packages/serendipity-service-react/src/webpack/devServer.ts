@@ -7,15 +7,20 @@
  */
 
 
-import { Configuration } from 'webpack-dev-server'
+import { WebpackDevServerConfiguration } from '@attachments/serendipity-public/bin/types/common'
+import { DEFAULT_PORT } from '../common/constants'
 
-const devServerConfig: Configuration = {
-  // 采用自定义输出而不是 webpack-dev-server 的默认输出
-  // quiet: true,
-  // clientLogLevel: 'none',
-  compress: true,
-  port: 9000,
-  hot: true
+const getDevServerConfig = (): WebpackDevServerConfiguration => {
+  return {
+    // TODO: 采用自定义输出而不是 webpack-dev-server 的默认输出
+    compress: true,
+
+    // 运行端口, 用户可以通过配置文件来覆盖它
+    port: DEFAULT_PORT,
+
+    // 添加了 hot 会自动添加 HotModuleReplacementPlugin
+    hot: true
+  }
 }
 
-export default devServerConfig
+export default getDevServerConfig

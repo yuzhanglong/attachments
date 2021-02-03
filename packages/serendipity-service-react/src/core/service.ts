@@ -11,15 +11,21 @@
 
 import ReactService from './ReactService'
 import * as program from 'commander'
+import { serendipityEnv } from '@attachments/serendipity-public'
 
-
-// 初始化 service
-const reactService = new ReactService()
 
 program
   .command('start')
   .description('执行开发 server')
   .action(() => {
+
+    // 初始化环境变量
+    serendipityEnv.setProjectDevelopment()
+
+    // 初始化 service
+    const reactService = new ReactService()
+
+    // 调用 start 方法，执行内部逻辑
     reactService.start()
   })
 
@@ -28,7 +34,11 @@ program
   .command('build')
   .description('打包您的项目')
   .action(() => {
-    console.log('build 被执行了~')
+    // 初始化 service
+    // const reactService = new ReactService()
+
+    // 初始化环境变量
+    serendipityEnv.setProjectProduction()
   })
 
 program.parse(process.argv)
