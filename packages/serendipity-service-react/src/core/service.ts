@@ -18,11 +18,12 @@ program
   .command('start')
   .description('执行开发 server')
   .action(() => {
-    // 初始化 service
-    const reactService = new ReactService()
 
     // 初始化环境变量
     serendipityEnv.setProjectDevelopment()
+
+    // 初始化 service
+    const reactService = new ReactService()
 
     // 调用 start 方法，执行内部逻辑
     reactService.start()

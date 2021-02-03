@@ -31,8 +31,7 @@ const getBaseConfig = (): WebpackConfiguration => {
 
       // 公共配置
       {
-        // 使用 inject 会使所有资源文件全部被插入模板 HTML 中，这会给首屏加载带来很大的负担
-        inject: false,
+        inject: true,
         template: appHtml
       } as HtmlWebpackPlugin.Options,
 
@@ -56,9 +55,7 @@ const getBaseConfig = (): WebpackConfiguration => {
 
   return {
     // 项目入口
-    entry: {
-      app: appEntry
-    },
+    entry: appEntry,
 
     // 项目环境
     mode: serendipityEnv.isProjectDevelopment() ? 'development' : 'production',
@@ -66,7 +63,7 @@ const getBaseConfig = (): WebpackConfiguration => {
     // 输出配置
     output: {
       // 输出的文件名称
-      filename: serendipityEnv.isProjectDevelopment() ? 'index.js' : '[name].[contenthash:8].js',
+      filename: serendipityEnv.isProjectDevelopment() ? '[name].js' : '[name].[contenthash:8].js',
 
       // 打包路径
       path: appBuild,
@@ -74,8 +71,9 @@ const getBaseConfig = (): WebpackConfiguration => {
       // 输出文件名称，和 fileName 不同，这里的输出文件为非初始（non-initial）文件，例如我们熟悉的路由懒加载
       chunkFilename: serendipityEnv.isProjectDevelopment() ? '[name].chunk.js' : '[name].[contenthash:8].chunk.js',
 
-      // 公共路径，默认为 '' . 用户可以在配置文件中覆盖此配置，这对部署 cdn 等操作十分有效
-      publicPath: '',
+
+      // 公共路径，默认为 '/' . 用户可以在配置文件中覆盖此配置，这对部署 cdn 等操作十分有效
+      publicPath: '/',
 
       // @ts-ignore -- 这个特性为 v5 新特性，@types/webpack 并没有迁移到 v5
       // asset/resource 模块以 [hash][ext][query] 文件名发送到输出目录
@@ -89,20 +87,35 @@ const getBaseConfig = (): WebpackConfiguration => {
     optimization: {
       minimize: serendipityEnv.isProjectProduction(),
 
-      // TODO: 内部细节配置
+      // TODO: 内部细节配置，做性能优化
       minimizer: [
         new TerserPlugin(),
         new CssMinimizerPlugin()
       ],
 
       splitChunks: {
+        // 选择哪些块进行优化, 提供 all 味着即使在异步和非异步块之间也可以共享块
         chunks: 'all',
-        name: false
+
+        // 自定义拆分块的名称，webpack 默认配置即可
+        name: false,
+
+
+        cacheGroups: {
+          // 默认配置下的入口 vendor 名字又臭又长，这里对齐作出修改，通过 hash 值来保证不会冲突
+          defaultVendors: {
+            filename: (pathData): string => {
+              return `vendor-${pathData.hash}.js`
+            }
+          } as unknown
+        }
       },
 
-      // TODO: 解释一下 runtimeChunk
+      // 配置 runtimeChunk 名称
       runtimeChunk: {
-        name: entrypoint => `runtime-${entrypoint.name}`
+        name: (entrypoint) => {
+          return `runtime-${entrypoint.name}`
+        }
       }
     },
 
@@ -125,6 +138,7 @@ const getBaseConfig = (): WebpackConfiguration => {
       // TODO: 开发环境 plugin 例如 eslint plugin 等
     ].filter((e) => e),
 
+
     // 该选项决定了如何处理项目中的不同类型的模块
     // 项目基于 webpack 5 我们不采用 url-loader / raw-loader / file-loader 之类的配置
     // 可参考：https://webpack.js.org/guides/asset-modules/
@@ -140,9 +154,9 @@ const getBaseConfig = (): WebpackConfiguration => {
               type: 'asset/resource'
             },
 
-            // 样式处理
+            // 使用 node-sass
             {
-              test: /\.s[ac]ss$/i,
+              test: [/\.sass$/],
               use: [
                 // 将所有的计算后的样式加入页面中
                 'style-loader',
@@ -150,8 +164,20 @@ const getBaseConfig = (): WebpackConfiguration => {
                 // 编译 css 代码
                 'css-loader',
 
-                // 将 sass 编译为 CSS
+                // sass to css
                 'sass-loader'
+              ]
+            },
+
+            // 基本 css
+            {
+              test: [/\.css$/],
+              use: [
+                // 将所有的计算后的样式加入页面中
+                'style-loader',
+
+                // 编译 css 代码
+                'css-loader'
               ]
             }
 
