@@ -8,7 +8,7 @@
 
 
 import { configFile } from '../utils/paths'
-import baseConfig from '../webpack/webpackBase'
+import getBaseConfig from '../webpack/webpackBase'
 import { Configuration, webpack } from 'webpack'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
@@ -30,7 +30,7 @@ class ReactService {
 
   constructor() {
     this.appConfig = fs.existsSync(configFile) ? require(configFile) : {}
-    this.webpackConfig = baseConfig
+    this.webpackConfig = getBaseConfig()
     this.devServerConfig = devServerConfig
   }
 
@@ -39,6 +39,13 @@ class ReactService {
   }
 
 
+  /**
+   * 执行运行时插件
+   *
+   * @author yuzhanglong
+   * @email yuzl1123@163.com
+   * @date 2021-2-3 12:17:55
+   */
   private runRuntimePlugins(): void {
     if (Array.isArray(this.appConfig.plugins)) {
       for (const plugin of this.appConfig.plugins) {
@@ -50,6 +57,13 @@ class ReactService {
     }
   }
 
+  /**
+   * 启动项目
+   *
+   * @author yuzhanglong
+   * @email yuzl1123@163.com
+   * @date 2021-2-3 12:15:09
+   */
   public start(): void {
     // 执行插件运行时逻辑
     this.runRuntimePlugins()
@@ -63,9 +77,7 @@ class ReactService {
     const compiler = webpack(this.webpackConfig as Configuration)
 
     // devServer 选项合并
-    const devServerOptions = Object.assign({}, this.devServerConfig, {
-      open: true
-    })
+    const devServerOptions = Object.assign({}, this.devServerConfig)
 
     // 启动 webpackDevServer 服务器
     // @ts-ignore
@@ -73,7 +85,7 @@ class ReactService {
 
     // 监听端口
     // TODO: 端口配置化而不是写死
-    server.listen(8080, '127.0.0.1', () => {
+    server.listen(devServerOptions.port, () => {
       logger.done('the server is running successfully~')
     })
   }
