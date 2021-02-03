@@ -104,8 +104,8 @@ const getBaseConfig = (): WebpackConfiguration => {
         cacheGroups: {
           // 默认配置下的入口 vendor 名字又臭又长，这里对齐作出修改，通过 hash 值来保证不会冲突
           defaultVendors: {
-            filename: (pathData): string => {
-              return `vendor-${pathData.hash}.js`
+            filename: (pathData) => {
+              return `vendor-${pathData.chunk.hash}.js`
             }
           } as unknown
         }
@@ -156,14 +156,18 @@ const getBaseConfig = (): WebpackConfiguration => {
 
             // 使用 node-sass
             {
-              test: [/\.sass$/],
+              test: [/\.scss$/],
               use: [
                 // 将所有的计算后的样式加入页面中
                 'style-loader',
 
                 // 编译 css 代码
-                'css-loader',
-
+                {
+                  loader: 'css-loader',
+                  options: {
+                    modules: true
+                  }
+                },
                 // sass to css
                 'sass-loader'
               ]
@@ -177,7 +181,12 @@ const getBaseConfig = (): WebpackConfiguration => {
                 'style-loader',
 
                 // 编译 css 代码
-                'css-loader'
+                {
+                  loader: 'css-loader',
+                  options: {
+                    modules: true
+                  }
+                }
               ]
             }
 

@@ -39,7 +39,6 @@ program
 
     // 初始化环境变量
     serendipityEnv.setProjectProduction()
-    console.log('build 被执行了~')
   })
 
 program.parse(process.argv)

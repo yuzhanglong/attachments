@@ -13,7 +13,7 @@ import { Configuration, webpack } from 'webpack'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
 import * as WebpackDevServer from 'webpack-dev-server'
-import devServerConfig from '../webpack/devServer'
+import getDevServerConfig from '../webpack/devServer'
 import * as fs from 'fs'
 import {
   AppConfig,
@@ -31,9 +31,16 @@ class ReactService {
   constructor() {
     this.appConfig = fs.existsSync(configFile) ? require(configFile) : {}
     this.webpackConfig = getBaseConfig()
-    this.devServerConfig = devServerConfig
+    this.devServerConfig = getDevServerConfig()
   }
 
+  /**
+   * 合并 webpack 配置
+   *
+   * @author yuzhanglong
+   * @email yuzl1123@163.com
+   * @date 2021-2-4 00:50:55
+   */
   private mergeWebpackConfig(...configurations: WebpackConfiguration[]): void {
     this.webpackConfig = webpackMerge(this.webpackConfig, ...configurations)
   }
@@ -84,9 +91,8 @@ class ReactService {
     const server = new WebpackDevServer(compiler, devServerOptions)
 
     // 监听端口
-    // TODO: 端口配置化而不是写死
     server.listen(devServerOptions.port, () => {
-      logger.done('the server is running successfully~')
+      logger.done('开发服务器启动成功~')
     })
   }
 }
