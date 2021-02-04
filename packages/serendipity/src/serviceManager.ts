@@ -8,7 +8,7 @@
 
 
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import { AppConfig, CommonObject } from '@attachments/serendipity-public/bin/types/common'
+import { AppConfig, CommonObject, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import { writeFilePromise } from '@attachments/serendipity-public/bin/utils/files'
 import * as path from 'path'
 import PluginManager from './pluginManager'
@@ -20,13 +20,14 @@ class ServiceManager {
   private readonly basePath: string
   private readonly serviceModule: ServiceModule
   private readonly appConfig: AppConfig
+  private readonly createOptions: CreateOptions
 
   private name: string
   private pluginManagers: PluginManager[] = []
   private packageConfig: CommonObject
 
-  constructor(name: string, basePath: string, service: ServiceModule) {
-    this.name = name
+  constructor(basePath: string, createOptions: CreateOptions, service: ServiceModule) {
+    this.createOptions = createOptions
     this.serviceModule = service
     this.basePath = basePath
     this.appConfig = {}
@@ -178,7 +179,11 @@ class ServiceManager {
    * @date 2021-2-4 12:40:24
    */
   public runServiceInquirer(): void {
-    const inquirerModule = this.serviceModule.inquirer
+    this.serviceModule.inquirer({
+      basePath: this.basePath,
+      projectName: this.name,
+      createOptions: this.createOptions
+    })
   }
 }
 

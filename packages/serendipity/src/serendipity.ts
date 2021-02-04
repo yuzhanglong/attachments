@@ -11,7 +11,7 @@
 import { program } from 'commander'
 import CoreManager from './coreManager'
 import 'source-map-support/register'
-import { CreateOptions } from './types/options'
+import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 
 const DEFAULT_NAME = 'hello-serendipity'
 

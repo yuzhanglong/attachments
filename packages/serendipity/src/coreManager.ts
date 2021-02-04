@@ -7,7 +7,7 @@
  */
 
 
-import { BaseCommandValidateResult, CreateOptions } from './types/options'
+import { BaseCommandValidateResult } from './types/options'
 import * as process from 'process'
 import { chalk } from '@attachments/serendipity-public'
 import { serendipityEnv } from '@attachments/serendipity-public'
@@ -16,6 +16,7 @@ import * as fs from 'fs'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
 import ServiceManager from './serviceManager'
 import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
+import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 
 
 class CoreManager {
@@ -111,7 +112,7 @@ class CoreManager {
     this.initWorkDir()
 
     // 初始化脚手架 service
-    const serviceManager = new ServiceManager(options.type, this.basePath, serviceModule)
+    const serviceManager = new ServiceManager(this.basePath, options, serviceModule)
 
     // 执行 service inquirer
     serviceManager.runServiceInquirer()

@@ -10,6 +10,15 @@
 import { Configuration } from 'webpack'
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
 
+
+// 项目创建时配置
+export interface CreateOptions {
+  type?: string
+  service?: string
+  initGit?: boolean
+  commit?: string
+}
+
 // object 类型，不要使用 any
 export type CommonObject = Record<string, unknown>
 

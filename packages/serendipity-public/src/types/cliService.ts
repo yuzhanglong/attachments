@@ -7,7 +7,7 @@
  */
 
 import { PluginModule } from './plugin'
-import { CommonObject } from './common'
+import { CommonObject, CreateOptions } from './common'
 
 
 // service 模块
@@ -44,6 +44,5 @@ export interface MergePackageConfigOptions {
 export interface ServiceInquirerOption {
   projectName: string
   basePath: string
-  serviceOption: ServiceOption
-
+  createOptions: CreateOptions
 }
