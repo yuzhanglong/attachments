@@ -1,0 +1,14 @@
+{
+  "name": "@attachments/serendipity-plugin-eslint",
+  "version": "1.0.0",
+  "main": "./bin/index.js",
+  "scripts": {
+    "start": "tsc -w"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@types/webpack": "^4.41.26",
+    "eslint-webpack-plugin": "^2.4.3",
+    "webpack": "^5.20.2"
+  }
+}

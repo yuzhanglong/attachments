@@ -7,7 +7,7 @@
  */
 
 
-import { AppConfig, CommonObject, InquireResult } from './common'
+import { AppConfig, CommonObject, CreateOptions, InquireResult } from './common'
 import { MergePackageConfigOptions } from './cliService'
 import * as webpack from 'webpack'
 
@@ -29,6 +29,7 @@ export interface PluginTemplateOptions {
   mergePackageConfig: (data: CommonObject, options?: MergePackageConfigOptions) => void
   mergeAppConfig: (appConfig: AppConfig) => void
   inquireResult: InquireResult
+  createOptions: CreateOptions
 }
 
 // runtime plugin 选项

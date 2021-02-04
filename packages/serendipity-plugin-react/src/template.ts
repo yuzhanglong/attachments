@@ -21,11 +21,12 @@ module.exports = (options: PluginTemplateOptions) => {
   options.render(getTemplatePath('react-template'), {})
 
   // 合并 app 配置
+  // TODO: 将这部分抽离到 service 层来统一写入，plugins 不归这里管！
   options.mergeAppConfig({
     plugins: [
-      // babel
       '@attachments/serendipity-plugin-babel',
-      '@attachments/serendipity-plugin-react'
+      '@attachments/serendipity-plugin-react',
+      '@attachments/serendipity-plugin-eslint'
     ]
   })
 

@@ -23,4 +23,9 @@ describe('app 路径相关测试', () => {
     const indexPath2 = resolveAppPath('////public/index.html')
     expect(indexPath).toStrictEqual(indexPath2)
   })
+
+  test('以 . 作为参数', () => {
+    const indexPath = resolveAppPath('.')
+    expect(indexPath).toStrictEqual(path.resolve(process.cwd(), '.'))
+  })
 })

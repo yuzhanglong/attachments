@@ -65,7 +65,9 @@ class ServiceManager {
       pluginModule,
       this.appConfig,
       this.packageConfig,
-      this.inquireResult)
+      this.inquireResult,
+      this.createOptions
+    )
     this.pluginManagers.push(manager)
   }
 

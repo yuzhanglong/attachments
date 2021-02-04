@@ -7,6 +7,7 @@
  */
 
 import { ServiceOption } from '@attachments/serendipity-public/bin/types/cliService'
+import { ReactServiceInquire } from './types/common'
 
 
 module.exports = ({ operations }: ServiceOption) => {
@@ -27,7 +28,7 @@ module.exports = ({ operations }: ServiceOption) => {
     }
   })
 
-  // 初始化模板
+  // 注册默认的 react-plugin
   operations.registerPlugin(
     require('@attachments/serendipity-plugin-react')
   )
@@ -36,4 +37,11 @@ module.exports = ({ operations }: ServiceOption) => {
   operations.registerPlugin(
     require('@attachments/serendipity-plugin-babel')
   )
+
+  // 用户选择使用 eslint
+  if ((operations.inquireResult as ReactServiceInquire).eslintSupport) {
+    operations.registerPlugin(
+      require('@attachments/serendipity-plugin-eslint')
+    )
+  }
 }
