@@ -25,10 +25,11 @@ program.version(`serendipity ${require('../package').version}`)
 program
   .command('create [app-name]')
   .description('开始创建一个前端项目(*^▽^*)~')
-  .option('-t --type <projectType>', '项目类型', 'react')
-  .option('-s --service <serviceName>', '自定义项目管理包')
-  .option('-g --initGit', '初始化 git', false)
+  .option('-t --type <projectType>', '项目类型')
+  .option('-s --service <serviceName>', '选择一个项目 service，如 \'react\'')
+  .option('-g --git', '初始化 git', false)
   .option('-c --commit', '初始化 commit 信息，只有选择初始化 git 时有效', 'initial commit')
+  .option('-p --preset', '配置自定义预设，它的默认值和你选择的项目有关')
   .action(async (name: string, opt: CreateOptions) => {
     if (!name) {
       name = DEFAULT_NAME

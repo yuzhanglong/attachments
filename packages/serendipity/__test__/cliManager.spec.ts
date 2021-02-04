@@ -32,4 +32,19 @@ describe('cli Manager 模块测试', () => {
     })
     expect(logger.error).toBeCalledWith('获取 service 包失败，请检查相应的 service 模块是否存在！')
   })
+
+  test('用户传参验证(基本命令，不包括 service 层)', () => {
+    const validation1 = CoreManager.validateBaseCommand({
+      type: 'react'
+    })
+    expect(validation1.validated).toBeTruthy()
+    expect(validation1.message).toBeNull()
+
+
+    const validation2 = CoreManager.validateBaseCommand({
+      type: undefined
+    })
+    expect(validation2.validated).toBeFalsy()
+    expect(validation2.message).toStrictEqual('类型为空，请选择一个正确的项目类型，例如 \'react\'')
+  })
 })

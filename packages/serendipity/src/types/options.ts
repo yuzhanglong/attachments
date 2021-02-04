@@ -13,3 +13,8 @@ export interface CreateOptions {
   initGit?: boolean
   commit?: string
 }
+
+export interface BaseCommandValidateResult {
+  message: string
+  validated: boolean
+}

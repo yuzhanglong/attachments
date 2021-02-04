@@ -7,9 +7,6 @@
  */
 
 
-import {
-  CliService
-} from '@attachments/serendipity-public/bin/types/cliService'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import { AppConfig, CommonObject } from '@attachments/serendipity-public/bin/types/common'
 import { writeFilePromise } from '@attachments/serendipity-public/bin/utils/files'
@@ -17,19 +14,20 @@ import * as path from 'path'
 import PluginManager from './pluginManager'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
 import { runCommand, webpackMerge } from '@attachments/serendipity-public'
+import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
 
 class ServiceManager {
   private readonly basePath: string
-  private readonly service: CliService
+  private readonly serviceModule: ServiceModule
   private readonly appConfig: AppConfig
 
   private name: string
   private pluginManagers: PluginManager[] = []
   private packageConfig: CommonObject
 
-  constructor(name: string, basePath: string, service: CliService) {
+  constructor(name: string, basePath: string, service: ServiceModule) {
     this.name = name
-    this.service = service
+    this.serviceModule = service
     this.basePath = basePath
     this.appConfig = {}
   }
@@ -126,13 +124,13 @@ class ServiceManager {
   }
 
   /**
-   * 执行工程创建时 service 的能力，例如初始化 package.json 配置
+   * 执行工程创建时 serviceModule 的能力，例如初始化 package.json 配置
    *
    * @author yuzhanglong
    * @date 2021-1-30 18:54:44
    */
   public runCreateWorkTasks(): void {
-    this.service({
+    this.serviceModule.service({
       configurations: {},
       operations: {
         setPackageConfig: this.setPackageConfig.bind(this),
@@ -142,7 +140,7 @@ class ServiceManager {
   }
 
   /**
-   * 为 service 管理的目录 初始化 git
+   * 为 serviceModule 管理的目录 初始化 git
    *
    * @author yuzhanglong
    * @date 2021-1-30 19:27:18
@@ -171,6 +169,16 @@ class ServiceManager {
    */
   public async install(): Promise<void> {
     await runCommand('yarn install', [], this.basePath)
+  }
+
+  /**
+   * 执行 serviceModule inquirer
+   *
+   * @author yuzhanglong
+   * @date 2021-2-4 12:40:24
+   */
+  public runServiceInquirer(): void {
+    const inquirerModule = this.serviceModule.inquirer
   }
 }
 

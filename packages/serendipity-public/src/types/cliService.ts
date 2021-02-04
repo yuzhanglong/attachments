@@ -11,7 +11,10 @@ import { CommonObject } from './common'
 
 
 // service 模块
-export type CliService = (options: ServiceOption) => void
+export interface ServiceModule {
+  service: (option: ServiceOption) => void
+  inquirer: (option: ServiceInquirerOption) => void
+}
 
 
 // service 模块选项
@@ -31,8 +34,16 @@ export interface ServiceOperations {
   registerPlugin: (plugin: PluginModule) => void
 }
 
-
+// 合并 package.json 配置选项
 export interface MergePackageConfigOptions {
   merge?: boolean
   ignoreNullOrUndefined?: boolean
+}
+
+// service inquirer 配置选项
+export interface ServiceInquirerOption {
+  projectName: string
+  basePath: string
+  serviceOption: ServiceOption
+
 }
