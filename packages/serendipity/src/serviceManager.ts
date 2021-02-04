@@ -8,12 +8,12 @@
 
 
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import { AppConfig, CommonObject, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
+import { AppConfig, CommonObject, CreateOptions, InquireResult } from '@attachments/serendipity-public/bin/types/common'
 import { writeFilePromise } from '@attachments/serendipity-public/bin/utils/files'
 import * as path from 'path'
 import PluginManager from './pluginManager'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
-import { runCommand, webpackMerge } from '@attachments/serendipity-public'
+import { inquirer, runCommand, webpackMerge } from '@attachments/serendipity-public'
 import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
 
 class ServiceManager {
@@ -22,7 +22,7 @@ class ServiceManager {
   private readonly appConfig: AppConfig
   private readonly createOptions: CreateOptions
 
-  private name: string
+  private inquireResult: InquireResult
   private pluginManagers: PluginManager[] = []
   private packageConfig: CommonObject
 
@@ -39,7 +39,7 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-1-30 19:12:51
    */
-  public getPluginManagers(): PluginManager[] {
+  getPluginManagers(): PluginManager[] {
     return this.pluginManagers
   }
 
@@ -49,7 +49,7 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-1-29 13:48:49
    */
-  public setPackageConfig(config: CommonObject): void {
+  setPackageConfig(config: CommonObject): void {
     this.packageConfig = config
   }
 
@@ -59,8 +59,13 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-1-30 19:14:42
    */
-  public registerPlugin(pluginModule: PluginModule): void {
-    const manager = new PluginManager(this.basePath, pluginModule, this.appConfig, this.packageConfig)
+  registerPlugin(pluginModule: PluginModule): void {
+    const manager = new PluginManager(
+      this.basePath,
+      pluginModule,
+      this.appConfig,
+      this.packageConfig,
+      this.inquireResult)
     this.pluginManagers.push(manager)
   }
 
@@ -70,7 +75,7 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-1-29 11:51:36
    */
-  public runPluginsTemplate(): void {
+  runPluginsTemplate(): void {
     for (const pluginManager of this.pluginManagers) {
       pluginManager.runTemplate()
     }
@@ -82,7 +87,7 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-1-30 12:33:08
    */
-  public async writePackageConfig(): Promise<void> {
+  async writePackageConfig(): Promise<void> {
     await writeFilePromise(
       path.resolve(this.basePath, 'package.json'),
       // 默认 2 缩进
@@ -97,7 +102,7 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-2-2 20:32:45
    */
-  public async writeAppConfig(): Promise<void> {
+  async writeAppConfig(): Promise<void> {
     // 由于 webpackMerge 库返回的对象是一个新的对象，
     // this.appConfig 不会被插件接口修改，所以我们还要再遍历一遍并合并
     const lastResult = this.collectAppConfig()
@@ -130,12 +135,13 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-1-30 18:54:44
    */
-  public runCreateWorkTasks(): void {
+  runCreateWorkTasks(): void {
     this.serviceModule.service({
       configurations: {},
       operations: {
         setPackageConfig: this.setPackageConfig.bind(this),
-        registerPlugin: this.registerPlugin.bind(this)
+        registerPlugin: this.registerPlugin.bind(this),
+        inquireResult: this.inquireResult
       }
     })
   }
@@ -146,7 +152,7 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-1-30 19:27:18
    */
-  public async initServiceGit(): Promise<void> {
+  async initServiceGit(): Promise<void> {
     logger.log('正在初始化 git 仓库...')
     await runCommand('git init', [], this.basePath)
   }
@@ -157,7 +163,7 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-1-30 19:37:54
    */
-  public async initFirstCommit(message: string): Promise<void> {
+  async initFirstCommit(message: string): Promise<void> {
     await runCommand('git add -A', [], this.basePath)
     await runCommand('git', ['commit', '-m', message, '--no-verify'], this.basePath)
   }
@@ -168,7 +174,7 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-2-2 19:50:10
    */
-  public async install(): Promise<void> {
+  async install(): Promise<void> {
     await runCommand('yarn install', [], this.basePath)
   }
 
@@ -178,12 +184,13 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-2-4 12:40:24
    */
-  public runServiceInquirer(): void {
-    this.serviceModule.inquirer({
+  async runServiceInquirer(): Promise<void> {
+    const result = this.serviceModule.inquirer({
       basePath: this.basePath,
-      projectName: this.name,
+      projectName: this.createOptions.type,
       createOptions: this.createOptions
     })
+    this.inquireResult = await inquirer.prompt(result)
   }
 }
 

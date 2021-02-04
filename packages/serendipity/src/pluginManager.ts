@@ -7,7 +7,7 @@
  */
 
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import { AppConfig, CommonObject } from '@attachments/serendipity-public/bin/types/common'
+import { AppConfig, CommonObject, InquireResult } from '@attachments/serendipity-public/bin/types/common'
 import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-public/bin/utils/template'
 import { fileTreeWriting } from '@attachments/serendipity-public/bin/utils/files'
 import { MergePackageConfigOptions } from '@attachments/serendipity-public/bin/types/cliService'
@@ -17,15 +17,22 @@ import { deepmerge, webpackMerge } from '@attachments/serendipity-public'
 class PluginManager {
   private readonly basePath: string
   private readonly packageConfig: CommonObject
+  private readonly inquireResult: InquireResult
 
   private plugin: PluginModule
   public appConfig: AppConfig
 
-  constructor(basePath: string, plugin: PluginModule, appConfig: AppConfig, packageConfig: CommonObject) {
+  constructor(
+    basePath: string,
+    plugin: PluginModule,
+    appConfig: AppConfig,
+    packageConfig: CommonObject,
+    inquireResult?: InquireResult) {
     this.plugin = plugin
     this.basePath = basePath
     this.packageConfig = packageConfig
     this.appConfig = appConfig
+    this.inquireResult = inquireResult
   }
 
   /**
@@ -143,7 +150,8 @@ class PluginManager {
     this.plugin.template({
       render: this.renderTemplate.bind(this),
       mergePackageConfig: this.mergePackageConfig.bind(this),
-      mergeAppConfig: this.mergeAppConfig.bind(this)
+      mergeAppConfig: this.mergeAppConfig.bind(this),
+      inquireResult: this.inquireResult
     })
   }
 

@@ -7,13 +7,13 @@
  */
 
 import { PluginModule } from './plugin'
-import { CommonObject, CreateOptions } from './common'
+import { CommonObject, CreateOptions, InquireResult } from './common'
 
 
 // service 模块
 export interface ServiceModule {
   service: (option: ServiceOption) => void
-  inquirer: (option: ServiceInquirerOption) => void
+  inquirer: (option: ServiceInquirerOption) => InquireResult
 }
 
 
@@ -32,6 +32,9 @@ export interface ServiceOperations {
 
   // 执行单个插件
   registerPlugin: (plugin: PluginModule) => void
+
+  // 自定义的质询结果
+  inquireResult: InquireResult
 }
 
 // 合并 package.json 配置选项

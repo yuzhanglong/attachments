@@ -7,8 +7,21 @@
  */
 
 
-import { ServiceInquirerOption } from '@attachments/serendipity-public/bin/types/cliService'
+import { InquireResult } from '@attachments/serendipity-public/bin/types/common'
 
-module.exports = (option: ServiceInquirerOption) => {
-  return
+module.exports = (): InquireResult => {
+  return [
+    {
+      type: 'input',
+      name: 'name',
+      message: '同学好~ 请输入你的姓名：'
+    },
+    {
+      type: 'checkbox',
+      name: 'favor',
+      choices: ['JavaScript', 'TypeScript', 'Java', 'Python', 'Golang'],
+      message: '请选择你感兴趣的语言',
+      default: 'TypeScript'
+    }
+  ]
 }

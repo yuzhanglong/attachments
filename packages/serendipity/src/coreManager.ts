@@ -86,13 +86,14 @@ class CoreManager {
     // base path 初始化
     this.basePath = path.resolve(process.cwd(), name)
 
-    logger.log(`在 ${chalk.yellow(this.basePath)} 创建项目中... `)
+    logger.info(`在 ${chalk.yellow(this.basePath)} 创建项目中... `)
 
     const validateResult = CoreManager.validateBaseCommand(options)
 
     // 参数验证
     if (!validateResult.validated) {
       logger.error(`传入的选项有误：${validateResult.message}`)
+      return
     }
 
     // 获取对应 project 类型的 service 包
@@ -115,7 +116,9 @@ class CoreManager {
     const serviceManager = new ServiceManager(this.basePath, options, serviceModule)
 
     // 执行 service inquirer
-    serviceManager.runServiceInquirer()
+    await serviceManager.runServiceInquirer()
+
+    return
 
     // 初始化 git
     if (options.initGit) {
