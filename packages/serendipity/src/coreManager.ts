@@ -118,8 +118,6 @@ class CoreManager {
     // 执行 service inquirer
     await serviceManager.runServiceInquirer()
 
-    return
-
     // 初始化 git
     if (options.initGit) {
       logger.info('正在初始化 git 仓库...')
@@ -138,6 +136,8 @@ class CoreManager {
 
     // 写入项目配置文件
     await serviceManager.writeAppConfig()
+
+    return
 
     // 初始化首次 commit
     if (options.initGit) {

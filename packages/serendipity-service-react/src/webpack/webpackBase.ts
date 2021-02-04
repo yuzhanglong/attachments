@@ -19,7 +19,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 
-// TODO: 有选择地抽离一些配置到 react-plugin 中
+// TIP：额外的配置见 @attachments/serendipity-plugin-react
 
 const getBaseConfig = (): WebpackConfiguration => {
 
@@ -197,7 +197,7 @@ const getBaseConfig = (): WebpackConfiguration => {
             //   options: {
             //     name: '.......',
             //   },
-            // },
+            // }
           ]
         }
       ]

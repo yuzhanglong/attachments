@@ -12,16 +12,16 @@ import { InquireResult } from '@attachments/serendipity-public/bin/types/common'
 module.exports = (): InquireResult => {
   return [
     {
-      type: 'input',
-      name: 'name',
-      message: '同学好~ 请输入你的姓名：'
+      type: 'confirm',
+      name: 'sassSupport',
+      message: '增加 sass 支持',
+      default: false
     },
     {
-      type: 'checkbox',
-      name: 'favor',
-      choices: ['JavaScript', 'TypeScript', 'Java', 'Python', 'Golang'],
-      message: '请选择你感兴趣的语言',
-      default: 'TypeScript'
+      type: 'confirm',
+      name: 'eslintSupport',
+      message: '增加 eslint 支持',
+      default: true
     }
   ]
 }

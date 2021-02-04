@@ -10,6 +10,7 @@ import { ServiceOption } from '@attachments/serendipity-public/bin/types/cliServ
 
 
 module.exports = ({ operations }: ServiceOption) => {
+
   // 初始化包配置
   operations.setPackageConfig({
     name: 'test',
