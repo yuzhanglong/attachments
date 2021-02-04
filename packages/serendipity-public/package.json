@@ -7,12 +7,14 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/inquirer": "^7.3.1",
+    "@types/webpack-dev-server": "^3.11.1",
     "chalk": "^4.1.0",
     "deepmerge": "^4.2.2",
     "execa": "^5.0.0",
     "globby": "^11.0.2",
+    "inquirer": "^7.3.3",
     "semver": "^7.3.4",
-    "@types/webpack-dev-server": "^3.11.1",
     "webpack-merge": "^5.7.3"
   }
 }

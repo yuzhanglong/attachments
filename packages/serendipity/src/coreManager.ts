@@ -7,20 +7,22 @@
  */
 
 
-import { CreateOptions } from './types/options'
+import { BaseCommandValidateResult } from './types/options'
 import * as process from 'process'
-import { CliService } from '@attachments/serendipity-public/bin/types/cliService'
 import { chalk } from '@attachments/serendipity-public'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import * as path from 'path'
 import * as fs from 'fs'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
 import ServiceManager from './serviceManager'
+import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
+import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 
 
 class CoreManager {
   private args
   private basePath
+  private options: CreateOptions
 
   constructor(args: string[], basePath?: string) {
     this.args = args
@@ -46,6 +48,30 @@ class CoreManager {
   }
 
   /**
+   * 基本命令校验（不包括 service 层注入的命令）
+   *
+   * @author yuzhanglong
+   * @date 2021-2-4 12:06:07
+   */
+  static validateBaseCommand(options: CreateOptions): BaseCommandValidateResult {
+    const getValidateErr = (message): BaseCommandValidateResult => {
+      return {
+        message: message,
+        validated: false
+      }
+    }
+
+    if (!options.type) {
+      return getValidateErr('类型为空，请选择一个正确的项目类型，例如 \'react\'')
+    }
+
+    return {
+      message: null,
+      validated: true
+    }
+  }
+
+  /**
    * 创建一个项目
    *
    * @author yuzhanglong
@@ -55,15 +81,25 @@ class CoreManager {
    * @date 2021-1-26
    */
   async create(name: string, options: CreateOptions): Promise<void> {
+    this.options = options
+
     // base path 初始化
     this.basePath = path.resolve(process.cwd(), name)
 
-    logger.log(`在 ${chalk.yellow(this.basePath)} 创建项目中... `)
+    logger.info(`在 ${chalk.yellow(this.basePath)} 创建项目中... `)
+
+    const validateResult = CoreManager.validateBaseCommand(options)
+
+    // 参数验证
+    if (!validateResult.validated) {
+      logger.error(`传入的选项有误：${validateResult.message}`)
+      return
+    }
 
     // 获取对应 project 类型的 service 包
-    let cliService: CliService
+    let serviceModule: ServiceModule
     try {
-      cliService = require(`@attachments/serendipity-service-${options.type}`)
+      serviceModule = require(`@attachments/serendipity-service-${options.type}`)
     } catch (e) {
       logger.error('获取 service 包失败，请检查相应的 service 模块是否存在！')
       if (!serendipityEnv.isSerendipityDevelopment()) {
@@ -77,7 +113,10 @@ class CoreManager {
     this.initWorkDir()
 
     // 初始化脚手架 service
-    const serviceManager = new ServiceManager(options.type, this.basePath, cliService)
+    const serviceManager = new ServiceManager(this.basePath, options, serviceModule)
+
+    // 执行 service inquirer
+    await serviceManager.runServiceInquirer()
 
     // 初始化 git
     if (options.initGit) {
@@ -97,6 +136,8 @@ class CoreManager {
 
     // 写入项目配置文件
     await serviceManager.writeAppConfig()
+
+    return
 
     // 初始化首次 commit
     if (options.initGit) {

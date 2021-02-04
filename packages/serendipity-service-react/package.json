@@ -26,8 +26,6 @@
     "style-loader": "^2.0.0",
     "webpack": "^5.19.0",
     "webpack-dev-server": "^3.11.2",
-    "webpackbar": "^5.0.0-3",
-    "node-sass": "^5.0.0",
-    "sass-loader": "^10.1.1"
+    "webpackbar": "^5.0.0-3"
   }
 }

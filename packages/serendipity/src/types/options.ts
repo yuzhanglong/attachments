@@ -6,10 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-
-export interface CreateOptions {
-  type?: string
-  service?: string
-  initGit?: boolean
-  commit?: string
+export interface BaseCommandValidateResult {
+  message: string
+  validated: boolean
 }
