@@ -11,12 +11,11 @@
 import { program } from 'commander'
 import CoreManager from './coreManager'
 import 'source-map-support/register'
-import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
+import { AddOptions, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
+import * as path from 'path'
 
 const DEFAULT_NAME = 'hello-serendipity'
 
-// 初始化 manager
-const manager = new CoreManager(process.argv)
 
 // 版本信息
 program.version(`serendipity ${require('../package').version}`)
@@ -31,11 +30,28 @@ program
   .option('-c --commit', '初始化 commit 信息，只有选择初始化 git 时有效', 'initial commit')
   .option('-p --preset', '配置自定义预设，它的默认值和你选择的项目有关')
   .action(async (name: string, opt: CreateOptions) => {
+    // 项目路径为当前路径 + 项目名称
+    const projectPath = path.resolve(process.cwd(), name)
+
+    // 初始化 manager
+    const manager = new CoreManager(process.argv, projectPath)
+
     if (!name) {
       name = DEFAULT_NAME
     }
     await manager.create(name, opt)
   })
 
+// serendipity add
+// 例如: serendipity add xxx  即  serendipity add -n(--name) serendipity-plugin-react
+program
+  .command('add [plugin-name]')
+  .description('添加一个插件')
+  .option('-p --package <package>', '自定义插件 package 名称，当已经设置了名称时，该选项无效')
+  .action(async (name: string, opt: AddOptions) => {
+    // 初始化 manager
+    const manager = new CoreManager(process.argv, process.cwd())
+    await manager.add(name, opt)
+  })
 
 program.parse(process.argv)
