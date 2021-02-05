@@ -20,6 +20,11 @@ export interface CreateOptions {
   commit?: string
 }
 
+// 添加插件时配置
+export interface AddOptions {
+  package?: string
+}
+
 // object 类型，不要使用 any
 export type CommonObject = Record<string, unknown>
 
