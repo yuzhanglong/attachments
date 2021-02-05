@@ -7,7 +7,7 @@
  */
 
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import { AppConfig, CommonObject, InquireResult } from '@attachments/serendipity-public/bin/types/common'
+import { AppConfig, CommonObject, CreateOptions, InquireResult } from '@attachments/serendipity-public/bin/types/common'
 import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-public/bin/utils/template'
 import { fileTreeWriting } from '@attachments/serendipity-public/bin/utils/files'
 import { MergePackageConfigOptions } from '@attachments/serendipity-public/bin/types/cliService'
@@ -18,21 +18,27 @@ class PluginManager {
   private readonly basePath: string
   private readonly packageConfig: CommonObject
   private readonly inquireResult: InquireResult
+  private readonly createOptions: CreateOptions
 
   private plugin: PluginModule
+  public name: string
   public appConfig: AppConfig
 
   constructor(
     basePath: string,
+    name: string,
     plugin: PluginModule,
     appConfig: AppConfig,
     packageConfig: CommonObject,
-    inquireResult?: InquireResult) {
+    inquireResult?: InquireResult,
+    createOptions?: CreateOptions) {
+    this.name = name
     this.plugin = plugin
     this.basePath = basePath
     this.packageConfig = packageConfig
     this.appConfig = appConfig
     this.inquireResult = inquireResult
+    this.createOptions = createOptions
   }
 
   /**
@@ -43,12 +49,12 @@ class PluginManager {
    * @param options ejs 选项
    * @date 2021-1-29 13:33:43
    */
-  private async renderTemplate(base: string, options: CommonObject): Promise<void> {
+  private async renderTemplate(base: string, options?: CommonObject): Promise<void> {
     // 获取映射表
     const filesMapper = await getTemplatesData(base, this.basePath)
 
     // 渲染模板数据
-    renderTemplateData(filesMapper, options)
+    renderTemplateData(filesMapper, options || {})
 
     // 模板拷贝
     await fileTreeWriting(filesMapper)
@@ -151,21 +157,22 @@ class PluginManager {
       render: this.renderTemplate.bind(this),
       mergePackageConfig: this.mergePackageConfig.bind(this),
       mergeAppConfig: this.mergeAppConfig.bind(this),
-      inquireResult: this.inquireResult
+      inquireResult: this.inquireResult,
+      createOptions: this.createOptions
     })
   }
-
 
   /**
    * 合并 app 配置
    *
    * @author yuzhanglong
+   * @param appConfig app 配置
+   * @see AppConfig
    * @date 2021-2-2 22:05:59
    */
   public mergeAppConfig(appConfig: AppConfig): void {
     this.appConfig = webpackMerge({}, this.appConfig, appConfig)
   }
-
 
   /**
    * packageConfig getter

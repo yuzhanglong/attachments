@@ -7,8 +7,6 @@
  */
 
 
-import { PluginRuntimeOptions } from '@attachments/serendipity-public/bin/types/plugin'
-
-module.exports = (options: PluginRuntimeOptions) => {
+module.exports = () => {
   return
 }

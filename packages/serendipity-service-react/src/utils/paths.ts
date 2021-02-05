@@ -43,6 +43,9 @@ const configFile = resolveAppPath('serendipity.js')
 // app 入口
 const appEntry = resolveAppPath('src/index.js')
 
+// app 根目录
+const appRoot = resolveAppPath('.')
+
 export {
   resolveAppPath,
   appBuild,
@@ -51,5 +54,6 @@ export {
   appYarnLockFile,
   appHtml,
   configFile,
-  appEntry
+  appEntry,
+  appRoot
 }

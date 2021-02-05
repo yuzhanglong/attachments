@@ -7,7 +7,7 @@
  */
 
 
-import { AppConfig, CommonObject, InquireResult } from './common'
+import { AppConfig, CommonObject, CreateOptions, InquireResult } from './common'
 import { MergePackageConfigOptions } from './cliService'
 import * as webpack from 'webpack'
 
@@ -21,7 +21,7 @@ export interface PluginModule {
 // 模板文件映射表
 export type TemplateFilesMapper = Record<string, string>
 
-export type PluginTemplateRender = (path: string, options: CommonObject) => void
+export type PluginTemplateRender = (path: string, options?: CommonObject) => void
 
 // template plugin 选项
 export interface PluginTemplateOptions {
@@ -29,6 +29,7 @@ export interface PluginTemplateOptions {
   mergePackageConfig: (data: CommonObject, options?: MergePackageConfigOptions) => void
   mergeAppConfig: (appConfig: AppConfig) => void
   inquireResult: InquireResult
+  createOptions: CreateOptions
 }
 
 // runtime plugin 选项

@@ -137,7 +137,6 @@ class CoreManager {
     // 写入项目配置文件
     await serviceManager.writeAppConfig()
 
-    return
 
     // 初始化首次 commit
     if (options.initGit) {

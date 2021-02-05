@@ -57,15 +57,20 @@ class ServiceManager {
    * 注册 plugin 接口
    *
    * @author yuzhanglong
+   * @param name plugin 名称
+   * @param pluginModule plugin 模块（require 后）
    * @date 2021-1-30 19:14:42
    */
-  registerPlugin(pluginModule: PluginModule): void {
+  registerPlugin(name: string, pluginModule: PluginModule): void {
     const manager = new PluginManager(
       this.basePath,
+      name,
       pluginModule,
       this.appConfig,
       this.packageConfig,
-      this.inquireResult)
+      this.inquireResult,
+      this.createOptions
+    )
     this.pluginManagers.push(manager)
   }
 
@@ -103,10 +108,20 @@ class ServiceManager {
    * @date 2021-2-2 20:32:45
    */
   async writeAppConfig(): Promise<void> {
-    // 由于 webpackMerge 库返回的对象是一个新的对象，
-    // this.appConfig 不会被插件接口修改，所以我们还要再遍历一遍并合并
-    const lastResult = this.collectAppConfig()
+    // 收集所有插件的 AppConfig
+    // 由于 webpackMerge 库返回的对象是一个新的对象，this.appConfig 不会被插件接口修改，所以我们还要再遍历一遍并合并
+    let lastResult = this.collectAppConfig()
 
+
+    // 收集所有的 plugin 名称
+    const names = this.pluginManagers.map((data) => data.name)
+
+    // 合并用户注册的 plugins 到 config 文件中
+    lastResult = webpackMerge(lastResult, {
+      plugins: names
+    })
+
+    // stringify
     const jsonifyResult = JSON.stringify(lastResult, null, 2)
     const result = `module.exports = ${jsonifyResult}`
     await writeFilePromise(
@@ -125,7 +140,7 @@ class ServiceManager {
     const reducer = ((previousValue: PluginManager, currentValue: PluginManager) => {
       return webpackMerge(previousValue, currentValue)
     })
-    // @ts-ignore
+    // 从各个 plugin 合并而来
     return this.pluginManagers.reduce(reducer).appConfig
   }
 

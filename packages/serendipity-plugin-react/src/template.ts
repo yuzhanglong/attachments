@@ -18,16 +18,7 @@ const getTemplatePath = (name) => {
 
 module.exports = (options: PluginTemplateOptions) => {
   // 拷贝模板到工作目录下
-  options.render(getTemplatePath('react-template'), {})
-
-  // 合并 app 配置
-  options.mergeAppConfig({
-    plugins: [
-      // babel
-      '@attachments/serendipity-plugin-babel',
-      '@attachments/serendipity-plugin-react'
-    ]
-  })
+  options.render(getTemplatePath('react-template'))
 
   // 开启 sass 支持，将 sass 编译所需要的模块注入到用户的 package.json 中
   if ((options.inquireResult as ReactServiceInquire).sassSupport) {
