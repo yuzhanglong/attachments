@@ -101,13 +101,13 @@ class ServiceManager {
   }
 
   /**
-   * 写入 app 配置文件，这个配置文件面向用户
+   * 准备 app 配置文件，这个配置文件面向用户
    * 用户可以在这个配置文件中进行一些操作，例如修改 webpack 配置等
    *
    * @author yuzhanglong
    * @date 2021-2-2 20:32:45
    */
-  async writeAppConfig(): Promise<void> {
+  async setAppConfig(): Promise<void> {
     // 收集所有插件的 AppConfig
     // 由于 webpackMerge 库返回的对象是一个新的对象，this.appConfig 不会被插件接口修改，所以我们还要再遍历一遍并合并
     let lastResult = this.collectAppConfig()
@@ -121,11 +121,23 @@ class ServiceManager {
       plugins: names
     })
 
+    await ServiceManager.writeAppConfig(this.basePath, lastResult)
+  }
+
+  /**
+   * 写入 App 配置文件
+   *
+   * @param res 配置文件内容
+   * @param target 目标目录
+   * @author yuzhanglong
+   * @date 2021-2-5 21:35:05
+   */
+  static async writeAppConfig(target: string, res: AppConfig): Promise<void> {
     // stringify
-    const jsonifyResult = JSON.stringify(lastResult, null, 2)
+    const jsonifyResult = JSON.stringify(res, null, 2)
     const result = `module.exports = ${jsonifyResult}`
     await writeFilePromise(
-      path.resolve(this.basePath, 'serendipity.js'),
+      path.resolve(target, 'serendipity.js'),
       result
     )
   }

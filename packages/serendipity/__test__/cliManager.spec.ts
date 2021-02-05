@@ -34,14 +34,14 @@ describe('cli Manager 模块测试', () => {
   })
 
   test('用户传参验证(基本命令，不包括 service 层)', () => {
-    const validation1 = CoreManager.validateBaseCommand({
+    const validation1 = CoreManager.validateCreateCommand({
       type: 'react'
     })
     expect(validation1.validated).toBeTruthy()
     expect(validation1.message).toBeNull()
 
 
-    const validation2 = CoreManager.validateBaseCommand({
+    const validation2 = CoreManager.validateCreateCommand({
       type: undefined
     })
     expect(validation2.validated).toBeFalsy()

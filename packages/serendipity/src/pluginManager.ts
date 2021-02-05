@@ -12,7 +12,9 @@ import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-p
 import { fileTreeWriting } from '@attachments/serendipity-public/bin/utils/files'
 import { MergePackageConfigOptions } from '@attachments/serendipity-public/bin/types/cliService'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
-import { deepmerge, webpackMerge } from '@attachments/serendipity-public'
+import { deepmerge, runCommand, webpackMerge } from '@attachments/serendipity-public'
+import * as path from 'path'
+import * as process from 'process'
 
 class PluginManager {
   private readonly basePath: string
@@ -153,13 +155,17 @@ class PluginManager {
    * @date 2021-1-30 19:00:35
    */
   runTemplate(): void {
-    this.plugin.template({
-      render: this.renderTemplate.bind(this),
-      mergePackageConfig: this.mergePackageConfig.bind(this),
-      mergeAppConfig: this.mergeAppConfig.bind(this),
-      inquireResult: this.inquireResult,
-      createOptions: this.createOptions
-    })
+    if (this.plugin?.template) {
+      this.plugin.template({
+        render: this.renderTemplate.bind(this),
+        mergePackageConfig: this.mergePackageConfig.bind(this),
+        mergeAppConfig: this.mergeAppConfig.bind(this),
+        inquireResult: this.inquireResult,
+        createOptions: this.createOptions
+      })
+    } else {
+      logger.info('这个 plugin 没有 template 模块，template 初始化将跳过...')
+    }
   }
 
   /**
@@ -182,6 +188,33 @@ class PluginManager {
    */
   public getPackageConfig(): CommonObject {
     return this.packageConfig
+  }
+
+  /**
+   * 安装传入的 plugin，一般在 add 命令中使用
+   *
+   * @author yuzhanglong
+   * @email yuzl1123@163.com
+   * @date 2021-2-5 18:03:39
+   */
+  public async installPlugin(): Promise<void> {
+    logger.info(`插件 ${this.name} 安装中...`)
+
+    if (!this.name.match(/^(serendipity-plugin-)/)) {
+      logger.warn(`${this.name} 不是一个推荐的插件名称，插件名称应该以 serendipity-plugin 开头，例如 serendipity-plugin-react`)
+    }
+    try {
+      await runCommand(
+        `yarn add ${this.name}`,
+        [],
+        this.basePath
+      )
+    } catch (e) {
+      logger.error('plugin 安装失败，请检查其名称是否正确!')
+    }
+
+    // 拿到 plugin module 赋值给 this.plugin，根据 nodejs 的模块加载顺序，这里是不可以用相对路径的
+    this.plugin = require(path.resolve(this.basePath, 'node_modules', this.name))
   }
 }
 

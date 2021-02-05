@@ -24,7 +24,7 @@ const runCommand = async (command: string, args: string[], path?: string): Promi
     args,
     {
       cwd: p,
-      stdout: 'inherit'
+      stdio: 'inherit'
     }
   )
 }
