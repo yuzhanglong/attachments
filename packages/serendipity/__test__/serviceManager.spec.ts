@@ -11,7 +11,7 @@ import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 
 describe('serviceManager 模块', () => {
   test('测试 app 配置文件收集', () => {
-    const manager = new ServiceManager('foo', 'bar', null)
+    const manager = new ServiceManager('foo', {}, null)
     const plugin1: PluginModule = {
       template: (options) => {
         options.mergeAppConfig({
@@ -31,8 +31,8 @@ describe('serviceManager 模块', () => {
       }
     }
 
-    manager.registerPlugin(plugin1)
-    manager.registerPlugin(plugin2)
+    manager.registerPlugin('1', plugin1)
+    manager.registerPlugin('1', plugin2)
     manager.runPluginsTemplate()
     expect(manager.getPluginManagers().length).toStrictEqual(2)
     expect(manager.collectAppConfig()).toStrictEqual({

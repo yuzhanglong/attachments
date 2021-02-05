@@ -23,7 +23,7 @@ module.exports = (options: PluginTemplateOptions) => {
       }
     })
 
-    // 必要的依赖
+    // eslint 必要的依赖
     options.mergePackageConfig({
         dependencies: {
           '@babel/eslint-parser': '^7.12.13',

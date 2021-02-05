@@ -21,15 +21,18 @@ class PluginManager {
   private readonly createOptions: CreateOptions
 
   private plugin: PluginModule
+  public name: string
   public appConfig: AppConfig
 
   constructor(
     basePath: string,
+    name: string,
     plugin: PluginModule,
     appConfig: AppConfig,
     packageConfig: CommonObject,
     inquireResult?: InquireResult,
     createOptions?: CreateOptions) {
+    this.name = name
     this.plugin = plugin
     this.basePath = basePath
     this.packageConfig = packageConfig
@@ -46,12 +49,12 @@ class PluginManager {
    * @param options ejs 选项
    * @date 2021-1-29 13:33:43
    */
-  private async renderTemplate(base: string, options: CommonObject): Promise<void> {
+  private async renderTemplate(base: string, options?: CommonObject): Promise<void> {
     // 获取映射表
     const filesMapper = await getTemplatesData(base, this.basePath)
 
     // 渲染模板数据
-    renderTemplateData(filesMapper, options)
+    renderTemplateData(filesMapper, options || {})
 
     // 模板拷贝
     await fileTreeWriting(filesMapper)
@@ -159,17 +162,17 @@ class PluginManager {
     })
   }
 
-
   /**
    * 合并 app 配置
    *
    * @author yuzhanglong
+   * @param appConfig app 配置
+   * @see AppConfig
    * @date 2021-2-2 22:05:59
    */
   public mergeAppConfig(appConfig: AppConfig): void {
     this.appConfig = webpackMerge({}, this.appConfig, appConfig)
   }
-
 
   /**
    * packageConfig getter

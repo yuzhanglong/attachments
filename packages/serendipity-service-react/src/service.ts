@@ -24,23 +24,26 @@ module.exports = ({ operations }: ServiceOption) => {
     author: 'serendipity',
     license: 'ISC',
     devDependencies: {
-      'serendipity-service-react': '../../packages/serendipity-service-react'
+      '@attachments/serendipity-service-react': '../../packages/serendipity-service-react'
     }
   })
 
   // 注册默认的 react-plugin
   operations.registerPlugin(
+    '@attachments/serendipity-plugin-react',
     require('@attachments/serendipity-plugin-react')
   )
 
   // babel 配置插件
   operations.registerPlugin(
+    '@attachments/serendipity-plugin-babel',
     require('@attachments/serendipity-plugin-babel')
   )
 
-  // 用户选择使用 eslint
+  // 用户选择使用 eslint, 注册 eslint 相关插件
   if ((operations.inquireResult as ReactServiceInquire).eslintSupport) {
     operations.registerPlugin(
+      '@attachments/serendipity-plugin-eslint',
       require('@attachments/serendipity-plugin-eslint')
     )
   }

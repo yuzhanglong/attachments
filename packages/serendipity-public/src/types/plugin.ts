@@ -21,7 +21,7 @@ export interface PluginModule {
 // 模板文件映射表
 export type TemplateFilesMapper = Record<string, string>
 
-export type PluginTemplateRender = (path: string, options: CommonObject) => void
+export type PluginTemplateRender = (path: string, options?: CommonObject) => void
 
 // template plugin 选项
 export interface PluginTemplateOptions {

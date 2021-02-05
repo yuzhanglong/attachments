@@ -31,7 +31,7 @@ export interface ServiceOperations {
   setPackageConfig: (config: CommonObject) => void
 
   // 执行单个插件
-  registerPlugin: (plugin: PluginModule) => void
+  registerPlugin: (name:string, plugin: PluginModule) => void
 
   // 自定义的质询结果
   inquireResult: InquireResult

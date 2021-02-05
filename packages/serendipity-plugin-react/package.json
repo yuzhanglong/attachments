@@ -5,5 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc -w"
+  },
+  "peerDependencies": {
+    "@attachments/serendipity-service-react": "latest"
   }
 }

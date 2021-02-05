@@ -14,7 +14,7 @@ describe('package.json 合并配置', () => {
   let pluginManager: PluginManager
 
   beforeEach(() => {
-    pluginManager = new PluginManager('test-path', testPlugin, {}, {
+    pluginManager = new PluginManager('test-path', 'foo', testPlugin, {}, {
       devDependencies: {
         'serendipity-service-react': '0.0.1'
       }
@@ -89,7 +89,7 @@ describe('app 配置合并测试', () => {
   let pluginManager: PluginManager
 
   beforeEach(() => {
-    pluginManager = new PluginManager('test-path', testPlugin, {
+    pluginManager = new PluginManager('test-path', 'foo', testPlugin, {
       webpack: {
         devServerConfig: {
           port: 8081
