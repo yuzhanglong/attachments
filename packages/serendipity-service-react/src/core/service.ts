@@ -34,11 +34,14 @@ program
   .command('build')
   .description('打包您的项目')
   .action(() => {
-    // 初始化 service
-    // const reactService = new ReactService()
-
     // 初始化环境变量
     serendipityEnv.setProjectProduction()
+
+    // 初始化 service
+    const reactService = new ReactService()
+
+    // 执行 build 命令
+    reactService.build()
   })
 
 program.parse(process.argv)

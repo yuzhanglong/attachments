@@ -24,7 +24,7 @@ module.exports = ({ operations }: ServiceOption) => {
     author: 'serendipity',
     license: 'ISC',
     devDependencies: {
-      '@attachments/serendipity-service-react': '../../packages/serendipity-service-react'
+      '@attachments/serendipity-service-react': 'D:\\projects\\serendipity\\packages\\serendipity-service-react'
     }
   })
 

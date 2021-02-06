@@ -20,7 +20,7 @@ import {
   WebpackConfiguration,
   WebpackDevServerConfiguration
 } from '@attachments/serendipity-public/bin/types/common'
-import { webpackMerge } from '@attachments/serendipity-public'
+import { serendipityEnv, webpackMerge } from '@attachments/serendipity-public'
 
 class ReactService {
   private readonly appConfig: AppConfig
@@ -65,7 +65,7 @@ class ReactService {
   }
 
   /**
-   * 启动项目
+   * 启动项目(开发环境)
    *
    * @author yuzhanglong
    * @email yuzl1123@163.com
@@ -94,6 +94,36 @@ class ReactService {
     server.listen(devServerOptions.port, () => {
       logger.done('开发服务器启动成功~')
     })
+  }
+
+  /**
+   * 构建项目 (生产环境)
+   *
+   * @author yuzhanglong
+   * @email yuzl1123@163.com
+   * @date 2021-2-6 18:28:34
+   */
+  public build(): void {
+
+    // 构建项目，同样地执行 Runtime Plugin
+    this.runRuntimePlugins()
+
+    // 尝试从用户配置文件中获取配置，它的优先级较高
+    if (this.appConfig?.webpack?.webpackConfig) {
+      this.mergeWebpackConfig(this.appConfig.webpack.webpackConfig)
+    }
+
+    // 初始化 webpack compiler
+    const compiler = webpack(this.webpackConfig as Configuration)
+
+    try {
+      compiler.run((err, status) => {
+        console.log(err)
+        console.log(status)
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 

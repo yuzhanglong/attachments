@@ -22,9 +22,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 // TIP：额外的配置见 @attachments/serendipity-plugin-react
 
 const getBaseConfig = (): WebpackConfiguration => {
-
   const getHtmlWebpackPluginOptions = (): HtmlWebpackPlugin.Options => {
-
     const base = {}
     return Object.assign(
       base,
@@ -136,7 +134,7 @@ const getBaseConfig = (): WebpackConfiguration => {
       serendipityEnv.isProjectDevelopment() && new ReactRefreshWebpackPlugin()
 
       // TODO: 开发环境 plugin 例如 eslint plugin 等
-    ].filter((e) => e),
+    ].filter(Boolean),
 
 
     // 该选项决定了如何处理项目中的不同类型的模块
