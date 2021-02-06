@@ -30,15 +30,17 @@ program
   .option('-c --commit', '初始化 commit 信息，只有选择初始化 git 时有效', 'initial commit')
   .option('-p --preset', '配置自定义预设，它的默认值和你选择的项目有关')
   .action(async (name: string, opt: CreateOptions) => {
+    if (!name) {
+      name = DEFAULT_NAME
+    }
+
     // 项目路径为当前路径 + 项目名称
     const projectPath = path.resolve(process.cwd(), name)
 
     // 初始化 manager
     const manager = new CoreManager(process.argv, projectPath)
 
-    if (!name) {
-      name = DEFAULT_NAME
-    }
+
     await manager.create(name, opt)
   })
 

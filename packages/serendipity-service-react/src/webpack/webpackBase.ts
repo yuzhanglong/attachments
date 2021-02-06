@@ -7,11 +7,12 @@
  */
 
 
-import { appBuild, appEntry, appHtml } from '../utils/paths'
+import { appBuild, appEntry } from '../utils/paths'
 import * as HtmlWebpackPlugin from 'html-webpack-plugin'
 import { WebpackConfiguration } from '@attachments/serendipity-public/bin/types/common'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import * as webpack from 'webpack'
+import { getHtmlWebpackPluginOptions } from './configurations'
 
 const WebpackBar = require('webpackbar')
 const TerserPlugin = require('terser-webpack-plugin')
@@ -19,40 +20,9 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 
-// TIP：额外的配置见 @attachments/serendipity-plugin-react
-
+// TODO: 配置代码过长，需要抽离部分配置。 额外的配置见 @attachments/serendipity-plugin-react
+// eslint-disable-next-line max-lines-per-function
 const getBaseConfig = (): WebpackConfiguration => {
-
-  const getHtmlWebpackPluginOptions = (): HtmlWebpackPlugin.Options => {
-
-    const base = {}
-    return Object.assign(
-      base,
-
-      // 公共配置
-      {
-        inject: true,
-        template: appHtml
-      } as HtmlWebpackPlugin.Options,
-
-      // 生产环境的额外配置
-      serendipityEnv.isProjectProduction() ? {
-        minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true,
-          minifyJS: true,
-          minifyCSS: true,
-          minifyURLs: true
-        } as HtmlWebpackPlugin.MinifyOptions
-      } : undefined
-    )
-  }
-
   return {
     // 项目入口
     entry: appEntry,
@@ -72,8 +42,8 @@ const getBaseConfig = (): WebpackConfiguration => {
       chunkFilename: serendipityEnv.isProjectDevelopment() ? '[name].chunk.js' : '[name].[contenthash:8].chunk.js',
 
 
-      // 公共路径，默认为 '/' . 用户可以在配置文件中覆盖此配置，这对部署 cdn 等操作十分有效
-      publicPath: '/',
+      // 公共路径，默认为 '.' . 用户可以在配置文件中覆盖此配置，这对部署 cdn 等操作十分有效
+      publicPath: '.',
 
       // @ts-ignore -- 这个特性为 v5 新特性，@types/webpack 并没有迁移到 v5
       // asset/resource 模块以 [hash][ext][query] 文件名发送到输出目录
@@ -89,7 +59,9 @@ const getBaseConfig = (): WebpackConfiguration => {
 
       // TODO: 内部细节配置，做性能优化
       minimizer: [
-        new TerserPlugin(),
+        new TerserPlugin({
+          extractComments: false
+        }),
         new CssMinimizerPlugin()
       ],
 
@@ -134,9 +106,7 @@ const getBaseConfig = (): WebpackConfiguration => {
 
       // 官方的 react 热更新 webpack 插件
       serendipityEnv.isProjectDevelopment() && new ReactRefreshWebpackPlugin()
-
-      // TODO: 开发环境 plugin 例如 eslint plugin 等
-    ].filter((e) => e),
+    ].filter(Boolean),
 
 
     // 该选项决定了如何处理项目中的不同类型的模块
@@ -206,4 +176,3 @@ const getBaseConfig = (): WebpackConfiguration => {
 }
 
 export default getBaseConfig
-
