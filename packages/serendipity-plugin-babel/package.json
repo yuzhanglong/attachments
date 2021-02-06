@@ -7,5 +7,6 @@
     "start": "tsc -w"
   },
   "dependencies": {
+    "@attachments/serendipity-public": "^0.0.1"
   }
 }

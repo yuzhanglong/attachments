@@ -9,6 +9,7 @@
   "dependencies": {
     "@types/webpack": "^4.41.26",
     "eslint-webpack-plugin": "^2.4.3",
-    "webpack": "^5.20.2"
+    "webpack": "^5.20.2",
+    "@attachments/serendipity-public": "^0.0.1"
   }
 }

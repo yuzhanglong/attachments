@@ -8,13 +8,11 @@
  * Email: yuzl1123@163.com
  */
 
+import * as path from 'path'
+import { AddOptions, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import { program } from 'commander'
 import CoreManager from './coreManager'
-import 'source-map-support/register'
-import { AddOptions, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
-import * as path from 'path'
-
-const DEFAULT_NAME = 'hello-serendipity'
+import { DEFAULT_PROJECT_NAME } from './common'
 
 
 // 版本信息
@@ -31,7 +29,7 @@ program
   .option('-p --preset', '配置自定义预设，它的默认值和你选择的项目有关')
   .action(async (name: string, opt: CreateOptions) => {
     if (!name) {
-      name = DEFAULT_NAME
+      name = DEFAULT_PROJECT_NAME
     }
 
     // 项目路径为当前路径 + 项目名称

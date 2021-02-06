@@ -7,20 +7,20 @@
  */
 
 
-import { configFile } from '../utils/paths'
-import getBaseConfig from '../webpack/webpackBase'
+import * as fs from 'fs'
 import { Configuration, webpack } from 'webpack'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import logger from '@attachments/serendipity-public/bin/utils/logger'
 import * as WebpackDevServer from 'webpack-dev-server'
-import getDevServerConfig from '../webpack/devServer'
-import * as fs from 'fs'
 import {
   AppConfig,
   WebpackConfiguration,
   WebpackDevServerConfiguration
 } from '@attachments/serendipity-public/bin/types/common'
 import { webpackMerge } from '@attachments/serendipity-public'
+import getDevServerConfig from '../webpack/devServer'
+import getBaseConfig from '../webpack/webpackBase'
+import { configFile } from '../utils/paths'
 
 class ReactService {
   private readonly appConfig: AppConfig

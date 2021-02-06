@@ -7,21 +7,20 @@
  */
 
 
-import { BaseCommandValidateResult } from './types/options'
-import { chalk, webpackMerge } from '@attachments/serendipity-public'
-import { serendipityEnv } from '@attachments/serendipity-public'
 import * as path from 'path'
 import * as fs from 'fs'
-import logger from '@attachments/serendipity-public/bin/utils/logger'
-import ServiceManager from './serviceManager'
+import { chalk, logger, serendipityEnv } from '@attachments/serendipity-public'
 import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
 import { AddOptions, AppConfig, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
+import ServiceManager from './serviceManager'
+import { BaseCommandValidateResult } from './types/options'
 import PluginManager from './pluginManager'
 
 
 class CoreManager {
+  private readonly basePath
+
   private args
-  private basePath
   private options: CreateOptions
 
   constructor(args: string[], basePath?: string) {

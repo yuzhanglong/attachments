@@ -9,11 +9,13 @@
 
 import * as execa from 'execa'
 import * as chalk from 'chalk'
-import { runCommand } from './utils/command'
-import webpackMerge from 'webpack-merge'
-import serendipityEnv from './utils/env'
 import * as deepmerge from 'deepmerge'
 import * as inquirer from 'inquirer'
+import webpackMerge from 'webpack-merge'
+import serendipityEnv from './utils/env'
+import { runCommand } from './utils/command'
+import logger from './utils/logger'
+import { fileTreeWriting, writeFilePromise } from './utils/files'
 
 
 export {
@@ -23,5 +25,8 @@ export {
   webpackMerge,
   serendipityEnv,
   deepmerge,
-  inquirer
+  inquirer,
+  logger,
+  fileTreeWriting,
+  writeFilePromise
 }

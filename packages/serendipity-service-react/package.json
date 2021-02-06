@@ -27,7 +27,8 @@
     "style-loader": "^2.0.0",
     "webpack": "^5.19.0",
     "webpack-dev-server": "^3.11.2",
-    "webpackbar": "^5.0.0-3"
+    "webpackbar": "^5.0.0-3",
+    "@attachments/serendipity-public": "^0.0.1"
   },
   "peerDependencies": {
     "@attachments/serendipity": "latest"

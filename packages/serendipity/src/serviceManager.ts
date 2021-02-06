@@ -7,14 +7,12 @@
  */
 
 
+import * as path from 'path'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import { AppConfig, CommonObject, CreateOptions, InquireResult } from '@attachments/serendipity-public/bin/types/common'
-import { writeFilePromise } from '@attachments/serendipity-public/bin/utils/files'
-import * as path from 'path'
-import PluginManager from './pluginManager'
-import logger from '@attachments/serendipity-public/bin/utils/logger'
-import { inquirer, runCommand, webpackMerge } from '@attachments/serendipity-public'
+import { writeFilePromise, inquirer, runCommand, webpackMerge, logger } from '@attachments/serendipity-public'
 import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
+import PluginManager from './pluginManager'
 
 class ServiceManager {
   private readonly basePath: string

@@ -6,6 +6,9 @@
   "scripts": {
     "start": "tsc -w"
   },
+  "dependencies": {
+    "@attachments/serendipity-public": "^0.0.1"
+  },
   "peerDependencies": {
     "@attachments/serendipity-service-react": "latest"
   }

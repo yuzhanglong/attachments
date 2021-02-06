@@ -10,7 +10,6 @@
 import logger from '../bin/utils/logger'
 
 describe('logger 测试', () => {
-
   test('info', () => {
     logger.info = jest.fn()
     logger.info('hello world info')

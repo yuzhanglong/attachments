@@ -7,10 +7,10 @@
  */
 
 
-import { TemplateFilesMapper } from '../types/plugin'
-import * as globby from 'globby'
-import { readFilePromise } from './files'
 import * as path from 'path'
+import * as globby from 'globby'
+import { TemplateFilesMapper } from '../types/plugin'
+import { readFilePromise } from './files'
 
 
 /**
@@ -54,7 +54,7 @@ const getTemplatesData = async (templateBasePath: string, targetBasePath: string
  * @date 2021-1-29 12:35:22
  */
 
-const renderTemplateData = (data: TemplateFilesMapper, options: any) => {
+const renderTemplateData = (data: TemplateFilesMapper, options: unknown) => {
   Object.keys(data).forEach((res) => {
     // TODO: 基于 ejs 渲染数据
     // console.log(res)

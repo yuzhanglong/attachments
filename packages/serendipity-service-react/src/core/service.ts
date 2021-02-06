@@ -9,9 +9,9 @@
  */
 
 
-import ReactService from './ReactService'
 import * as program from 'commander'
 import { serendipityEnv } from '@attachments/serendipity-public'
+import ReactService from './ReactService'
 
 
 program

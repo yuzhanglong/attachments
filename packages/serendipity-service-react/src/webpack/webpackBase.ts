@@ -7,11 +7,11 @@
  */
 
 
-import { appBuild, appEntry } from '../utils/paths'
 import * as HtmlWebpackPlugin from 'html-webpack-plugin'
 import { WebpackConfiguration } from '@attachments/serendipity-public/bin/types/common'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import * as webpack from 'webpack'
+import { appBuild, appEntry } from '../utils/paths'
 import { getHtmlWebpackPluginOptions } from './configurations'
 
 const WebpackBar = require('webpackbar')
