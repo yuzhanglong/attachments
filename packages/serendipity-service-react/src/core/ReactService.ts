@@ -20,7 +20,7 @@ import {
   WebpackConfiguration,
   WebpackDevServerConfiguration
 } from '@attachments/serendipity-public/bin/types/common'
-import { serendipityEnv, webpackMerge } from '@attachments/serendipity-public'
+import { webpackMerge } from '@attachments/serendipity-public'
 
 class ReactService {
   private readonly appConfig: AppConfig
@@ -116,14 +116,9 @@ class ReactService {
     // 初始化 webpack compiler
     const compiler = webpack(this.webpackConfig as Configuration)
 
-    try {
-      compiler.run((err, status) => {
-        console.log(err)
-        console.log(status)
-      })
-    } catch (e) {
-      console.log(e)
-    }
+    compiler.run(() => {
+      return
+    })
   }
 }
 
