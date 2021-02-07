@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@attachments/serendipity-plugin-babel@^0.0.2":
+  version "0.0.2"
+  resolved "http://47.106.202.255:4873/@attachments%2fserendipity-plugin-babel/-/serendipity-plugin-babel-0.0.2.tgz#e0fd48ca72ca93918a7f12f4fd737fbb10df4137"
+  integrity sha512-2aAQMoXPKkuqzJhG0678z5J6cF24TkQl+DaQVAkYA1IKJcDw7dQZX60/9JMT3Ea0LmZVGWGnfMzP6Vf3HOTq5g==
+  dependencies:
+    "@attachments/serendipity-public" "^0.0.1"
+
 "@attachments/serendipity-public@^0.0.1":
   version "0.0.1"
   resolved "http://47.106.202.255:4873/@attachments%2fserendipity-public/-/serendipity-public-0.0.1.tgz#495a457532bdcd5064fa2cb1e96da7f4e243e2fc"

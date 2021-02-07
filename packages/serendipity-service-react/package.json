@@ -7,13 +7,18 @@
     "serendipity-service-react": "./bin/core/service.js"
   },
   "scripts": {
-    "start": "tsc -w"
+    "start": "tsc -w",
+    "publish": "npm publish --registry http://47.106.202.255:4873"
   },
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.10",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@attachments/serendipity-plugin-babel": "^0.0.2",
+    "@attachments/serendipity-plugin-eslint": "^0.0.1",
+    "@attachments/serendipity-plugin-react": "^0.0.1",
+    "@attachments/serendipity-public": "^0.0.1",
     "@types/webpack-dev-server": "^3.11.1",
     "babel-loader": "^8.2.2",
     "commander": "^7.0.0",
@@ -27,10 +32,12 @@
     "style-loader": "^2.0.0",
     "webpack": "^5.19.0",
     "webpack-dev-server": "^3.11.2",
-    "webpackbar": "^5.0.0-3",
-    "@attachments/serendipity-public": "^0.0.1"
+    "webpackbar": "^5.0.0-3"
   },
   "peerDependencies": {
-    "@attachments/serendipity": "latest"
-  }
+    "@attachments/serendipity": "*"
+  },
+  "files": [
+    "bin"
+  ]
 }

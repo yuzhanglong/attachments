@@ -7,7 +7,7 @@
  */
 
 
-import { PluginTemplateOptions } from '../../serendipity-public/bin/types/plugin'
+import { PluginTemplateOptions } from '@attachments/serendipity-public/bin/types/plugin'
 
 module.exports = (options: PluginTemplateOptions) => {
   // react 环境

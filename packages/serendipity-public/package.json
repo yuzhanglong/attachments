@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "main": "./bin/index.js",
   "scripts": {
-    "start": "tsc -w"
+    "start": "tsc -w",
+    "publish": "npm publish --registry http://47.106.202.255:4873"
   },
   "license": "MIT",
   "dependencies": {
