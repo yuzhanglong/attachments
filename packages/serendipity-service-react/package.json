@@ -1,21 +1,20 @@
 {
   "name": "@attachments/serendipity-service-react",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "bin/index.js",
   "license": "MIT",
   "bin": {
     "serendipity-service-react": "./bin/core/service.js"
   },
   "scripts": {
-    "start": "tsc -w",
-    "publish": "npm publish"
+    "start": "tsc -w"
   },
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.10",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
-    "@attachments/serendipity-plugin-babel": "^0.0.2",
+    "@attachments/serendipity-plugin-babel": "^0.0.1",
     "@attachments/serendipity-plugin-eslint": "^0.0.1",
     "@attachments/serendipity-plugin-react": "^0.0.1",
     "@attachments/serendipity-public": "^0.0.1",

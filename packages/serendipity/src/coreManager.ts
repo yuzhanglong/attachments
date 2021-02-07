@@ -41,6 +41,8 @@ class CoreManager {
     } else {
       logger.error('该目录已经存在，请删除旧目录或者在其他目录下执行创建命令！')
       if (!serendipityEnv.isSerendipityDevelopment()) {
+        process.exit(0)
+      } else {
         return
       }
     }

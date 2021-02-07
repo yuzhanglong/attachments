@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "main": "./bin/index.js",
   "scripts": {
-    "start": "tsc -w",
-    "publish": "npm publish"
+    "start": "tsc -w"
   },
   "license": "MIT",
   "dependencies": {
@@ -15,5 +14,8 @@
   },
   "peerDependencies": {
     "@attachments/serendipity-service-react": "*"
-  }
+  },
+  "files": [
+    "bin"
+  ]
 }

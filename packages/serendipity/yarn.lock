@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@attachments/serendipity-plugin-babel@^0.0.2":
-  version "0.0.2"
-  resolved "http://47.106.202.255:4873/@attachments%2fserendipity-plugin-babel/-/serendipity-plugin-babel-0.0.2.tgz#e0fd48ca72ca93918a7f12f4fd737fbb10df4137"
-  integrity sha512-2aAQMoXPKkuqzJhG0678z5J6cF24TkQl+DaQVAkYA1IKJcDw7dQZX60/9JMT3Ea0LmZVGWGnfMzP6Vf3HOTq5g==
+"@attachments/serendipity-plugin-babel@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-babel/-/serendipity-plugin-babel-0.0.1.tgz#94af8fe4434dca6c8d95bde65aae2f9f1dc970a0"
+  integrity sha512-6Z52Y37tsRXDZ7/wTEiTvxwKLAACOJwiuJmmevk8a8KSVenFHGqnhk5lmlHq3aM9fkzxty1bvcuW3QxOm5ScYg==
   dependencies:
     "@attachments/serendipity-public" "^0.0.1"
 
@@ -41,12 +41,12 @@
     semver "^7.3.4"
     webpack-merge "^5.7.3"
 
-"@attachments/serendipity-service-react@^0.0.2":
-  version "0.0.2"
-  resolved "http://47.106.202.255:4873/@attachments%2fserendipity-service-react/-/serendipity-service-react-0.0.2.tgz#b008f3c34e3ef18cb574a131182a93643a1c2e52"
-  integrity sha512-4CXcwUfNGF/5nqktVxsqpUyhQVATTC8FmZ3BSxTzFtBYB+LctKTC6MrMizdU0MvLTI4wOVbMVbmzXJstZsrIaA==
+"@attachments/serendipity-service-react@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-service-react/-/serendipity-service-react-0.0.3.tgz#b909c0a3f19b260f13e12f25c777f24dc4923888"
+  integrity sha512-ID6i1sTYN5SxAywGrWGvO8yT2R+q2wFwwLCSJyF19NMEXBkcHFWe1uB2FWazPoqLJdtyKeJ4DccFhHY1PnCUZA==
   dependencies:
-    "@attachments/serendipity-plugin-babel" "^0.0.2"
+    "@attachments/serendipity-plugin-babel" "^0.0.1"
     "@attachments/serendipity-plugin-eslint" "^0.0.1"
     "@attachments/serendipity-plugin-react" "^0.0.1"
     "@attachments/serendipity-public" "^0.0.1"

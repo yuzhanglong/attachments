@@ -4,8 +4,7 @@
   "main": "./bin/index.js",
   "license": "MIT",
   "scripts": {
-    "start": "tsc -w",
-    "publish": "npm publish"
+    "start": "tsc -w"
   },
   "dependencies": {
     "@attachments/serendipity-public": "^0.0.1"
