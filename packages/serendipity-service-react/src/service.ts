@@ -25,7 +25,7 @@ module.exports = ({ operations }: ServiceOption) => {
     author: 'serendipity',
     license: 'MIT',
     devDependencies: {
-      '@attachments/serendipity-service-react': '^0.0.1'
+      '@attachments/serendipity-service-react': '^0.0.5'
     }
   })
 

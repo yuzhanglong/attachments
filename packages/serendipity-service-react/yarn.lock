@@ -2,17 +2,34 @@
 # yarn lockfile v1
 
 
-"@attachments/serendipity-plugin-babel@^0.0.2":
-  version "0.0.2"
-  resolved "http://47.106.202.255:4873/@attachments%2fserendipity-plugin-babel/-/serendipity-plugin-babel-0.0.2.tgz#e0fd48ca72ca93918a7f12f4fd737fbb10df4137"
-  integrity sha512-2aAQMoXPKkuqzJhG0678z5J6cF24TkQl+DaQVAkYA1IKJcDw7dQZX60/9JMT3Ea0LmZVGWGnfMzP6Vf3HOTq5g==
+"@attachments/serendipity-plugin-babel@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-babel/-/serendipity-plugin-babel-0.0.4.tgz#aae64f11bd07e79ffe90580917284fbd807b35ad"
+  integrity sha512-k0qlt70/pTx++1PvaamVUilP+k4LcQ2O9Z6tAjD7VQsR+h3zWDzcj5GLciq8M4bOBYcU4kf3r4IJjTqZ1FnxSw==
   dependencies:
-    "@attachments/serendipity-public" "^0.0.1"
+    "@attachments/serendipity-public" "^0.0.4"
 
-"@attachments/serendipity-public@^0.0.1":
-  version "0.0.1"
-  resolved "http://47.106.202.255:4873/@attachments%2fserendipity-public/-/serendipity-public-0.0.1.tgz#495a457532bdcd5064fa2cb1e96da7f4e243e2fc"
-  integrity sha512-xqk1g89a3/MKKCT301CPT1ansF0HQIXcVpOr+1uJaShFOO/hDqiN5Dv7Pkue/tDCkRHbZ7zN8fe8QnhXSWxVWg==
+"@attachments/serendipity-plugin-eslint@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-eslint/-/serendipity-plugin-eslint-0.0.4.tgz#1983963ab800c41e58924d98f739416ac0f2e487"
+  integrity sha512-3rCpnCQr1xB5BLB5JbWRzfzPjNYbcKWj6CgdwEF8OJwBgqrrn4PMPkcSsUTjrIPLQxGfpE/nc0++wQ3LSZwFqg==
+  dependencies:
+    "@attachments/serendipity-public" "^0.0.4"
+    "@types/webpack" "^4.41.26"
+    eslint-webpack-plugin "^2.4.3"
+    webpack "^5.20.2"
+
+"@attachments/serendipity-plugin-react@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-react/-/serendipity-plugin-react-0.0.4.tgz#1e3c1c45914e6bd724cd618b113a3a5dbcc03113"
+  integrity sha512-0KcMjFZCjKAv4gBipAZyMegxc00x1Bs9rzgd1DaWJkQmR6dK1sRmrfWfLmPF+Ew0vdrxAK0MdSX1uKtbca1RmQ==
+  dependencies:
+    "@attachments/serendipity-public" "^0.0.4"
+
+"@attachments/serendipity-public@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.4.tgz#9d0b67ac394803378c543365772d7d88a2d9dc2f"
+  integrity sha512-NoCCIdGpekAs/Bl3YGyIRRSJOxWBajHyywfrk5ppk7u6AiIkeqdNip9y41QZVMyNlIlUOP9tW4wGt4hPp6ClsA==
   dependencies:
     "@types/inquirer" "^7.3.1"
     "@types/webpack-dev-server" "^3.11.1"
@@ -1105,9 +1122,9 @@
     "@types/eslint" "*"
     "@types/estree" "*"
 
-"@types/eslint@*":
+"@types/eslint@*", "@types/eslint@^7.2.6":
   version "7.2.6"
-  resolved "https://registry.npm.taobao.org/@types/eslint/download/@types/eslint-7.2.6.tgz?cache=0&sync_timestamp=1606904646646&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Feslint%2Fdownload%2F%40types%2Feslint-7.2.6.tgz#5e9aff555a975596c03a98b59ecd103decc70c3c"
+  resolved "https://registry.npm.taobao.org/@types/eslint/download/@types/eslint-7.2.6.tgz?cache=0&sync_timestamp=1606904828220&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Feslint%2Fdownload%2F%40types%2Feslint-7.2.6.tgz#5e9aff555a975596c03a98b59ecd103decc70c3c"
   integrity sha1-Xpr/VVqXVZbAOpi1ns0QPezHDDw=
   dependencies:
     "@types/estree" "*"
@@ -1261,7 +1278,7 @@
     "@types/source-list-map" "*"
     source-map "^0.7.3"
 
-"@types/webpack@*":
+"@types/webpack@*", "@types/webpack@^4.41.26":
   version "4.41.26"
   resolved "https://registry.npm.taobao.org/@types/webpack/download/@types/webpack-4.41.26.tgz?cache=0&sync_timestamp=1610401764774&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fwebpack%2Fdownload%2F%40types%2Fwebpack-4.41.26.tgz#27a30d7d531e16489f9c7607c747be6bc1a459ef"
   integrity sha1-J6MNfVMeFkifnHYHx0e+a8GkWe8=
@@ -1557,6 +1574,11 @@ array-unique@^0.3.2:
   version "0.3.2"
   resolved "https://registry.npm.taobao.org/array-unique/download/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
+
+arrify@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npm.taobao.org/arrify/download/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
+  integrity sha1-yWVekzHgq81YjSp8rX6ZVvZnAfo=
 
 assign-symbols@^1.0.0:
   version "1.0.0"
@@ -2655,6 +2677,17 @@ eslint-scope@^5.1.1:
   dependencies:
     esrecurse "^4.3.0"
     estraverse "^4.1.1"
+
+eslint-webpack-plugin@^2.4.3:
+  version "2.5.0"
+  resolved "https://registry.npm.taobao.org/eslint-webpack-plugin/download/eslint-webpack-plugin-2.5.0.tgz#a8f96f30dee245c92384f8109f41f473f603faba"
+  integrity sha1-qPlvMN7iRckjhPgQn0H0c/YD+ro=
+  dependencies:
+    "@types/eslint" "^7.2.6"
+    arrify "^2.0.1"
+    jest-worker "^26.6.2"
+    micromatch "^4.0.2"
+    schema-utils "^3.0.0"
 
 esprima@^4.0.0:
   version "4.0.1"
@@ -6052,6 +6085,35 @@ webpack@^5.19.0:
   version "5.20.0"
   resolved "https://registry.npm.taobao.org/webpack/download/webpack-5.20.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwebpack%2Fdownload%2Fwebpack-5.20.0.tgz#7225c2e780f4332aef18e0b323b8b3ec01e16d66"
   integrity sha1-ciXC54D0MyrvGOCzI7iz7AHhbWY=
+  dependencies:
+    "@types/eslint-scope" "^3.7.0"
+    "@types/estree" "^0.0.46"
+    "@webassemblyjs/ast" "1.11.0"
+    "@webassemblyjs/wasm-edit" "1.11.0"
+    "@webassemblyjs/wasm-parser" "1.11.0"
+    acorn "^8.0.4"
+    browserslist "^4.14.5"
+    chrome-trace-event "^1.0.2"
+    enhanced-resolve "^5.7.0"
+    es-module-lexer "^0.3.26"
+    eslint-scope "^5.1.1"
+    events "^3.2.0"
+    glob-to-regexp "^0.4.1"
+    graceful-fs "^4.2.4"
+    json-parse-better-errors "^1.0.2"
+    loader-runner "^4.2.0"
+    mime-types "^2.1.27"
+    neo-async "^2.6.2"
+    schema-utils "^3.0.0"
+    tapable "^2.1.1"
+    terser-webpack-plugin "^5.1.1"
+    watchpack "^2.0.0"
+    webpack-sources "^2.1.1"
+
+webpack@^5.20.2:
+  version "5.21.1"
+  resolved "https://registry.npm.taobao.org/webpack/download/webpack-5.21.1.tgz?cache=0&sync_timestamp=1612604616699&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwebpack%2Fdownload%2Fwebpack-5.21.1.tgz#a5a13965187deeaa674a0ecea219b61060a2c38f"
+  integrity sha1-paE5ZRh97qpnSg7Oohm2EGCiw48=
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.46"

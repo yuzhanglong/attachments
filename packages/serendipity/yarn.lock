@@ -2,34 +2,34 @@
 # yarn lockfile v1
 
 
-"@attachments/serendipity-plugin-babel@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-babel/-/serendipity-plugin-babel-0.0.1.tgz#94af8fe4434dca6c8d95bde65aae2f9f1dc970a0"
-  integrity sha512-6Z52Y37tsRXDZ7/wTEiTvxwKLAACOJwiuJmmevk8a8KSVenFHGqnhk5lmlHq3aM9fkzxty1bvcuW3QxOm5ScYg==
+"@attachments/serendipity-plugin-babel@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-babel/-/serendipity-plugin-babel-0.0.5.tgz#1100243e68cb34893d0ee46e76e812fec24302f3"
+  integrity sha512-oBRE2iCVL7An24Voc2UzlKT2+ZaGo2gm8jjmDW/SkMC8jd6SHxCnE3tOw9ZRujQeaNRz41x+smGIh7+diOXsqg==
   dependencies:
-    "@attachments/serendipity-public" "^0.0.1"
+    "@attachments/serendipity-public" "^0.0.5"
 
-"@attachments/serendipity-plugin-eslint@^0.0.1":
-  version "0.0.1"
-  resolved "http://47.106.202.255:4873/@attachments%2fserendipity-plugin-eslint/-/serendipity-plugin-eslint-0.0.1.tgz#bc3a71f3e7d14b8f8e2a6651fc8b706b07eb1f4f"
-  integrity sha512-ZRUlgbbeZdQOjFL7TfWoT9+zh2Gg07fQzJnvjRGMCYOkOd9Y+0Ms4WKQVFO/aeT/yFlj5UCIHWBG0pUXCMwHag==
+"@attachments/serendipity-plugin-eslint@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-eslint/-/serendipity-plugin-eslint-0.0.5.tgz#ba51243fc801a346ab8dfdde67af71c2735dfe5b"
+  integrity sha512-RKdw2/dvK9/NwQs5LCpBWQ7khnKiWugKPrUsonsNbdnLqiAtCSvapU1ofwDzxO2MP6DeeU9PRHmI0p5Y7mE1bQ==
   dependencies:
-    "@attachments/serendipity-public" "^0.0.1"
+    "@attachments/serendipity-public" "^0.0.5"
     "@types/webpack" "^4.41.26"
     eslint-webpack-plugin "^2.4.3"
     webpack "^5.20.2"
 
-"@attachments/serendipity-plugin-react@^0.0.1":
-  version "0.0.1"
-  resolved "http://47.106.202.255:4873/@attachments%2fserendipity-plugin-react/-/serendipity-plugin-react-0.0.1.tgz#41bb60ad4ef137b4f0bc6d77966b33bfa2cdd329"
-  integrity sha512-yinsIFsr8T5RVE6GJsnI1OYDbLtgkLCvEygcHL0z+gGBqgJUa6m3jE0F78qPNdVSIcI+CS9qGqw2PszT3A99tg==
+"@attachments/serendipity-plugin-react@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-react/-/serendipity-plugin-react-0.0.5.tgz#5731acb6c3f42a45df6f05d317a71e8dade54bf6"
+  integrity sha512-E1MY/1PiMIAKIpr9lkxwx7FAoxL6FWgO+dDgm6YxrkLlsimSwO8fArCzku1svZO78wp12IZFCpNuMi1zXSCElg==
   dependencies:
-    "@attachments/serendipity-public" "^0.0.1"
+    "@attachments/serendipity-public" "^0.0.5"
 
-"@attachments/serendipity-public@^0.0.1":
-  version "0.0.1"
-  resolved "http://47.106.202.255:4873/@attachments%2fserendipity-public/-/serendipity-public-0.0.1.tgz#495a457532bdcd5064fa2cb1e96da7f4e243e2fc"
-  integrity sha512-xqk1g89a3/MKKCT301CPT1ansF0HQIXcVpOr+1uJaShFOO/hDqiN5Dv7Pkue/tDCkRHbZ7zN8fe8QnhXSWxVWg==
+"@attachments/serendipity-public@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.5.tgz#7a2a2ca1fe68d083b0d57abf0b53c77249869119"
+  integrity sha512-uHwx1ZB1PLeBRlt1+8TYjpwhw79KEEZbCYWSzklKOIdekfmmjfzthrkSY0LrJr4bQfCE79+LuNw5X2jQtYhC4Q==
   dependencies:
     "@types/inquirer" "^7.3.1"
     "@types/webpack-dev-server" "^3.11.1"
@@ -41,15 +41,15 @@
     semver "^7.3.4"
     webpack-merge "^5.7.3"
 
-"@attachments/serendipity-service-react@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-service-react/-/serendipity-service-react-0.0.3.tgz#b909c0a3f19b260f13e12f25c777f24dc4923888"
-  integrity sha512-ID6i1sTYN5SxAywGrWGvO8yT2R+q2wFwwLCSJyF19NMEXBkcHFWe1uB2FWazPoqLJdtyKeJ4DccFhHY1PnCUZA==
+"@attachments/serendipity-service-react@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-service-react/-/serendipity-service-react-0.0.5.tgz#d771d30fcf5613137a387b2af1c34ede24273b36"
+  integrity sha512-6p9JEPlvMv2ZOkB5b7SEPXVVNYAMVkiYmfLpRK1xj5SktiR4uZDTBF82us7yf061Psa7Ullv7p1eWFCuUduoTg==
   dependencies:
-    "@attachments/serendipity-plugin-babel" "^0.0.1"
-    "@attachments/serendipity-plugin-eslint" "^0.0.1"
-    "@attachments/serendipity-plugin-react" "^0.0.1"
-    "@attachments/serendipity-public" "^0.0.1"
+    "@attachments/serendipity-plugin-babel" "^0.0.5"
+    "@attachments/serendipity-plugin-eslint" "^0.0.5"
+    "@attachments/serendipity-plugin-react" "^0.0.5"
+    "@attachments/serendipity-public" "^0.0.5"
     "@babel/core" "^7.12.10"
     "@babel/preset-env" "^7.12.13"
     "@babel/preset-react" "^7.12.10"
