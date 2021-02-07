@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc -w",
-    "publish": "npm publish --registry http://47.106.202.255:4873"
+    "publish": "npm publish"
   },
   "dependencies": {
     "@attachments/serendipity-public": "^0.0.1"
