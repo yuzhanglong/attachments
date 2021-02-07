@@ -1,9 +1,10 @@
 {
   "name": "@attachments/serendipity-public",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "./bin/index.js",
   "scripts": {
-    "start": "tsc -w"
+    "start": "tsc -w",
+    "publish": "npm publish --registry http://47.106.202.255:4873"
   },
   "license": "MIT",
   "dependencies": {
@@ -16,5 +17,8 @@
     "inquirer": "^7.3.3",
     "semver": "^7.3.4",
     "webpack-merge": "^5.7.3"
-  }
+  },
+  "files": [
+    "bin"
+  ]
 }

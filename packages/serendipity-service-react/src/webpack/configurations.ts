@@ -9,8 +9,8 @@
 // 抽离部分 webpack 配置到这里来
 
 import * as HtmlWebpackPlugin from 'html-webpack-plugin'
-import { appHtml } from '../utils/paths'
 import { serendipityEnv } from '@attachments/serendipity-public'
+import { appHtml } from '../utils/paths'
 
 // HtmlWebpackPlugin Config
 export const getHtmlWebpackPluginOptions = (): HtmlWebpackPlugin.Options => {

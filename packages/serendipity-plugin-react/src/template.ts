@@ -6,9 +6,9 @@
  * Email: yuzl1123@163.com
  */
 
+import * as path from 'path'
 import { PluginTemplateOptions } from '@attachments/serendipity-public/bin/types/plugin'
 import { ReactServiceInquire } from '@attachments/serendipity-service-react/bin/types/common'
-import * as path from 'path'
 
 
 const getTemplatePath = (name) => {

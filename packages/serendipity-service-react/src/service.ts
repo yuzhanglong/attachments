@@ -19,12 +19,13 @@ module.exports = ({ operations }: ServiceOption) => {
     description: 'a react cli demo',
     main: 'index.js',
     scripts: {
-      start: 'serendipity-service-react start'
+      start: 'serendipity-service-react start',
+      build: 'serendipity-service-react build'
     },
     author: 'serendipity',
-    license: 'ISC',
+    license: 'MIT',
     devDependencies: {
-      '@attachments/serendipity-service-react': 'D:\\projects\\serendipity\\packages\\serendipity-service-react'
+      '@attachments/serendipity-service-react': '^0.0.1'
     }
   })
 

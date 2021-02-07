@@ -6,15 +6,13 @@
  * Email: yuzl1123@163.com
  */
 
+import * as path from 'path'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import { AppConfig, CommonObject, CreateOptions, InquireResult } from '@attachments/serendipity-public/bin/types/common'
 import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-public/bin/utils/template'
-import { fileTreeWriting } from '@attachments/serendipity-public/bin/utils/files'
+import { fileTreeWriting, logger, deepmerge, runCommand, webpackMerge } from '@attachments/serendipity-public'
 import { MergePackageConfigOptions } from '@attachments/serendipity-public/bin/types/cliService'
-import logger from '@attachments/serendipity-public/bin/utils/logger'
-import { deepmerge, runCommand, webpackMerge } from '@attachments/serendipity-public'
-import * as path from 'path'
-import * as process from 'process'
+
 
 class PluginManager {
   private readonly basePath: string

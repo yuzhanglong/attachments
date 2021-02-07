@@ -1,15 +1,21 @@
 {
   "name": "@attachments/serendipity",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "./bin/serendipity.js",
   "bin": {
     "serendipity": "./bin/serendipity.js"
   },
   "scripts": {
-    "start": "tsc -w"
+    "start": "tsc -w",
+    "publish": "npm publish --registry http://47.106.202.255:4873"
   },
   "license": "MIT",
   "dependencies": {
+    "@attachments/serendipity-public": "^0.0.1",
+    "@attachments/serendipity-service-react": "^0.0.2",
     "commander": "^7.0.0"
-  }
+  },
+  "files": [
+    "bin"
+  ]
 }
