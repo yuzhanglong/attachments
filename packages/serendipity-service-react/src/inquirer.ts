@@ -13,12 +13,6 @@ module.exports = (): InquireResult => {
   return [
     {
       type: 'confirm',
-      name: 'sassSupport',
-      message: '增加 sass 支持',
-      default: false
-    },
-    {
-      type: 'confirm',
       name: 'eslintSupport',
       message: '增加 eslint 支持',
       default: true

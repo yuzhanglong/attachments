@@ -16,6 +16,7 @@ import serendipityEnv from './utils/env'
 import { runCommand } from './utils/command'
 import logger from './utils/logger'
 import { fileTreeWriting, writeFilePromise } from './utils/files'
+import { getTemplatesData, renderTemplateData } from './utils/template'
 
 
 export {
@@ -28,5 +29,7 @@ export {
   inquirer,
   logger,
   fileTreeWriting,
-  writeFilePromise
+  writeFilePromise,
+  getTemplatesData,
+  renderTemplateData
 }

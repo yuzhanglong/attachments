@@ -7,14 +7,16 @@
  */
 
 
-import { AppConfig, CommonObject, CreateOptions, InquireResult } from './common'
+import { AppConfig, CommonObject, CreateOptions, WebpackConfiguration } from './common'
 import { MergePackageConfigOptions } from './cliService'
-import * as webpack from 'webpack'
 
 
 // plugin 模块
 export interface PluginModule {
+  // 运行时模块
   runtime?: PluginRuntime
+
+  // 构建时模块
   template?: PluginTemplate
 }
 
@@ -25,16 +27,22 @@ export type PluginTemplateRender = (path: string, options?: CommonObject) => voi
 
 // template plugin 选项
 export interface PluginTemplateOptions {
+  // 模板渲染
   render: PluginTemplateRender
+
+  // 合并 package.json 配置
   mergePackageConfig: (data: CommonObject, options?: MergePackageConfigOptions) => void
+
+  // 合并 app 配置
   mergeAppConfig: (appConfig: AppConfig) => void
-  inquireResult: InquireResult
+
+  // 项目创建时配置
   createOptions: CreateOptions
 }
 
 // runtime plugin 选项
 export interface PluginRuntimeOptions {
-  mergeWebpackConfig: (webpackConfig: webpack.Configuration) => void
+  mergeWebpackConfig: (webpackConfig: WebpackConfiguration) => void
 }
 
 // 运行时 plugin 模块

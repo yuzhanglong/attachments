@@ -19,19 +19,11 @@ export interface ServiceModule {
 
 // service 模块选项
 export interface ServiceOption {
-  // package.json 配置
-  operations: ServiceOperations
-
-  configurations: CommonObject
-}
-
-// service 操作钩子
-export interface ServiceOperations {
   // 配置 package.json
   setPackageConfig: (config: CommonObject) => void
 
   // 执行单个插件
-  registerPlugin: (name:string, plugin: PluginModule) => void
+  registerPlugin: (name: string, plugin: PluginModule) => void
 
   // 自定义的质询结果
   inquireResult: InquireResult

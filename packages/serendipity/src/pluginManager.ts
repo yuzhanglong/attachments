@@ -98,7 +98,6 @@ class PluginManager {
 
       // 是依赖包相关字段
       if (typeof val === 'object' && typeof isDependenciesKey) {
-        // TODO: 合并依赖
         this.packageConfig[key] = PluginManager.mergeDependencies(
           (oldValue as CommonObject),
           (val as CommonObject)
@@ -158,7 +157,6 @@ class PluginManager {
         render: this.renderTemplate.bind(this),
         mergePackageConfig: this.mergePackageConfig.bind(this),
         mergeAppConfig: this.mergeAppConfig.bind(this),
-        inquireResult: this.inquireResult,
         createOptions: this.createOptions
       })
     } else {

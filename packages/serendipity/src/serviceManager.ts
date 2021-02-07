@@ -162,12 +162,9 @@ class ServiceManager {
    */
   runCreateWorkTasks(): void {
     this.serviceModule.service({
-      configurations: {},
-      operations: {
-        setPackageConfig: this.setPackageConfig.bind(this),
-        registerPlugin: this.registerPlugin.bind(this),
-        inquireResult: this.inquireResult
-      }
+      setPackageConfig: this.setPackageConfig.bind(this),
+      registerPlugin: this.registerPlugin.bind(this),
+      inquireResult: this.inquireResult
     })
   }
 

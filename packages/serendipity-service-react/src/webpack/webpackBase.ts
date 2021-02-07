@@ -20,7 +20,6 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 
-// TODO: 配置代码过长，需要抽离部分配置。 额外的配置见 @attachments/serendipity-plugin-react
 // eslint-disable-next-line max-lines-per-function
 const getBaseConfig = (): WebpackConfiguration => {
   return {

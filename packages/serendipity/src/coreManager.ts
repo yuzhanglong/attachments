@@ -137,6 +137,7 @@ class CoreManager {
       try {
         await serviceManager.initFirstCommit(options.commit)
       } catch (e) {
+        logger.error('git 初始化失败！')
         logger.error(e)
       }
     }

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
- * File: service.js
+ * File: scripts.js
  * Description: 针对某个框架的 service 服务
  * Created: 2021-1-23 16:35:05
  * Author: yuzhanglong
