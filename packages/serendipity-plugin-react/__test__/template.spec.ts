@@ -8,9 +8,6 @@
 
 
 describe('template test', () => {
-  const templateModule = require('../src/template')
-  console.log(templateModule)
-
   test('开发环境下', () => {
     return
   })

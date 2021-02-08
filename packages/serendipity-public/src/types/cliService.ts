@@ -7,13 +7,13 @@
  */
 
 import { PluginModule } from './plugin'
-import { CommonObject, CreateOptions, InquireResult } from './common'
+import { CommonObject, CreateOptions, InquiryResult } from './common'
 
 
 // service 模块
 export interface ServiceModule {
   service: (option: ServiceOption) => void
-  inquirer: (option: ServiceInquirerOption) => InquireResult
+  inquiry: (option: ServiceInquiryOption) => InquiryResult
 }
 
 
@@ -26,7 +26,7 @@ export interface ServiceOption {
   registerPlugin: (name: string, plugin: PluginModule) => void
 
   // 自定义的质询结果
-  inquireResult: InquireResult
+  inquiryResult: InquiryResult
 }
 
 // 合并 package.json 配置选项
@@ -36,8 +36,7 @@ export interface MergePackageConfigOptions {
 }
 
 // service inquirer 配置选项
-export interface ServiceInquirerOption {
-  projectName: string
-  basePath: string
+export interface ServiceInquiryOption {
+  // 创建工程时相关参数
   createOptions: CreateOptions
 }

@@ -33,12 +33,17 @@ export const setProjectProduction = (): void => {
   __processEnv__.PROJECT_CONDITION = 'PRODUCTION'
 }
 
+export const setSerendipityDevelopment = (): void => {
+  __processEnv__.SERENDIPITY_CONFIG = 'DEVELOPMENT'
+}
+
 const serendipityEnv = {
   isSerendipityDevelopment,
   isProjectDevelopment,
   isProjectProduction,
   setProjectDevelopment,
-  setProjectProduction
+  setProjectProduction,
+  setSerendipityDevelopment
 }
 
 export default serendipityEnv

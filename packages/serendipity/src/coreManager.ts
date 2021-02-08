@@ -183,7 +183,7 @@ class CoreManager {
     await pluginManager.installPlugin()
 
     // 执行 template plugin
-    pluginManager.runTemplate()
+    pluginManager.runConstruction()
 
     // 更新配置文件，使 runtimePlugin 未来得以执行
     const currentAppConfig: AppConfig = require(configFile)

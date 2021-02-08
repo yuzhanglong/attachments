@@ -7,20 +7,28 @@
  */
 
 import * as path from 'path'
-import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import { AppConfig, CommonObject, CreateOptions, InquireResult } from '@attachments/serendipity-public/bin/types/common'
+import { AppConfig, CommonObject, CreateOptions, InquiryResult } from '@attachments/serendipity-public/bin/types/common'
 import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-public/bin/utils/template'
-import { fileTreeWriting, logger, deepmerge, runCommand, webpackMerge } from '@attachments/serendipity-public'
+import {
+  fileTreeWriting,
+  logger,
+  deepmerge,
+  runCommand,
+  webpackMerge,
+  inquirer,
+  serendipityEnv
+} from '@attachments/serendipity-public'
 import { MergePackageConfigOptions } from '@attachments/serendipity-public/bin/types/cliService'
+import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 
 
 class PluginManager {
   private readonly basePath: string
   private readonly packageConfig: CommonObject
-  private readonly inquireResult: InquireResult
   private readonly createOptions: CreateOptions
 
-  private plugin: PluginModule
+  public inquiryResult: InquiryResult
+  public pluginModule: PluginModule
   public name: string
   public appConfig: AppConfig
 
@@ -28,16 +36,16 @@ class PluginManager {
     basePath: string,
     name: string,
     plugin: PluginModule,
-    appConfig: AppConfig,
-    packageConfig: CommonObject,
-    inquireResult?: InquireResult,
+    appConfig?: AppConfig,
+    packageConfig?: CommonObject,
+    inquireResult?: InquiryResult,
     createOptions?: CreateOptions) {
     this.name = name
-    this.plugin = plugin
+    this.pluginModule = plugin
     this.basePath = basePath
     this.packageConfig = packageConfig
     this.appConfig = appConfig
-    this.inquireResult = inquireResult
+    this.inquiryResult = inquireResult
     this.createOptions = createOptions
   }
 
@@ -146,21 +154,22 @@ class PluginManager {
   }
 
   /**
-   * 执行 plugin 模板钩子
+   * 执行 pluginModule 构建模块
    *
    * @author yuzhanglong
+   * @see PluginModule
    * @date 2021-1-30 19:00:35
    */
-  runTemplate(): void {
-    if (this.plugin?.template) {
-      this.plugin.template({
+  runConstruction(): void {
+    if (this.pluginModule?.construction) {
+      this.pluginModule.construction({
         render: this.renderTemplate.bind(this),
         mergePackageConfig: this.mergePackageConfig.bind(this),
         mergeAppConfig: this.mergeAppConfig.bind(this),
-        createOptions: this.createOptions
+        inquiryResult: this.inquiryResult
       })
     } else {
-      logger.info('这个 plugin 没有 template 模块，template 初始化将跳过...')
+      logger.info('这个 pluginModule 没有 template 模块，template 初始化将跳过...')
     }
   }
 
@@ -187,7 +196,7 @@ class PluginManager {
   }
 
   /**
-   * 安装传入的 plugin，一般在 add 命令中使用
+   * 安装传入的 pluginModule，一般在 add 命令中使用
    *
    * @author yuzhanglong
    * @email yuzl1123@163.com
@@ -197,7 +206,9 @@ class PluginManager {
     logger.info(`插件 ${this.name} 安装中...`)
 
     if (!this.name.match(/^(serendipity-plugin-)/)) {
-      logger.warn(`${this.name} 不是一个推荐的插件名称，插件名称应该以 serendipity-plugin 开头，例如 serendipity-plugin-react`)
+      logger.warn(
+        `${this.name} 不是一个推荐的插件名称，插件名称应该以 serendipity-plugin 开头，例如 serendipity-plugin-react`
+      )
     }
     try {
       await runCommand(
@@ -206,11 +217,32 @@ class PluginManager {
         this.basePath
       )
     } catch (e) {
-      logger.error('plugin 安装失败，请检查其名称是否正确!')
+      logger.error('pluginModule 安装失败，请检查其名称是否正确!')
     }
 
-    // 拿到 plugin module 赋值给 this.plugin，根据 nodejs 的模块加载顺序，这里是不可以用相对路径的
-    this.plugin = require(path.resolve(this.basePath, 'node_modules', this.name))
+    // 拿到 pluginModule  赋值给 this.pluginModule，根据 nodejs 的模块加载顺序，这里是不可以用相对路径的
+    this.pluginModule = require(path.resolve(this.basePath, 'node_modules', this.name))
+  }
+
+  /**
+   * 执行 pluginModule 质询内容
+   *
+   * @author yuzhanglong
+   * @email yuzl1123@163.com
+   * @date 2021-2-8 00:29:20
+   */
+  public async runPluginInquirer(): Promise<void> {
+    if (this.pluginModule?.inquiry) {
+      const result = this.pluginModule.inquiry({
+        // 这里的 appConfig 是最初的配置，没有被修改
+        appConfig: this.appConfig
+      })
+      if (!serendipityEnv.isSerendipityDevelopment() && result) {
+        this.inquiryResult = await inquirer.prompt(result)
+      } else {
+        this.inquiryResult = null
+      }
+    }
   }
 }
 

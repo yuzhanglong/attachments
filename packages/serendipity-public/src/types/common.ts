@@ -35,7 +35,7 @@ export type WebpackConfiguration = Configuration
 export type WebpackDevServerConfiguration = DevServerConfiguration
 
 // 质询问题
-export type InquireResult = inquirer.QuestionCollection
+export type InquiryResult = inquirer.QuestionCollection
 
 // webpack 配置
 export interface WebpackConfig {

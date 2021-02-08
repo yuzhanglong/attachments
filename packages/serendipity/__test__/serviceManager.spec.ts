@@ -6,14 +6,14 @@
  * Email: yuzl1123@163.com
  */
 
-import ServiceManager from '../src/serviceManager'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
+import ServiceManager from '../src/serviceManager'
 
 describe('serviceManager 模块', () => {
   test('测试 app 配置文件收集', () => {
     const manager = new ServiceManager('foo', {}, null)
     const plugin1: PluginModule = {
-      template: (options) => {
+      construction: (options) => {
         options.mergeAppConfig({
           plugins: [
             'foo-plugin'
@@ -22,7 +22,7 @@ describe('serviceManager 模块', () => {
       }
     }
     const plugin2: PluginModule = {
-      template: (options) => {
+      construction: (options) => {
         options.mergeAppConfig({
           plugins: [
             'bar-plugin'
