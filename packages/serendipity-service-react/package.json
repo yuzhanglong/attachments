@@ -4,10 +4,11 @@
   "main": "bin/index.js",
   "license": "MIT",
   "bin": {
-    "serendipity-service-react": "./bin/core/service.js"
+    "serendipity-service-react": "./bin/core/scripts.js"
   },
   "scripts": {
-    "start": "tsc -w"
+    "start": "tsc -w",
+    "build": "tsc"
   },
   "dependencies": {
     "@babel/core": "^7.12.10",
@@ -31,7 +32,9 @@
     "style-loader": "^2.0.0",
     "webpack": "^5.19.0",
     "webpack-dev-server": "^3.11.2",
-    "webpackbar": "^5.0.0-3"
+    "webpackbar": "^5.0.0-3",
+    "node-sass": "^5.0.0",
+    "sass-loader": "^10.1.1"
   },
   "peerDependencies": {
     "@attachments/serendipity": "^0.0.5"

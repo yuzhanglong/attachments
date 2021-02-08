@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
- * File: service.js
+ * File: scripts.js
  * Description: 针对某个框架的 service 服务
  * Created: 2021-1-23 16:35:05
  * Author: yuzhanglong
@@ -13,6 +13,8 @@ import * as program from 'commander'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import ReactService from './ReactService'
 
+// 版本信息
+program.version(`serendipity ${require('../package').version}`)
 
 program
   .command('start')

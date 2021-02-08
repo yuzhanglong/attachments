@@ -9,8 +9,6 @@
 
 import { Configuration } from 'webpack'
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
-import * as inquirer from 'inquirer'
-
 
 // 项目创建时配置
 export interface CreateOptions {
@@ -34,8 +32,8 @@ export type WebpackConfiguration = Configuration
 // webpack-dev-server 配置别名，由各个包共享而不额外安装
 export type WebpackDevServerConfiguration = DevServerConfiguration
 
-// 质询问题
-export type InquireResult = inquirer.QuestionCollection
+// 质询问题结果
+export type InquiryResult = CommonObject
 
 // webpack 配置
 export interface WebpackConfig {

@@ -9,8 +9,15 @@
 
 import * as path from 'path'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import { AppConfig, CommonObject, CreateOptions, InquireResult } from '@attachments/serendipity-public/bin/types/common'
-import { writeFilePromise, inquirer, runCommand, webpackMerge, logger } from '@attachments/serendipity-public'
+import { AppConfig, CommonObject, CreateOptions, InquiryResult } from '@attachments/serendipity-public/bin/types/common'
+import {
+  writeFilePromise,
+  inquirer,
+  runCommand,
+  webpackMerge,
+  logger,
+  serendipityEnv
+} from '@attachments/serendipity-public'
 import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
 import PluginManager from './pluginManager'
 
@@ -20,7 +27,7 @@ class ServiceManager {
   private readonly appConfig: AppConfig
   private readonly createOptions: CreateOptions
 
-  private inquireResult: InquireResult
+  private inquiryResult: InquiryResult
   private pluginManagers: PluginManager[] = []
   private packageConfig: CommonObject
 
@@ -45,6 +52,7 @@ class ServiceManager {
    * 初始化 package.json
    *
    * @author yuzhanglong
+   * @param config package.json 内容
    * @date 2021-1-29 13:48:49
    */
   setPackageConfig(config: CommonObject): void {
@@ -66,7 +74,7 @@ class ServiceManager {
       pluginModule,
       this.appConfig,
       this.packageConfig,
-      this.inquireResult,
+      this.inquiryResult,
       this.createOptions
     )
     this.pluginManagers.push(manager)
@@ -78,9 +86,12 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-1-29 11:51:36
    */
-  runPluginsTemplate(): void {
+  async runPluginsConstruction(): Promise<void> {
     for (const pluginManager of this.pluginManagers) {
-      pluginManager.runTemplate()
+      // 先执行 plugin 相关质询
+      await pluginManager.runPluginInquirer()
+      // 再执行 plugin construction，此时质询完成，其结果将成为 construction 的参数
+      pluginManager.runConstruction()
     }
   }
 
@@ -109,7 +120,6 @@ class ServiceManager {
     // 收集所有插件的 AppConfig
     // 由于 webpackMerge 库返回的对象是一个新的对象，this.appConfig 不会被插件接口修改，所以我们还要再遍历一遍并合并
     let lastResult = this.collectAppConfig()
-
 
     // 收集所有的 plugin 名称
     const names = this.pluginManagers.map((data) => data.name)
@@ -162,12 +172,9 @@ class ServiceManager {
    */
   runCreateWorkTasks(): void {
     this.serviceModule.service({
-      configurations: {},
-      operations: {
-        setPackageConfig: this.setPackageConfig.bind(this),
-        registerPlugin: this.registerPlugin.bind(this),
-        inquireResult: this.inquireResult
-      }
+      setPackageConfig: this.setPackageConfig.bind(this),
+      registerPlugin: this.registerPlugin.bind(this),
+      inquiryResult: this.inquiryResult
     })
   }
 
@@ -210,12 +217,16 @@ class ServiceManager {
    * @date 2021-2-4 12:40:24
    */
   async runServiceInquirer(): Promise<void> {
-    const result = this.serviceModule.inquirer({
-      basePath: this.basePath,
-      projectName: this.createOptions.type,
-      createOptions: this.createOptions
-    })
-    this.inquireResult = await inquirer.prompt(result)
+    if (this.serviceModule.inquiry) {
+      const result = this.serviceModule.inquiry({
+        createOptions: this.createOptions
+      })
+      if (!serendipityEnv.isSerendipityDevelopment()) {
+        this.inquiryResult = await inquirer.prompt(result)
+      } else {
+        this.inquiryResult = {}
+      }
+    }
   }
 }
 

@@ -7,15 +7,21 @@
  */
 
 
-import { AppConfig, CommonObject, CreateOptions, InquireResult } from './common'
+import * as inquirer from 'inquirer'
+import { AppConfig, CommonObject, InquiryResult, WebpackConfiguration } from './common'
 import { MergePackageConfigOptions } from './cliService'
-import * as webpack from 'webpack'
 
 
 // plugin 模块
 export interface PluginModule {
+  // 运行时模块
   runtime?: PluginRuntime
-  template?: PluginTemplate
+
+  // 构建时模块
+  construction?: PluginConstruction
+
+  // 质询模块
+  inquiry?: (option: PluginInquiryOption) => inquirer.QuestionCollection
 }
 
 // 模板文件映射表
@@ -24,21 +30,33 @@ export type TemplateFilesMapper = Record<string, string>
 export type PluginTemplateRender = (path: string, options?: CommonObject) => void
 
 // template plugin 选项
-export interface PluginTemplateOptions {
+export interface PluginConstructionOptions {
+  // 模板渲染
   render: PluginTemplateRender
+
+  // 合并 package.json 配置
   mergePackageConfig: (data: CommonObject, options?: MergePackageConfigOptions) => void
+
+  // 合并 app 配置
   mergeAppConfig: (appConfig: AppConfig) => void
-  inquireResult: InquireResult
-  createOptions: CreateOptions
+
+  // 质询结果
+  inquiryResult: InquiryResult
 }
 
 // runtime plugin 选项
 export interface PluginRuntimeOptions {
-  mergeWebpackConfig: (webpackConfig: webpack.Configuration) => void
+  mergeWebpackConfig: (webpackConfig: WebpackConfiguration) => void
 }
 
 // 运行时 plugin 模块
 export type PluginRuntime = (options: PluginRuntimeOptions) => void
 
 // 模板 plugin 模块
-export type PluginTemplate = (options: PluginTemplateOptions) => void
+export type PluginConstruction = (options: PluginConstructionOptions) => void
+
+// plugin inquirer 配置选项
+export interface PluginInquiryOption {
+  // app 配置（非修改后）
+  appConfig?: AppConfig
+}

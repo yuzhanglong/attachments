@@ -7,16 +7,10 @@
  */
 
 
-import { InquireResult } from '@attachments/serendipity-public/bin/types/common'
+import { inquirer } from '@attachments/serendipity-public'
 
-module.exports = (): InquireResult => {
+module.exports = (): inquirer.QuestionCollection => {
   return [
-    {
-      type: 'confirm',
-      name: 'sassSupport',
-      message: '增加 sass 支持',
-      default: false
-    },
     {
       type: 'confirm',
       name: 'eslintSupport',

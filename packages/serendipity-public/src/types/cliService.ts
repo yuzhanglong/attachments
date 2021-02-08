@@ -6,35 +6,28 @@
  * Email: yuzl1123@163.com
  */
 
+import * as inquirer from 'inquirer'
 import { PluginModule } from './plugin'
-import { CommonObject, CreateOptions, InquireResult } from './common'
+import { CommonObject, CreateOptions, InquiryResult } from './common'
 
 
-// service 模块
+// service 模块·
 export interface ServiceModule {
-  service: (option: ServiceOption) => void
-  inquirer: (option: ServiceInquirerOption) => InquireResult
+  service?: (option: ServiceOption) => void
+  inquiry?: (option: ServiceInquiryOption) => inquirer.QuestionCollection
 }
 
 
 // service 模块选项
 export interface ServiceOption {
-  // package.json 配置
-  operations: ServiceOperations
-
-  configurations: CommonObject
-}
-
-// service 操作钩子
-export interface ServiceOperations {
   // 配置 package.json
-  setPackageConfig: (config: CommonObject) => void
+  setPackageConfig?: (config: CommonObject) => void
 
   // 执行单个插件
-  registerPlugin: (name:string, plugin: PluginModule) => void
+  registerPlugin?: (name: string, plugin: PluginModule) => void
 
   // 自定义的质询结果
-  inquireResult: InquireResult
+  inquiryResult?: InquiryResult
 }
 
 // 合并 package.json 配置选项
@@ -44,8 +37,7 @@ export interface MergePackageConfigOptions {
 }
 
 // service inquirer 配置选项
-export interface ServiceInquirerOption {
-  projectName: string
-  basePath: string
+export interface ServiceInquiryOption {
+  // 创建工程时相关参数
   createOptions: CreateOptions
 }

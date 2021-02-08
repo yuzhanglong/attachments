@@ -124,7 +124,7 @@ class CoreManager {
     serviceManager.runCreateWorkTasks()
 
     // 执行 service 层注册的所有插件
-    serviceManager.runPluginsTemplate()
+    await serviceManager.runPluginsConstruction()
 
     // 写入 package.json 文件
     await serviceManager.writePackageConfig()
@@ -137,6 +137,7 @@ class CoreManager {
       try {
         await serviceManager.initFirstCommit(options.commit)
       } catch (e) {
+        logger.error('git 初始化失败！')
         logger.error(e)
       }
     }
@@ -182,7 +183,7 @@ class CoreManager {
     await pluginManager.installPlugin()
 
     // 执行 template plugin
-    pluginManager.runTemplate()
+    pluginManager.runConstruction()
 
     // 更新配置文件，使 runtimePlugin 未来得以执行
     const currentAppConfig: AppConfig = require(configFile)

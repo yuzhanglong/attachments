@@ -7,9 +7,9 @@
  */
 
 
-import { PluginTemplateOptions } from '@attachments/serendipity-public/bin/types/plugin'
+import { PluginConstructionOptions } from '@attachments/serendipity-public/bin/types/plugin'
 
-module.exports = (options: PluginTemplateOptions) => {
+module.exports = (options: PluginConstructionOptions) => {
   options.mergePackageConfig({
     babel: {
       'presets': [

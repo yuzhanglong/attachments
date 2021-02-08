@@ -6,9 +6,9 @@
  * Email: yuzl1123@163.com
  */
 
+import * as path from 'path'
 import { appBuild, resolveAppPath } from '../src/utils/paths'
 
-import * as path from 'path'
 
 describe('app 路径相关测试', () => {
   test('构造 app 子路径', () => {
