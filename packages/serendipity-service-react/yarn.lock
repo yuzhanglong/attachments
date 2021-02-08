@@ -2,34 +2,34 @@
 # yarn lockfile v1
 
 
-"@attachments/serendipity-plugin-babel@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-babel/-/serendipity-plugin-babel-0.0.5.tgz#1100243e68cb34893d0ee46e76e812fec24302f3"
-  integrity sha512-oBRE2iCVL7An24Voc2UzlKT2+ZaGo2gm8jjmDW/SkMC8jd6SHxCnE3tOw9ZRujQeaNRz41x+smGIh7+diOXsqg==
+"@attachments/serendipity-plugin-babel@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-babel/-/serendipity-plugin-babel-0.0.6.tgz#ac31324934ef4ade105e1fb7bec7aa5fb3f07a4f"
+  integrity sha512-vr0vBkkEo6x16BVWnER6ZYYxMmGDnT6zfEfKhxb0gu4Egsyu4KawbNZMTeJ+QEnot4rB4gbGpAjzcGftJoUO/w==
   dependencies:
-    "@attachments/serendipity-public" "^0.0.5"
+    "@attachments/serendipity-public" "^0.0.6"
 
-"@attachments/serendipity-plugin-eslint@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-eslint/-/serendipity-plugin-eslint-0.0.5.tgz#ba51243fc801a346ab8dfdde67af71c2735dfe5b"
-  integrity sha512-RKdw2/dvK9/NwQs5LCpBWQ7khnKiWugKPrUsonsNbdnLqiAtCSvapU1ofwDzxO2MP6DeeU9PRHmI0p5Y7mE1bQ==
+"@attachments/serendipity-plugin-eslint@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-eslint/-/serendipity-plugin-eslint-0.0.6.tgz#3aa109a156141f2d5cf58848e997b3dee73330e7"
+  integrity sha512-vAMtZuiZDq2eIVUfQMTf4C3FRfWn5G/kY7U4OC3gZ+r0YryKRS7Al+E6NMXV8+H7p/zSEOJGCZVOWjuctKkwdA==
   dependencies:
-    "@attachments/serendipity-public" "^0.0.5"
+    "@attachments/serendipity-public" "^0.0.6"
     "@types/webpack" "^4.41.26"
     eslint-webpack-plugin "^2.4.3"
     webpack "^5.20.2"
 
-"@attachments/serendipity-plugin-react@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-react/-/serendipity-plugin-react-0.0.5.tgz#5731acb6c3f42a45df6f05d317a71e8dade54bf6"
-  integrity sha512-E1MY/1PiMIAKIpr9lkxwx7FAoxL6FWgO+dDgm6YxrkLlsimSwO8fArCzku1svZO78wp12IZFCpNuMi1zXSCElg==
+"@attachments/serendipity-plugin-react@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-react/-/serendipity-plugin-react-0.0.6.tgz#d3fc1e0af555aec8490427bda5a87e3d2193dee9"
+  integrity sha512-CSJeJ2rTwIOC6N9Vc7jrHJ1ro2kOOk6CbulsioC8oXUFp/KHehBcENSXdM0VedwgzghiU2XHX2CDA0hory+i/w==
   dependencies:
-    "@attachments/serendipity-public" "^0.0.5"
+    "@attachments/serendipity-public" "^0.0.6"
 
-"@attachments/serendipity-public@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.5.tgz#7a2a2ca1fe68d083b0d57abf0b53c77249869119"
-  integrity sha512-uHwx1ZB1PLeBRlt1+8TYjpwhw79KEEZbCYWSzklKOIdekfmmjfzthrkSY0LrJr4bQfCE79+LuNw5X2jQtYhC4Q==
+"@attachments/serendipity-public@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.6.tgz#4c28b2e164e916ff990767b0dcb1770fe70985f8"
+  integrity sha512-IW61LPDu7bjkZtJ3nIBd1ha1m10Ky3x479qP092qe0bvJBZf3N6c3CGXK/CU8hCQP5ruEm60C/Vp1qvS0MNYQw==
   dependencies:
     "@types/inquirer" "^7.3.1"
     "@types/webpack-dev-server" "^3.11.1"

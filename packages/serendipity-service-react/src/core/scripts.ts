@@ -14,7 +14,7 @@ import { serendipityEnv } from '@attachments/serendipity-public'
 import ReactService from './ReactService'
 
 // 版本信息
-program.version(`serendipity ${require('../package').version}`)
+program.version(`serendipity-service-react ${require('../../package.json').version}`)
 
 program
   .command('start')

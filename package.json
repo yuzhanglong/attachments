@@ -1,7 +1,7 @@
 {
   "name": "@attachments/serendipity",
   "version": "0.0.1",
-  "description": "An extensible, out-of-the-box front-end cli.",
+  "description": "An extensible, out-of-the-box cli",
   "main": "index.js",
   "scripts": {
     "lint": "eslint",

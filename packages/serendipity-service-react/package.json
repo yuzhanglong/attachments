@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-service-react",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "bin/index.js",
   "license": "MIT",
   "bin": {
@@ -15,10 +15,10 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.10",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
-    "@attachments/serendipity-plugin-babel": "^0.0.5",
-    "@attachments/serendipity-plugin-eslint": "^0.0.5",
-    "@attachments/serendipity-plugin-react": "^0.0.5",
-    "@attachments/serendipity-public": "^0.0.5",
+    "@attachments/serendipity-plugin-babel": "^0.0.6",
+    "@attachments/serendipity-plugin-eslint": "^0.0.6",
+    "@attachments/serendipity-plugin-react": "^0.0.6",
+    "@attachments/serendipity-public": "^0.0.6",
     "@types/webpack-dev-server": "^3.11.1",
     "babel-loader": "^8.2.2",
     "commander": "^7.0.0",
@@ -37,7 +37,7 @@
     "sass-loader": "^10.1.1"
   },
   "peerDependencies": {
-    "@attachments/serendipity": "^0.0.5"
+    "@attachments/serendipity": "^0.0.6"
   },
   "files": [
     "bin"
