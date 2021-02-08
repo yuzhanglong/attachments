@@ -12,8 +12,8 @@ import { CommonObject, CreateOptions, InquiryResult } from './common'
 
 // service 模块
 export interface ServiceModule {
-  service: (option: ServiceOption) => void
-  inquiry: (option: ServiceInquiryOption) => InquiryResult
+  service?: (option: ServiceOption) => void
+  inquiry?: (option: ServiceInquiryOption) => InquiryResult
 }
 
 

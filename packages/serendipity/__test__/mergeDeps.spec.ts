@@ -98,7 +98,6 @@ describe('app 配置合并测试', () => {
     }, {})
   })
 
-
   test('尝试 webpack 配置合并', () => {
     pluginManager.mergeAppConfig({
       webpack: {
@@ -130,38 +129,6 @@ describe('app 配置合并测试', () => {
               }
             ]
           }
-        }
-      }
-    })
-  })
-
-
-  test('尝试项目内 app 配置合并(plugins)', () => {
-    pluginManager.mergeAppConfig({
-      plugins: [
-        'foo-plugin',
-        'bar-plugin'
-      ]
-    })
-    pluginManager.mergeAppConfig({
-      plugins: [
-        'foo2-plugin',
-        'bar2-plugin',
-        'hello-plugin'
-      ]
-    })
-
-    expect(pluginManager.appConfig).toStrictEqual({
-      'plugins': [
-        'foo-plugin',
-        'bar-plugin',
-        'foo2-plugin',
-        'bar2-plugin',
-        'hello-plugin'
-      ],
-      'webpack': {
-        'devServerConfig': {
-          'port': 8081
         }
       }
     })

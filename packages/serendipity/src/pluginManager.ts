@@ -43,8 +43,8 @@ class PluginManager {
     this.name = name
     this.pluginModule = plugin
     this.basePath = basePath
-    this.packageConfig = packageConfig
-    this.appConfig = appConfig
+    this.packageConfig = packageConfig || {}
+    this.appConfig = appConfig || {}
     this.inquiryResult = inquireResult
     this.createOptions = createOptions
   }
@@ -210,6 +210,7 @@ class PluginManager {
         `${this.name} 不是一个推荐的插件名称，插件名称应该以 serendipity-plugin 开头，例如 serendipity-plugin-react`
       )
     }
+
     try {
       await runCommand(
         `yarn add ${this.name}`,

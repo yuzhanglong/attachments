@@ -42,7 +42,7 @@ module.exports = (options: ServiceOption) => {
   )
 
   // 如果用户选择使用 eslint, 注册 eslint 相关插件
-  if ((options.inquireResult as ReactServiceInquire).eslintSupport) {
+  if ((options.inquiryResult as ReactServiceInquire).eslintSupport) {
     options.registerPlugin(
       '@attachments/serendipity-plugin-eslint',
       require('@attachments/serendipity-plugin-eslint')

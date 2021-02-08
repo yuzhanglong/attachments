@@ -11,6 +11,7 @@ import { PluginConstructionOptions, PluginModule } from '@attachments/serendipit
 import { serendipityEnv } from '@attachments/serendipity-public'
 import PluginManager from '../src/pluginManager'
 
+// eslint-disable-next-line max-lines-per-function
 describe('PluginManager 测试', () => {
   beforeEach(() => {
     serendipityEnv.setSerendipityDevelopment()
@@ -44,8 +45,69 @@ describe('PluginManager 测试', () => {
     // 在 construction 中可以获得调用结果
     expect(constructionFn).toBeCalledTimes(1)
     expect(inquiryFn).toBeCalledTimes(1)
-    expect(pluginManager.appConfig).toBeUndefined()
+    expect(pluginManager.appConfig).toStrictEqual({})
     // 开发模式下这个值会被置为 null
     expect(pluginManager.inquiryResult).toBeNull()
+  })
+
+  test('plugin 配置合并', () => {
+    const constructionFn = jest.fn((option: PluginConstructionOptions) => {
+      option.mergeAppConfig({
+        plugins: [
+          'foo-plugin',
+          'bar-plugin'
+        ]
+      })
+
+      option.mergeAppConfig({
+        plugins: [
+          'foo2-plugin',
+          'bar1-plugin'
+        ]
+      })
+    })
+    const plugin: PluginModule = {
+      construction: constructionFn
+    }
+    const pluginManager = new PluginManager(process.cwd(), 'test-plugin', plugin)
+    pluginManager.runConstruction()
+    expect(constructionFn).toBeCalledTimes(1)
+    expect(pluginManager.appConfig).toStrictEqual({
+      'plugins': [
+        'foo-plugin',
+        'bar-plugin',
+        'foo2-plugin',
+        'bar1-plugin'
+      ]
+    })
+  })
+
+  test('package 配置合并', () => {
+    const constructionFn = jest.fn((option: PluginConstructionOptions) => {
+      option.mergePackageConfig({
+        foo: 'foo'
+      })
+
+      option.mergePackageConfig({
+        foo: 'foo2',
+        bar: {
+          bar: '111',
+          baz: '222'
+        }
+      })
+    })
+    const plugin: PluginModule = {
+      construction: constructionFn
+    }
+    const pluginManager = new PluginManager(process.cwd(), 'test-plugin', plugin)
+    pluginManager.runConstruction()
+    expect(constructionFn).toBeCalledTimes(1)
+    expect(pluginManager.getPackageConfig()).toStrictEqual({
+      'bar': {
+        'bar': '111',
+        'baz': '222'
+      },
+      'foo': 'foo'
+    })
   })
 })

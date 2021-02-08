@@ -10,7 +10,14 @@
 import * as path from 'path'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import { AppConfig, CommonObject, CreateOptions, InquiryResult } from '@attachments/serendipity-public/bin/types/common'
-import { writeFilePromise, inquirer, runCommand, webpackMerge, logger } from '@attachments/serendipity-public'
+import {
+  writeFilePromise,
+  inquirer,
+  runCommand,
+  webpackMerge,
+  logger,
+  serendipityEnv
+} from '@attachments/serendipity-public'
 import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
 import PluginManager from './pluginManager'
 
@@ -211,7 +218,11 @@ class ServiceManager {
       const result = this.serviceModule.inquiry({
         createOptions: this.createOptions
       })
-      this.inquiryResult = await inquirer.prompt(result)
+      if (!serendipityEnv.isSerendipityDevelopment()) {
+        this.inquiryResult = await inquirer.prompt(result)
+      } else {
+        this.inquiryResult = {}
+      }
     }
   }
 }
