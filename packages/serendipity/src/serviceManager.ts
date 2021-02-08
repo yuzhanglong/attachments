@@ -86,8 +86,11 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-1-29 11:51:36
    */
-  runPluginsTemplate(): void {
+  async runPluginsConstruction(): Promise<void> {
     for (const pluginManager of this.pluginManagers) {
+      // 先执行 plugin 相关质询
+      await pluginManager.runPluginInquirer()
+      // 再执行 plugin construction，此时质询完成，其结果将成为 construction 的参数
       pluginManager.runConstruction()
     }
   }

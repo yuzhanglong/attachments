@@ -124,7 +124,7 @@ class CoreManager {
     serviceManager.runCreateWorkTasks()
 
     // 执行 service 层注册的所有插件
-    serviceManager.runPluginsTemplate()
+    await serviceManager.runPluginsConstruction()
 
     // 写入 package.json 文件
     await serviceManager.writePackageConfig()

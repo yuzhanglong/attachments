@@ -3,7 +3,8 @@
   "version": "0.0.5",
   "main": "./bin/index.js",
   "scripts": {
-    "start": "tsc -w"
+    "start": "tsc -w",
+    "build": "tsc"
   },
   "license": "MIT",
   "dependencies": {

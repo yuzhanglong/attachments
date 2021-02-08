@@ -7,7 +7,7 @@
  */
 
 import * as path from 'path'
-import { PluginTemplateOptions } from '@attachments/serendipity-public/bin/types/plugin'
+import { PluginConstructionOptions } from '@attachments/serendipity-public/bin/types/plugin'
 
 // 获取模板目录
 const getTemplatePath = (name) => {
@@ -15,7 +15,7 @@ const getTemplatePath = (name) => {
 }
 
 
-module.exports = (options: PluginTemplateOptions) => {
+module.exports = (options: PluginConstructionOptions) => {
   // 拷贝模板到工作目录下
   options.render(getTemplatePath('react-template'))
 }

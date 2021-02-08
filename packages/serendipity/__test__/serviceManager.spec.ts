@@ -37,13 +37,14 @@ describe('serviceManager 模块', () => {
       service: service
     }
     const manager = new ServiceManager(process.cwd(), {}, serviceModule)
+    manager.setPackageConfig({})
     manager.runServiceInquirer()
     manager.runCreateWorkTasks()
     expect(inquiry).toBeCalledTimes(1)
     expect(service).toBeCalledTimes(1)
   })
 
-  test('测试 plugin 注册', () => {
+  test('测试 plugin 注册', async () => {
     const manager = new ServiceManager('foo', {}, null)
     const plugin1: PluginModule = {
       construction: (options) => {
@@ -67,7 +68,7 @@ describe('serviceManager 模块', () => {
 
     manager.registerPlugin('plugin1', plugin1)
     manager.registerPlugin('plugin2', plugin2)
-    manager.runPluginsTemplate()
+    await manager.runPluginsConstruction()
     expect(manager.getPluginManagers().length).toStrictEqual(2)
     expect(manager.collectAppConfig()).toStrictEqual({
       plugins: [
