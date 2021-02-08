@@ -13,6 +13,8 @@ import * as program from 'commander'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import ReactService from './ReactService'
 
+// 版本信息
+program.version(`serendipity ${require('../package').version}`)
 
 program
   .command('start')

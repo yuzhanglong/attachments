@@ -8,6 +8,5 @@
 
 
 export interface ReactServiceInquire {
-  sassSupport: boolean
   eslintSupport: boolean
 }

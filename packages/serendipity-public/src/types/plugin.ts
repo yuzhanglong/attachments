@@ -7,6 +7,7 @@
  */
 
 
+import * as inquirer from 'inquirer'
 import { AppConfig, CommonObject, InquiryResult, WebpackConfiguration } from './common'
 import { MergePackageConfigOptions } from './cliService'
 
@@ -20,7 +21,7 @@ export interface PluginModule {
   construction?: PluginConstruction
 
   // 质询模块
-  inquiry?: (option: PluginInquiryOption) => InquiryResult
+  inquiry?: (option: PluginInquiryOption) => inquirer.QuestionCollection
 }
 
 // 模板文件映射表

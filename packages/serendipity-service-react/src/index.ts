@@ -6,7 +6,11 @@
  * Email: yuzl1123@163.com
  */
 
-module.exports = {
-  inquirer: require('./inquirer'),
-  service: require('./service')
+import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
+
+const serviceModule: ServiceModule = {
+  service: require('./service'),
+  inquiry: require('./inquiry')
 }
+
+module.exports = serviceModule

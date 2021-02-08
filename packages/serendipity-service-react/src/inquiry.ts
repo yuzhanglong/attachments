@@ -7,9 +7,9 @@
  */
 
 
-import { InquiryResult } from '@attachments/serendipity-public/bin/types/common'
+import { inquirer } from '@attachments/serendipity-public'
 
-module.exports = (): InquiryResult => {
+module.exports = (): inquirer.QuestionCollection => {
   return [
     {
       type: 'confirm',

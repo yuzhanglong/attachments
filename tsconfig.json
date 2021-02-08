@@ -3,6 +3,7 @@
     "declaration": true,
     "moduleResolution": "Node",
     "removeComments": true,
+    "resolveJsonModule": true,
     "types": [
       "node",
       "jest"

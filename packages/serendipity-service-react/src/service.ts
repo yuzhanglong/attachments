@@ -9,14 +9,12 @@
 import { ServiceOption } from '@attachments/serendipity-public/bin/types/cliService'
 import { ReactServiceInquire } from './types/common'
 
-
 module.exports = (options: ServiceOption) => {
-
   // 初始化包配置
   options.setPackageConfig({
-    name: 'test',
-    version: '1.0.0',
-    description: 'a react cli demo',
+    name: 'react-project',
+    version: '0.0.1',
+    description: 'a react project created by serendipity',
     main: 'index.js',
     scripts: {
       start: 'serendipity-service-react start',
@@ -25,7 +23,7 @@ module.exports = (options: ServiceOption) => {
     author: 'serendipity',
     license: 'MIT',
     dependencies: {
-      '@attachments/serendipity-service-react': '^0.0.5'
+      '@attachments/serendipity-service-react': require('../package.json').version
     }
   })
 
@@ -42,7 +40,7 @@ module.exports = (options: ServiceOption) => {
   )
 
   // 如果用户选择使用 eslint, 注册 eslint 相关插件
-  if ((options.inquiryResult as ReactServiceInquire).eslintSupport) {
+  if ((options.inquiryResult as unknown as ReactServiceInquire)?.eslintSupport) {
     options.registerPlugin(
       '@attachments/serendipity-plugin-eslint',
       require('@attachments/serendipity-plugin-eslint')
