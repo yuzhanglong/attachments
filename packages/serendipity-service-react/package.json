@@ -11,14 +11,14 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/preset-env": "^7.12.13",
-    "@babel/preset-react": "^7.12.10",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@attachments/serendipity-plugin-babel": "^0.0.6",
     "@attachments/serendipity-plugin-eslint": "^0.0.6",
     "@attachments/serendipity-plugin-react": "^0.0.6",
     "@attachments/serendipity-public": "^0.0.6",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-react": "^7.12.10",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/webpack-dev-server": "^3.11.1",
     "babel-loader": "^8.2.2",
     "commander": "^7.0.0",
@@ -26,15 +26,15 @@
     "css-minimizer-webpack-plugin": "^1.2.0",
     "globby": "^11.0.2",
     "html-webpack-plugin": "^5.0.0-beta.6",
+    "node-sass": "^5.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-refresh": "^0.9.0",
+    "sass-loader": "^10.1.1",
     "style-loader": "^2.0.0",
     "webpack": "^5.19.0",
     "webpack-dev-server": "^3.11.2",
-    "webpackbar": "^5.0.0-3",
-    "node-sass": "^5.0.0",
-    "sass-loader": "^10.1.1"
+    "webpackbar": "^5.0.0-3"
   },
   "peerDependencies": {
     "@attachments/serendipity": "^0.0.6"
