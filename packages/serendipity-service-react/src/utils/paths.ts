@@ -9,6 +9,7 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
+import { REACT_ENTRY_EXTENSIONS } from '../common/constants'
 
 // app 基础路径，即执行路径
 const appBaseUrl = fs.realpathSync(process.cwd())
@@ -21,6 +22,23 @@ const resolveAppPath = (target: string): string => {
   }
   return path.resolve(appBaseUrl, target)
 }
+
+
+// 获取 app 入口，这个方法的意义在于处理 typescript 的项目，此时它的后缀为 ts(tsx)，所以我们不能把 entry 写死
+const resolveAppEntry = (filePath) => {
+  // 查询是否有符合的扩展名入口文件
+  const extension = REACT_ENTRY_EXTENSIONS
+    .find(extension => {
+      return fs.existsSync(resolveAppPath(`${filePath}.${extension}`))
+    })
+
+  if (extension) {
+    return resolveAppPath(`${filePath}.${extension}`)
+  }
+
+  return resolveAppPath(`${filePath}.js`)
+}
+
 
 // 构建结果目录
 const appBuild = resolveAppPath('build')
@@ -41,7 +59,7 @@ const appHtml = resolveAppPath('public/index.html')
 const configFile = resolveAppPath('serendipity.js')
 
 // app 入口
-const appEntry = resolveAppPath('src/index.js')
+const appEntry = resolveAppEntry('src/index')
 
 // app 根目录
 const appRoot = resolveAppPath('.')
