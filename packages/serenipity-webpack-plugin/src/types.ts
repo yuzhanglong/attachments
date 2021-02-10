@@ -24,3 +24,9 @@ export interface ProblemInfo {
   webpackError: WebpackError
   errorStack: unknown[]
 }
+
+export interface SerendipityWebpackPluginOption {
+  webpackDevServerPort: number
+  webpackDevServerHost: string
+  webpackAnalysisPort: number
+}

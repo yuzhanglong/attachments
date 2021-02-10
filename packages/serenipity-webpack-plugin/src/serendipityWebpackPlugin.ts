@@ -12,17 +12,26 @@ import * as webpack from 'webpack'
 import * as ErrorStackParser from 'error-stack-parser'
 import * as boxen from 'boxen'
 import { getChunkInfo, uniqueBy } from './utils'
-import { ChunkInfo, ProblemInfo, ProblemType, WebpackError, WebpackStats } from './types'
+import {
+  ChunkInfo,
+  ProblemInfo,
+  ProblemType,
+  SerendipityWebpackPluginOption,
+  WebpackError,
+  WebpackStats
+} from './types'
 
 const Table = require('cli-table')
 
 class SerendipityWebpackPlugin {
   private readonly serverPort
+  private readonly serverHost
   private readonly analysisPort
 
-  constructor(serverPort?: number, analysisPort?: number) {
-    this.serverPort = serverPort || 9000
-    this.analysisPort = analysisPort || 9001
+  constructor(option: SerendipityWebpackPluginOption) {
+    this.serverPort = option.webpackDevServerPort
+    this.analysisPort = option.webpackAnalysisPort
+    this.serverHost = option.webpackDevServerHost
   }
 
   static PLUGIN_INFO = {

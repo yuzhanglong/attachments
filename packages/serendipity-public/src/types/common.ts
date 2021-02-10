@@ -41,9 +41,11 @@ export interface WebpackConfig {
   webpackConfig?: WebpackConfiguration
 }
 
-// app 配置
-export interface AppConfig {
+
+// app 配置，针对 service 的额外配置可以
+export interface AppConfig<T = unknown> {
   plugins?: string[]
   webpack?: WebpackConfig
-  additional?: CommonObject
+  additional?: T
 }
+
