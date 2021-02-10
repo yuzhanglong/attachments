@@ -7,19 +7,26 @@
  */
 
 import * as readline from 'readline'
-import { ProgressPlugin } from 'webpack'
 import { logger } from '@attachments/serendipity-public'
 import * as webpack from 'webpack'
 import * as ErrorStackParser from 'error-stack-parser'
+import * as boxen from 'boxen'
 import { uniqueBy } from './utils'
-
+const Table = require('cli-table')
 
 type WebpackError = webpack.WebpackError
 type WebpackStats = webpack.Stats
 type ProblemType = 'errors' | 'warnings'
 
 
-class SerendipityWebpackPlugin  {
+class SerendipityWebpackPlugin {
+  private readonly serverPort
+  private readonly analysisPort
+
+  constructor(serverPort?: number, analysisPort?: number) {
+    this.serverPort = serverPort || 9000
+    this.analysisPort = analysisPort || 9001
+  }
 
   static PLUGIN_INFO = {
     name: 'SerendipityWebpackPlugin'
@@ -128,7 +135,28 @@ class SerendipityWebpackPlugin  {
   onWebpackSuccess(stats: WebpackStats): void {
     // 时间消耗
     const timeCost = stats.endTime - stats.startTime
-    logger.done(`ヾ(๑╹◡╹)ﾉ" 项目构建成功! (${timeCost} ms)`)
+    logger.done('Compile successfully!')
+    // TODO: 除了 port 不能写死，前面的 ip 也不可以写死
+    console.log(
+      boxen(
+        `ヾ(๑╹◡╹)ﾉ" 项目构建成功! (耗时：${timeCost} ms)\n\n项目运行在：http://127.0.0.1:${this.serverPort}\n查看 webpack 打包分析：http://127.0.0.1:${this.analysisPort}`,
+        { padding: 1 }
+      )
+    )
+    const table = new Table({
+      head: ['文件名', '大小']
+    })
+
+    const chunksInfo = stats.toJson().chunks
+    table.push(...chunksInfo.map(info => {
+      return [
+        info['files'][0],
+        info.size
+      ]
+    }))
+    console.log('')
+    logger.info('资源清单如下：')
+    console.log(table.toString())
   }
 
 

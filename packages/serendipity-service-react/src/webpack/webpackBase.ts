@@ -18,6 +18,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const SerendipityWebpackPlugin = require('@attachments/serenipity-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 // eslint-disable-next-line max-lines-per-function
 const getBaseConfig = (): WebpackConfiguration => {
@@ -92,6 +93,11 @@ const getBaseConfig = (): WebpackConfiguration => {
     plugins: [
       // html 模板（基于 public 目录）
       new HtmlWebpackPlugin(getHtmlWebpackPluginOptions()),
+
+      new BundleAnalyzerPlugin({
+        analyzerPort: 9001,
+        openAnalyzer: false
+      }),
 
       // SerendipityWebpackPlugin
       serendipityEnv.isProjectDevelopment() && new SerendipityWebpackPlugin(),
