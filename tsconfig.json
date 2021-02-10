@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "target": "ES2018",
+    "module": "CommonJS",
     "declaration": true,
     "moduleResolution": "Node",
     "removeComments": true,

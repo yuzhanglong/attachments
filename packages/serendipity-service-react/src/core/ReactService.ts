@@ -8,19 +8,20 @@
 
 
 import * as fs from 'fs'
+import * as readline from 'readline'
 import { Configuration, webpack } from 'webpack'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import logger from '@attachments/serendipity-public/bin/utils/logger'
 import * as WebpackDevServer from 'webpack-dev-server'
 import {
   AppConfig,
   WebpackConfiguration,
   WebpackDevServerConfiguration
 } from '@attachments/serendipity-public/bin/types/common'
-import { webpackMerge } from '@attachments/serendipity-public'
-import getDevServerConfig from '../webpack/devServer'
+import { logger, webpackMerge } from '@attachments/serendipity-public'
+import getDevServerConfig from '../webpack/devServerConfig'
 import getBaseConfig from '../webpack/webpackBase'
 import { configFile } from '../utils/paths'
+import { clearConsole } from '../utils/console'
 
 class ReactService {
   private readonly appConfig: AppConfig
@@ -91,9 +92,7 @@ class ReactService {
     const server = new WebpackDevServer(compiler, devServerOptions)
 
     // 监听端口
-    server.listen(devServerOptions.port, () => {
-      logger.done('开发服务器启动成功~')
-    })
+    server.listen(devServerOptions.port, '0.0.0.0', this.onWebpackServerListen)
   }
 
   /**
@@ -119,6 +118,11 @@ class ReactService {
     compiler.run(() => {
       return
     })
+  }
+
+  onWebpackServerListen(): void {
+    clearConsole()
+    logger.info('项目正在构建中，请稍候...')
   }
 }
 

@@ -33,8 +33,7 @@
     "sass-loader": "^10.1.1",
     "style-loader": "^2.0.0",
     "webpack": "^5.19.0",
-    "webpack-dev-server": "^3.11.2",
-    "webpackbar": "^5.0.0-3"
+    "webpack-dev-server": "^3.11.2"
   },
   "peerDependencies": {
     "@attachments/serendipity": "^0.0.6"
