@@ -13,7 +13,7 @@ export interface ChunkInfo {
   size: number
 }
 
-export type WebpackError = webpack.WebpackError
+export type WebpackError = webpack.NoEmitOnErrorsPlugin
 export type WebpackStats = webpack.Stats
 export type ProblemType = 'errors' | 'warnings'
 
