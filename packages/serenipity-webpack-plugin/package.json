@@ -9,7 +9,7 @@
   },
   "type": "commonjs",
   "dependencies": {
-    "@attachments/serendipity-public": "^0.0.6",
+    "@attachments/serendipity-public": "~0.0.7",
     "boxen": "^5.0.0",
     "cli-table": "^0.3.4",
     "error-stack-parser": "^2.0.6",

@@ -7,6 +7,16 @@
  */
 
 
+import { AppConfig } from '@attachments/serendipity-public/bin/types/common'
+
 export interface ReactServiceInquire {
   eslintSupport: boolean
 }
+
+export interface ReactServiceAppConfigOptions {
+  webpackDevServerPort?: number
+  webpackDevServerHost?: string
+  webpackAnalysisPort?: number
+}
+
+export type ReactServiceAppConfig = AppConfig<ReactServiceAppConfigOptions>

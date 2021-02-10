@@ -19,3 +19,12 @@ export const REACT_ENTRY_EXTENSIONS = [
   'ts',
   'tsx'
 ]
+
+// webpack dev server 默认端口
+export const DEFAULT_WEBPACK_DEV_SERVER_PORT = 9000
+
+// webpack dev server 默认 host
+export const DEFAULT_WEBPACK_DEV_SERVER_HOST = '0.0.0.0'
+
+// webpack chunk analysis 默认端口
+export const DEFAULT_WEBPACK_ANALYSIS_PORT = 9001

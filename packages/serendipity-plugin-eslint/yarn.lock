@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@attachments/serendipity-public@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.6.tgz#4c28b2e164e916ff990767b0dcb1770fe70985f8"
-  integrity sha512-IW61LPDu7bjkZtJ3nIBd1ha1m10Ky3x479qP092qe0bvJBZf3N6c3CGXK/CU8hCQP5ruEm60C/Vp1qvS0MNYQw==
+"@attachments/serendipity-public@~0.0.7":
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.7.tgz#d8da537f5682ab3b410734abbe2ed6c1de7ecc33"
+  integrity sha512-0f9jrlprgOR42u/5YkjPMRTmjgvDz1oS3ArUkvFfCWfcc3OcdUAX45/rCf29mumLctd2k4Gm4XLcjdeKXaYoZA==
   dependencies:
     "@types/inquirer" "^7.3.1"
     "@types/webpack-dev-server" "^3.11.1"
@@ -1144,10 +1144,10 @@ webpack-sources@^2.1.1:
     source-list-map "^2.0.1"
     source-map "^0.6.1"
 
-webpack@^5.20.2:
-  version "5.20.2"
-  resolved "https://registry.npm.taobao.org/webpack/download/webpack-5.20.2.tgz?cache=0&sync_timestamp=1612449533891&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwebpack%2Fdownload%2Fwebpack-5.20.2.tgz#55a6e461e2a6e1ca7467a419886acf9c7b052d5f"
-  integrity sha1-VabkYeKm4cp0Z6QZiGrPnHsFLV8=
+webpack@^5.21.2:
+  version "5.21.2"
+  resolved "https://registry.npm.taobao.org/webpack/download/webpack-5.21.2.tgz?cache=0&sync_timestamp=1612722512950&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwebpack%2Fdownload%2Fwebpack-5.21.2.tgz#647507e50d3637695be28af58a6a8246050394e7"
+  integrity sha1-ZHUH5Q02N2lb4or1imqCRgUDlOc=
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.46"
