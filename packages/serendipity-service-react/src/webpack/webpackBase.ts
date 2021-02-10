@@ -14,11 +14,11 @@ import * as webpack from 'webpack'
 import { appBuild, appEntry } from '../utils/paths'
 import { getHtmlWebpackPluginOptions } from './configurations'
 
-const WebpackBar = require('webpackbar')
 const TerserPlugin = require('terser-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
-
+const SerendipityWebpackPlugin = require('@attachments/serenipity-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 // eslint-disable-next-line max-lines-per-function
 const getBaseConfig = (): WebpackConfiguration => {
@@ -71,7 +71,6 @@ const getBaseConfig = (): WebpackConfiguration => {
         // 自定义拆分块的名称，webpack 默认配置即可
         name: false,
 
-
         cacheGroups: {
           // 默认配置下的入口 vendor 名字又臭又长，这里对齐作出修改，通过 hash 值来保证不会冲突
           defaultVendors: {
@@ -95,10 +94,13 @@ const getBaseConfig = (): WebpackConfiguration => {
       // html 模板（基于 public 目录）
       new HtmlWebpackPlugin(getHtmlWebpackPluginOptions()),
 
-      // webpack 进度条
-      new WebpackBar({
-        basic: false
+      new BundleAnalyzerPlugin({
+        analyzerPort: 9001,
+        openAnalyzer: false
       }),
+
+      // SerendipityWebpackPlugin
+      serendipityEnv.isProjectDevelopment() && new SerendipityWebpackPlugin(),
 
       // HotModuleReplacementPlugin 热更新处理，如果你在 devServer 配置中设置 hot = true, 它也会被自动加载
       serendipityEnv.isProjectDevelopment() && new webpack.HotModuleReplacementPlugin(),
