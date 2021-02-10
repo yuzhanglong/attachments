@@ -10,15 +10,16 @@ import * as readline from 'readline'
 import { ProgressPlugin } from 'webpack'
 import { logger } from '@attachments/serendipity-public'
 import * as webpack from 'webpack'
+import * as ErrorStackParser from 'error-stack-parser'
 import { uniqueBy } from './utils'
 
 
 type WebpackError = webpack.WebpackError
+type WebpackStats = webpack.Stats
+type ProblemType = 'errors' | 'warnings'
 
-class SerendipityWebpackPlugin extends ProgressPlugin {
-  constructor() {
-    super({ activeModules: true })
-  }
+
+class SerendipityWebpackPlugin  {
 
   static PLUGIN_INFO = {
     name: 'SerendipityWebpackPlugin'
@@ -33,10 +34,9 @@ class SerendipityWebpackPlugin extends ProgressPlugin {
    * 提取问题 / 警告
    *
    * @author yuzhanglong
-   * @email yuzl1123@163.com
    * @date 2021-2-10 12:23:21
    */
-  resolveProblems(stats: webpack.Stats, type: 'errors' | 'warnings'): WebpackError [] {
+  resolveProblems(stats: WebpackStats, type: ProblemType): WebpackError [] {
     const findErrorsRecursive = (compilation): WebpackError [] => {
       const errors = compilation[type]
       if (errors.length === 0 && compilation.children) {
@@ -55,48 +55,80 @@ class SerendipityWebpackPlugin extends ProgressPlugin {
    * 展示问题 / 警告
    *
    * @author yuzhanglong
-   * @email yuzl1123@163.com
    * @date 2021-2-10 12:23:21
    */
-  showProblems(problems: WebpackError []): void {
-    console.log(problems)
+  showProblems(problems: WebpackError [], type: ProblemType): void {
+    logger.info('o(TωT)o 请解决下面的 bug:\n')
+
+    // TODO: 优化封装这部分数据结构
+    const errors = problems.map(res => {
+      return {
+        message: res.message,
+        name: res.name,
+        webpackError: res,
+        errorStack: res.stack ? ErrorStackParser.parse(res) : []
+      }
+    })
+
+    errors.forEach(res => {
+      type === 'warnings' ? logger.warn(res.name + ':') : logger.error(res.name + ':')
+      console.log(`${res.message}\n\n`)
+    })
   }
 
   /**
-   * 当 webpack 构建完成是做些什么
+   * 当 webpack 构建完成时做些什么
    *
    * @author yuzhanglong
-   * @email yuzl1123@163.com
+   * @param stats webpack 构建状态
    * @date 2021-2-10 12:22:56
    */
-  onWebpackDone(stats: webpack.Stats): void {
+  onWebpackDone(stats: WebpackStats): void {
     this.clearConsole()
     const hasError = stats.hasErrors()
     const hasWarnings = stats.hasWarnings()
 
     // 没有出现错误，我们显示一个成功信息，并 return
     if (!hasError && !hasWarnings) {
-      logger.done('项目构建完成!')
+      this.onWebpackSuccess(stats)
       return
     }
 
     if (hasError) {
       const problems = this.resolveProblems(stats, 'errors')
-      this.showProblems(problems)
+      this.showProblems(problems, 'errors')
       return
     }
 
     if (hasWarnings) {
       const problems = this.resolveProblems(stats, 'warnings')
-      this.showProblems(problems)
+      this.showProblems(problems, 'warnings')
       return
     }
   }
 
-
+  /**
+   * 当 webpack 构建时做些什么
+   *
+   * @author yuzhanglong
+   * @date 2021-2-10 13:08:20
+   */
   onWebpackInvalid(): void {
     this.clearConsole()
-    logger.info('项目正在构建中，请稍候...')
+    logger.info('(〃\'▽\'〃) 项目正在构建中，请稍候...')
+  }
+
+  /**
+   * 当 webpack 构建完成且没有任何错误和警告时做些什么
+   *
+   * @author yuzhanglong
+   * @param stats webpack 状态对象
+   * @date 2021-2-10 13:11:11
+   */
+  onWebpackSuccess(stats: WebpackStats): void {
+    // 时间消耗
+    const timeCost = stats.endTime - stats.startTime
+    logger.done(`ヾ(๑╹◡╹)ﾉ" 项目构建成功! (${timeCost} ms)`)
   }
 
 
@@ -104,10 +136,15 @@ class SerendipityWebpackPlugin extends ProgressPlugin {
    * webpackPlugin Apply 入口
    *
    * @author yuzhanglong
-   * @email yuzl1123@163.com
    * @date 2021-2-10 12:23:42
    */
   apply(compiler: webpack.Compiler): void {
+    // TODO: 执行父类以复用 processPlugin 显示打包进度
+    // 不知道这里为什么 compiler 前后不一致，猜测版本兼容性问题
+    // new ProgressPlugin(() => {
+    //   console.log('111')
+    // }).apply(compiler)
+
     if (compiler.hooks) {
       // 在 webpack 构建完成时做些什么
       compiler.hooks.done.tap(
