@@ -11,13 +11,10 @@ import { logger } from '@attachments/serendipity-public'
 import * as webpack from 'webpack'
 import * as ErrorStackParser from 'error-stack-parser'
 import * as boxen from 'boxen'
-import { uniqueBy } from './utils'
+import { getChunkInfo, uniqueBy } from './utils'
+import { ChunkInfo, ProblemInfo, ProblemType, WebpackError, WebpackStats } from './types'
+
 const Table = require('cli-table')
-
-type WebpackError = webpack.WebpackError
-type WebpackStats = webpack.Stats
-type ProblemType = 'errors' | 'warnings'
-
 
 class SerendipityWebpackPlugin {
   private readonly serverPort
@@ -74,7 +71,7 @@ class SerendipityWebpackPlugin {
         name: res.name,
         webpackError: res,
         errorStack: res.stack ? ErrorStackParser.parse(res) : []
-      }
+      } as ProblemInfo
     })
 
     errors.forEach(res => {
@@ -139,7 +136,7 @@ class SerendipityWebpackPlugin {
     // TODO: 除了 port 不能写死，前面的 ip 也不可以写死
     console.log(
       boxen(
-        `ヾ(๑╹◡╹)ﾉ" 项目构建成功! (耗时：${timeCost} ms)\n\n项目运行在：http://127.0.0.1:${this.serverPort}\n查看 webpack 打包分析：http://127.0.0.1:${this.analysisPort}`,
+        `ヾ(๑╹◡╹)ﾉ" 项目构建成功! (耗时：${timeCost} ms)\n\n项目运行地址：http://127.0.0.1:${this.serverPort}\n查看 webpack 打包分析：http://127.0.0.1:${this.analysisPort}`,
         { padding: 1 }
       )
     )
@@ -147,13 +144,8 @@ class SerendipityWebpackPlugin {
       head: ['文件名', '大小']
     })
 
-    const chunksInfo = stats.toJson().chunks
-    table.push(...chunksInfo.map(info => {
-      return [
-        info['files'][0],
-        info.size
-      ]
-    }))
+    const chunksInfo = (stats.toJson().chunks) as ChunkInfo[]
+    table.push(...getChunkInfo(chunksInfo, 10))
     console.log('')
     logger.info('资源清单如下：')
     console.log(table.toString())
