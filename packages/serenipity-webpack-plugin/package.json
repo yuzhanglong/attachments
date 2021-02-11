@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serenipity-webpack-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "bin/index.js",
   "license": "MIT",
   "scripts": {
@@ -9,10 +9,12 @@
   },
   "type": "commonjs",
   "dependencies": {
-    "@attachments/serendipity-public": "~0.0.7",
+    "@attachments/serendipity-public": "~0.0.8",
     "boxen": "^5.0.0",
     "cli-table": "^0.3.4",
-    "error-stack-parser": "^2.0.6",
+    "error-stack-parser": "^2.0.6"
+  },
+  "peerDependencies": {
     "webpack": "^5.21.2"
   },
   "files": [

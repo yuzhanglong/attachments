@@ -2,34 +2,48 @@
 # yarn lockfile v1
 
 
-"@attachments/serendipity-plugin-babel@~0.0.7":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-babel/-/serendipity-plugin-babel-0.0.7.tgz#3eb474cc4cbf6b4715a485ce44085148333c7fbf"
-  integrity sha512-xnCWrTRJlLbMymcMWEb2j0ywh6btfRBnZLFSXbfDqPWZMTDkW3VmFTW5U/0uOkQd/L+tn45Y3ZsyDD5NR+GvWw==
+"@attachments/serendipity-plugin-babel@~0.0.8":
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-babel/-/serendipity-plugin-babel-0.0.8.tgz#744ad6a88bac92cffefaffe969445532da3b6523"
+  integrity sha512-ctW62tVVL9UG3+NG2dO42THUdSsBZhe2MsbMEcRb7NcEjL0bUQfzQKIAJ8ZAiC1NS+aSoPYOa6PJJwrq5Eax6g==
   dependencies:
-    "@attachments/serendipity-public" "~0.0.7"
+    "@attachments/serendipity-public" "~0.0.8"
 
-"@attachments/serendipity-plugin-eslint@~0.0.7":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-eslint/-/serendipity-plugin-eslint-0.0.7.tgz#b17ef0ae760787e1248baa13ea72ef6bbd150a4b"
-  integrity sha512-1w8ji9nKpE8VRF+dKzinuteEP8ySNRoOEvRSmibKMuhj7XNmrKcrCMbliedr+Ai13dvNPsGM6W63DZhBknOy8w==
+"@attachments/serendipity-plugin-eslint@~0.0.8":
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-eslint/-/serendipity-plugin-eslint-0.0.8.tgz#2f7e20db656276ce851ccf106ba4880aee32e3e6"
+  integrity sha512-egpg1JbBEAZXzp/wLLoqs9UYdqBJ/Elm3cbyBhkA6NE6AHbnF9RJ0wrdkZlfVUyXGMTAo7hGGq3s+vT4V1Sllw==
   dependencies:
-    "@attachments/serendipity-public" "~0.0.7"
+    "@attachments/serendipity-public" "~0.0.8"
     "@types/webpack" "^4.41.26"
     eslint-webpack-plugin "^2.4.3"
-    webpack "^5.20.2"
 
-"@attachments/serendipity-plugin-react@~0.0.7":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-react/-/serendipity-plugin-react-0.0.7.tgz#c5e02570b501a7de7025d4c7f7e59741b2e316e6"
-  integrity sha512-sdKH55lEZ/VgaN7YCezffM+R1W3r8xKcoy/2HU2EDLI3AsPMt0N4IGrX5El3DoNPbLtakRnRK7uFr+gsJTWPrQ==
+"@attachments/serendipity-plugin-react@~0.0.8":
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-react/-/serendipity-plugin-react-0.0.8.tgz#ecf34b3966ddec23f3d536e0130cb2ece9c1f27d"
+  integrity sha512-tAaKOTcytZcns8+l39c4n+MC0hLSaZEfihWQruFaWLaHyXFu83t5IaqJEuKySPj/Zc6VyB7FdkgHMwyQ9FtC9g==
   dependencies:
-    "@attachments/serendipity-public" "^0.0.7"
+    "@attachments/serendipity-public" "~0.0.8"
 
-"@attachments/serendipity-public@^0.0.7", "@attachments/serendipity-public@~0.0.7":
+"@attachments/serendipity-public@~0.0.7":
   version "0.0.7"
   resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.7.tgz#d8da537f5682ab3b410734abbe2ed6c1de7ecc33"
   integrity sha512-0f9jrlprgOR42u/5YkjPMRTmjgvDz1oS3ArUkvFfCWfcc3OcdUAX45/rCf29mumLctd2k4Gm4XLcjdeKXaYoZA==
+  dependencies:
+    "@types/inquirer" "^7.3.1"
+    "@types/webpack-dev-server" "^3.11.1"
+    chalk "^4.1.0"
+    deepmerge "^4.2.2"
+    execa "^5.0.0"
+    globby "^11.0.2"
+    inquirer "^7.3.3"
+    semver "^7.3.4"
+    webpack-merge "^5.7.3"
+
+"@attachments/serendipity-public@~0.0.8":
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.8.tgz#ec7f0e5b0377254fc059743176bb4131e103c4b7"
+  integrity sha512-ldR9keMT3qYhv9loLmhirs243NZIGUGrgaQZVP9SZH+7hw37ml15hEW/xgfmO6z4WcKZcogZlgNxYmSarKezlA==
   dependencies:
     "@types/inquirer" "^7.3.1"
     "@types/webpack-dev-server" "^3.11.1"
@@ -6923,35 +6937,6 @@ webpack-sources@^2.1.1:
   dependencies:
     source-list-map "^2.0.1"
     source-map "^0.6.1"
-
-webpack@^5.20.2:
-  version "5.21.1"
-  resolved "https://registry.npm.taobao.org/webpack/download/webpack-5.21.1.tgz?cache=0&sync_timestamp=1612604616699&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwebpack%2Fdownload%2Fwebpack-5.21.1.tgz#a5a13965187deeaa674a0ecea219b61060a2c38f"
-  integrity sha1-paE5ZRh97qpnSg7Oohm2EGCiw48=
-  dependencies:
-    "@types/eslint-scope" "^3.7.0"
-    "@types/estree" "^0.0.46"
-    "@webassemblyjs/ast" "1.11.0"
-    "@webassemblyjs/wasm-edit" "1.11.0"
-    "@webassemblyjs/wasm-parser" "1.11.0"
-    acorn "^8.0.4"
-    browserslist "^4.14.5"
-    chrome-trace-event "^1.0.2"
-    enhanced-resolve "^5.7.0"
-    es-module-lexer "^0.3.26"
-    eslint-scope "^5.1.1"
-    events "^3.2.0"
-    glob-to-regexp "^0.4.1"
-    graceful-fs "^4.2.4"
-    json-parse-better-errors "^1.0.2"
-    loader-runner "^4.2.0"
-    mime-types "^2.1.27"
-    neo-async "^2.6.2"
-    schema-utils "^3.0.0"
-    tapable "^2.1.1"
-    terser-webpack-plugin "^5.1.1"
-    watchpack "^2.0.0"
-    webpack-sources "^2.1.1"
 
 webpack@^5.21.2:
   version "5.21.2"
