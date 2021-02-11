@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An extensible, out-of-the-box cli",
   "main": "index.js",
   "scripts": {

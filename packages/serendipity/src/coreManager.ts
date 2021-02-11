@@ -10,7 +10,6 @@
 import * as path from 'path'
 import * as fs from 'fs'
 import { chalk, logger, serendipityEnv } from '@attachments/serendipity-public'
-import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
 import { AddOptions, AppConfig, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import ServiceManager from './serviceManager'
 import { BaseCommandValidateResult } from './types/options'
@@ -95,30 +94,23 @@ class CoreManager {
       return
     }
 
-    // 获取对应 project 类型的 service 包
-    let serviceModule: ServiceModule
-    try {
-      serviceModule = require(`@attachments/serendipity-service-${options.type}`)
-    } catch (e) {
-      logger.error('获取 service 包失败，请检查相应的 service 模块是否存在！')
-      return
-    }
-
     // 初始化项目目录
     this.initWorkDir()
 
     // 初始化脚手架 service
-    const serviceManager = new ServiceManager(this.basePath, options, serviceModule)
+    const serviceManager = new ServiceManager(this.basePath, options)
+
+    // 安装用户提供的 service
+    await serviceManager.installServicePackage()
 
     // 执行 service inquirer
     await serviceManager.runServiceInquirer()
 
-    // 初始化 git
-    if (options.initGit) {
-      logger.info('正在初始化 git 仓库...')
-      await serviceManager.initServiceGit()
-      logger.done('git 初始化完成！')
-    }
+    // 初始化 git (如果 没有配置 initGit 选项，这个步骤会被跳过)
+    await serviceManager.initServiceGit()
+
+    // 写入 package.json 文件 -- 此时只安装用户选定的 service
+    await serviceManager.writePackageConfig()
 
     // 执行 cli Service 构建时业务逻辑
     serviceManager.runCreateWorkTasks()
@@ -126,7 +118,7 @@ class CoreManager {
     // 执行 service 层注册的所有插件
     await serviceManager.runPluginsConstruction()
 
-    // 写入 package.json 文件
+    // 写入 package.json 文件 -- 此时安装 service 层写入的 deps
     await serviceManager.writePackageConfig()
 
     // 写入项目配置文件
@@ -155,7 +147,6 @@ class CoreManager {
    * @author yuzhanglong
    * @param name 插件名称（如果传入的话）
    * @param options 插件选项
-   * @email yuzl1123@163.com
    * @date 2021-2-5 14:28:38
    */
   async add(name: string, options: AddOptions): Promise<void> {
