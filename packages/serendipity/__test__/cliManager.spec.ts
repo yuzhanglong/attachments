@@ -22,16 +22,6 @@ describe('cli Manager 模块测试', () => {
   })
 
 
-  test('service 包不存在 提示用户并准备退出程序', () => {
-    console.log = jest.fn()
-    logger.error = jest.fn()
-    const manager = new CoreManager([])
-    manager.create('foo', {
-      type: 'NOT_EXIST_TYPE'
-    })
-    expect(logger.error).toBeCalledWith('获取 service 包失败，请检查相应的 service 模块是否存在！')
-  })
-
   test('用户传参验证(基本命令，不包括 service 层)', () => {
     const validation1 = CoreManager.validateCreateCommand({
       type: 'react'
