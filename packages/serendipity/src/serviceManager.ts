@@ -249,20 +249,25 @@ class ServiceManager {
    * @date 2021-2-11 15:42:03
    */
   async installServicePackage(): Promise<void> {
+
     // 获取 service package 名称
     const servicePackageName = `@attachments/serendipity-service-${this.createOptions.type}`
 
+    logger.info(`开始安装 service package (${servicePackageName})...`)
+
     // 构造 package.json
     this.packageConfig = {
-      name: 'serendipity app',
+      name: 'serendipity-app',
       version: '0.0.1',
       dependencies: {
         [servicePackageName]: '*'
       }
     }
+
     try {
       // 写入 package config
       await this.writePackageConfig()
+
       // 安装 service 模块
       await this.install()
     } catch (e) {
@@ -270,6 +275,9 @@ class ServiceManager {
       console.log(e)
       process.exit(0)
     }
+
+    logger.done('service package 安装成功...')
+
     // 拿到 service module 并赋值
     this.serviceModule = require(path.resolve(this.basePath, 'node_modules', servicePackageName))
   }
