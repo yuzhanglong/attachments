@@ -13,7 +13,6 @@ import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
 // 项目创建时配置
 export interface CreateOptions {
   type?: string
-  service?: string
   initGit?: boolean
   commit?: string
 }

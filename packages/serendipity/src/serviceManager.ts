@@ -23,19 +23,19 @@ import PluginManager from './pluginManager'
 
 class ServiceManager {
   private readonly basePath: string
-  private readonly serviceModule: ServiceModule
   private readonly appConfig: AppConfig
   private readonly createOptions: CreateOptions
 
+  private serviceModule: ServiceModule
   private inquiryResult: InquiryResult
   private pluginManagers: PluginManager[] = []
   private packageConfig: CommonObject
 
-  constructor(basePath: string, createOptions: CreateOptions, service: ServiceModule) {
+  constructor(basePath: string, createOptions: CreateOptions, serviceModule?: ServiceModule) {
     this.createOptions = createOptions
-    this.serviceModule = service
     this.basePath = basePath
     this.appConfig = {}
+    this.serviceModule = serviceModule
   }
 
   /**
@@ -171,7 +171,7 @@ class ServiceManager {
    * @date 2021-1-30 18:54:44
    */
   runCreateWorkTasks(): void {
-    this.serviceModule.service({
+    this.serviceModule?.service({
       setPackageConfig: this.setPackageConfig.bind(this),
       registerPlugin: this.registerPlugin.bind(this),
       inquiryResult: this.inquiryResult
@@ -185,8 +185,15 @@ class ServiceManager {
    * @date 2021-1-30 19:27:18
    */
   async initServiceGit(): Promise<void> {
-    logger.log('正在初始化 git 仓库...')
-    await runCommand('git init', [], this.basePath)
+    if (this.createOptions.initGit) {
+      logger.info('正在初始化 git 仓库...')
+      try {
+        await runCommand('git init', [], this.basePath)
+      } catch (e) {
+        logger.error('git 初始化失败！')
+      }
+      logger.done('git 初始化完成！')
+    }
   }
 
   /**
@@ -227,6 +234,44 @@ class ServiceManager {
         this.inquiryResult = {}
       }
     }
+  }
+
+  /**
+   * 安装 service package
+   * 核心程序 @attachments/serendipity (core) 默认不依赖任何 service 程序，我们需要安装
+   * 初始的流程是这样的：
+   * 执行 core，此时 core 默认有 service 包的依赖 -- 执行 core-service 模块 -- 连接插件 -- 拉取模板
+   * 创建新的 package.json ，新的 package.json 中仍然有 core 的依赖
+   *
+   * 现在的流程是用户选定了 service，先初始化目录、安装 service
+   *
+   * @author yuzhanglong
+   * @date 2021-2-11 15:42:03
+   */
+  async installServicePackage(): Promise<void> {
+    // 获取 service package 名称
+    const servicePackageName = `@attachments/serendipity-service-${this.createOptions.type}`
+
+    // 构造 package.json
+    this.packageConfig = {
+      name: 'serendipity app',
+      version: '0.0.1',
+      dependencies: {
+        [servicePackageName]: '*'
+      }
+    }
+    try {
+      // 写入 package config
+      await this.writePackageConfig()
+      // 安装 service 模块
+      await this.install()
+    } catch (e) {
+      logger.error('获取 service 包失败，请检查相应的 service 模块是否存在！')
+      console.log(e)
+      process.exit(0)
+    }
+    // 拿到 service module 并赋值
+    this.serviceModule = require(path.resolve(this.basePath, 'node_modules', servicePackageName))
   }
 }
 
