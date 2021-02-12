@@ -51,8 +51,8 @@ const getBaseConfig = (appConfig?: ReactServiceAppConfig): WebpackConfiguration 
       chunkFilename: serendipityEnv.isProjectDevelopment() ? '[name].chunk.js' : '[name].[contenthash:8].chunk.js',
 
 
-      // 公共路径，默认为 '.' . 用户可以在配置文件中覆盖此配置，这对部署 cdn 等操作十分有效
-      publicPath: '.',
+      // 公共路径，默认为 './' . 用户可以在配置文件中覆盖此配置，这对部署 cdn 等操作十分有效
+      publicPath: './',
 
       // @ts-ignore -- 这个特性为 v5 新特性，@types/webpack 并没有迁移到 v5
       // asset/resource 模块以 [hash][ext][query] 文件名发送到输出目录

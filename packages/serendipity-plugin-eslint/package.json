@@ -1,19 +1,21 @@
 {
   "name": "@attachments/serendipity-plugin-eslint",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "main": "./bin/index.js",
   "scripts": {
     "start": "tsc -w",
     "build": "tsc"
   },
   "license": "MIT",
+  "devDependencies": {
+    "@types/webpack": "^4.41.26"
+  },
   "dependencies": {
-    "@types/webpack": "^4.41.26",
     "eslint-webpack-plugin": "^2.4.3",
     "@attachments/serendipity-public": "~0.0.8"
   },
   "peerDependencies": {
-    "@attachments/serendipity-service-react": "~0.0.8",
+    "@attachments/serendipity-service-react": "~0.0.9",
     "webpack": "^5.21.2"
   },
   "files": [

@@ -7,6 +7,9 @@
     "start": "tsc -w",
     "build": "tsc"
   },
+  "devDependencies": {
+    "webpack": "^5.21.2"
+  },
   "type": "commonjs",
   "dependencies": {
     "@attachments/serendipity-public": "~0.0.8",

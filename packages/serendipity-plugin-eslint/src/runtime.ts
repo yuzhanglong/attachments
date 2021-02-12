@@ -29,10 +29,7 @@ module.exports = (options: PluginRuntimeOptions) => {
         eslintPath: require.resolve('eslint'),
 
         // 主目录
-        cwd: appRoot,
-
-        // 缓存
-        cache: true
+        cwd: appRoot
       })
     ].filter(Boolean)
   })
