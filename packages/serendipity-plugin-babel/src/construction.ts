@@ -11,13 +11,6 @@ import { PluginConstructionOptions } from '@attachments/serendipity-public/bin/t
 
 module.exports = (options: PluginConstructionOptions) => {
   options.mergePackageConfig({
-    babel: {
-      'presets': [
-        '@babel/env',
-        [
-          '@babel/preset-react'
-        ]
-      ]
-    }
+    babel: {}
   })
 }
