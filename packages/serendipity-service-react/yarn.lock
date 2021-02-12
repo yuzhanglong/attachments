@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@attachments/serendipity-plugin-babel@~0.0.8":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-babel/-/serendipity-plugin-babel-0.0.8.tgz#744ad6a88bac92cffefaffe969445532da3b6523"
-  integrity sha512-ctW62tVVL9UG3+NG2dO42THUdSsBZhe2MsbMEcRb7NcEjL0bUQfzQKIAJ8ZAiC1NS+aSoPYOa6PJJwrq5Eax6g==
+"@attachments/serendipity-plugin-babel@~0.0.9":
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-babel/-/serendipity-plugin-babel-0.0.9.tgz#f864a6eb44722b01d3cd825a57e386fecbaca669"
+  integrity sha512-qfpQB75TrqB1zI5G/KYjLw+NDeSDLBm65G0j5UN0upTvqIfP8QzkPfMVM0l32d9YjyNJP7/SsGpVgmbLYzC1Aw==
   dependencies:
     "@attachments/serendipity-public" "~0.0.8"
 
@@ -25,21 +25,6 @@
   dependencies:
     "@attachments/serendipity-public" "~0.0.8"
 
-"@attachments/serendipity-public@~0.0.7":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.7.tgz#d8da537f5682ab3b410734abbe2ed6c1de7ecc33"
-  integrity sha512-0f9jrlprgOR42u/5YkjPMRTmjgvDz1oS3ArUkvFfCWfcc3OcdUAX45/rCf29mumLctd2k4Gm4XLcjdeKXaYoZA==
-  dependencies:
-    "@types/inquirer" "^7.3.1"
-    "@types/webpack-dev-server" "^3.11.1"
-    chalk "^4.1.0"
-    deepmerge "^4.2.2"
-    execa "^5.0.0"
-    globby "^11.0.2"
-    inquirer "^7.3.3"
-    semver "^7.3.4"
-    webpack-merge "^5.7.3"
-
 "@attachments/serendipity-public@~0.0.8":
   version "0.0.8"
   resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.8.tgz#ec7f0e5b0377254fc059743176bb4131e103c4b7"
@@ -55,16 +40,15 @@
     semver "^7.3.4"
     webpack-merge "^5.7.3"
 
-"@attachments/serenipity-webpack-plugin@~0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@attachments/serenipity-webpack-plugin/-/serenipity-webpack-plugin-0.0.1.tgz#69b3f87dfb4a884c81729feeeef6725cab646446"
-  integrity sha512-TkNb+BJtnQZ4s8qePISR+A+RhO2oyk7jCpK9H5bYQerF99iv67kAn3rzxWVHDnkvlwLitXRY/9wEhEpDozaogg==
+"@attachments/serenipity-webpack-plugin@~0.0.2":
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/@attachments/serenipity-webpack-plugin/-/serenipity-webpack-plugin-0.0.2.tgz#d53961434b4440ed083cee93a1d5d0cdfff18b15"
+  integrity sha512-JSck+1Br3ep1aLq2I/eR/Pqciw26v4X3ZaW9pPXG7SGeEREFWHdad1Wzvb6HniSW0NmvoPSACMIDcqaInPQ/9Q==
   dependencies:
-    "@attachments/serendipity-public" "~0.0.7"
+    "@attachments/serendipity-public" "~0.0.8"
     boxen "^5.0.0"
     cli-table "^0.3.4"
     error-stack-parser "^2.0.6"
-    webpack "^5.21.2"
 
 "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.11":
   version "7.12.11"

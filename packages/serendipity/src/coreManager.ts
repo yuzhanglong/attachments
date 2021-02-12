@@ -9,7 +9,7 @@
 
 import * as path from 'path'
 import * as fs from 'fs'
-import { chalk, logger, serendipityEnv } from '@attachments/serendipity-public'
+import { chalk, logger, runCommand, serendipityEnv, writeFilePromise } from '@attachments/serendipity-public'
 import { AddOptions, AppConfig, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import ServiceManager from './serviceManager'
 import { BaseCommandValidateResult } from './types/options'
@@ -153,12 +153,16 @@ class CoreManager {
     // 寻找配置文件
     const configFile = path.resolve(this.basePath, 'serendipity.js')
 
+    // package.json 文件
+    const packageConfig = path.resolve(this.basePath, 'package.json')
+
     // 配置文件不存在
     if (!fs.existsSync(configFile)) {
       logger.warn('配置文件 serendipity.js 不存在，请确认选择了正确的目录')
       return
     }
 
+    // 默认名称以 serendipity-plugin 开头
     const packageName = name ? `serendipity-plugin-${name}` : options.package
 
     // 初始化 pluginManager，此时 plugin 还没有安装
@@ -166,8 +170,8 @@ class CoreManager {
       this.basePath,
       packageName,
       null,
-      null,
-      null
+      require(configFile),
+      require(packageConfig)
     )
 
     // 安装 plugin
@@ -176,14 +180,16 @@ class CoreManager {
     // 执行 template plugin
     pluginManager.runConstruction()
 
-    // 更新配置文件，使 runtimePlugin 未来得以执行
-    const currentAppConfig: AppConfig = require(configFile)
 
-    if (currentAppConfig?.plugins.indexOf(packageName) < 0) {
-      currentAppConfig?.plugins.push(packageName)
-    }
+    await ServiceManager.writeAppConfig(this.basePath, pluginManager.appConfig)
 
-    await ServiceManager.writeAppConfig(this.basePath, currentAppConfig)
+    await writeFilePromise(
+      path.resolve(this.basePath, 'package.json'),
+      // 默认 2 缩进
+      JSON.stringify(pluginManager.getPackageConfig(), null, 2)
+    )
+
+    await runCommand('yarn install', [], this.basePath)
 
     logger.done(`插件 ${packageName} 安装成功~`)
   }

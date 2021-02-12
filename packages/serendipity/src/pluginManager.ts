@@ -217,12 +217,24 @@ class PluginManager {
         [],
         this.basePath
       )
+      // 拿到 pluginModule  赋值给 this.pluginModule，根据 nodejs 的模块加载顺序，这里是不可以用相对路径的
+      this.pluginModule = require(path.resolve(this.basePath, 'node_modules', this.name))
     } catch (e) {
       logger.error('pluginModule 安装失败，请检查其名称是否正确!')
+      process.exit(0)
     }
 
-    // 拿到 pluginModule  赋值给 this.pluginModule，根据 nodejs 的模块加载顺序，这里是不可以用相对路径的
-    this.pluginModule = require(path.resolve(this.basePath, 'node_modules', this.name))
+    // 更新 app Config
+
+    // plugin 字段不是数组
+    if (!Array.isArray(this.appConfig.plugins)) {
+      this.appConfig.plugins = []
+    }
+
+    // 新引入的 plugin 不存在
+    if (this.appConfig.plugins.indexOf(this.name) < 0) {
+      this.appConfig.plugins.push(this.name)
+    }
   }
 
   /**
