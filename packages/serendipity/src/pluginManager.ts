@@ -17,7 +17,7 @@ import {
 } from '@attachments/serendipity-public'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import PackageManager from './packageManager'
-import ServiceManager from './serviceManager'
+import { getAppConfigFromConfigFile } from './utils'
 
 
 class PluginManager {
@@ -50,16 +50,19 @@ class PluginManager {
    * @param name 名称
    * @date 2021-2-13 09:12:53
    */
-  static createByAddCommand(
-    basePath: string,
-    name: string
-  ): PluginManager {
+  static createByAddCommand(basePath: string, name: string): PluginManager {
+    const appConfig = getAppConfigFromConfigFile(
+      basePath, () => {
+      logger.warn('配置文件 serendipity.js 不存在，请确认选择了正确的目录')
+      process.exit(0)
+    })
+
     return new PluginManager(
       basePath,
       name,
       null,
-      ServiceManager.initAppConfigFromConfigFile(basePath),
-      new PackageManager(basePath)
+      appConfig,
+      PackageManager.createWithResolve(basePath)
     )
   }
 

@@ -8,7 +8,6 @@
 
 
 import * as path from 'path'
-import * as fs from 'fs'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import { AppConfig, CommonObject, CreateOptions, InquiryResult } from '@attachments/serendipity-public/bin/types/common'
 import {
@@ -22,7 +21,6 @@ import {
 import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
 import PluginManager from './pluginManager'
 import PackageManager from './packageManager'
-import { APP_CONFIG_NAME } from './common'
 
 class ServiceManager {
   private readonly basePath: string
@@ -40,27 +38,6 @@ class ServiceManager {
     this.serviceModule = serviceModule
     this.appConfig = appConfig || appConfig
     this.packageManager = new PackageManager(basePath)
-  }
-
-  /**
-   * 初始化 app 配置
-   *
-   * @author yuzhanglong
-   * @date 2021-2-13 09:08:01
-   */
-  static initAppConfigFromConfigFile(basePath: string): CommonObject {
-    const configPath = path.resolve(basePath, APP_CONFIG_NAME)
-
-    // 配置文件不存在
-    if (!fs.existsSync(configPath)) {
-      logger.warn('配置文件 serendipity.js 不存在，请确认选择了正确的目录')
-      if (!serendipityEnv.isSerendipityDevelopment()) {
-        process.exit(0)
-      } else {
-        return null
-      }
-    }
-    return require(configPath)
   }
 
   /**
