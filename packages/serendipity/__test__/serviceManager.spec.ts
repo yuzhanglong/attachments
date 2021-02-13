@@ -36,7 +36,7 @@ describe('serviceManager 模块', () => {
       inquiry: inquiry,
       service: service
     }
-    const manager = new ServiceManager(process.cwd(), {}, serviceModule)
+    const manager = new ServiceManager('', {}, serviceModule)
     manager.setPackageConfig({})
     manager.runServiceInquirer()
     manager.runCreateWorkTasks()
@@ -45,7 +45,7 @@ describe('serviceManager 模块', () => {
   })
 
   test('测试 plugin 注册', async () => {
-    const manager = new ServiceManager('foo', {}, null)
+    const manager = new ServiceManager('', {}, null)
     const plugin1: PluginModule = {
       construction: (options) => {
         options.mergeAppConfig({

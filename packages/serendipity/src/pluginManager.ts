@@ -6,26 +6,23 @@
  * Email: yuzl1123@163.com
  */
 
-import * as path from 'path'
-import { AppConfig, CommonObject, CreateOptions, InquiryResult } from '@attachments/serendipity-public/bin/types/common'
+import { AppConfig, CommonObject, InquiryResult } from '@attachments/serendipity-public/bin/types/common'
 import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-public/bin/utils/template'
 import {
   fileTreeWriting,
   logger,
-  deepmerge,
-  runCommand,
   webpackMerge,
   inquirer,
   serendipityEnv
 } from '@attachments/serendipity-public'
-import { MergePackageConfigOptions } from '@attachments/serendipity-public/bin/types/cliService'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
+import PackageManager from './packageManager'
+import { getAppConfigFromConfigFile } from './utils'
 
 
 class PluginManager {
   private readonly basePath: string
-  private readonly packageConfig: CommonObject
-  private readonly createOptions: CreateOptions
+  private readonly packageManager: PackageManager
 
   public inquiryResult: InquiryResult
   public pluginModule: PluginModule
@@ -37,16 +34,36 @@ class PluginManager {
     name: string,
     plugin: PluginModule,
     appConfig?: AppConfig,
-    packageConfig?: CommonObject,
-    inquireResult?: InquiryResult,
-    createOptions?: CreateOptions) {
+    packageManager?: PackageManager) {
     this.name = name
     this.pluginModule = plugin
     this.basePath = basePath
-    this.packageConfig = packageConfig || {}
+    this.packageManager = packageManager ? packageManager : new PackageManager(basePath)
     this.appConfig = appConfig || {}
-    this.inquiryResult = inquireResult
-    this.createOptions = createOptions
+  }
+
+  /**
+   * 工厂函数。add 命令环境下的 pluginManager
+   *
+   * @author yuzhanglong
+   * @param basePath 基础路径
+   * @param name 名称
+   * @date 2021-2-13 09:12:53
+   */
+  static createByAddCommand(basePath: string, name: string): PluginManager {
+    const appConfig = getAppConfigFromConfigFile(
+      basePath, () => {
+      logger.warn('配置文件 serendipity.js 不存在，请确认选择了正确的目录')
+      process.exit(0)
+    })
+
+    return new PluginManager(
+      basePath,
+      name,
+      null,
+      appConfig,
+      PackageManager.createWithResolve(basePath)
+    )
   }
 
   /**
@@ -69,91 +86,6 @@ class PluginManager {
   }
 
   /**
-   * 合并 package.json 配置
-   *
-   * @author yuzhanglong
-   * @param data 合并内容
-   * @param options 合并配置
-   * @date 2021-1-30 12:22:59
-   */
-  public mergePackageConfig(data: CommonObject, options?: MergePackageConfigOptions): void {
-    const resultOptions: MergePackageConfigOptions = {
-      merge: true,
-      ignoreNullOrUndefined: false
-    }
-    Object.assign(resultOptions, options)
-
-    const dataToMerge = data
-    for (const key of Object.keys(dataToMerge)) {
-      // 新配置
-      const val = dataToMerge[key]
-
-      // 旧配置
-      const oldValue = this.packageConfig[key]
-
-      const isDependenciesKey = (key === 'dependencies' || key === 'devDependencies')
-
-      // 选择 忽略 null / undefined 值
-      if (resultOptions.ignoreNullOrUndefined && !val) {
-        continue
-      }
-
-      // 如果不使用 merge 或者之前没有已存在的配置，直接写入即可
-      if (!resultOptions.merge || !oldValue) {
-        this.packageConfig[key] = val
-        continue
-      }
-
-      // 是依赖包相关字段
-      if (typeof val === 'object' && typeof isDependenciesKey) {
-        this.packageConfig[key] = PluginManager.mergeDependencies(
-          (oldValue as CommonObject),
-          (val as CommonObject)
-        )
-        continue
-      }
-
-      // 普通字段合并
-      if (typeof val === 'object' && typeof oldValue === 'object') {
-        this.packageConfig[key] = deepmerge(oldValue, val)
-      }
-    }
-  }
-
-  /**
-   * 合并 依赖配置
-   *
-   * @author yuzhanglong
-   * @param source 旧依赖
-   * @param extend 要被合并上的依赖
-   * @date 2021-1-30 18:15:53
-   */
-  static mergeDependencies(source: CommonObject, extend: CommonObject): CommonObject {
-    // TODO: 对于配置冲突 我们暂时采取直接覆盖的方式，之后需要基于 semver 规范优化相关代码
-    const result = Object.assign({}, source)
-
-    for (const depName of Object.keys(extend)) {
-      const sourceDep = source[depName]
-      const extendDep = extend[depName]
-
-      // 值为 null 跳过
-      if (extendDep === null) {
-        logger.warn(`不合法的版本依赖：${depName}`)
-        continue
-      }
-
-      // 依赖相同，跳过
-      if (sourceDep === extendDep) {
-        continue
-      }
-
-      // TODO: 细化版本处理
-      result[depName] = extendDep
-    }
-    return result
-  }
-
-  /**
    * 执行 pluginModule 构建模块
    *
    * @author yuzhanglong
@@ -164,7 +96,7 @@ class PluginManager {
     if (this.pluginModule?.construction) {
       this.pluginModule.construction({
         render: this.renderTemplate.bind(this),
-        mergePackageConfig: this.mergePackageConfig.bind(this),
+        mergePackageConfig: this.packageManager.mergeIntoCurrent.bind(this.packageManager),
         mergeAppConfig: this.mergeAppConfig.bind(this),
         inquiryResult: this.inquiryResult
       })
@@ -186,16 +118,6 @@ class PluginManager {
   }
 
   /**
-   * packageConfig getter
-   *
-   * @author yuzhanglong
-   * @date 2021-2-2 22:06:32
-   */
-  public getPackageConfig(): CommonObject {
-    return this.packageConfig
-  }
-
-  /**
    * 安装传入的 pluginModule，一般在 add 命令中使用
    *
    * @author yuzhanglong
@@ -211,21 +133,14 @@ class PluginManager {
       )
     }
 
-    try {
-      await runCommand(
-        `yarn add ${this.name}`,
-        [],
-        this.basePath
-      )
-      // 拿到 pluginModule  赋值给 this.pluginModule，根据 nodejs 的模块加载顺序，这里是不可以用相对路径的
-      this.pluginModule = require(path.resolve(this.basePath, 'node_modules', this.name))
-    } catch (e) {
+    // 安装并获取 plugin module
+    this.pluginModule = await this.packageManager.addAndInstallModule(this.name, (e) => {
       logger.error('pluginModule 安装失败，请检查其名称是否正确!')
+      console.log(e)
       process.exit(0)
-    }
+    })
 
     // 更新 app Config
-
     // plugin 字段不是数组
     if (!Array.isArray(this.appConfig.plugins)) {
       this.appConfig.plugins = []
@@ -235,6 +150,15 @@ class PluginManager {
     if (this.appConfig.plugins.indexOf(this.name) < 0) {
       this.appConfig.plugins.push(this.name)
     }
+
+    // 执行 template plugin
+    this.runConstruction()
+
+    // 写入 PackageConfig
+    await this.packageManager.writePackageConfig()
+
+    // 安装所有依赖
+    await this.packageManager.installDependencies()
   }
 
   /**
@@ -256,6 +180,10 @@ class PluginManager {
         this.inquiryResult = null
       }
     }
+  }
+
+  public getPackageManager(): PackageManager {
+    return this.packageManager
   }
 }
 
