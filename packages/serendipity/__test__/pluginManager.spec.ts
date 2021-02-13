@@ -37,7 +37,7 @@ describe('PluginManager 测试', () => {
       construction: constructionFn
     }
 
-    const pluginManager = new PluginManager(process.cwd(), 'test-plugin', plugin)
+    const pluginManager = new PluginManager(process.cwd(), 'test-plugin', plugin, {})
 
     expect(pluginManager.pluginModule).toStrictEqual(plugin)
     pluginManager.runPluginInquirer()
@@ -99,10 +99,10 @@ describe('PluginManager 测试', () => {
     const plugin: PluginModule = {
       construction: constructionFn
     }
-    const pluginManager = new PluginManager(process.cwd(), 'test-plugin', plugin)
+    const pluginManager = new PluginManager('', 'test-plugin', plugin)
     pluginManager.runConstruction()
     expect(constructionFn).toBeCalledTimes(1)
-    expect(pluginManager.getPackageConfig()).toStrictEqual({
+    expect(pluginManager.getPackageManager().getPackageConfig()).toStrictEqual({
       'bar': {
         'bar': '111',
         'baz': '222'

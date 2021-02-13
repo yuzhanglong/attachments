@@ -8,6 +8,7 @@
 
 
 import * as path from 'path'
+import * as fs from 'fs'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import { AppConfig, CommonObject, CreateOptions, InquiryResult } from '@attachments/serendipity-public/bin/types/common'
 import {
@@ -20,22 +21,51 @@ import {
 } from '@attachments/serendipity-public'
 import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
 import PluginManager from './pluginManager'
+import PackageManager from './packageManager'
+import { APP_CONFIG_NAME } from './common'
 
 class ServiceManager {
   private readonly basePath: string
-  private readonly appConfig: AppConfig
   private readonly createOptions: CreateOptions
+  private readonly packageManager: PackageManager
+  private readonly appConfig: AppConfig
 
   private serviceModule: ServiceModule
   private inquiryResult: InquiryResult
   private pluginManagers: PluginManager[] = []
-  private packageConfig: CommonObject
 
   constructor(basePath: string, createOptions: CreateOptions, serviceModule?: ServiceModule) {
     this.createOptions = createOptions
     this.basePath = basePath
-    this.appConfig = {}
     this.serviceModule = serviceModule
+    this.appConfig = ServiceManager.initAppConfig(basePath)
+    if (basePath && basePath !== '') {
+      this.packageManager = PackageManager.createWithResolve(basePath)
+    }else {
+      this.packageManager = new PackageManager(basePath)
+    }
+  }
+
+  /**
+   * 初始化 app 配置
+   *
+   * @author yuzhanglong
+   * @date 2021-2-13 09:08:01
+   */
+  static initAppConfig(basePath: string): CommonObject {
+    const configPath = path.resolve(basePath, APP_CONFIG_NAME)
+
+    // 配置文件不存在
+    if (!fs.existsSync(configPath)) {
+      logger.warn('配置文件 serendipity.js 不存在，请确认选择了正确的目录')
+      if (!serendipityEnv.isSerendipityDevelopment()) {
+        process.exit(0)
+      } else {
+        return null
+      }
+    }
+
+    return require(configPath)
   }
 
   /**
@@ -56,7 +86,7 @@ class ServiceManager {
    * @date 2021-1-29 13:48:49
    */
   setPackageConfig(config: CommonObject): void {
-    this.packageConfig = config
+    this.packageManager.setPackageConfig(config)
   }
 
   /**
@@ -73,9 +103,7 @@ class ServiceManager {
       name,
       pluginModule,
       this.appConfig,
-      this.packageConfig,
-      this.inquiryResult,
-      this.createOptions
+      this.packageManager
     )
     this.pluginManagers.push(manager)
   }
@@ -90,6 +118,7 @@ class ServiceManager {
     for (const pluginManager of this.pluginManagers) {
       // 先执行 plugin 相关质询
       await pluginManager.runPluginInquirer()
+
       // 再执行 plugin construction，此时质询完成，其结果将成为 construction 的参数
       pluginManager.runConstruction()
     }
@@ -102,11 +131,7 @@ class ServiceManager {
    * @date 2021-1-30 12:33:08
    */
   async writePackageConfig(): Promise<void> {
-    await writeFilePromise(
-      path.resolve(this.basePath, 'package.json'),
-      // 默认 2 缩进
-      JSON.stringify(this.packageConfig, null, 2)
-    )
+    await this.packageManager.writePackageConfig()
   }
 
   /**
@@ -214,7 +239,7 @@ class ServiceManager {
    * @date 2021-2-2 19:50:10
    */
   async install(): Promise<void> {
-    await runCommand('yarn install', [], this.basePath)
+    await this.packageManager.installDependencies()
   }
 
   /**
@@ -249,37 +274,36 @@ class ServiceManager {
    * @date 2021-2-11 15:42:03
    */
   async installServicePackage(): Promise<void> {
-
     // 获取 service package 名称
     const servicePackageName = `@attachments/serendipity-service-${this.createOptions.type}`
 
     logger.info(`开始安装 service package (${servicePackageName})...`)
 
     // 构造 package.json
-    this.packageConfig = {
+    this.packageManager.setPackageConfig({
       name: 'serendipity-app',
       version: '0.0.1',
       dependencies: {
         [servicePackageName]: '*'
       }
-    }
+    })
 
     try {
       // 写入 package config
-      await this.writePackageConfig()
+      await this.packageManager.writePackageConfig()
 
       // 安装 service 模块
-      await this.install()
+      await this.packageManager.installDependencies()
     } catch (e) {
       logger.error('获取 service 包失败，请检查相应的 service 模块是否存在！')
       console.log(e)
       process.exit(0)
     }
 
-    logger.done('service package 安装成功...')
-
     // 拿到 service module 并赋值
-    this.serviceModule = require(path.resolve(this.basePath, 'node_modules', servicePackageName))
+    this.serviceModule = this.packageManager.getPackageModule(servicePackageName)
+
+    logger.done('service package 安装成功...\n')
   }
 }
 
