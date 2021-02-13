@@ -34,16 +34,12 @@ class ServiceManager {
   private inquiryResult: InquiryResult
   private pluginManagers: PluginManager[] = []
 
-  constructor(basePath: string, createOptions: CreateOptions, serviceModule?: ServiceModule) {
+  constructor(basePath: string, createOptions: CreateOptions, serviceModule?: ServiceModule, appConfig?: AppConfig) {
     this.createOptions = createOptions
     this.basePath = basePath
     this.serviceModule = serviceModule
-    this.appConfig = ServiceManager.initAppConfig(basePath)
-    if (basePath && basePath !== '') {
-      this.packageManager = PackageManager.createWithResolve(basePath)
-    }else {
-      this.packageManager = new PackageManager(basePath)
-    }
+    this.appConfig = appConfig || appConfig
+    this.packageManager = new PackageManager(basePath)
   }
 
   /**
@@ -52,7 +48,7 @@ class ServiceManager {
    * @author yuzhanglong
    * @date 2021-2-13 09:08:01
    */
-  static initAppConfig(basePath: string): CommonObject {
+  static initAppConfigFromConfigFile(basePath: string): CommonObject {
     const configPath = path.resolve(basePath, APP_CONFIG_NAME)
 
     // 配置文件不存在
@@ -64,7 +60,6 @@ class ServiceManager {
         return null
       }
     }
-
     return require(configPath)
   }
 

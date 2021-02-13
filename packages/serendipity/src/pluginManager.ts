@@ -58,7 +58,7 @@ class PluginManager {
       basePath,
       name,
       null,
-      ServiceManager.initAppConfig(basePath),
+      ServiceManager.initAppConfigFromConfigFile(basePath),
       new PackageManager(basePath)
     )
   }

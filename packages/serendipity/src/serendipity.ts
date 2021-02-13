@@ -38,7 +38,7 @@ program
     // 初始化 manager
     const manager = new CoreManager(process.argv, projectPath)
 
-
+    // 执行创建脚本
     await manager.create(name, opt)
   })
 
