@@ -14,17 +14,16 @@ module.exports = (options: PluginConstructionOptions) => {
     // eslint 配置
     eslintConfig: {
       'extends': [
-        'react-app',
-        'react-app/jest'
-      ],
-      'parser': '@babel/eslint-parser'
+        'react-app'
+      ]
     }
   })
 
   // eslint 必要的依赖
   options.mergePackageConfig({
       dependencies: {
-        '@babel/eslint-parser': '^7.12.13',
+        // eslint-config-react-app 并不兼容新的 @babel/eslint-parser
+        'babel-eslint': '^10.1.0',
         'eslint': '^7.19.0',
         'eslint-config-react-app': '^6.0.0',
         'eslint-plugin-flowtype': '^5.2.0',

@@ -23,6 +23,7 @@ module.exports = (runtimeOptions: PluginRuntimeOptions) => {
               presets: [
                 '@babel/env',
                 '@babel/preset-react',
+                // typescript support
                 '@babel/preset-typescript'
               ]
             }

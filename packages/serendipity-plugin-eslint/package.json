@@ -8,11 +8,12 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/webpack": "^4.41.26"
+    "@types/webpack": "^4.41.26",
+    "webpack": "^5.21.2"
   },
   "dependencies": {
-    "eslint-webpack-plugin": "^2.4.3",
-    "@attachments/serendipity-public": "~0.0.8"
+    "@attachments/serendipity-public": "~0.0.8",
+    "eslint-webpack-plugin": "^2.4.3"
   },
   "peerDependencies": {
     "@attachments/serendipity-service-react": "~0.0.9",
