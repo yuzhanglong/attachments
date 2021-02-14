@@ -53,9 +53,9 @@ class PluginManager {
   static createByAddCommand(basePath: string, name: string): PluginManager {
     const appConfig = getAppConfigFromConfigFile(
       basePath, () => {
-      logger.warn('配置文件 serendipity.js 不存在，请确认选择了正确的目录')
-      process.exit(0)
-    })
+        logger.warn('配置文件 serendipity.js 不存在，请确认选择了正确的目录')
+        process.exit(0)
+      })
 
     return new PluginManager(
       basePath,
@@ -150,6 +150,9 @@ class PluginManager {
     if (this.appConfig.plugins.indexOf(this.name) < 0) {
       this.appConfig.plugins.push(this.name)
     }
+
+    // 开始质询
+    await this.runPluginInquirer()
 
     // 执行 template plugin
     this.runConstruction()
