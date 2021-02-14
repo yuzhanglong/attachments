@@ -11,7 +11,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@attachments/serendipity-plugin-babel": "~0.0.9",
+    "@attachments/serendipity-plugin-babel": "~0.0.11",
     "@attachments/serendipity-plugin-eslint": "~0.0.8",
     "@attachments/serendipity-plugin-react": "~0.0.8",
     "@attachments/serendipity-public": "~0.0.8",
@@ -19,6 +19,7 @@
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.10",
+    "@babel/preset-typescript": "7.12.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/webpack-dev-server": "^3.11.1",
     "babel-loader": "^8.2.2",

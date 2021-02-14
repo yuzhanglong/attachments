@@ -6,6 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
+
 import { ServiceOption } from '@attachments/serendipity-public/bin/types/cliService'
 
 describe('react-service 模块测试', () => {

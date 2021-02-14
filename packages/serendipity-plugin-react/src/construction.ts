@@ -8,6 +8,7 @@
 
 import * as path from 'path'
 import { PluginConstructionOptions } from '@attachments/serendipity-public/bin/types/plugin'
+import { ReactPluginInquireResult } from './types'
 
 // 获取模板目录
 const getTemplatePath = (name) => {
@@ -16,18 +17,42 @@ const getTemplatePath = (name) => {
 
 
 module.exports = (options: PluginConstructionOptions) => {
+  // 质询结果
+  const useTypeScript = (options.inquiryResult as ReactPluginInquireResult).language === 'TypeScript'
+
+  // package.json 配置
+  const getPackageDependencies = () => {
+    const base = {}
+    return Object.assign(
+      base,
+
+      // 添加 react 相关依赖
+      // 理论上这两行不需要加，但是为了方便 IDE 的智能提示（它们会从 package.json）来搜索依赖，故加上它们
+      // 不过它们不会被重复安装
+      {
+        'react': '^17.0.1',
+        'react-dom': '^17.0.1'
+      },
+
+      // 对于 typescript 项目，需要添加类型声明
+      useTypeScript ? {
+        '@types/node': '^12.0.0',
+        '@types/react': '^17.0.0',
+        '@types/react-dom': '^17.0.0',
+        'typescript': '^4.1.3',
+        'fork-ts-checker-webpack-plugin': ''
+      } : undefined
+    )
+  }
+
   // 拷贝模板到工作目录下
   options.render(
-    getTemplatePath('react-template')
+    getTemplatePath(
+      useTypeScript ? 'react-template-typescript' : 'react-template'
+    )
   )
 
-  // 添加 react 相关依赖
-  // 理论上这两行不需要加，但是为了方便 IDE 的智能提示（它们会从 package.json）来搜索依赖，故加上它们，
-  // 不过它们不会被重复安装
   options.mergePackageConfig({
-    dependencies: {
-      'react': '^17.0.1',
-      'react-dom': '^17.0.1'
-    }
+    dependencies: getPackageDependencies()
   })
 }
