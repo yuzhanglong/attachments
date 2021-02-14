@@ -9,26 +9,40 @@
   dependencies:
     "@attachments/serendipity-public" "~0.0.8"
 
-"@attachments/serendipity-plugin-eslint@~0.0.8":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-eslint/-/serendipity-plugin-eslint-0.0.8.tgz#2f7e20db656276ce851ccf106ba4880aee32e3e6"
-  integrity sha512-egpg1JbBEAZXzp/wLLoqs9UYdqBJ/Elm3cbyBhkA6NE6AHbnF9RJ0wrdkZlfVUyXGMTAo7hGGq3s+vT4V1Sllw==
+"@attachments/serendipity-plugin-eslint@~0.0.11":
+  version "0.0.11"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-eslint/-/serendipity-plugin-eslint-0.0.11.tgz#004f7441a4cd3eed88726a27edb5efee42058366"
+  integrity sha512-dov0KZpHrNrHnzjNMBBkYpkC3v5SP8onPSi3jskLLMKUM4iBxXkDSRE9U8OmLFyAOMfPgkdmleQU8tof8FHqzg==
   dependencies:
-    "@attachments/serendipity-public" "~0.0.8"
-    "@types/webpack" "^4.41.26"
+    "@attachments/serendipity-public" "~0.0.9"
     eslint-webpack-plugin "^2.4.3"
 
-"@attachments/serendipity-plugin-react@~0.0.8":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-react/-/serendipity-plugin-react-0.0.8.tgz#ecf34b3966ddec23f3d536e0130cb2ece9c1f27d"
-  integrity sha512-tAaKOTcytZcns8+l39c4n+MC0hLSaZEfihWQruFaWLaHyXFu83t5IaqJEuKySPj/Zc6VyB7FdkgHMwyQ9FtC9g==
+"@attachments/serendipity-plugin-react@~0.0.9":
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-plugin-react/-/serendipity-plugin-react-0.0.9.tgz#eb693e37e657a71770ca1964272b4a799e6eddbd"
+  integrity sha512-Hx+EGYzW7OvWtkxR9iDA+48WpNqeKq1rS+UfbsmX5DD9173j3de23nrtU97B/886cTzRUDfAFxUWWz3Ix+LslA==
   dependencies:
-    "@attachments/serendipity-public" "~0.0.8"
+    "@attachments/serendipity-public" "~0.0.9"
 
 "@attachments/serendipity-public@~0.0.8":
   version "0.0.8"
   resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.8.tgz#ec7f0e5b0377254fc059743176bb4131e103c4b7"
   integrity sha512-ldR9keMT3qYhv9loLmhirs243NZIGUGrgaQZVP9SZH+7hw37ml15hEW/xgfmO6z4WcKZcogZlgNxYmSarKezlA==
+  dependencies:
+    "@types/inquirer" "^7.3.1"
+    "@types/webpack-dev-server" "^3.11.1"
+    chalk "^4.1.0"
+    deepmerge "^4.2.2"
+    execa "^5.0.0"
+    globby "^11.0.2"
+    inquirer "^7.3.3"
+    semver "^7.3.4"
+    webpack-merge "^5.7.3"
+
+"@attachments/serendipity-public@~0.0.9":
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.9.tgz#7d236ecac1e6aa5d04ec9c338aa367ce564540e3"
+  integrity sha512-k3Wnhx9Q6pqcEdCHEjrwWyuCgjQpLxx41y+Dpl+ZggMnX3gHMCRxgRV729HSTmcPvfv2+1BtT6w0rqHXMAxELA==
   dependencies:
     "@types/inquirer" "^7.3.1"
     "@types/webpack-dev-server" "^3.11.1"
@@ -1334,7 +1348,7 @@
     "@types/source-list-map" "*"
     source-map "^0.7.3"
 
-"@types/webpack@*", "@types/webpack@^4.41.26":
+"@types/webpack@*":
   version "4.41.26"
   resolved "https://registry.npm.taobao.org/@types/webpack/download/@types/webpack-4.41.26.tgz?cache=0&sync_timestamp=1610401764774&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fwebpack%2Fdownload%2F%40types%2Fwebpack-4.41.26.tgz#27a30d7d531e16489f9c7607c747be6bc1a459ef"
   integrity sha1-J6MNfVMeFkifnHYHx0e+a8GkWe8=

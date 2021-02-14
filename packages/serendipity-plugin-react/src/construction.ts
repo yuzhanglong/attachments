@@ -39,8 +39,7 @@ module.exports = (options: PluginConstructionOptions) => {
         '@types/node': '^12.0.0',
         '@types/react': '^17.0.0',
         '@types/react-dom': '^17.0.0',
-        'typescript': '^4.1.3',
-        'fork-ts-checker-webpack-plugin': ''
+        'typescript': '^4.1.3'
       } : undefined
     )
   }

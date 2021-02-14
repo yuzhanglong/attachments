@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@attachments/serendipity-public@~0.0.8":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.8.tgz#ec7f0e5b0377254fc059743176bb4131e103c4b7"
-  integrity sha512-ldR9keMT3qYhv9loLmhirs243NZIGUGrgaQZVP9SZH+7hw37ml15hEW/xgfmO6z4WcKZcogZlgNxYmSarKezlA==
+"@attachments/serendipity-public@~0.0.9":
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-public/-/serendipity-public-0.0.9.tgz#7d236ecac1e6aa5d04ec9c338aa367ce564540e3"
+  integrity sha512-k3Wnhx9Q6pqcEdCHEjrwWyuCgjQpLxx41y+Dpl+ZggMnX3gHMCRxgRV729HSTmcPvfv2+1BtT6w0rqHXMAxELA==
   dependencies:
     "@types/inquirer" "^7.3.1"
     "@types/webpack-dev-server" "^3.11.1"

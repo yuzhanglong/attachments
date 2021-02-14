@@ -22,6 +22,8 @@ module.exports = (options: PluginConstructionOptions) => {
   // eslint 必要的依赖
   options.mergePackageConfig({
       dependencies: {
+        '@typescript-eslint/eslint-plugin': '^4.15.0',
+        '@typescript-eslint/parser': '^4.15.0',
         // eslint-config-react-app 并不兼容新的 @babel/eslint-parser
         'babel-eslint': '^10.1.0',
         'eslint': '^7.19.0',
