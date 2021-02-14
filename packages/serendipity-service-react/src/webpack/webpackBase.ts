@@ -190,7 +190,6 @@ const getBaseConfig = (appConfig?: ReactServiceAppConfig): WebpackConfiguration 
 
     // resolve 能设置模块如何被解析
     resolve: {
-
       // 使用户在引入模块时不带扩展
       extensions: REACT_ENTRY_EXTENSIONS.map(res => `.${res}`)
     }

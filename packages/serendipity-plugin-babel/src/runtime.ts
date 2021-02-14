@@ -18,7 +18,15 @@ module.exports = (runtimeOptions: PluginRuntimeOptions) => {
           exclude: /(node_modules)/,
           include: appSource,
           use: {
-            loader: 'babel-loader'
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/env',
+                '@babel/preset-react',
+                // typescript support
+                '@babel/preset-typescript'
+              ]
+            }
           }
         }
       ]
