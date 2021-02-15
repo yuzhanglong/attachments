@@ -6,8 +6,8 @@
  * Email: yuzl1123@163.com
  */
 
-const { runEsLint, runJestTest } = require('./base')
+
+import { runEsLint, runJestTest } from '../utils/common'
 
 runEsLint()
-
 runJestTest()

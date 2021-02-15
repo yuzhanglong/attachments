@@ -1,0 +1,13 @@
+{
+  "name": "@attachments/serendipity-workflows",
+  "version": "0.0.1",
+  "main": "bin/index.js",
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@commitlint/types": "^11.0.0"
+  }
+}

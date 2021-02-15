@@ -7,8 +7,7 @@
  */
 
 
-const { runEsLint, runJestTest } = require('./base')
+import { runEsLint, runJestTest } from '../utils/common'
 
 runEsLint()
-
 runJestTest()
