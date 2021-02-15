@@ -39,7 +39,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "peerDependencies": {
-    "@attachments/serendipity": "~0.0.9"
+    "@attachments/serendipity": "~0.0.11"
   },
   "files": [
     "bin"
