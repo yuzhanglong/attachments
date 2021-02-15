@@ -15,7 +15,7 @@ type ErrorFn = (e: Error) => void
 
 /**
  * 初始化 app 配置
- *    //
+ *
  * @author yuzhanglong
  * @param basePath 要获取 AppConfig 的路径
  * @param onError 当出现错误时的回调函数

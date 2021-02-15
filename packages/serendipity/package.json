@@ -11,7 +11,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@attachments/serendipity-public": "~0.0.11",
+    "@attachments/serendipity-public": "~0.0.9",
     "commander": "^7.0.0"
   },
   "files": [

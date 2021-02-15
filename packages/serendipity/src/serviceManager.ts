@@ -249,7 +249,7 @@ class ServiceManager {
     // 获取 service package 名称
     const servicePackageName = `@attachments/serendipity-service-${this.createOptions.type}`
 
-    logger.info(`开始安装 service package (${servicePackageName})...`)
+    logger.info(`开始安装 service package (${servicePackageName})...\n`)
 
     // 构造 package.json
     this.packageManager.setPackageConfig({
