@@ -32,6 +32,7 @@
   },
   "ignorePatterns": [
     "react-template-typescript",
-    "playground"
+    "playground",
+    "bin"
   ]
 }

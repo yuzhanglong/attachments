@@ -3,10 +3,15 @@
   "version": "0.0.2",
   "description": "An extensible, out-of-the-box cli",
   "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "lint": "eslint",
+    "lint": "eslint --ext .ts packages/",
     "test": "jest",
-    "commit-lint": "node ./node_modules/@attachments/serendipity-workflows/bin/vcs/preCommit.js"
+    "lerna:link": "lerna bootstrap",
+    "lerna:clean": "lerna clean"
   },
   "repository": {
     "type": "git",
@@ -40,6 +45,7 @@
     "execa": "^5.0.0",
     "husky": "^4.3.8",
     "jest": "^26.6.3",
+    "lerna": "^3.22.1",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

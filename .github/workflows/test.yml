@@ -1,7 +1,6 @@
-name: Lint Code
+name: Unit Test
 
-on:
-  [ pull_request ]
+on: [ pull_request ]
 
 jobs:
   lint-and-test:
@@ -12,5 +11,5 @@ jobs:
       - name: Install modules
         run: yarn install
 
-      - name: Run eslint
+      - name: Run tests
         run: yarn test
