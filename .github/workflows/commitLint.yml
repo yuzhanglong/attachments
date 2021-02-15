@@ -12,11 +12,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '10.x'
-
-      - name: Install modules
       - run: yarn install
-
-      - name: Start commit lint
       - uses: wagoid/commitlint-github-action@v2
         env:
           NODE_PATH: ${{ github.workspace }}/node_modules
