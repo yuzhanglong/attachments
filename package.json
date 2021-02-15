@@ -11,7 +11,8 @@
     "lint": "eslint --ext .ts packages/",
     "test": "jest",
     "lerna:link": "lerna bootstrap",
-    "lerna:clean": "lerna clean"
+    "lerna:clean": "lerna clean",
+    "lerna:build": "lerna run build"
   },
   "repository": {
     "type": "git",
