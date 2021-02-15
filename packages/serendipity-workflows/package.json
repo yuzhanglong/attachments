@@ -9,5 +9,8 @@
   "license": "MIT",
   "dependencies": {
     "@commitlint/types": "^11.0.0"
-  }
+  },
+  "files": [
+    "bin"
+  ]
 }
