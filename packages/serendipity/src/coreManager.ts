@@ -158,9 +158,6 @@ class CoreManager {
     // 安装 plugin
     await pluginManager.installPlugin()
 
-    // 写入 app 配置
-    await ServiceManager.writeAppConfig(this.basePath, pluginManager.appConfig)
-
     logger.done(`插件 ${pluginManager.name} 安装成功~`)
   }
 }

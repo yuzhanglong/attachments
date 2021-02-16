@@ -52,14 +52,14 @@ describe('PluginManager 测试', () => {
 
   test('plugin 配置合并', () => {
     const constructionFn = jest.fn((option: PluginConstructionOptions) => {
-      option.mergeAppConfig({
+      option.mergePackageConfig({
         plugins: [
           'foo-plugin',
           'bar-plugin'
         ]
       })
 
-      option.mergeAppConfig({
+      option.mergePackageConfig({
         plugins: [
           'foo2-plugin',
           'bar1-plugin'
@@ -72,13 +72,11 @@ describe('PluginManager 测试', () => {
     const pluginManager = new PluginManager(process.cwd(), 'test-plugin', plugin)
     pluginManager.runConstruction()
     expect(constructionFn).toBeCalledTimes(1)
-    expect(pluginManager.appConfig).toStrictEqual({
-      'plugins': [
-        'foo-plugin',
-        'bar-plugin',
-        'foo2-plugin',
-        'bar1-plugin'
-      ]
+    expect(pluginManager.getPackageManager().getPackageConfig()).toStrictEqual({
+      'plugins': {
+        '0': 'foo2-plugin',
+        '1': 'bar1-plugin'
+      }
     })
   })
 

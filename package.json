@@ -8,7 +8,7 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint --ext .ts packages/",
+    "lint": "eslint --ext .ts --max-warnings 0 packages/",
     "test": "jest",
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",

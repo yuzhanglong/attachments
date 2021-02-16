@@ -11,7 +11,6 @@ import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-p
 import {
   fileTreeWriting,
   logger,
-  webpackMerge,
   inquirer,
   serendipityEnv
 } from '@attachments/serendipity-public'
@@ -97,24 +96,11 @@ class PluginManager {
       this.pluginModule.construction({
         render: this.renderTemplate.bind(this),
         mergePackageConfig: this.packageManager.mergeIntoCurrent.bind(this.packageManager),
-        mergeAppConfig: this.mergeAppConfig.bind(this),
         inquiryResult: this.inquiryResult
       })
     } else {
-      logger.info('这个 pluginModule 没有 template 模块，template 初始化将跳过...')
+      logger.info('这个 pluginModule 没有 construction 模块，template 初始化将跳过...')
     }
-  }
-
-  /**
-   * 合并 app 配置
-   *
-   * @author yuzhanglong
-   * @param appConfig app 配置
-   * @see AppConfig
-   * @date 2021-2-2 22:05:59
-   */
-  public mergeAppConfig(appConfig: AppConfig): void {
-    this.appConfig = webpackMerge({}, this.appConfig, appConfig)
   }
 
   /**
