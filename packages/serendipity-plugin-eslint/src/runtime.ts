@@ -8,8 +8,8 @@
 
 
 import { PluginRuntimeOptions } from '@attachments/serendipity-public/bin/types/plugin'
-import { appRoot, appSource } from '@attachments/serendipity-service-react/bin/utils/paths'
 import { serendipityEnv } from '@attachments/serendipity-public'
+import { appRoot, appSource } from '@attachments/serendipity-public/bin/utils/paths'
 
 const ESLintWebpackPlugin = require('eslint-webpack-plugin')
 

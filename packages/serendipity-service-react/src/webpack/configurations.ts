@@ -10,7 +10,7 @@
 
 import * as HtmlWebpackPlugin from 'html-webpack-plugin'
 import { serendipityEnv } from '@attachments/serendipity-public'
-import { appHtml } from '../utils/paths'
+import { appHtml } from '@attachments/serendipity-public/bin/utils/paths'
 
 // HtmlWebpackPlugin Config
 export const getHtmlWebpackPluginOptions = (): HtmlWebpackPlugin.Options => {

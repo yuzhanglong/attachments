@@ -1,7 +1,7 @@
 /*
  * File: path.spec.ts
- * Description: App 路径模块测试
- * Created: 2021-2-1 21:29:47
+ * Description: 路径相关测试
+ * Created: 2021-2-16 10:13:44
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */

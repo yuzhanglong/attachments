@@ -8,7 +8,7 @@
 
 import * as execa from 'execa'
 
-export const runCommandSync = (command: string, args?: string[], path?: string) => {
+export const runCommandSync = (command: string, args?: string[], path?: string): execa.ExecaSyncReturnValue => {
   let p = path
   if (!p) {
     p = process.cwd()

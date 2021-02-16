@@ -12,11 +12,11 @@ import { WebpackConfiguration } from '@attachments/serendipity-public/bin/types/
 import { serendipityEnv } from '@attachments/serendipity-public'
 import * as webpack from 'webpack'
 import { SerendipityWebpackPluginOption } from '@attachments/serenipity-webpack-plugin/bin/types'
-import { appBuild, appEntry } from '../utils/paths'
+import { appBuild, appEntry } from '@attachments/serendipity-public/bin/utils/paths'
 import {
   DEFAULT_WEBPACK_ANALYSIS_PORT,
   DEFAULT_WEBPACK_DEV_SERVER_HOST,
-  DEFAULT_WEBPACK_DEV_SERVER_PORT, REACT_ENTRY_EXTENSIONS
+  DEFAULT_WEBPACK_DEV_SERVER_PORT
 } from '../common/constants'
 import { ReactServiceAppConfig } from '../types/common'
 import { getHtmlWebpackPluginOptions } from './configurations'
@@ -191,7 +191,13 @@ const getBaseConfig = (appConfig?: ReactServiceAppConfig): WebpackConfiguration 
     // resolve 能设置模块如何被解析
     resolve: {
       // 使用户在引入模块时不带扩展
-      extensions: REACT_ENTRY_EXTENSIONS.map(res => `.${res}`)
+      extensions: [
+        'js',
+        'mjs',
+        'jsx',
+        'ts',
+        'tsx'
+      ].map(res => `.${res}`)
     }
   }
 }
