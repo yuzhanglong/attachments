@@ -14,13 +14,12 @@ import {
   writeFilePromise,
   inquirer,
   runCommand,
-  webpackMerge,
   logger,
-  serendipityEnv
+  serendipityEnv,
+  PackageManager
 } from '@attachments/serendipity-public'
 import { ServiceModule } from '@attachments/serendipity-public/bin/types/cliService'
 import PluginManager from './pluginManager'
-import PackageManager from './packageManager'
 
 class ServiceManager {
   private readonly basePath: string
@@ -36,7 +35,7 @@ class ServiceManager {
     this.createOptions = createOptions
     this.basePath = basePath
     this.serviceModule = serviceModule
-    this.appConfig = appConfig || appConfig
+    this.appConfig = appConfig || {}
     this.packageManager = new PackageManager(basePath)
   }
 
@@ -114,30 +113,19 @@ class ServiceManager {
    * @date 2021-2-2 20:32:45
    */
   async setAppConfig(): Promise<void> {
-    // 收集所有插件的 AppConfig
-    // 由于 webpackMerge 库返回的对象是一个新的对象，this.appConfig 不会被插件接口修改，所以我们还要再遍历一遍并合并
-    let lastResult = this.collectAppConfig()
-
-    // 收集所有的 plugin 名称
-    const names = this.pluginManagers.map((data) => data.name)
-
     // 合并用户注册的 plugins 到 config 文件中
-    lastResult = webpackMerge(lastResult, {
-      plugins: names
-    })
-
-    await ServiceManager.writeAppConfig(this.basePath, lastResult)
+    await ServiceManager.writeAppConfig(this.basePath, this.appConfig)
   }
 
   /**
-   * 写入 App 配置文件
+   * 写入 App 配置文件  // TODO: 使用 AppManager 取代之
    *
    * @param res 配置文件内容
    * @param target 目标目录
    * @author yuzhanglong
    * @date 2021-2-5 21:35:05
    */
-  static async writeAppConfig(target: string, res: AppConfig): Promise<void> {
+  static async writeAppConfig(target: string, res?: AppConfig): Promise<void> {
     // stringify
     const jsonifyResult = JSON.stringify(res, null, 2)
     const result = `module.exports = ${jsonifyResult}`
@@ -145,20 +133,6 @@ class ServiceManager {
       path.resolve(target, 'serendipity.js'),
       result
     )
-  }
-
-  /**
-   * 收集 app 配置
-   *
-   * @author yuzhanglong
-   * @date 2021-2-3 00:13:02
-   */
-  collectAppConfig(): AppConfig {
-    const reducer = ((previousValue: PluginManager, currentValue: PluginManager) => {
-      return webpackMerge(previousValue, currentValue)
-    })
-    // 从各个 plugin 合并而来
-    return this.pluginManagers.reduce(reducer).appConfig
   }
 
   /**

@@ -11,12 +11,13 @@ import { getTemplatesData, renderTemplateData } from '@attachments/serendipity-p
 import {
   fileTreeWriting,
   logger,
-  webpackMerge,
   inquirer,
-  serendipityEnv
+  serendipityEnv,
+  PackageManager,
+  AppManager,
+  isPlugin
 } from '@attachments/serendipity-public'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import PackageManager from './packageManager'
 import { getAppConfigFromConfigFile } from './utils'
 
 
@@ -27,7 +28,7 @@ class PluginManager {
   public inquiryResult: InquiryResult
   public pluginModule: PluginModule
   public name: string
-  public appConfig: AppConfig
+  public readonly appManager: AppManager
 
   constructor(
     basePath: string,
@@ -35,11 +36,11 @@ class PluginManager {
     plugin: PluginModule,
     appConfig?: AppConfig,
     packageManager?: PackageManager) {
-    this.name = name
+    this.name = PluginManager.getPluginName(name)
     this.pluginModule = plugin
     this.basePath = basePath
     this.packageManager = packageManager ? packageManager : new PackageManager(basePath)
-    this.appConfig = appConfig || {}
+    this.appManager = new AppManager(basePath, appConfig || {})
   }
 
   /**
@@ -97,24 +98,11 @@ class PluginManager {
       this.pluginModule.construction({
         render: this.renderTemplate.bind(this),
         mergePackageConfig: this.packageManager.mergeIntoCurrent.bind(this.packageManager),
-        mergeAppConfig: this.mergeAppConfig.bind(this),
         inquiryResult: this.inquiryResult
       })
     } else {
-      logger.info('这个 pluginModule 没有 template 模块，template 初始化将跳过...')
+      logger.info('这个 pluginModule 没有 construction 模块，template 初始化将跳过...')
     }
-  }
-
-  /**
-   * 合并 app 配置
-   *
-   * @author yuzhanglong
-   * @param appConfig app 配置
-   * @see AppConfig
-   * @date 2021-2-2 22:05:59
-   */
-  public mergeAppConfig(appConfig: AppConfig): void {
-    this.appConfig = webpackMerge({}, this.appConfig, appConfig)
   }
 
   /**
@@ -140,17 +128,6 @@ class PluginManager {
       process.exit(0)
     })
 
-    // 更新 app Config
-    // plugin 字段不是数组
-    if (!Array.isArray(this.appConfig.plugins)) {
-      this.appConfig.plugins = []
-    }
-
-    // 新引入的 plugin 不存在
-    if (this.appConfig.plugins.indexOf(this.name) < 0) {
-      this.appConfig.plugins.push(this.name)
-    }
-
     // 开始质询
     await this.runPluginInquirer()
 
@@ -175,7 +152,7 @@ class PluginManager {
     if (this.pluginModule?.inquiry) {
       const result = this.pluginModule.inquiry({
         // 这里的 appConfig 是最初的配置，没有被修改
-        appConfig: this.appConfig
+        appConfig: this.appManager.getAppConfig()
       })
       if (!serendipityEnv.isSerendipityDevelopment() && result) {
         this.inquiryResult = await inquirer.prompt(result)
@@ -187,6 +164,22 @@ class PluginManager {
 
   public getPackageManager(): PackageManager {
     return this.packageManager
+  }
+
+  /**
+   * 获取 plugin 名称，我们要求名称以 serendipity-plugin- 开头 或者 以 @attachments
+   * 如果不符合上面的要求，则在开头追加 serendipity-plugin-
+   *
+   * @author yuzhanglong
+   * @param name plugin 名称
+   * @return 最终 package 名称
+   * @date 2021-2-16 20:58:48
+   */
+  public static getPluginName(name: string): string {
+    if (isPlugin(name)) {
+      return name
+    }
+    return 'serendipity-plugin-' + name
   }
 }
 

@@ -9,8 +9,8 @@
  */
 
 import * as path from 'path'
-import { AddOptions, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import { program } from 'commander'
+import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import CoreManager from './coreManager'
 import { DEFAULT_PROJECT_NAME } from './common'
 
@@ -47,11 +47,10 @@ program
 program
   .command('add [plugin-name]')
   .description('添加一个插件')
-  .option('-p --package <package>', '自定义插件 package 名称，当已经设置了名称时，该选项无效')
-  .action(async (name: string, opt: AddOptions) => {
+  .action(async (name: string) => {
     // 初始化 manager
     const manager = new CoreManager(process.argv, process.cwd())
-    await manager.add(name, opt)
+    await manager.add(name)
   })
 
 program.parse(process.argv)

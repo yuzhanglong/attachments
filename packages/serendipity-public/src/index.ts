@@ -15,9 +15,10 @@ import webpackMerge from 'webpack-merge'
 import serendipityEnv from './utils/env'
 import { runCommand } from './utils/command'
 import logger from './utils/logger'
-import { fileTreeWriting, writeFilePromise } from './utils/files'
+import { fileTreeWriting, isPlugin, writeFilePromise } from './utils/files'
 import { getTemplatesData, renderTemplateData } from './utils/template'
-
+import AppManager from './utils/appManager'
+import PackageManager from './utils/packageManager'
 
 export {
   execa,
@@ -31,5 +32,8 @@ export {
   fileTreeWriting,
   writeFilePromise,
   getTemplatesData,
-  renderTemplateData
+  renderTemplateData,
+  AppManager,
+  PackageManager,
+  isPlugin
 }

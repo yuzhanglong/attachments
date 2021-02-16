@@ -7,10 +7,11 @@
  */
 
 import * as path from 'path'
-import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
-import { deepmerge, logger, runCommand, writeFilePromise } from '@attachments/serendipity-public'
-import { MergePackageConfigOptions } from '@attachments/serendipity-public/bin/types/cliService'
-import { PackageManagerCli } from './types/options'
+import { CommonObject, PackageManagerCli } from '../types/common'
+import { MergePackageConfigOptions } from '../types/cliService'
+import { deepmerge, runCommand, writeFilePromise } from '../index'
+import logger from './logger'
+
 
 class PackageManager {
   // 包管理路径
@@ -19,6 +20,7 @@ class PackageManager {
   // 管理工具名称
   private readonly cliName: PackageManagerCli
   private packageConfig: CommonObject
+
 
   constructor(basePath: string, cliName?: PackageManagerCli) {
     if (!cliName) {

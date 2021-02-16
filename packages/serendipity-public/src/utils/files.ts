@@ -44,8 +44,13 @@ const readFilePromise = promisify(fs.readFile)
 
 const writeFilePromise = promisify(fs.writeFile)
 
+const isPlugin = (name: string): boolean => {
+  return name.startsWith('serendipity-plugin-') || name.startsWith('@attachments/serendipity-plugin-')
+}
+
 export {
   fileTreeWriting,
   readFilePromise,
-  writeFilePromise
+  writeFilePromise,
+  isPlugin
 }

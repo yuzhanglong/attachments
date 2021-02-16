@@ -10,7 +10,3 @@ export interface BaseCommandValidateResult {
   message: string
   validated: boolean
 }
-
-
-// 包管理工具类型
-export type PackageManagerCli = 'yarn' | 'npm'

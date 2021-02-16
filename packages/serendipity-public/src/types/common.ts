@@ -17,11 +17,6 @@ export interface CreateOptions {
   commit?: string
 }
 
-// 添加插件时配置
-export interface AddOptions {
-  package?: string
-}
-
 // object 类型，不要使用 any
 export type CommonObject = Record<string, unknown>
 
@@ -43,8 +38,10 @@ export interface WebpackConfig {
 
 // app 配置，针对 service 的额外配置可以
 export interface AppConfig<T = unknown> {
-  plugins?: string[]
   webpack?: WebpackConfig
   additional?: T
 }
+
+// 包管理工具类型
+export type PackageManagerCli = 'yarn' | 'npm'
 

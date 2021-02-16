@@ -48,7 +48,7 @@ describe('serviceManager 模块', () => {
     const manager = new ServiceManager('', {}, null)
     const plugin1: PluginModule = {
       construction: (options) => {
-        options.mergeAppConfig({
+        options.mergePackageConfig({
           plugins: [
             'foo-plugin'
           ]
@@ -58,7 +58,7 @@ describe('serviceManager 模块', () => {
 
     const plugin2: PluginModule = {
       construction: (options) => {
-        options.mergeAppConfig({
+        options.mergePackageConfig({
           plugins: [
             'bar-plugin'
           ]
@@ -70,11 +70,5 @@ describe('serviceManager 模块', () => {
     manager.registerPlugin('plugin2', plugin2)
     await manager.runPluginsConstruction()
     expect(manager.getPluginManagers().length).toStrictEqual(2)
-    expect(manager.collectAppConfig()).toStrictEqual({
-      plugins: [
-        'foo-plugin',
-        'bar-plugin'
-      ]
-    })
   })
 })

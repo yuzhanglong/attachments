@@ -37,9 +37,6 @@ export interface PluginConstructionOptions {
   // 合并 package.json 配置
   mergePackageConfig: (data: CommonObject, options?: MergePackageConfigOptions) => void
 
-  // 合并 app 配置
-  mergeAppConfig: (appConfig: AppConfig) => void
-
   // 质询结果
   inquiryResult: InquiryResult
 }

@@ -7,31 +7,28 @@
  */
 
 
-import * as fs from 'fs'
 import { Configuration, webpack } from 'webpack'
-import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import * as WebpackDevServer from 'webpack-dev-server'
 import {
   WebpackConfiguration,
   WebpackDevServerConfiguration
 } from '@attachments/serendipity-public/bin/types/common'
-import { logger, webpackMerge } from '@attachments/serendipity-public'
-import { configFile } from '@attachments/serendipity-public/bin/utils/paths'
+import { AppManager, logger, webpackMerge } from '@attachments/serendipity-public'
 import getDevServerConfig from '../webpack/devServerConfig'
 import getBaseConfig from '../webpack/webpackBase'
 import { clearConsole } from '../utils/console'
-import { ReactServiceAppConfig } from '../types/common'
 import { DEFAULT_WEBPACK_DEV_SERVER_HOST, DEFAULT_WEBPACK_DEV_SERVER_PORT } from '../common/constants'
+import { ReactServiceAppConfigOptions } from '../types/common'
 
 class ReactService {
-  private readonly appConfig: ReactServiceAppConfig
   private readonly devServerConfig: WebpackDevServerConfiguration
+  private readonly appManager: AppManager
 
   private webpackConfig: WebpackConfiguration
 
   constructor() {
-    this.appConfig = fs.existsSync(configFile) ? require(configFile) : {}
-    this.webpackConfig = getBaseConfig(this.appConfig)
+    this.appManager = new AppManager(process.cwd())
+    this.webpackConfig = getBaseConfig(this.appManager.getAppConfig())
     this.devServerConfig = getDevServerConfig()
   }
 
@@ -53,13 +50,11 @@ class ReactService {
    * @date 2021-2-3 12:17:55
    */
   private runRuntimePlugins(): void {
-    if (Array.isArray(this.appConfig.plugins)) {
-      for (const plugin of this.appConfig.plugins) {
-        const pluginModule: PluginModule = require(plugin)
-        pluginModule.runtime({
-          mergeWebpackConfig: this.mergeWebpackConfig.bind(this)
-        })
-      }
+    const pluginModules = this.appManager.getPluginModules()
+    for (const pluginModule of pluginModules) {
+      pluginModule.runtime({
+        mergeWebpackConfig: this.mergeWebpackConfig.bind(this)
+      })
     }
   }
 
@@ -70,12 +65,13 @@ class ReactService {
    * @date 2021-2-3 12:15:09
    */
   public start(): void {
+    const appConfig = this.appManager.getAppConfig()
     // 执行插件运行时逻辑
     this.runRuntimePlugins()
 
     // 尝试从用户配置文件中获取配置，它的优先级较高
-    if (this.appConfig?.webpack?.webpackConfig) {
-      this.mergeWebpackConfig(this.appConfig.webpack.webpackConfig)
+    if (appConfig?.webpack?.webpackConfig) {
+      this.mergeWebpackConfig(appConfig.webpack.webpackConfig)
     }
 
     // devServer 选项合并
@@ -94,9 +90,10 @@ class ReactService {
     // 也就是说对于上述的两个配置，用户在 webpack 中的配置、插件 mergeWebpack 的配置是无效的
     // 这样做的原因是部分插件需要打印一些信息（例如项目所处的端口），这些数据不能写死，但又难拿到用户的配置
     // 干脆端口和主机就以用户项目配置文件为准
+    const additionalData = appConfig.additional as ReactServiceAppConfigOptions
     server.listen(
-      this.appConfig?.additional?.webpackDevServerPort || DEFAULT_WEBPACK_DEV_SERVER_PORT,
-      this.appConfig?.additional?.webpackDevServerHost || DEFAULT_WEBPACK_DEV_SERVER_HOST,
+      additionalData?.webpackDevServerPort || DEFAULT_WEBPACK_DEV_SERVER_PORT,
+      additionalData?.webpackDevServerHost || DEFAULT_WEBPACK_DEV_SERVER_HOST,
       ReactService.onWebpackServerListen
     )
   }
@@ -108,13 +105,14 @@ class ReactService {
    * @date 2021-2-6 18:28:34
    */
   public build(): void {
+    const appConfig = this.appManager.getAppConfig()
 
     // 构建项目，同样地执行 Runtime Plugin
     this.runRuntimePlugins()
 
     // 尝试从用户配置文件中获取配置，它的优先级较高
-    if (this.appConfig?.webpack?.webpackConfig) {
-      this.mergeWebpackConfig(this.appConfig.webpack.webpackConfig)
+    if (appConfig?.webpack?.webpackConfig) {
+      this.mergeWebpackConfig(appConfig.webpack.webpackConfig)
     }
 
     // 初始化 webpack compiler
