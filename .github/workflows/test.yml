@@ -11,5 +11,11 @@ jobs:
       - name: Install modules
         run: yarn install
 
+      - name: Build packages
+      - run: yarn lerna:build
+
+      - name: Link dependencies
+      - run: yarn lerna:link
+
       - name: Run tests
         run: yarn test

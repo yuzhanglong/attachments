@@ -9,7 +9,16 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { REACT_ENTRY_EXTENSIONS } from '../common/constants'
+
+
+// React 项目入口可能的扩展名
+export const REACT_ENTRY_EXTENSIONS = [
+  'js',
+  'mjs',
+  'jsx',
+  'ts',
+  'tsx'
+]
 
 // app 基础路径，即执行路径
 const appBaseUrl = fs.realpathSync(process.cwd())
@@ -25,9 +34,9 @@ const resolveAppPath = (target: string): string => {
 
 
 // 获取 app 入口，这个方法的意义在于处理 typescript 的项目，此时它的后缀为 ts(tsx)，所以我们不能把 entry 写死
-const resolveAppEntry = (filePath) => {
+const resolveAppEntry = (filePath, extensions?: string[]) => {
   // 查询是否有符合的扩展名入口文件
-  const extension = REACT_ENTRY_EXTENSIONS
+  const extension = extensions || REACT_ENTRY_EXTENSIONS
     .find(extension => {
       return fs.existsSync(resolveAppPath(`${filePath}.${extension}`))
     })

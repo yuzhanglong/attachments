@@ -16,9 +16,9 @@ import {
   WebpackDevServerConfiguration
 } from '@attachments/serendipity-public/bin/types/common'
 import { logger, webpackMerge } from '@attachments/serendipity-public'
+import { configFile } from '@attachments/serendipity-public/bin/utils/paths'
 import getDevServerConfig from '../webpack/devServerConfig'
 import getBaseConfig from '../webpack/webpackBase'
-import { configFile } from '../utils/paths'
 import { clearConsole } from '../utils/console'
 import { ReactServiceAppConfig } from '../types/common'
 import { DEFAULT_WEBPACK_DEV_SERVER_HOST, DEFAULT_WEBPACK_DEV_SERVER_PORT } from '../common/constants'
