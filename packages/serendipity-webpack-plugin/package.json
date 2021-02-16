@@ -1,5 +1,5 @@
 {
-  "name": "@attachments/serenipity-webpack-plugin",
+  "name": "@attachments/serendipity-webpack-plugin",
   "version": "0.0.2",
   "main": "bin/index.js",
   "license": "MIT",
