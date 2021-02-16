@@ -45,7 +45,7 @@ describe('PluginManager 测试', () => {
     // 在 construction 中可以获得调用结果
     expect(constructionFn).toBeCalledTimes(1)
     expect(inquiryFn).toBeCalledTimes(1)
-    expect(pluginManager.appConfig).toStrictEqual({})
+    expect(pluginManager.appManager.getAppConfig()).toStrictEqual({})
     // 开发模式下这个值会被置为 null
     expect(pluginManager.inquiryResult).toBeNull()
   })

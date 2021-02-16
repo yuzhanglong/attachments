@@ -9,8 +9,8 @@
  */
 
 import * as path from 'path'
-import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import { program } from 'commander'
+import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import CoreManager from './coreManager'
 import { DEFAULT_PROJECT_NAME } from './common'
 

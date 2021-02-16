@@ -12,10 +12,12 @@ import {
   fileTreeWriting,
   logger,
   inquirer,
-  serendipityEnv
+  serendipityEnv,
+  PackageManager,
+  AppManager,
+  isPlugin
 } from '@attachments/serendipity-public'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
-import PackageManager from './packageManager'
 import { getAppConfigFromConfigFile } from './utils'
 
 
@@ -26,7 +28,7 @@ class PluginManager {
   public inquiryResult: InquiryResult
   public pluginModule: PluginModule
   public name: string
-  public appConfig: AppConfig
+  public readonly appManager: AppManager
 
   constructor(
     basePath: string,
@@ -38,7 +40,7 @@ class PluginManager {
     this.pluginModule = plugin
     this.basePath = basePath
     this.packageManager = packageManager ? packageManager : new PackageManager(basePath)
-    this.appConfig = appConfig || {}
+    this.appManager = new AppManager(basePath, appConfig || {})
   }
 
   /**
@@ -126,17 +128,6 @@ class PluginManager {
       process.exit(0)
     })
 
-    // 更新 app Config
-    // plugin 字段不是数组
-    if (!Array.isArray(this.appConfig.plugins)) {
-      this.appConfig.plugins = []
-    }
-
-    // 新引入的 plugin 不存在
-    if (this.appConfig.plugins.indexOf(this.name) < 0) {
-      this.appConfig.plugins.push(this.name)
-    }
-
     // 开始质询
     await this.runPluginInquirer()
 
@@ -161,7 +152,7 @@ class PluginManager {
     if (this.pluginModule?.inquiry) {
       const result = this.pluginModule.inquiry({
         // 这里的 appConfig 是最初的配置，没有被修改
-        appConfig: this.appConfig
+        appConfig: this.appManager.getAppConfig()
       })
       if (!serendipityEnv.isSerendipityDevelopment() && result) {
         this.inquiryResult = await inquirer.prompt(result)
@@ -185,7 +176,7 @@ class PluginManager {
    * @date 2021-2-16 20:58:48
    */
   public static getPluginName(name: string): string {
-    if (name.startsWith('serendipity-plugin-') || name.startsWith('@attachments')) {
+    if (isPlugin(name)) {
       return name
     }
     return 'serendipity-plugin-' + name
