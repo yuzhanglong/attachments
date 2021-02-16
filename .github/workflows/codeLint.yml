@@ -24,4 +24,4 @@ jobs:
         run: yarn lerna:link
 
       - name: Run eslint
-        run: yarn test
+        run: yarn lint
