@@ -35,7 +35,7 @@ class PluginManager {
     plugin: PluginModule,
     appConfig?: AppConfig,
     packageManager?: PackageManager) {
-    this.name = name
+    this.name = PluginManager.getPluginName(name)
     this.pluginModule = plugin
     this.basePath = basePath
     this.packageManager = packageManager ? packageManager : new PackageManager(basePath)
@@ -187,6 +187,22 @@ class PluginManager {
 
   public getPackageManager(): PackageManager {
     return this.packageManager
+  }
+
+  /**
+   * 获取 plugin 名称，我们要求名称以 serendipity-plugin- 开头 或者 以 @attachments
+   * 如果不符合上面的要求，则在开头追加 serendipity-plugin-
+   *
+   * @author yuzhanglong
+   * @param name plugin 名称
+   * @return 最终 package 名称
+   * @date 2021-2-16 20:58:48
+   */
+  public static getPluginName(name: string): string {
+    if (name.startsWith('serendipity-plugin-') || name.startsWith('@attachments')) {
+      return name
+    }
+    return 'serendipity-plugin-' + name
   }
 }
 
