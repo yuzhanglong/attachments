@@ -68,7 +68,6 @@ describe('serviceManager 模块', () => {
 
     manager.registerPlugin('plugin1', plugin1)
     manager.registerPlugin('plugin2', plugin2)
-    await manager.runPluginsConstruction()
     expect(manager.getPluginManagers().length).toStrictEqual(2)
   })
 })
