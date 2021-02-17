@@ -62,7 +62,7 @@ class CoreManager {
     }
 
     if (!options.type) {
-      return getValidateErr('类型为空，请选择一个正确的项目类型，例如 \'react\'')
+      return getValidateErr('service 类型为空，请选择一个正确的项目类型，例如 \'react\'')
     }
 
     return {

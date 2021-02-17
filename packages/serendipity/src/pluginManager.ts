@@ -113,20 +113,25 @@ class PluginManager {
    * @date 2021-2-5 18:03:39
    */
   public async installPlugin(): Promise<void> {
-    logger.info(`插件 ${this.name} 安装中...`)
-
-    if (!this.name.match(/^(serendipity-plugin-)/)) {
-      logger.warn(
-        `${this.name} 不是一个推荐的插件名称，插件名称应该以 serendipity-plugin 开头，例如 serendipity-plugin-react`
-      )
-    }
-
-    // 安装并获取 plugin module
-    this.pluginModule = await this.packageManager.addAndInstallModule(this.name, (e) => {
+    const onPluginModuleInstallError = (e) => {
       logger.error('pluginModule 安装失败，请检查其名称是否正确!')
       console.log(e)
       process.exit(0)
-    })
+    }
+
+    logger.info(`插件 ${this.name} 安装中...`)
+
+    if (!isPlugin(this.name)) {
+      logger.warn(`${this.name} 不是一个有效的插件名称，其安装将被跳过...`)
+    }
+
+
+    // 如果 pluginModule 为空，安装并获取 plugin module
+    if (!this.pluginModule) {
+      this.pluginModule = await this.packageManager.addAndInstallModule(
+        this.name, onPluginModuleInstallError
+      )
+    }
 
     // 开始质询
     await this.runPluginInquirer()
@@ -162,10 +167,6 @@ class PluginManager {
     }
   }
 
-  public getPackageManager(): PackageManager {
-    return this.packageManager
-  }
-
   /**
    * 获取 plugin 名称，我们要求名称以 serendipity-plugin- 开头 或者 以 @attachments
    * 如果不符合上面的要求，则在开头追加 serendipity-plugin-
@@ -180,6 +181,10 @@ class PluginManager {
       return name
     }
     return 'serendipity-plugin-' + name
+  }
+
+  public getPackageManager(): PackageManager {
+    return this.packageManager
   }
 }
 

@@ -28,16 +28,10 @@ module.exports = (options: ServiceOption) => {
   })
 
   // 注册默认的 react-plugin
-  options.registerPlugin(
-    '@attachments/serendipity-plugin-react',
-    require('@attachments/serendipity-plugin-react')
-  )
+  options.registerPlugin('@attachments/serendipity-plugin-react')
 
   // babel 配置插件
-  options.registerPlugin(
-    '@attachments/serendipity-plugin-babel',
-    require('@attachments/serendipity-plugin-babel')
-  )
+  options.registerPlugin('@attachments/serendipity-plugin-babel')
 
   // 如果用户选择使用 eslint, 注册 eslint 相关插件
   if ((options.inquiryResult as unknown as ReactServiceInquire)?.eslintSupport) {

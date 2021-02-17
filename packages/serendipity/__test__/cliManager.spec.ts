@@ -34,6 +34,6 @@ describe('cli Manager 模块测试', () => {
       type: undefined
     })
     expect(validation2.validated).toBeFalsy()
-    expect(validation2.message).toStrictEqual('类型为空，请选择一个正确的项目类型，例如 \'react\'')
+    expect(validation2.message).toStrictEqual('service 类型为空，请选择一个正确的项目类型，例如 \'react\'')
   })
 })

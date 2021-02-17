@@ -66,6 +66,7 @@ class ReactService {
    */
   public start(): void {
     const appConfig = this.appManager.getAppConfig()
+
     // 执行插件运行时逻辑
     this.runRuntimePlugins()
 

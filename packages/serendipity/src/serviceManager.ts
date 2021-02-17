@@ -68,7 +68,7 @@ class ServiceManager {
    * @param pluginModule plugin 模块（require 后）
    * @date 2021-1-30 19:14:42
    */
-  registerPlugin(name: string, pluginModule: PluginModule): void {
+  registerPlugin(name: string, pluginModule?: PluginModule): void {
     const manager = new PluginManager(
       this.basePath,
       name,
@@ -87,11 +87,8 @@ class ServiceManager {
    */
   async runPluginsConstruction(): Promise<void> {
     for (const pluginManager of this.pluginManagers) {
-      // 先执行 plugin 相关质询
-      await pluginManager.runPluginInquirer()
-
-      // 再执行 plugin construction，此时质询完成，其结果将成为 construction 的参数
-      pluginManager.runConstruction()
+      // 安装 plugin
+      await pluginManager.installPlugin()
     }
   }
 
@@ -220,7 +217,7 @@ class ServiceManager {
    * @date 2021-2-11 15:42:03
    */
   async installServicePackage(): Promise<void> {
-    // 获取 service package 名称
+    // 获取 service package 名称, 如果用户自定义了 service 路径 我们使用之
     const servicePackageName = `@attachments/serendipity-service-${this.createOptions.type}`
 
     logger.info(`开始安装 service package (${servicePackageName})...\n`)
@@ -230,7 +227,7 @@ class ServiceManager {
       name: 'serendipity-app',
       version: '0.0.1',
       dependencies: {
-        [servicePackageName]: '*'
+        [servicePackageName]: this.getServiceVersion()
       }
     })
 
@@ -250,6 +247,13 @@ class ServiceManager {
     this.serviceModule = this.packageManager.getPackageModule(servicePackageName)
 
     logger.done('service package 安装成功...\n')
+  }
+
+  private getServiceVersion(): string {
+    if (this.createOptions.serviceUrl) {
+      return this.createOptions.serviceUrl
+    }
+    return this.createOptions.version || '*'
   }
 }
 
