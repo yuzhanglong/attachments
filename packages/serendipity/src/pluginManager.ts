@@ -135,6 +135,14 @@ class PluginManager {
       logger.warn(`${this.name} 不是一个有效的插件名称，其安装将被跳过...`)
     }
 
+    // 如果用户没有传入版本号，那我们默认获取最新版本
+    // 未来执行 runtime 逻辑时，我们必须要找到插件模块
+    // 现在搜索插件的方法是对 用户的 package.json 的所有依赖进行字符串（如 vue-cli 就是这样做的）
+    this.packageManager.mergeIntoCurrent({
+      dependencies: {
+        [this.name]: this.version ? this.version : 'latest'
+      }
+    })
 
     // 如果 pluginModule 为空，安装并获取 plugin module
     if (!this.pluginModule) {
@@ -145,17 +153,8 @@ class PluginManager {
         localPath: this.localPath,
         onError: onPluginModuleInstallError
       })
-    } else {
-      // 如果用户没有传入版本号，那我们默认获取最新版本
-      // 这样做的目的：如果 this.pluginModule 有值，就会走到这里，不需要 npm install 下载
-      // 但是在未来执行 runtime 逻辑时，我们必须要找到插件模块
-      // 现在搜索插件的方法是对 用户的 package.json 的所有依赖进行字符串（如 vue-cli 就是这样做的）
-      this.packageManager.mergeIntoCurrent({
-        dependencies: {
-          [this.name]: this.version ? this.version : 'latest'
-        }
-      })
     }
+
 
     // 开始质询
     await this.runPluginInquirer()
