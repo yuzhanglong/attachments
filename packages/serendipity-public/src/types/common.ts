@@ -56,3 +56,18 @@ export interface AppConfig<T = unknown> {
 // 包管理工具类型
 export type PackageManagerCli = 'yarn' | 'npm'
 
+// packageManager 模块安装选项
+export interface ModuleInstallOptions {
+  // 模块名称
+  name: string
+
+  // 模块版本
+  version?: string
+
+  // 模块本地路径
+  localPath?: string,
+
+  // 失败回调函数
+  onError?: (e: Error) => void
+}
+

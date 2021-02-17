@@ -13,6 +13,7 @@ import { program } from 'commander'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import CoreManager from './coreManager'
 import { DEFAULT_PROJECT_NAME } from './common'
+import { AddOption } from './types/options'
 
 
 // 版本信息
@@ -44,14 +45,16 @@ program
   })
 
 // serendipity add
-// 例如: serendipity add xxx  即  serendipity add -n(--name) serendipity-plugin-react
+// 例如: serendipity add xxx 即 serendipity add -n(--name) serendipity-plugin-react
 program
   .command('add [plugin-name]')
   .description('添加一个插件')
-  .action(async (name: string) => {
+  .option('-v --version <version>', 'plugin 版本，默认为 latest')
+  .option('-l --localPath <localPath>', 'plugin 本地路径，追加此选项时 -v 会被忽略')
+  .action(async (name: string, opt: AddOption) => {
     // 初始化 manager
     const manager = new CoreManager(process.argv, process.cwd())
-    await manager.add(name)
+    await manager.add(name, opt)
   })
 
 program.parse(process.argv)

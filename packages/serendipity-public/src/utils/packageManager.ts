@@ -7,7 +7,7 @@
  */
 
 import * as path from 'path'
-import { CommonObject, PackageManagerCli } from '../types/common'
+import { CommonObject, ModuleInstallOptions, PackageManagerCli } from '../types/common'
 import { MergePackageConfigOptions } from '../types/cliService'
 import { deepmerge, runCommand, writeFilePromise } from '../index'
 import logger from './logger'
@@ -23,10 +23,8 @@ class PackageManager {
 
 
   constructor(basePath: string, cliName?: PackageManagerCli) {
-    if (!cliName) {
-      // 默认采用 yarn 来管理
-      this.cliName = 'yarn'
-    }
+    // 默认采用 yarn 来管理
+    this.cliName = cliName ? cliName : 'yarn'
     this.basePath = basePath
     this.packageConfig = {}
   }
@@ -189,26 +187,43 @@ class PackageManager {
 
 
   /**
-   * 安装某个依赖
+   * 安装某个依赖, 可参考 https://yarn.bootcss.com/docs/cli/add/
    *
    * @author yuzhanglong
-   * @param name 依赖名称
-   * @param onError 安装失败回调函数
+   * @param installOptions install 选项
+   * @see ModuleInstallOptions
    * @return boolean 是否读取成功
    * @date 2021-2-12 23:47:51
    */
-  public async addAndInstallModule(name: string, onError?: (e) => void): Promise<CommonObject> {
+  public async addAndInstallModule(installOptions: ModuleInstallOptions): Promise<CommonObject> {
     try {
-      // run yarn add / npm install
-      await runCommand(
-        `${this.cliName} ${this.cliName === 'yarn' ? 'add' : 'install'} ${name}`,
-        [],
-        this.basePath
-      )
+      // 执行安装命令
+      await runCommand(this.getInstallCommand(installOptions), [], this.basePath)
     } catch (e) {
-      onError(e)
+      installOptions?.onError(e)
     }
-    return require(path.resolve(this.basePath, 'node_modules', name))
+    return require(path.resolve(this.basePath, 'node_modules', installOptions.name))
+  }
+
+
+  /**
+   * 根据参数获取安装命令字符串
+   *
+   * @author yuzhanglong
+   * @param installOptions install 选项
+   * @return 结果字符串
+   * @date 2021-2-17 17:47:04
+   */
+  public getInstallCommand(installOptions: ModuleInstallOptions): string {
+    const command = `${this.cliName} ${this.cliName === 'yarn' ? 'add' : 'install'}`
+    // 如果传入了本地路径，我们从本地路径安装
+    // yarn add file:/path/to/local/folder
+    if (installOptions.localPath) {
+      return command + ` file:${installOptions.localPath}`
+    } else {
+      // 如果有版本号，需要加上 @版本号 ，例如 yarn add foo@1.0.0
+      return command + ` ${installOptions.name}` + (installOptions.version ? `@${installOptions.version}` : '')
+    }
   }
 
 

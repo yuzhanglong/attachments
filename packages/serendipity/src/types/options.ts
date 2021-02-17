@@ -10,3 +10,8 @@ export interface BaseCommandValidateResult {
   message: string
   validated: boolean
 }
+
+export interface AddOption {
+  version?: string
+  localPath?: string
+}

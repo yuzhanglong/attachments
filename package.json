@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "lint": "eslint --ext .ts --max-warnings 0 packages/",
-    "test": "jest",
+    "test": "jest --no-cache",
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",
     "lerna:build": "lerna run build"
