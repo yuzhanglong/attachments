@@ -24,7 +24,7 @@ export interface ServiceOption {
   setPackageConfig?: (config: CommonObject) => void
 
   // 执行单个插件
-  registerPlugin?: (name: string, plugin?: PluginModule) => void
+  registerPlugin?: (name: string, plugin?: PluginModule, version?: string) => void
 
   // 自定义的质询结果
   inquiryResult?: InquiryResult

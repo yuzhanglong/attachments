@@ -66,15 +66,17 @@ class ServiceManager {
    * @author yuzhanglong
    * @param name plugin 名称
    * @param pluginModule plugin 模块（require 后）
+   * @param version 版本号
    * @date 2021-1-30 19:14:42
    */
-  registerPlugin(name: string, pluginModule?: PluginModule): void {
+  registerPlugin(name: string, pluginModule?: PluginModule, version?: string): void {
     const manager = new PluginManager(
       this.basePath,
       name,
       pluginModule,
       this.appConfig,
-      this.packageManager
+      this.packageManager,
+      version
     )
     this.pluginManagers.push(manager)
   }
