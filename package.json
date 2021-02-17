@@ -1,5 +1,5 @@
 {
-  "name": "@attachments/serendipity",
+  "name": "serendipity",
   "version": "0.0.2",
   "description": "An extensible, out-of-the-box cli",
   "main": "index.js",
@@ -10,9 +10,10 @@
   "scripts": {
     "lint": "eslint --ext .ts --max-warnings 0 packages/",
     "test": "jest --no-cache",
+    "lerna:build": "lerna run build",
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",
-    "lerna:build": "lerna run build"
+    "lerna:publish": "lerna publish --no-push --conventional-commits"
   },
   "repository": {
     "type": "git",
