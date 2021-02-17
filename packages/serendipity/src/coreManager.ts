@@ -11,7 +11,7 @@ import * as fs from 'fs'
 import { chalk, logger, serendipityEnv } from '@attachments/serendipity-public'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import ServiceManager from './serviceManager'
-import { BaseCommandValidateResult } from './types/options'
+import { AddOption, BaseCommandValidateResult } from './types/options'
 import PluginManager from './pluginManager'
 
 
@@ -145,14 +145,16 @@ class CoreManager {
    *
    * @author yuzhanglong
    * @param name 插件名称（如果传入的话）
+   * @param opt 插件选项
    * @date 2021-2-5 14:28:38
    */
-  async add(name: string): Promise<void> {
+  async add(name: string, opt: AddOption): Promise<void> {
 
     // 初始化 pluginManager，此时 plugin 还没有安装
     const pluginManager = PluginManager.createByAddCommand(
       this.basePath,
-      name
+      name,
+      opt
     )
 
     // 安装 plugin

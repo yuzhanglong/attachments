@@ -19,12 +19,14 @@ import {
 } from '@attachments/serendipity-public'
 import { PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import { getAppConfigFromConfigFile } from './utils'
+import { AddOption } from './types/options'
 
 
 class PluginManager {
   private readonly basePath: string
   private readonly packageManager: PackageManager
   private readonly version: string
+  private readonly localPath: string
 
   public inquiryResult: InquiryResult
   public pluginModule: PluginModule
@@ -37,13 +39,15 @@ class PluginManager {
     plugin: PluginModule,
     appConfig?: AppConfig,
     packageManager?: PackageManager,
-    version?: string) {
+    version?: string,
+    localPath?: string) {
     this.name = PluginManager.getPluginName(name)
     this.pluginModule = plugin
     this.basePath = basePath
     this.packageManager = packageManager ? packageManager : new PackageManager(basePath)
     this.appManager = new AppManager(basePath, appConfig || {})
     this.version = version
+    this.localPath = localPath
   }
 
   /**
@@ -52,9 +56,10 @@ class PluginManager {
    * @author yuzhanglong
    * @param basePath 基础路径
    * @param name 名称
+   * @param createOptions 创建时的选项
    * @date 2021-2-13 09:12:53
    */
-  static createByAddCommand(basePath: string, name: string): PluginManager {
+  static createByAddCommand(basePath: string, name: string, createOptions: AddOption): PluginManager {
     const appConfig = getAppConfigFromConfigFile(
       basePath, () => {
         logger.warn('配置文件 serendipity.js 不存在，请确认选择了正确的目录')
@@ -66,7 +71,9 @@ class PluginManager {
       name,
       null,
       appConfig,
-      PackageManager.createWithResolve(basePath)
+      PackageManager.createWithResolve(basePath),
+      createOptions.version,
+      createOptions.localPath
     )
   }
 
@@ -132,9 +139,12 @@ class PluginManager {
     // 如果 pluginModule 为空，安装并获取 plugin module
     if (!this.pluginModule) {
       // 安装这个 plugin，此时 plugin 的信息会被自动写入 package.json 中，无需再处理
-      this.pluginModule = await this.packageManager.addAndInstallModule(
-        this.name, onPluginModuleInstallError
-      )
+      this.pluginModule = await this.packageManager.addAndInstallModule({
+        name: this.name,
+        version: this.version,
+        localPath: this.localPath,
+        onError: onPluginModuleInstallError
+      })
     } else {
       // 如果用户没有传入版本号，那我们默认获取最新版本
       // 这样做的目的：如果 this.pluginModule 有值，就会走到这里，不需要 npm install 下载
