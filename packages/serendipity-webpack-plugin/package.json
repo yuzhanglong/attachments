@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-webpack-plugin",
-  "version": "0.0.2",
+  "version": "0.0.15",
   "main": "bin/index.js",
   "license": "MIT",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "type": "commonjs",
   "dependencies": {
-    "@attachments/serendipity-public": "~0.0.8",
+    "@attachments/serendipity-public": "^0.0.15",
     "boxen": "^5.0.0",
     "cli-table": "^0.3.4",
     "error-stack-parser": "^2.0.6"

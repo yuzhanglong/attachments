@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-plugin-react",
-  "version": "0.0.10",
+  "version": "0.0.15",
   "main": "bin/index.js",
   "license": "MIT",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@attachments/serendipity-public": "~0.0.9"
+    "@attachments/serendipity-public": "^0.0.15"
   },
   "peerDependencies": {
     "@attachments/serendipity-service-react": "~0.0.11"
