@@ -2,7 +2,12 @@
   "packages": [
     "packages/*"
   ],
-  "version": "0.0.0",
+  "command": {
+    "publish": {
+      "message": ":bookmark: chore(release): publish %s"
+    }
+  },
+  "version": "0.0.15",
   "npmClient": "yarn",
   "useWorkspaces": true
 }

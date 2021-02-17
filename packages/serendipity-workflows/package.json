@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-workflows",
-  "version": "0.0.1",
+  "version": "0.0.15",
   "main": "bin/index.js",
   "scripts": {
     "start": "tsc -w",
