@@ -12,9 +12,20 @@ import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
 
 // 项目创建时配置
 export interface CreateOptions {
+  // service 名称
   type?: string
+
+  // 是否初始化 git
   initGit?: boolean
+
+  // 自定义初次 commit 的 message
   commit?: string
+
+  // service 路径
+  serviceUrl?: string
+
+  // service 版本
+  version?: string
 }
 
 // object 类型，不要使用 any

@@ -24,6 +24,7 @@ import { getAppConfigFromConfigFile } from './utils'
 class PluginManager {
   private readonly basePath: string
   private readonly packageManager: PackageManager
+  private readonly version: string
 
   public inquiryResult: InquiryResult
   public pluginModule: PluginModule
@@ -35,12 +36,14 @@ class PluginManager {
     name: string,
     plugin: PluginModule,
     appConfig?: AppConfig,
-    packageManager?: PackageManager) {
+    packageManager?: PackageManager,
+    version?: string) {
     this.name = PluginManager.getPluginName(name)
     this.pluginModule = plugin
     this.basePath = basePath
     this.packageManager = packageManager ? packageManager : new PackageManager(basePath)
     this.appManager = new AppManager(basePath, appConfig || {})
+    this.version = version
   }
 
   /**
@@ -113,20 +116,36 @@ class PluginManager {
    * @date 2021-2-5 18:03:39
    */
   public async installPlugin(): Promise<void> {
-    logger.info(`插件 ${this.name} 安装中...`)
-
-    if (!this.name.match(/^(serendipity-plugin-)/)) {
-      logger.warn(
-        `${this.name} 不是一个推荐的插件名称，插件名称应该以 serendipity-plugin 开头，例如 serendipity-plugin-react`
-      )
-    }
-
-    // 安装并获取 plugin module
-    this.pluginModule = await this.packageManager.addAndInstallModule(this.name, (e) => {
+    const onPluginModuleInstallError = (e) => {
       logger.error('pluginModule 安装失败，请检查其名称是否正确!')
       console.log(e)
       process.exit(0)
-    })
+    }
+
+    logger.info(`插件 ${this.name} 安装中...`)
+
+    if (!isPlugin(this.name)) {
+      logger.warn(`${this.name} 不是一个有效的插件名称，其安装将被跳过...`)
+    }
+
+
+    // 如果 pluginModule 为空，安装并获取 plugin module
+    if (!this.pluginModule) {
+      // 安装这个 plugin，此时 plugin 的信息会被自动写入 package.json 中，无需再处理
+      this.pluginModule = await this.packageManager.addAndInstallModule(
+        this.name, onPluginModuleInstallError
+      )
+    } else {
+      // 如果用户没有传入版本号，那我们默认获取最新版本
+      // 这样做的目的：如果 this.pluginModule 有值，就会走到这里，不需要 npm install 下载
+      // 但是在未来执行 runtime 逻辑时，我们必须要找到插件模块
+      // 现在搜索插件的方法是对 用户的 package.json 的所有依赖进行字符串（如 vue-cli 就是这样做的）
+      this.packageManager.mergeIntoCurrent({
+        dependencies: {
+          [this.name]: this.version ? this.version : 'latest'
+        }
+      })
+    }
 
     // 开始质询
     await this.runPluginInquirer()
@@ -162,10 +181,6 @@ class PluginManager {
     }
   }
 
-  public getPackageManager(): PackageManager {
-    return this.packageManager
-  }
-
   /**
    * 获取 plugin 名称，我们要求名称以 serendipity-plugin- 开头 或者 以 @attachments
    * 如果不符合上面的要求，则在开头追加 serendipity-plugin-
@@ -180,6 +195,10 @@ class PluginManager {
       return name
     }
     return 'serendipity-plugin-' + name
+  }
+
+  public getPackageManager(): PackageManager {
+    return this.packageManager
   }
 }
 
