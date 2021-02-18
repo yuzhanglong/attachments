@@ -1,14 +1,19 @@
 {
   "name": "@attachments/serendipity-workflows",
   "version": "0.0.15",
+  "bin": {
+    "serendipity-workflows": "./bin/index.js"
+  },
   "main": "bin/index.js",
   "scripts": {
     "start": "tsc -w",
-    "build": "tsc"
+    "build": "tsc",
+    "commit-msg": "serendipity-workflows commit-message -p .git/COMMIT_EDITS"
   },
   "license": "MIT",
   "dependencies": {
-    "@commitlint/types": "^11.0.0"
+    "@commitlint/types": "^11.0.0",
+    "commander": "^7.1.0"
   },
   "files": [
     "bin"
