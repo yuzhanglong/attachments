@@ -11,7 +11,7 @@ import * as HtmlWebpackPlugin from 'html-webpack-plugin'
 import { WebpackConfiguration } from '@attachments/serendipity-public/bin/types/common'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import * as webpack from 'webpack'
-import { SerendipityWebpackPluginOption } from '@attachments/serenipity-webpack-plugin/bin/types'
+import { SerendipityWebpackPluginOption } from '@attachments/serendipity-webpack-plugin/bin/types'
 import { appBuild, appEntry } from '@attachments/serendipity-public/bin/utils/paths'
 import {
   DEFAULT_WEBPACK_ANALYSIS_PORT,

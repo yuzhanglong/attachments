@@ -13,7 +13,7 @@
     "lerna:build": "lerna run build",
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",
-    "lerna:publish": "lerna:build && lerna publish --no-push patch"
+    "lerna:publish": "yarn lerna:build && lerna publish --no-push patch"
   },
   "repository": {
     "type": "git",

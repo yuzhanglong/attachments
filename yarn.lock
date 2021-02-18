@@ -2,16 +2,6 @@
 # yarn lockfile v1
 
 
-"@attachments/serenipity-webpack-plugin@~0.0.2":
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/@attachments/serenipity-webpack-plugin/-/serenipity-webpack-plugin-0.0.2.tgz#d53961434b4440ed083cee93a1d5d0cdfff18b15"
-  integrity sha512-JSck+1Br3ep1aLq2I/eR/Pqciw26v4X3ZaW9pPXG7SGeEREFWHdad1Wzvb6HniSW0NmvoPSACMIDcqaInPQ/9Q==
-  dependencies:
-    "@attachments/serendipity-public" "~0.0.8"
-    boxen "^5.0.0"
-    cli-table "^0.3.4"
-    error-stack-parser "^2.0.6"
-
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.npm.taobao.org/@babel/code-frame/download/@babel/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"

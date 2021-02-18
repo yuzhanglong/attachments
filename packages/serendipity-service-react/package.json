@@ -15,7 +15,7 @@
     "@attachments/serendipity-plugin-eslint": "^0.0.16",
     "@attachments/serendipity-plugin-react": "^0.0.16",
     "@attachments/serendipity-public": "^0.0.16",
-    "@attachments/serenipity-webpack-plugin": "~0.0.2",
+    "@attachments/serendipity-webpack-plugin": "^0.0.16",
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.10",
