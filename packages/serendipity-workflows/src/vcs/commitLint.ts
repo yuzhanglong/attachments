@@ -9,7 +9,7 @@
 
 import { UserConfig } from '@commitlint/types'
 
-const config: UserConfig = {
+export const config: UserConfig = {
   // @ts-ignore
   parserPreset: {
     parserOpts: {
@@ -43,5 +43,3 @@ const config: UserConfig = {
     ]
   }
 }
-
-export default config

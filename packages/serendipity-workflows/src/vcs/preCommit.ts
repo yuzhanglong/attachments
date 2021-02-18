@@ -9,5 +9,7 @@
 
 import { runEsLint, runJestTest } from '../utils/common'
 
-runEsLint()
-runJestTest()
+export const preCommit = (): void => {
+  runEsLint()
+  runJestTest()
+}

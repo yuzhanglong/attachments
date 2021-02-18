@@ -13,7 +13,7 @@
     "lerna:build": "lerna run build",
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",
-    "lerna:publish": "lerna publish --no-push --conventional-commits"
+    "lerna:publish": "lerna:build && lerna publish --no-push patch"
   },
   "repository": {
     "type": "git",
@@ -55,9 +55,9 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "node ./node_modules/@attachments/serendipity-workflows/bin/vcs/preCommit.js",
-      "pre-push": "node ./node_modules/@attachments/serendipity-workflows/bin/vcs/prePush.js",
-      "commit-msg": "node ./node_modules/@attachments/serendipity-workflows/bin/vcs/commitMessage.js -e $HUSKY_GIT_PARAMS"
+      "pre-commit": "serendipity-workflows pre-commit",
+      "pre-push": "serendipity-workflows pre-push",
+      "commit-msg": "serendipity-workflows commit-message -p ./.git/COMMIT_EDITMSG"
     }
   }
 }

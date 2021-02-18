@@ -11,10 +11,6 @@
 // 读取文件，这个临时文件形如 '.git/COMMIT_EDITS'，保存了本次 commit 的临时信息
 import { checkCommitMessage } from '../utils/common'
 
-const commitMessagePath = process.argv[3]
-if (!commitMessagePath) {
-  throw new Error('请检查是否传入 commit message 路径')
+export const commitMessage = (commitPath: string):void => {
+  checkCommitMessage(commitPath)
 }
-
-// commit lint 验证
-checkCommitMessage(commitMessagePath)
