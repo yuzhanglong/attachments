@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-plugin-eslint",
-  "version": "0.0.16",
+  "version": "0.1.0",
   "main": "./bin/index.js",
   "scripts": {
     "start": "tsc -w",
@@ -12,7 +12,7 @@
     "webpack": "^5.21.2"
   },
   "dependencies": {
-    "@attachments/serendipity-public": "^0.0.16",
+    "@attachments/serendipity-public": "^0.1.0",
     "eslint-webpack-plugin": "^2.4.3"
   },
   "peerDependencies": {
