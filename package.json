@@ -13,7 +13,7 @@
     "lerna:build": "lerna run build",
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",
-    "lerna:publish": "yarn lerna:build && lerna publish --no-push patch"
+    "lerna:publish": "yarn lerna:build && lerna publish --no-push"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/yuzhanglong/serendipity#readme",
   "dependencies": {
-    "@attachments/serendipity-workflows": "~0.0.1",
+    "@attachments/serendipity-workflows": "latest",
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.13",

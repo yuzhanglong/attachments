@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@attachments/serendipity-workflows@latest":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-workflows/-/serendipity-workflows-0.1.0.tgz#89419066ae83cd857a8df988bfc63f5d07bbedac"
+  integrity sha512-iScP6hrDiFI6DhW3+yFz+7ag3BMoBhNWOjc2lRD0kefO8vAxpOkD0oKVJYaSHtJOr4htll5NwJuERvk5YTKcVA==
+  dependencies:
+    "@commitlint/types" "^11.0.0"
+    commander "^7.1.0"
+
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.npm.taobao.org/@babel/code-frame/download/@babel/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
