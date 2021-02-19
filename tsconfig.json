@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
+    "target": "ESNext",
     "module": "CommonJS",
     "declaration": true,
     "moduleResolution": "Node",
     "removeComments": true,
     "resolveJsonModule": true,
     "types": [
-      "node",
-      "jest"
+      "jest",
+      "node"
     ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
