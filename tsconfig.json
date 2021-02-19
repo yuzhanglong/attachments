@@ -10,6 +10,8 @@
       "node",
       "jest"
     ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "sourceMap": true
   }
 }

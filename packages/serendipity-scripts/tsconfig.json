@@ -6,7 +6,6 @@
     "rootDir": "./src"
   },
   "include": [
-    "src/**/*",
-    "../serendipity-plugin-react/bin/template.d.ts"
+    "src/**/*"
   ]
 }

@@ -22,5 +22,8 @@
   },
   "bugs": {
     "url": "https://github.com/yuzhanglong/serendipity/issues"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
   }
 }
