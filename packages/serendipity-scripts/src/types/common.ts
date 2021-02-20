@@ -20,9 +20,12 @@ export type PluginMetaInquiry = PluginMethodMetaBase
 
 export type PluginMetaConstruction = PluginMethodMetaBase
 
+export type PluginMetaRuntime = PluginMethodMetaBase
+
 export interface PluginMetaData {
   name: string
   scripts: PluginMetaScript[]
   inquiries: PluginMetaInquiry[]
   constructions: PluginMetaConstruction[]
+  runtime:PluginMetaRuntime[]
 }

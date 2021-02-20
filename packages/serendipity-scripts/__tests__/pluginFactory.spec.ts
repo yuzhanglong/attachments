@@ -6,7 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-import { Construction, Inquiry, Script, SerendipityPlugin } from '../src/core/decorators'
+import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '../src/core/decorators'
 import PluginFactory from '../src/core/pluginFactory'
 
 // eslint-disable-next-line max-lines-per-function
@@ -120,25 +120,41 @@ describe('pluginFactory 测试', () => {
     }
 
     const pluginFactory = new PluginFactory(ConstructionPlugin)
-    expect(pluginFactory.getPluginMetaData())
-      .toStrictEqual({
-        'name': undefined,
-        'constructions': [
-          {
-            'methodName': 'tryConstruction'
-          }
-        ],
-        'inquiries': [],
-        'scripts': [
-          {
-            'command': 'build',
-            'methodName': 'noInquiry'
-          }
-        ]
-      })
+    expect(pluginFactory.getPluginMetaData()['constructions'])
+      .toStrictEqual([
+        {
+          'methodName': 'tryConstruction'
+        }
+      ])
 
     const instance = pluginFactory.getPluginInstance()
 
     expect(instance['tryConstruction']()).toStrictEqual('foo')
+  })
+
+  test('@Runtime 元数据注册', () => {
+    class RuntimePlugin {
+      @Runtime()
+      runtime() {
+        return 'runtime~'
+      }
+    }
+
+    const pluginFactory = new PluginFactory(RuntimePlugin)
+    const meta = pluginFactory.getPluginMetaData()
+    expect(meta)
+      .toStrictEqual({
+        'name': 'RuntimePlugin',
+        'constructions': [
+          {
+            'methodName': 'runtime'
+          }
+        ],
+        'inquiries': [],
+        'runtime': [],
+        'scripts': []
+      })
+    const method = meta['constructions'][0]['methodName']
+    expect(pluginFactory.getPluginInstance()[method]()).toStrictEqual('runtime~')
   })
 })

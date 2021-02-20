@@ -23,7 +23,6 @@ export const Script = (command: string) => {
 
 export const SerendipityPlugin = (name: string) => {
   return (target) => {
-    // 定义 name 元数据
     Reflect.defineMetadata(PLUGIN_NAME_META_KEY, name, target)
   }
 }
@@ -31,14 +30,18 @@ export const SerendipityPlugin = (name: string) => {
 
 export const Inquiry = () => {
   return (target: unknown, key: string, descriptor: PropertyDescriptor) => {
-    // 定义 name 元数据
     Reflect.defineMetadata(PLUGIN_INQUIRY_META_KEY, true, descriptor.value)
   }
 }
 
 export const Construction = () => {
   return (target: unknown, key: string, descriptor: PropertyDescriptor) => {
-    // 定义 name 元数据
+    Reflect.defineMetadata(PLUGIN_CONSTRUCTION_META_KEY, true, descriptor.value)
+  }
+}
+
+export const Runtime = () => {
+  return (target: unknown, key: string, descriptor: PropertyDescriptor) => {
     Reflect.defineMetadata(PLUGIN_CONSTRUCTION_META_KEY, true, descriptor.value)
   }
 }

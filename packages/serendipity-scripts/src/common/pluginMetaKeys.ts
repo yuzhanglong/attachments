@@ -15,3 +15,4 @@ export const PLUGIN_INQUIRY_META_KEY = 'plugin-inquiry'
 
 export const PLUGIN_CONSTRUCTION_META_KEY = 'plugin-construction'
 
+export const PLUGIN_RUNTIME_META_KEY = 'plugin-runtime'

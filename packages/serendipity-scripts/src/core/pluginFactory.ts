@@ -11,7 +11,7 @@ import { Constructor, PluginMetaData } from '../types/common'
 import {
   PLUGIN_CONSTRUCTION_META_KEY,
   PLUGIN_INQUIRY_META_KEY,
-  PLUGIN_NAME_META_KEY,
+  PLUGIN_NAME_META_KEY, PLUGIN_RUNTIME_META_KEY,
   PLUGIN_SCRIPT_META_KEY
 } from '../common/pluginMetaKeys'
 
@@ -34,7 +34,8 @@ class PluginFactory {
    */
   public getPluginMetaName() {
     const prototype = Object.getPrototypeOf(this.pluginInstance)
-    return Reflect.getMetadata(PLUGIN_NAME_META_KEY, prototype.constructor)
+    const name = Reflect.getMetadata(PLUGIN_NAME_META_KEY, prototype.constructor)
+    return name ? name : prototype.constructor.name
   }
 
   /**
@@ -62,7 +63,8 @@ class PluginFactory {
       name: '',
       scripts: [],
       inquiries: [],
-      constructions: []
+      constructions: [],
+      runtime: []
     }
     const methodNames = this.getPluginMetaMethods()
 
@@ -71,7 +73,7 @@ class PluginFactory {
       const command = Reflect.getMetadata(PLUGIN_SCRIPT_META_KEY, targetFn)
       const inquiry = Reflect.getMetadata(PLUGIN_INQUIRY_META_KEY, targetFn)
       const construction = Reflect.getMetadata(PLUGIN_CONSTRUCTION_META_KEY, targetFn)
-
+      const runtime = Reflect.getMetadata(PLUGIN_RUNTIME_META_KEY, targetFn)
       // 脚本
       if (command) {
         result.scripts.push({
@@ -88,6 +90,12 @@ class PluginFactory {
       // 构建
       if (construction) {
         result.constructions.push({
+          methodName: methodName
+        })
+      }
+      // 运行时
+      if (runtime) {
+        result.runtime.push({
           methodName: methodName
         })
       }
@@ -108,7 +116,8 @@ class PluginFactory {
       name: this.getPluginMetaName(),
       scripts: methodMetas.scripts,
       inquiries: methodMetas.inquiries,
-      constructions: methodMetas.constructions
+      constructions: methodMetas.constructions,
+      runtime: methodMetas.runtime
     }
   }
 }
