@@ -8,15 +8,24 @@
 
 import { AppManager } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
+import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
 import PluginFactory from '../core/pluginFactory'
 
 export interface ScriptOptions {
   appManager: AppManager
-  hooks: ScriptHooks
+  scriptHooks: ScriptBaseHooks
   matchPlugin: (name: string) => PluginFactory
+  inquiryResult?: CommonObject
 }
 
-export interface ScriptHooks {
+export interface ConstructionOptions {
+  appManager: AppManager
+  matchPlugin: (name: string) => PluginFactory
+  inquiryResult: CommonObject
+  renderTemplate: (base: string, options?: CommonObject, target?: string) => void
+}
+
+export interface ScriptBaseHooks {
   // 脚本执行前 hook
   beforeScriptExecute: SyncHook<void>
 

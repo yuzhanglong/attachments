@@ -8,7 +8,6 @@
 
 
 import { Configuration } from 'webpack'
-import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
 
 // 项目创建时配置
 export interface CreateOptions {
@@ -34,22 +33,11 @@ export type CommonObject = Record<string, unknown>
 // webpack 配置别名，由各个包共享而不额外安装
 export type WebpackConfiguration = Configuration
 
-// webpack-dev-server 配置别名，由各个包共享而不额外安装
-export type WebpackDevServerConfiguration = DevServerConfiguration
-
 // 质询问题结果
 export type InquiryResult = CommonObject
 
-// webpack 配置
-export interface WebpackConfig {
-  devServerConfig?: WebpackDevServerConfiguration
-  webpackConfig?: WebpackConfiguration
-}
-
-
 // app 配置，针对 service 的额外配置可以
 export interface AppConfig<T = unknown> {
-  webpack?: WebpackConfig
   additional?: T
 }
 

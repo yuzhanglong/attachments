@@ -7,10 +7,11 @@
  */
 
 
+import * as path from 'path'
 import { SyncHook } from 'tapable'
-import { Runtime, Script } from '../src/core/decorators'
+import { Construction, Runtime, Script } from '../src/core/decorators'
 import PluginExecutor from '../src/core/pluginExecutor'
-import { ScriptOptions } from '../src/types/pluginExecute'
+import { ConstructionOptions, ScriptOptions } from '../src/types/pluginExecute'
 
 describe('plugin 执行器', () => {
   test('多个 @script 下，只执行第一个', () => {
@@ -23,16 +24,16 @@ describe('plugin 执行器', () => {
     class FooPlugin {
       @Script('start')
       start(options: ScriptOptions) {
-        options.hooks.beforeScriptExecute.tap('before', beforeCallback)
-        options.hooks.afterExecute.tap('after', afterCallback)
-        options.hooks.scriptExecute.tap('execute', executeCallback)
+        options.scriptHooks.beforeScriptExecute.tap('before', beforeCallback)
+        options.scriptHooks.afterExecute.tap('after', afterCallback)
+        options.scriptHooks.scriptExecute.tap('execute', executeCallback)
       }
 
       @Script('build')
       build(options: ScriptOptions) {
-        options.hooks.beforeScriptExecute.tap('before', beforeCallback)
-        options.hooks.afterExecute.tap('after', afterCallback)
-        options.hooks.scriptExecute.tap('execute', executeCallback)
+        options.scriptHooks.beforeScriptExecute.tap('before', beforeCallback)
+        options.scriptHooks.afterExecute.tap('after', afterCallback)
+        options.scriptHooks.scriptExecute.tap('execute', executeCallback)
       }
     }
 
@@ -40,7 +41,7 @@ describe('plugin 执行器', () => {
 
     pluginExecutor.registerPlugin(FooPlugin)
 
-    pluginExecutor.runScript('start')
+    pluginExecutor.executeScript('start')
 
     // 即使我们有两个 script 注解，也应该只执行一次
     expect(beforeCallback).toBeCalledTimes(1)
@@ -49,7 +50,6 @@ describe('plugin 执行器', () => {
   })
 
   test('多个 plugin tap 协作', () => {
-
     class PluginOne {
       public testArray = []
       public myHook = {
@@ -63,7 +63,7 @@ describe('plugin 执行器', () => {
 
       @Script('start')
       build(options: ScriptOptions) {
-        options.hooks.scriptExecute.tap('execute', this.executeCallback)
+        options.scriptHooks.scriptExecute.tap('execute', this.executeCallback)
       }
     }
 
@@ -82,13 +82,29 @@ describe('plugin 执行器', () => {
     const pluginExecutor = new PluginExecutor()
 
     pluginExecutor.registerPlugin(PluginOne, PluginTwo)
-    pluginExecutor.runScript('start')
+    pluginExecutor.executeScript('start')
     const pluginOneInstance: PluginOne = pluginExecutor.getPlugins()[0].getPluginInstance()
     expect(pluginOneInstance.testArray).toStrictEqual([
       'yzl',
       '20',
       'programmer'
     ])
+
     expect(pluginOneInstance.executeCallback).toBeCalledTimes(1)
+
+
+  })
+
+  test('plugin constructions', () => {
+    class HelloWorldPlugin {
+      @Construction()
+      foo(options: ConstructionOptions) {
+        options.renderTemplate('docs', {}, path.resolve(process.cwd(), 'playground'))
+      }
+    }
+
+    const executor = new PluginExecutor()
+    executor.registerPlugin(HelloWorldPlugin)
+    // executor.executeConstruction()
   })
 })
