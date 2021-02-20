@@ -144,17 +144,17 @@ describe('pluginFactory 测试', () => {
     const meta = pluginFactory.getPluginMetaData()
     expect(meta)
       .toStrictEqual({
+        'constructions': [],
+        'inquiries': [],
         'name': 'RuntimePlugin',
-        'constructions': [
+        'runtime': [
           {
             'methodName': 'runtime'
           }
         ],
-        'inquiries': [],
-        'runtime': [],
         'scripts': []
       })
-    const method = meta['constructions'][0]['methodName']
+    const method = meta['runtime'][0]['methodName']
     expect(pluginFactory.getPluginInstance()[method]()).toStrictEqual('runtime~')
   })
 })

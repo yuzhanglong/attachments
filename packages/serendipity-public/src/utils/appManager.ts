@@ -110,6 +110,15 @@ class AppManager {
     return this.packageManager.getPackageConfig()
   }
 
+  /**
+   * base path getter
+   *
+   * @author yuzhanglong
+   * @date 2021-2-21 00:11:42
+   */
+  public getBasePath(): string {
+    return this.basePath
+  }
 }
 
 export default AppManager

@@ -24,7 +24,8 @@
     "url": "https://github.com/yuzhanglong/serendipity/issues"
   },
   "dependencies": {
+    "@attachments/serendipity-public": "^0.1.0",
     "reflect-metadata": "^0.1.13",
-    "@attachments/serendipity-public": "^0.1.0"
+    "tapable": "^2.2.0"
   }
 }

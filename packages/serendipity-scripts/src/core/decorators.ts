@@ -11,7 +11,7 @@ import {
   PLUGIN_SCRIPT_META_KEY,
   PLUGIN_NAME_META_KEY,
   PLUGIN_INQUIRY_META_KEY,
-  PLUGIN_CONSTRUCTION_META_KEY
+  PLUGIN_CONSTRUCTION_META_KEY, PLUGIN_RUNTIME_META_KEY
 } from '../common/pluginMetaKeys'
 
 
@@ -42,6 +42,6 @@ export const Construction = () => {
 
 export const Runtime = () => {
   return (target: unknown, key: string, descriptor: PropertyDescriptor) => {
-    Reflect.defineMetadata(PLUGIN_CONSTRUCTION_META_KEY, true, descriptor.value)
+    Reflect.defineMetadata(PLUGIN_RUNTIME_META_KEY, true, descriptor.value)
   }
 }

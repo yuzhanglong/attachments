@@ -40,16 +40,8 @@ export type WebpackDevServerConfiguration = DevServerConfiguration
 // 质询问题结果
 export type InquiryResult = CommonObject
 
-// webpack 配置
-export interface WebpackConfig {
-  devServerConfig?: WebpackDevServerConfiguration
-  webpackConfig?: WebpackConfiguration
-}
-
-
 // app 配置，针对 service 的额外配置可以
 export interface AppConfig<T = unknown> {
-  webpack?: WebpackConfig
   additional?: T
 }
 

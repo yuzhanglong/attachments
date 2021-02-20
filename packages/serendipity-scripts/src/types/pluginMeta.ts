@@ -1,5 +1,5 @@
 /*
- * File: common.ts
+ * File: pluginMeta.ts
  * Description: 类型集合
  * Created: 2021-2-19 23:19:59
  * Author: yuzhanglong
@@ -27,5 +27,5 @@ export interface PluginMetaData {
   scripts: PluginMetaScript[]
   inquiries: PluginMetaInquiry[]
   constructions: PluginMetaConstruction[]
-  runtime:PluginMetaRuntime[]
+  runtime: PluginMetaRuntime[]
 }
