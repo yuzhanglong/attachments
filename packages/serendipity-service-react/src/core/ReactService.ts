@@ -70,10 +70,10 @@ class ReactService {
     // 执行插件运行时逻辑
     this.runRuntimePlugins()
 
-    // 尝试从用户配置文件中获取配置，它的优先级较高
-    if (appConfig?.webpack?.webpackConfig) {
-      this.mergeWebpackConfig(appConfig.webpack.webpackConfig)
-    }
+    // // 尝试从用户配置文件中获取配置，它的优先级较高
+    // if (appConfig?.webpack?.webpackConfig) {
+    //   this.mergeWebpackConfig(appConfig.webpack.webpackConfig)
+    // }
 
     // devServer 选项合并
     const devServerOptions = Object.assign({}, this.devServerConfig)
@@ -106,15 +106,17 @@ class ReactService {
    * @date 2021-2-6 18:28:34
    */
   public build(): void {
-    const appConfig = this.appManager.getAppConfig()
+    // const appConfig = this.appManager.getAppConfig()
 
     // 构建项目，同样地执行 Runtime Plugin
     this.runRuntimePlugins()
 
-    // 尝试从用户配置文件中获取配置，它的优先级较高
-    if (appConfig?.webpack?.webpackConfig) {
-      this.mergeWebpackConfig(appConfig.webpack.webpackConfig)
-    }
+    // // 尝试从用户配置文件中获取配置，它的优先级较高
+    // // @ts-ignore
+    // if (appConfig?.webpack?.webpackConfig) {
+    //   // @ts-ignore
+    //   this.mergeWebpackConfig(appConfig.webpack.webpackConfig)
+    // }
 
     // 初始化 webpack compiler
     const compiler = webpack(this.webpackConfig as Configuration)
