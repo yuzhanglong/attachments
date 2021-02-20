@@ -7,8 +7,13 @@
  */
 
 
-import { Constructor, PluginMetaData, PluginMethodMetaData } from '../types/common'
-import { PLUGIN_INQUIRY_META_KEY, PLUGIN_NAME_META_KEY, PLUGIN_SCRIPT_META_KEY } from '../common/pluginMetaKeys'
+import { Constructor, PluginMetaData } from '../types/common'
+import {
+  PLUGIN_CONSTRUCTION_META_KEY,
+  PLUGIN_INQUIRY_META_KEY,
+  PLUGIN_NAME_META_KEY,
+  PLUGIN_SCRIPT_META_KEY
+} from '../common/pluginMetaKeys'
 
 class PluginFactory {
   private readonly pluginInstance
@@ -25,7 +30,7 @@ class PluginFactory {
    * 获取 plugin name meta
    *
    * @author yuzhanglong
-   * @date 2021-2-20 12:54:16
+   * @date 2021-2-20 17:21:15
    */
   public getPluginMetaName() {
     const prototype = Object.getPrototypeOf(this.pluginInstance)
@@ -33,13 +38,15 @@ class PluginFactory {
   }
 
   /**
-   * 获取 plugin 所有的 methods
+   * 获取 plugin 所有的 methods name
+   * constructor 会被忽略
    *
    * @author yuzhanglong
-   * @date 2021-2-20 12:54:02
+   * @date 2021-2-20 17:21:40
    */
   public getPluginMetaMethods() {
     const prototype = Object.getPrototypeOf(this.pluginInstance)
+
     // 获取所有 method names
     return Object.getOwnPropertyNames(prototype).filter(res => res !== 'constructor')
   }
@@ -50,20 +57,42 @@ class PluginFactory {
    * @author yuzhanglong
    * @date 2021-2-20 12:53:40
    */
-  public getPluginMethodMetaData(): PluginMethodMetaData[] {
+  public getPluginMethodMetaData(): PluginMetaData {
+    const result: PluginMetaData = {
+      name: '',
+      scripts: [],
+      inquiries: [],
+      constructions: []
+    }
     const methodNames = this.getPluginMetaMethods()
-    return methodNames.map((name) => {
-      const targetFn = this.pluginInstance[name]
-      return {
-        script: {
-          command: Reflect.getMetadata(PLUGIN_SCRIPT_META_KEY, targetFn),
-          methodName: name
-        },
-        inquiry: {
-          methodName: Reflect.getMetadata(PLUGIN_INQUIRY_META_KEY, targetFn) ? name : undefined
-        }
+
+    for (const methodName of methodNames) {
+      const targetFn = this.pluginInstance[methodName]
+      const command = Reflect.getMetadata(PLUGIN_SCRIPT_META_KEY, targetFn)
+      const inquiry = Reflect.getMetadata(PLUGIN_INQUIRY_META_KEY, targetFn)
+      const construction = Reflect.getMetadata(PLUGIN_CONSTRUCTION_META_KEY, targetFn)
+
+      // 脚本
+      if (command) {
+        result.scripts.push({
+          methodName: methodName,
+          command: command
+        })
       }
-    })
+      // 质询
+      if (inquiry) {
+        result.inquiries.push({
+          methodName: methodName
+        })
+      }
+      // 构建
+      if (construction) {
+        result.constructions.push({
+          methodName: methodName
+        })
+      }
+    }
+    return result
   }
 
   /**
@@ -77,8 +106,9 @@ class PluginFactory {
     const methodMetas = this.getPluginMethodMetaData()
     return {
       name: this.getPluginMetaName(),
-      scripts: methodMetas.map(res => res.script).filter(res => res.command !== undefined),
-      inquiryMethodNames: methodMetas.map(res => res.inquiry.methodName).filter(res => res !== undefined)
+      scripts: methodMetas.scripts,
+      inquiries: methodMetas.inquiries,
+      constructions: methodMetas.constructions
     }
   }
 }

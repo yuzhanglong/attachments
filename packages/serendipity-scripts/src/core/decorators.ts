@@ -7,7 +7,12 @@
  */
 
 import 'reflect-metadata'
-import { PLUGIN_SCRIPT_META_KEY, PLUGIN_NAME_META_KEY, PLUGIN_INQUIRY_META_KEY } from '../common/pluginMetaKeys'
+import {
+  PLUGIN_SCRIPT_META_KEY,
+  PLUGIN_NAME_META_KEY,
+  PLUGIN_INQUIRY_META_KEY,
+  PLUGIN_CONSTRUCTION_META_KEY
+} from '../common/pluginMetaKeys'
 
 
 export const Script = (command: string) => {
@@ -28,5 +33,12 @@ export const Inquiry = () => {
   return (target: unknown, key: string, descriptor: PropertyDescriptor) => {
     // 定义 name 元数据
     Reflect.defineMetadata(PLUGIN_INQUIRY_META_KEY, true, descriptor.value)
+  }
+}
+
+export const Construction = () => {
+  return (target: unknown, key: string, descriptor: PropertyDescriptor) => {
+    // 定义 name 元数据
+    Reflect.defineMetadata(PLUGIN_CONSTRUCTION_META_KEY, true, descriptor.value)
   }
 }

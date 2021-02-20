@@ -8,22 +8,21 @@
 
 export type Constructor<T = unknown> = new (...args: unknown[]) => T;
 
-export interface PluginMetaScript {
-  command: string
+export interface PluginMethodMetaBase {
   methodName: string
 }
 
-export interface PluginMetaInquiry {
-  methodName: string | undefined
+export interface PluginMetaScript extends PluginMethodMetaBase {
+  command: string
 }
 
-export interface PluginMethodMetaData {
-  script: PluginMetaScript
-  inquiry: PluginMetaInquiry
-}
+export type PluginMetaInquiry = PluginMethodMetaBase
+
+export type PluginMetaConstruction = PluginMethodMetaBase
 
 export interface PluginMetaData {
   name: string
   scripts: PluginMetaScript[]
-  inquiryMethodNames: string[]
+  inquiries: PluginMetaInquiry[]
+  constructions: PluginMetaConstruction[]
 }

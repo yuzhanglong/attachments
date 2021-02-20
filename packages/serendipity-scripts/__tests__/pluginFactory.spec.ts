@@ -6,9 +6,10 @@
  * Email: yuzl1123@163.com
  */
 
-import { Inquiry, Script, SerendipityPlugin } from '../src/core/decorators'
+import { Construction, Inquiry, Script, SerendipityPlugin } from '../src/core/decorators'
 import PluginFactory from '../src/core/pluginFactory'
 
+// eslint-disable-next-line max-lines-per-function
 describe('pluginFactory 测试', () => {
   test('@script 元数据注册', () => {
     class FooPlugin {
@@ -54,7 +55,6 @@ describe('pluginFactory 测试', () => {
     expect(instance[methods[1]]()).toStrictEqual('react build return')
   })
 
-
   test('@SerendipityPlugin 元数据注册', () => {
     @SerendipityPlugin('FooPlugin')
     class FooPlugin {
@@ -81,12 +81,19 @@ describe('pluginFactory 测试', () => {
       tryInquiryTwo() {
         console.log('foo~')
       }
+
+      @Script('build')
+      noInquiry(): string {
+        return 'react build return'
+      }
     }
 
     const pluginFactory = new PluginFactory(InquiryPlugin)
-    expect(pluginFactory.getPluginMetaData().inquiryMethodNames)
+    expect(pluginFactory.getPluginMetaData().inquiries)
       .toStrictEqual([
-        'tryInquiry'
+        {
+          'methodName': 'tryInquiry'
+        }
       ])
 
     const instance = pluginFactory.getPluginInstance()
@@ -97,5 +104,41 @@ describe('pluginFactory 测试', () => {
         message: '请选择一个开发语言'
       }
     ])
+  })
+
+  test('@Construction 元数据注册', () => {
+    class ConstructionPlugin {
+      @Construction()
+      tryConstruction() {
+        return 'foo'
+      }
+
+      @Script('build')
+      noInquiry(): string {
+        return 'react build return'
+      }
+    }
+
+    const pluginFactory = new PluginFactory(ConstructionPlugin)
+    expect(pluginFactory.getPluginMetaData())
+      .toStrictEqual({
+        'name': undefined,
+        'constructions': [
+          {
+            'methodName': 'tryConstruction'
+          }
+        ],
+        'inquiries': [],
+        'scripts': [
+          {
+            'command': 'build',
+            'methodName': 'noInquiry'
+          }
+        ]
+      })
+
+    const instance = pluginFactory.getPluginInstance()
+
+    expect(instance['tryConstruction']()).toStrictEqual('foo')
   })
 })
