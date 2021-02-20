@@ -7,20 +7,26 @@
  */
 
 import 'reflect-metadata'
+import { PLUGIN_SCRIPT_META_KEY, PLUGIN_NAME_META_KEY, PLUGIN_INQUIRY_META_KEY } from '../common/pluginMetaKeys'
 
-export const Command = (command: string) => {
-  console.log(command)
+
+export const Script = (command: string) => {
   return (target: unknown, key: string, descriptor: PropertyDescriptor) => {
-    console.log(target)
-    console.log(key)
-    console.log(descriptor)
+    Reflect.defineMetadata(PLUGIN_SCRIPT_META_KEY, command, descriptor.value)
   }
 }
 
-export const SerendipityPlugin = <T>(name: string) => {
-  console.log(name)
-  return (target: T) => {
-    const paramtypes = Reflect.getMetadata('design:paramtypes', target)
-    console.log('传递给类A的构造函数的参数类型数组', paramtypes)
+export const SerendipityPlugin = (name: string) => {
+  return (target) => {
+    // 定义 name 元数据
+    Reflect.defineMetadata(PLUGIN_NAME_META_KEY, name, target)
+  }
+}
+
+
+export const Inquiry = () => {
+  return (target: unknown, key: string, descriptor: PropertyDescriptor) => {
+    // 定义 name 元数据
+    Reflect.defineMetadata(PLUGIN_INQUIRY_META_KEY, true, descriptor.value)
   }
 }

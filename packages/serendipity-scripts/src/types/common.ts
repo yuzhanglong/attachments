@@ -6,17 +6,24 @@
  * Email: yuzl1123@163.com
  */
 
-export type ClassConstructor<T> = { new(...args: []): T }
+export type Constructor<T = unknown> = new (...args: unknown[]) => T;
 
-export interface MetaItem {
-  target: unknown
-  propertyKey: string | symbol
+export interface PluginMetaScript {
+  command: string
+  methodName: string
 }
 
-export interface CommandMetaItem extends MetaItem {
-  command: string
+export interface PluginMetaInquiry {
+  methodName: string | undefined
+}
+
+export interface PluginMethodMetaData {
+  script: PluginMetaScript
+  inquiry: PluginMetaInquiry
 }
 
 export interface PluginMetaData {
-  command: CommandMetaItem[]
+  name: string
+  scripts: PluginMetaScript[]
+  inquiryMethodNames: string[]
 }
