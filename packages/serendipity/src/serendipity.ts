@@ -19,16 +19,13 @@ import { AddOption } from './types/options'
 // 版本信息
 program.version(`serendipity ${require('../package').version}`)
 
-// serendipity create
+// serendipity create，创建一个由 serendipity 管理的项目
 program
   .command('create [app-name]')
-  .description('开始创建一个前端项目(*^▽^*)~')
-  .option('-t --type <projectType>', '项目类型，如 \'react\'')
-  .option('-s --serviceUrl <customizeService>', '自定义项目 service 路径，可以是本地文件')
+  .description('开始创建一个前端项目、或者初始化一个模板 (*^▽^*)~')
   .option('-g --git', '初始化 git', false)
   .option('-c --commit', '初始化 commit 信息，只有选择初始化 git 时有效', 'initial commit')
-  .option('-p --preset', '配置自定义预设，它的默认值和你选择的项目有关')
-  .option('-v --version <version>', 'service 版本，默认为 *')
+  .option('-p --preset', '选择一个创建预设 (preset)，可以是本地文件或者 http 链接')
   .action(async (name: string, opt: CreateOptions) => {
     if (!name) {
       name = DEFAULT_PROJECT_NAME
@@ -44,8 +41,7 @@ program
     await manager.create(name, opt)
   })
 
-// serendipity add
-// 例如: serendipity add xxx 即 serendipity add -n(--name) serendipity-plugin-react
+// serendipity add 为serendipity 管理的项目或者某个一般项目添加插件
 program
   .command('add [plugin-name]')
   .description('添加一个插件')

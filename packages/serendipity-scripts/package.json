@@ -5,7 +5,7 @@
   "author": "coderyzl <yuzl1123@163.com>",
   "homepage": "https://github.com/yuzhanglong/serendipity/tree/master/packages/serendipity-scripts#readme",
   "license": "ISC",
-  "main": "lib/serendipity-scripts.js",
+  "main": "bin/index.js",
   "files": [
     "bin"
   ],

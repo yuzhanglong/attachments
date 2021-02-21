@@ -7,12 +7,17 @@
  */
 
 
-import * as path from 'path'
+import * as fs from 'fs'
 import { SyncHook } from 'tapable'
-import { Construction, Runtime, Script } from '../src/core/decorators'
+import { Construction, Runtime, Script } from '../src'
 import PluginExecutor from '../src/core/pluginExecutor'
 import { ConstructionOptions, ScriptOptions } from '../src/types/pluginExecute'
+import { Inquiry, SerendipityPlugin } from '../bin'
 
+jest.mock('inquirer')
+jest.mock('fs')
+
+// eslint-disable-next-line max-lines-per-function
 describe('plugin 执行器', () => {
   test('多个 @script 下，只执行第一个', () => {
     const beforeCallback = jest.fn()
@@ -91,20 +96,57 @@ describe('plugin 执行器', () => {
     ])
 
     expect(pluginOneInstance.executeCallback).toBeCalledTimes(1)
-
-
   })
 
-  test('plugin constructions', () => {
+  test('plugin constructions 流程执行', async () => {
+    @SerendipityPlugin('hello-world')
     class HelloWorldPlugin {
       @Construction()
-      foo(options: ConstructionOptions) {
-        options.renderTemplate('docs', {}, path.resolve(process.cwd(), 'playground'))
+      async foo(options: ConstructionOptions) {
+        // 模板写入
+        await options.renderTemplate(
+          '/base',
+          {},
+          '/target'
+        )
+
+        expect(options.inquiryResult)
+          .toStrictEqual({
+            eslintSupport: true
+          })
+
+        // 通过原型链找到构造函数，期望是 HelloWorldPlugin
+        const pluginInstance = options.matchPlugin('hello-world').getPluginInstance()
+        const constructor = Object.getPrototypeOf(pluginInstance).constructor
+        expect(constructor).toStrictEqual(HelloWorldPlugin)
+      }
+
+      @Inquiry()
+      myInquiry() {
+        return [
+          {
+            type: 'confirm',
+            name: 'eslintSupport',
+            message: '增加 eslint 支持',
+            default: true
+          }
+        ]
       }
     }
 
+    // 文件初始化
+    fs.mkdirSync('/target')
+    fs.mkdirSync('/base')
+    fs.writeFileSync('/base/bar', 'hello world bar')
+    fs.writeFileSync('/base/foo', 'hello world foo')
+
+
     const executor = new PluginExecutor()
     executor.registerPlugin(HelloWorldPlugin)
-    // executor.executeConstruction()
+
+    await executor.executeConstruction()
+
+    expect(fs.existsSync('/target/bar')).toBeTruthy()
+    expect(fs.existsSync('/target/foo')).toBeTruthy()
   })
 })

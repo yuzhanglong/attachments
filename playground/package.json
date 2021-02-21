@@ -1,14 +1,6 @@
 {
-  "name": "serendipity-playground",
+  "name": "serendipity-project",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "create-react-project": "node ../packages/serendipity/bin/serendipity.js create foo1 -t react -s D:\\projects\\serendipity\\packages\\serendipity-service-react",
-    "add-react-plugin": "cd hello-serendipity && node ../../packages/serendipity/bin/serendipity.js add -p D:\\projects\\serendipity\\packages\\serendipity-plugin-react",
-    "add-eslint-plugin": "cd hello-serendipity && node ../../packages/serendipity/bin/serendipity.js add -p D:\\projects\\serendipity\\packages\\serendipity-plugin-eslint"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "axios": "^0.21.1"
-  }
+  "license": "MIT"
 }

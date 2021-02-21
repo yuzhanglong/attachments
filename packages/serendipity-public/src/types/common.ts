@@ -12,20 +12,14 @@ import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
 
 // 项目创建时配置
 export interface CreateOptions {
-  // service 名称
-  type?: string
-
   // 是否初始化 git
-  initGit?: boolean
+  git?: boolean
 
   // 自定义初次 commit 的 message
   commit?: string
 
-  // service 路径
-  serviceUrl?: string
-
-  // service 版本
-  version?: string
+  // 项目预设
+  preset?: string
 }
 
 // object 类型，不要使用 any
@@ -40,9 +34,17 @@ export type WebpackDevServerConfiguration = DevServerConfiguration
 // 质询问题结果
 export type InquiryResult = CommonObject
 
+
+// app 配置中 plugins
+
+export interface AppConfigPlugin {
+  name: string,
+  options: unknown
+}
+
 // app 配置，针对 service 的额外配置可以
-export interface AppConfig<T = unknown> {
-  additional?: T
+export interface AppConfig {
+  plugins?: AppConfigPlugin[]
 }
 
 // 包管理工具类型
@@ -63,3 +65,4 @@ export interface ModuleInstallOptions {
   onError?: (e: Error) => void
 }
 
+export type Constructor<T = unknown> = new (...args: unknown[]) => T;
