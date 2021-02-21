@@ -6,8 +6,14 @@
  * Email: yuzl1123@163.com
  */
 
+const calledCommands = []
+
 const execa = (command: string) => {
-  console.log(command)
+  calledCommands.push(command)
+}
+
+execa.getCommands = () => {
+  return calledCommands
 }
 
 module.exports = execa
