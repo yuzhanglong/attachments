@@ -57,7 +57,7 @@ describe('serviceManager 模块', () => {
   })
 
   test('初始化预设（本地文件模式 / http 模式）', async () => {
-    // TODO: 可以考虑临时起个测试服务器？这里暂时先用 CDN 代替了
+    // TODO: 可以考虑临时起个测试服务器 这里暂时先用 CDN 代替了
     const cm = new ConstructionManager(
       path.resolve(process.cwd(), 'playground'),
       {

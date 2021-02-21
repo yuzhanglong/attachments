@@ -17,8 +17,6 @@ import { AppManager, logger, webpackMerge } from '@attachments/serendipity-publi
 import getDevServerConfig from '../webpack/devServerConfig'
 import getBaseConfig from '../webpack/webpackBase'
 import { clearConsole } from '../utils/console'
-import { DEFAULT_WEBPACK_DEV_SERVER_HOST, DEFAULT_WEBPACK_DEV_SERVER_PORT } from '../common/constants'
-import { ReactServiceAppConfigOptions } from '../types/common'
 
 class ReactService {
   private readonly devServerConfig: WebpackDevServerConfiguration
@@ -52,9 +50,10 @@ class ReactService {
   private runRuntimePlugins(): void {
     const pluginModules = this.appManager.getPluginModules()
     for (const pluginModule of pluginModules) {
-      pluginModule.runtime({
-        mergeWebpackConfig: this.mergeWebpackConfig.bind(this)
-      })
+      console.log(pluginModule)
+      // pluginModule.runtime({
+      //   mergeWebpackConfig: this.mergeWebpackConfig.bind(this)
+      // })
     }
   }
 
@@ -66,7 +65,7 @@ class ReactService {
    */
   public start(): void {
     const appConfig = this.appManager.getAppConfig()
-
+    console.log(appConfig)
     // 执行插件运行时逻辑
     this.runRuntimePlugins()
 
@@ -86,17 +85,18 @@ class ReactService {
     // 启动 webpackDevServer 服务器
     // @ts-ignore
     const server = new WebpackDevServer(compiler, devServerOptions)
+    console.log(server)
 
     // 配置监听端口、主机，这里直接取用户的配置文件来覆盖，如果用户配置文件不存在则取 9000 -- 0.0.0.0
     // 也就是说对于上述的两个配置，用户在 webpack 中的配置、插件 mergeWebpack 的配置是无效的
     // 这样做的原因是部分插件需要打印一些信息（例如项目所处的端口），这些数据不能写死，但又难拿到用户的配置
     // 干脆端口和主机就以用户项目配置文件为准
-    const additionalData = appConfig.additional as ReactServiceAppConfigOptions
-    server.listen(
-      additionalData?.webpackDevServerPort || DEFAULT_WEBPACK_DEV_SERVER_PORT,
-      additionalData?.webpackDevServerHost || DEFAULT_WEBPACK_DEV_SERVER_HOST,
-      ReactService.onWebpackServerListen
-    )
+    // const additionalData = appConfig.additional as ReactServiceAppConfigOptions
+    // server.listen(
+    //   additionalData?.webpackDevServerPort || DEFAULT_WEBPACK_DEV_SERVER_PORT,
+    //   additionalData?.webpackDevServerHost || DEFAULT_WEBPACK_DEV_SERVER_HOST,
+    //   ReactService.onWebpackServerListen
+    // )
   }
 
   /**

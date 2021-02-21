@@ -1,7 +1,7 @@
 import * as process from 'process'
 import * as path from 'path'
 import * as fs from 'fs'
-import logger from '@attachments/serendipity-public/bin/utils/logger'
+import { logger } from '@attachments/serendipity-public/bin'
 import CoreManager from '../src/coreManager'
 
 const mockedExeca = require('../../../__mocks__/execa')
@@ -22,6 +22,7 @@ describe('cli Manager 模块测试', () => {
     if (!fs.existsSync(target)) {
       fs.mkdirSync(target)
     }
+
     const manager = new CoreManager([], target)
     manager.initWorkDir()
     expect(logger.error).toBeCalledWith('该目录已经存在，请删除旧目录或者在其他目录下执行创建命令！')
