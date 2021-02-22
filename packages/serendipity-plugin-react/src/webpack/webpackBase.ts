@@ -13,20 +13,25 @@ import { serendipityEnv } from '@attachments/serendipity-public'
 import * as webpack from 'webpack'
 import { appBuild, appEntry } from '@attachments/serendipity-public/bin/utils/paths'
 
-import { ReactServiceAppConfig } from '../types/common'
+import { SerendipityWebpackPluginOption } from '@attachments/serendipity-webpack-plugin/bin/types'
+import {
+  DEFAULT_WEBPACK_ANALYSIS_PORT,
+  DEFAULT_WEBPACK_DEV_SERVER_HOST,
+  DEFAULT_WEBPACK_DEV_SERVER_PORT
+} from '../common/constants'
 import { getHtmlWebpackPluginOptions } from './configurations'
 
 const TerserPlugin = require('terser-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const SerendipityWebpackPlugin = require('@attachments/serenipity-webpack-plugin')
 
 // eslint-disable-next-line max-lines-per-function
-const getBaseConfig = (appConfig?: ReactServiceAppConfig): WebpackConfiguration => {
-  console.log(appConfig)
-  // const host = appConfig?.additional?.webpackDevServerHost || DEFAULT_WEBPACK_DEV_SERVER_HOST
-  // const port = appConfig?.additional?.webpackDevServerPort || DEFAULT_WEBPACK_DEV_SERVER_PORT
-  // const analysisPort = appConfig?.additional?.webpackAnalysisPort || DEFAULT_WEBPACK_ANALYSIS_PORT
+const getBaseConfig = (): WebpackConfiguration => {
+  const host = DEFAULT_WEBPACK_DEV_SERVER_HOST
+  const port = DEFAULT_WEBPACK_DEV_SERVER_PORT
+  const analysisPort = DEFAULT_WEBPACK_ANALYSIS_PORT
   return {
     // 项目入口
     entry: appEntry,
@@ -77,7 +82,7 @@ const getBaseConfig = (appConfig?: ReactServiceAppConfig): WebpackConfiguration 
         name: false,
 
         cacheGroups: {
-          // 默认配置下的入口 vendor 名字又臭又长，这里对齐作出修改，通过 hash 值来保证不会冲突
+          // 默认配置下的入口 vendor 名字又臭又长，这里对此作出修改，通过 hash 值来保证不会冲突
           defaultVendors: {
             filename: (pathData) => {
               return `vendor-${pathData.chunk.hash}.js`
@@ -100,16 +105,16 @@ const getBaseConfig = (appConfig?: ReactServiceAppConfig): WebpackConfiguration 
       new HtmlWebpackPlugin(getHtmlWebpackPluginOptions()),
 
       new BundleAnalyzerPlugin({
-        // analyzerPort: analysisPort,
+        analyzerPort: analysisPort,
         openAnalyzer: false
       }),
 
       // SerendipityWebpackPlugin
-      // serendipityEnv.isProjectDevelopment() && new SerendipityWebpackPlugin({
-      //   webpackDevServerHost: host,
-      //   webpackAnalysisPort: analysisPort,
-      //   webpackDevServerPort: port
-      // } as SerendipityWebpackPluginOption),
+      serendipityEnv.isProjectDevelopment() && new SerendipityWebpackPlugin({
+        webpackDevServerHost: host,
+        webpackAnalysisPort: analysisPort,
+        webpackDevServerPort: port
+      } as SerendipityWebpackPluginOption),
 
       // HotModuleReplacementPlugin 热更新处理，如果你在 devServer 配置中设置 hot = true, 它也会被自动加载
       serendipityEnv.isProjectDevelopment() && new webpack.HotModuleReplacementPlugin(),

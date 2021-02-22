@@ -8,10 +8,26 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@attachments/serendipity-public": "^0.1.0"
-  },
-  "peerDependencies": {
-    "@attachments/serendipity-service-react": "~0.0.11"
+    "@attachments/serendipity-public": "^0.1.0",
+    "@attachments/serendipity-scripts": "latest",
+    "@attachments/serendipity-webpack-plugin": "^0.1.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@types/webpack-dev-server": "^3.11.1",
+    "babel-loader": "^8.2.2",
+    "commander": "^7.0.0",
+    "css-loader": "^5.0.1",
+    "css-minimizer-webpack-plugin": "^1.2.0",
+    "globby": "^11.0.2",
+    "html-webpack-plugin": "^5.2.0",
+    "node-sass": "^5.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-refresh": "^0.9.0",
+    "sass-loader": "^10.1.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.21.2",
+    "webpack-bundle-analyzer": "^4.4.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "files": [
     "bin",
