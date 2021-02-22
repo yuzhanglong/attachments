@@ -62,7 +62,7 @@ class CoreManager {
     }
 
     if (!options.preset) {
-      return getValidateErr('preset 为空，请选择一个正确的 preset，例如 \'react\'')
+      return getValidateErr('preset 为空，请选择一个正确的 preset，可以是一个本地路径或者 http url')
     }
 
     return {
@@ -99,12 +99,18 @@ class CoreManager {
     // 初始化 ConstructionManager（构建管理）
     const constructionManager = new ConstructionManager(this.basePath, options)
 
+    // 初始化 preset
+    await constructionManager.initPreset()
+
     // 安装 preset 列出的所有插件
     await constructionManager.installPluginsFromPresets()
 
     // 此时所有插件都已经安装完成
     // 接下来执行插件 @construction 下的逻辑, 合并 package.json
     await constructionManager.runPluginConstruction()
+
+    // 安装合并进来的依赖
+    await constructionManager.installDependencies()
 
     // 初始化 git (如果 没有配置 initGit 选项，这个步骤会被跳过)
     await constructionManager.initGit()

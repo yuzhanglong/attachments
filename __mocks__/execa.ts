@@ -8,7 +8,10 @@
 
 const calledCommands = []
 
-const execa = (command: string) => {
+const execa = (command: string, args: []) => {
+  if (args.length) {
+    command += ' ' + args.join(' ')
+  }
   calledCommands.push(command)
 }
 

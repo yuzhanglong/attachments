@@ -8,7 +8,8 @@
 
 
 import * as path from 'path'
-import { AppConfig, CommonObject, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
+import * as fs from 'fs'
+import { AppConfig, CommonObject, Constructor, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import {
   writeFilePromise,
   runCommand,
@@ -46,11 +47,16 @@ class ConstructionManager {
   public async initPreset(preset?: CommonObject) {
     if (!preset) {
       const target = this.createOptions.preset
+      if (!target) {
+        logger.error('不合法的 preset, preset 的值为一个本地路径或者 url 字符串')
+      }
       if (target.startsWith('http://') || target.startsWith('https://')) {
         const response = await axios.get(target)
         const targetPath = path.resolve(this.basePath, 'serendipityPreset.js')
         await writeFilePromise(targetPath, response.data)
         this.preset = require(targetPath)
+        // 移除临时 preset 文件
+        fs.unlinkSync(targetPath)
       } else {
         this.preset = require(target)
       }
@@ -94,7 +100,13 @@ class ConstructionManager {
    */
   public async runPluginConstruction() {
     const pluginConstructors = this.appManager.getPluginModules()
-    this.pluginExecutor.registerPlugin(...pluginConstructors)
+    for (const pluginConstructor of pluginConstructors) {
+      if (typeof pluginConstructor === 'object') {
+        this.pluginExecutor.registerPlugin((pluginConstructor as { default: Constructor }).default)
+      } else {
+        this.pluginExecutor.registerPlugin(pluginConstructor)
+      }
+    }
     await this.pluginExecutor.executeConstruction()
   }
 
@@ -157,6 +169,18 @@ class ConstructionManager {
    */
   public getPreset() {
     return this.preset
+  }
+
+  /**
+   * 调用 packageManager 以安装依赖
+   *
+   * @author yuzhanglong
+   * @date 2021-2-22 15:44:57
+   */
+  public async installDependencies() {
+    // 不要忘记再写入一遍
+    await this.appManager.packageManager.writePackageConfig()
+    await this.appManager.packageManager.installDependencies()
   }
 }
 

@@ -7,6 +7,8 @@
  */
 
 import { fs } from 'memfs'
+import { patchRequire } from 'fs-monkey'
 
+patchRequire(fs)
 
 module.exports = fs
