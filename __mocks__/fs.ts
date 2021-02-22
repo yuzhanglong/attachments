@@ -6,6 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-const fs = require('memfs')
+import { fs } from 'memfs'
+
 
 module.exports = fs
