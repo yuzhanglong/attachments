@@ -14,8 +14,7 @@ import {
   renderTemplateData
 } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
-import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
-import { Constructor } from '../types/pluginMeta'
+import { CommonObject, Constructor } from '@attachments/serendipity-public/bin/types/common'
 import { ConstructionOptions, ScriptBaseHooks, ScriptOptions } from '../types/pluginExecute'
 import PluginFactory from './pluginFactory'
 
@@ -40,9 +39,9 @@ class PluginExecutor {
   }
 
 
-  constructor() {
+  constructor(appManager?: AppManager) {
     this.plugins = []
-    this.appManager = new AppManager(process.cwd())
+    this.appManager = appManager
   }
 
   /**
@@ -125,11 +124,10 @@ class PluginExecutor {
         .map(res => plugin.getPluginInstance()[res.methodName]())
         .flat()
 
-
       const inquiryResult = await inquirer.prompt(inquiries)
 
       for (const construction of metaData.constructions) {
-        plugin.getPluginInstance()[construction.methodName]({
+        await plugin.getPluginInstance()[construction.methodName]({
           appManager: this.appManager,
           matchPlugin: this.matchPlugin.bind(this),
           inquiryResult: inquiryResult,
@@ -180,17 +178,6 @@ class PluginExecutor {
 
     // 模板拷贝
     await fileTreeWriting(filesMapper)
-  }
-
-  /**
-   * 从 package 配置中注册所有的 plugin class
-   *
-   * @author yuzhanglong
-   * @date 2021-2-21 00:24:29
-   */
-  private registerPluginModuleFromPackageConfig() {
-    const pluginConstructors = this.appManager.getPluginModules() as Constructor[]
-    this.registerPlugin(...pluginConstructors)
   }
 }
 

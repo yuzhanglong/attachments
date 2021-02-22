@@ -33,3 +33,19 @@ export const getAppConfigFromConfigFile = (basePath: string, onError?: ErrorFn):
     throw new Error(e)
   }
 }
+
+/**
+ * 生成一个默认的 package.json 配置
+ *
+ * @author yuzhanglong
+ * @param name 名称
+ * @date 2021-2-21 19:20:14
+ */
+export const getBasePackageJsonContent = (name?: string) => {
+  return {
+    'name': name || 'serendipity-project',
+    'version': '1.0.0',
+    'main': 'index.js',
+    'license': 'MIT'
+  }
+}

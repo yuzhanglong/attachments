@@ -11,11 +11,7 @@ import { AppManager } from '../bin/index'
 
 describe('appManager 模块测试', () => {
   test('传入已知的 app/package 等配置，不从文件读取', () => {
-    const appConfig = {
-      additional: {
-        foo: 'foo'
-      }
-    }
+    const appConfig = {}
     const packageConfig = {
       'scripts': {
         'lint': 'eslint --ext .ts --max-warnings 0 packages/',
@@ -32,11 +28,7 @@ describe('appManager 模块测试', () => {
   })
 
   test('从 package 配置中读取正确的插件列表', () => {
-    const appConfig = {
-      additional: {
-        foo: 'foo'
-      }
-    }
+    const appConfig = {}
     const packageConfig = {
       'dependencies': {
         '@attachments/serendipity-plugin-babel': '~0.0.12',
@@ -58,9 +50,7 @@ describe('appManager 模块测试', () => {
 
   test('获取插件模块', () => {
     const appConfig = {
-      additional: {
-        foo: 'foo'
-      }
+
     }
     const packageConfig = {
       'dependencies': {

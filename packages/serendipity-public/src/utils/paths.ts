@@ -21,7 +21,7 @@ export const REACT_ENTRY_EXTENSIONS = [
 ]
 
 // app 基础路径，即执行路径
-const appBaseUrl = fs.realpathSync(process.cwd())
+const appBaseUrl = process.cwd()
 
 // 获取基础路径下的子路径
 const resolveAppPath = (target: string): string => {

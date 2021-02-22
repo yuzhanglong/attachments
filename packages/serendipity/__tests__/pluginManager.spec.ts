@@ -7,8 +7,8 @@
  */
 
 
-import { PluginConstructionOptions, PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import { serendipityEnv } from '@attachments/serendipity-public'
+import { PluginConstructionOptions, PluginModule } from '@attachments/serendipity-public/bin/types/plugin'
 import PluginManager from '../src/pluginManager'
 
 // eslint-disable-next-line max-lines-per-function

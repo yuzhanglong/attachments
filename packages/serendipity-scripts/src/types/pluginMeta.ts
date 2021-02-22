@@ -6,8 +6,6 @@
  * Email: yuzl1123@163.com
  */
 
-export type Constructor<T = unknown> = new (...args: unknown[]) => T;
-
 export interface PluginMethodMetaBase {
   methodName: string
 }

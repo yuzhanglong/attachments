@@ -19,4 +19,4 @@ export interface ReactServiceAppConfigOptions {
   webpackAnalysisPort?: number
 }
 
-export type ReactServiceAppConfig = AppConfig<ReactServiceAppConfigOptions>
+export type ReactServiceAppConfig = AppConfig

@@ -7,13 +7,14 @@
  */
 
 
+import { Constructor } from '@attachments/serendipity-public/bin/types/common'
 import {
   PLUGIN_CONSTRUCTION_META_KEY,
   PLUGIN_INQUIRY_META_KEY,
   PLUGIN_NAME_META_KEY, PLUGIN_RUNTIME_META_KEY,
   PLUGIN_SCRIPT_META_KEY
 } from '../common/pluginMetaKeys'
-import { Constructor, PluginMetaData } from '../types/pluginMeta'
+import { PluginMetaData } from '../types/pluginMeta'
 
 class PluginFactory {
   private readonly pluginInstance
