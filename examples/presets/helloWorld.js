@@ -6,14 +6,13 @@
  * Email: yuzl1123@163.com
  */
 
+const path = require('path')
 
 module.exports = {
   plugins: [
     {
-      name: '@attachments/serendipity-plugin-react'
-    },
-    {
-      name: '@attachments/serendipity-plugin-eslint'
+      name: 'serendipity-plugin-hello-world',
+      path: path.resolve(__dirname, '../plugins/helloWorld')
     }
   ]
 }

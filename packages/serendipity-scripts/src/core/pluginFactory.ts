@@ -19,8 +19,8 @@ import { PluginMetaData } from '../types/pluginMeta'
 class PluginFactory {
   private readonly pluginInstance
 
-  constructor(pluginConstructor: Constructor) {
-    this.pluginInstance = new pluginConstructor()
+  constructor(pluginModule: Constructor) {
+    this.pluginInstance = new pluginModule()
   }
 
   public getPluginInstance() {

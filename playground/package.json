@@ -2,5 +2,12 @@
   "name": "serendipity-project",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "scripts": {
+    "create-hello-world": "node ../packages/serendipity/bin/serendipity.js create hello -p D:\\projects\\serendipity\\examples\\presets\\helloWorld.js",
+    "create-by-remote-preset": "node ../packages/serendipity/bin/serendipity.js create hello -p http://cdn.yuzzl.top/serendipityPreset.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
 }
