@@ -12,7 +12,6 @@ import { chalk, logger, serendipityEnv } from '@attachments/serendipity-public'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import ConstructionManager from './constructionManager'
 import { AddOption, BaseCommandValidateResult } from './types/options'
-import PluginManager from './pluginManager'
 
 
 class CoreManager {
@@ -128,17 +127,8 @@ class CoreManager {
    * @date 2021-2-5 14:28:38
    */
   async add(name: string, opt: AddOption): Promise<void> {
-    // 初始化 pluginManager，此时 plugin 还没有安装
-    const pluginManager = PluginManager.createByAddCommand(
-      this.basePath,
-      name,
-      opt
-    )
-
-    // 安装 plugin
-    await pluginManager.installPlugin()
-
-    logger.done(`插件 ${pluginManager.name} 安装成功~`)
+    console.log(name)
+    console.log(opt)
   }
 }
 
