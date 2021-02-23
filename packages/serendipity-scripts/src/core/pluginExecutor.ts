@@ -40,7 +40,7 @@ class PluginExecutor {
 
   constructor(appManager?: AppManager) {
     this.plugins = []
-    this.appManager = appManager
+    this.appManager = appManager || new AppManager(process.cwd(), {}, {})
   }
 
   /**
@@ -125,7 +125,7 @@ class PluginExecutor {
    * @author yuzhanglong
    * @date 2021-2-20 22:55:38
    */
-  private executeRuntime() {
+  public executeRuntime() {
     for (const plugin of this.plugins) {
       const metaData = plugin.getPluginMetaData()
       for (const pluginMethodMetaBase of metaData.runtime) {

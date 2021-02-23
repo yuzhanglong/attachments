@@ -81,7 +81,6 @@ class SerendipityReactPlugin {
     serendipityEnv.setProjectDevelopment()
     const reactService = new ReactService(this.reactServiceHooks)
     reactService.start()
-    return
   }
 
   @Script('react-build')
