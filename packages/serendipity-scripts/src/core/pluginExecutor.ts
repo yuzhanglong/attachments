@@ -6,15 +6,14 @@
  * Email: yuzl1123@163.com
  */
 
+import * as path from 'path'
 import {
   AppManager,
-  fileTreeWriting,
-  getTemplatesData,
-  inquirer,
-  renderTemplateData
+  inquirer, renderTemplate
 } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
 import { CommonObject, Constructor } from '@attachments/serendipity-public/bin/types/common'
+import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
 import { ConstructionOptions, ScriptBaseHooks, ScriptOptions } from '../types/pluginExecute'
 import PluginFactory from './pluginFactory'
 
@@ -45,15 +44,46 @@ class PluginExecutor {
   }
 
   /**
-   * 注册 plugin(一个或者多个)
+   * 注册 plugin(一个或者多个), 提供额外信息
    *
    * @author yuzhanglong
    * @date 2021-2-20 22:22:24
    */
-  public registerPlugin(...pluginFactory: Constructor[]) {
-    for (const plugin of pluginFactory) {
-      this.plugins.push(new PluginFactory(plugin))
+  public registerPlugin(...pluginModule: PluginModuleInfo[]) {
+    for (const pm of pluginModule) {
+      const plugin = pm.requireResult
+      if (typeof plugin === 'object') {
+        this.plugins.push(
+          new PluginFactory(
+            (plugin as { default: Constructor }).default,
+            pm.absolutePath
+          )
+        )
+      } else {
+        this.plugins.push(
+          new PluginFactory(
+            plugin as unknown as Constructor,
+            pm.absolutePath
+          )
+        )
+      }
     }
+  }
+
+  /**
+   * 注册 plugin(一个或者多个), 使用 plugin 构造函数
+   *
+   * @author yuzhanglong
+   * @date 2021-2-20 22:22:24
+   */
+  public registerPluginByConstructor(...plugin: Constructor[]) {
+    const result: PluginModuleInfo[] = plugin.map(p => {
+      return {
+        absolutePath: '/',
+        requireResult: p
+      }
+    })
+    this.registerPlugin(...result)
   }
 
 
@@ -87,7 +117,6 @@ class PluginExecutor {
         }
       }
     }
-
   }
 
   /**
@@ -131,10 +160,12 @@ class PluginExecutor {
           appManager: this.appManager,
           matchPlugin: this.matchPlugin.bind(this),
           inquiryResult: inquiryResult,
-          renderTemplate: this.renderTemplate.bind(this)
+          renderTemplate: this.render.bind(this, plugin.getAbsolutePath())
         } as ConstructionOptions)
       }
     }
+    // 将执行脚本写入 package.json 以方便用户调用
+    this.mergeScriptsInfoPackageConfig()
   }
 
   /**
@@ -161,23 +192,36 @@ class PluginExecutor {
    * 渲染并写入模板
    *
    * @author yuzhanglong
-   * @param base 要写入的绝对路径
-   * @param options ejs 选项
-   * @param target 目标路径
-   * @date 2021-1-29 13:33:43
+   * @param basePath plugin 所在模块路径
+   * @param options 选项
+   * @param dirName 模板文件名
+   * @param target 目标目录
+   * @date 2021-2-23 19:03:24
    */
-  private async renderTemplate(base: string, options?: CommonObject, target?: string): Promise<void> {
-    // 获取映射表
-    const filesMapper = await getTemplatesData(
-      base,
-      target || this.appManager.getBasePath()
-    )
+  private async render(basePath: string, dirName: string, options?: CommonObject, target?: string): Promise<void> {
+    // 最终的路径，对于用户只需要传入一个文件名就可以了
+    const finalPath = path.resolve(basePath, 'templates', dirName)
 
-    // 渲染模板数据
-    renderTemplateData(filesMapper, options || {})
+    await renderTemplate(finalPath, options, target || this.appManager.getBasePath())
+  }
 
-    // 模板拷贝
-    await fileTreeWriting(filesMapper)
+  /**
+   * 将 script 脚本执行命令写入 package.json
+   *
+   * @author yuzhanglong
+   * @date 2021-2-23 14:44:04
+   */
+  private mergeScriptsInfoPackageConfig(): void {
+    for (const plugin of this.plugins) {
+      const metaData = plugin.getPluginMetaData()
+      for (const script of metaData.scripts) {
+        this.appManager.packageManager.mergeIntoCurrent({
+          scripts: {
+            [script.command]: `serendipity-scripts run ${script.command}`
+          }
+        })
+      }
+    }
   }
 }
 

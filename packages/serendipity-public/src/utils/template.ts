@@ -10,7 +10,8 @@
 import * as path from 'path'
 import * as globby from 'globby'
 import { TemplateFilesMapper } from '../types/plugin'
-import { readFilePromise } from './files'
+import { CommonObject } from '../types/common'
+import { fileTreeWriting, readFilePromise } from './files'
 
 
 /**
@@ -53,17 +54,35 @@ const getTemplatesData = async (templateBasePath: string, targetBasePath: string
  * @param options ejs 配置
  * @date 2021-1-29 12:35:22
  */
-// TODO: 基于 ejs 渲染数据
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const renderTemplateData = (data: TemplateFilesMapper, options: unknown): void => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  Object.keys(data).forEach((res) => {
-    // console.log(res)
-  })
+  // TODO: 基于 ejs 渲染数据
+  console.log(data)
+  console.log(options)
+}
+
+/**
+ * 渲染并写入模板
+ *
+ * @author yuzhanglong
+ * @param base 要写入的绝对路径
+ * @param options ejs 选项
+ * @param target 目标路径
+ * @date 2021-1-29 13:33:43
+ */
+const renderTemplate = async (base: string, options?: CommonObject, target?: string): Promise<void> => {
+  // 获取映射表
+  const filesMapper = await getTemplatesData(base, target)
+
+  // TODO: 渲染模板数据
+  renderTemplateData(filesMapper, options || {})
+
+// 模板拷贝
+  await fileTreeWriting(filesMapper)
 }
 
 
 export {
+  renderTemplate,
   getTemplatesData,
   renderTemplateData
 }

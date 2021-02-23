@@ -65,4 +65,4 @@ export interface ModuleInstallOptions {
   onError?: (e: Error) => void
 }
 
-export type Constructor<T = unknown> = new (...args: unknown[]) => T;
+export type Constructor = unknown;

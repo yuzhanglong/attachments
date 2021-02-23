@@ -17,10 +17,12 @@ import {
 import { PluginMetaData } from '../types/pluginMeta'
 
 class PluginFactory {
-  private readonly pluginInstance
+  private readonly pluginInstance: unknown
+  private readonly absolutePath: string
 
-  constructor(pluginModule: Constructor) {
-    this.pluginInstance = new pluginModule()
+  constructor(pluginModule: Constructor, path?: string) {
+    this.pluginInstance = new (pluginModule as new (...args: unknown[]) => unknown)()
+    this.absolutePath = path
   }
 
   public getPluginInstance() {
@@ -120,6 +122,10 @@ class PluginFactory {
       constructions: methodMetas.constructions,
       runtime: methodMetas.runtime
     }
+  }
+
+  public getAbsolutePath() {
+    return this.absolutePath
   }
 }
 

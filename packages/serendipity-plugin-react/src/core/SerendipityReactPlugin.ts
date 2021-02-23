@@ -7,7 +7,6 @@
  */
 
 
-import * as path from 'path'
 import { Construction, Inquiry, Script, SerendipityPlugin } from '@attachments/serendipity-scripts'
 import { ConstructionOptions } from '@attachments/serendipity-scripts/bin/types/pluginExecute'
 import { ReactPluginInquireResult } from '../types/inquiry'
@@ -20,10 +19,6 @@ class SerendipityReactPlugin {
 
   @Construction()
   createReactProject(options: ConstructionOptions) {
-    const getTemplatePath = (name) => {
-      return path.resolve(__dirname, '../templates', name)
-    }
-
     const inquiryResult = options.inquiryResult as ReactPluginInquireResult
     this.useTypeScript = (inquiryResult.language === 'TypeScript')
 
@@ -33,11 +28,7 @@ class SerendipityReactPlugin {
     })
 
     // 拷贝模板 typescript
-    options.renderTemplate(
-      getTemplatePath(
-        this.useTypeScript ? 'react-template-typescript' : 'react-template'
-      )
-    )
+    options.renderTemplate(this.useTypeScript ? 'react-template-typescript' : 'react-template')
   }
 
   getPackageDependence() {

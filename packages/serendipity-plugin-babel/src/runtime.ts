@@ -6,30 +6,29 @@
  * Email: yuzl1123@163.com
  */
 
-import { PluginRuntimeOptions } from '@attachments/serendipity-public/bin/types/plugin'
-import { appSource } from '@attachments/serendipity-public/bin/utils/paths'
 
-module.exports = (runtimeOptions: PluginRuntimeOptions) => {
-  runtimeOptions.mergeWebpackConfig({
-    module: {
-      rules: [
-        {
-          test: /\.(js|mjs|jsx|ts|tsx)$/,
-          exclude: /(node_modules)/,
-          include: appSource,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                '@babel/env',
-                '@babel/preset-react',
-                // typescript support
-                '@babel/preset-typescript'
-              ]
-            }
-          }
-        }
-      ]
-    }
-  })
+module.exports = (runtimeOptions: unknown) => {
+  console.log(runtimeOptions)
+  // runtimeOptions.mergeWebpackConfig({
+  //   module: {
+  //     rules: [
+  //       {
+  //         test: /\.(js|mjs|jsx|ts|tsx)$/,
+  //         exclude: /(node_modules)/,
+  //         include: appSource,
+  //         use: {
+  //           loader: 'babel-loader',
+  //           options: {
+  //             presets: [
+  //               '@babel/env',
+  //               '@babel/preset-react',
+  //               // typescript support
+  //               '@babel/preset-typescript'
+  //             ]
+  //           }
+  //         }
+  //       }
+  //     ]
+  //   }
+  // })
 }

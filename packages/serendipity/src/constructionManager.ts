@@ -9,7 +9,7 @@
 
 import * as path from 'path'
 import * as fs from 'fs'
-import { AppConfig, CommonObject, Constructor, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
+import { AppConfig, CommonObject, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import {
   writeFilePromise,
   runCommand,
@@ -75,8 +75,6 @@ class ConstructionManager {
     const packageManager = this.appManager.packageManager
 
     if (Array.isArray(this.preset.plugins)) {
-      // TODO: remove ts-ignore!
-      // @ts-ignore
       const depMapper = {}
       this.preset.plugins.forEach(res => {
         // 路径优先，版本其次，否则使用最新版本 latest
@@ -99,14 +97,7 @@ class ConstructionManager {
    * @date 2021-2-21 11:05:50
    */
   public async runPluginConstruction() {
-    const pluginConstructors = this.appManager.getPluginModules()
-    for (const pluginConstructor of pluginConstructors) {
-      if (typeof pluginConstructor === 'object') {
-        this.pluginExecutor.registerPlugin((pluginConstructor as { default: Constructor }).default)
-      } else {
-        this.pluginExecutor.registerPlugin(pluginConstructor)
-      }
-    }
+    this.pluginExecutor.registerPlugin(...this.appManager.getPluginModules())
     await this.pluginExecutor.executeConstruction()
   }
 

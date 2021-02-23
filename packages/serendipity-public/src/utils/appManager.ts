@@ -10,6 +10,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { AppConfig, CommonObject } from '../types/common'
+import { PluginModuleInfo } from '../types/plugin'
 import { configFile } from './paths'
 import { isPlugin, writeFilePromise } from './files'
 import PackageManager from './packageManager'
@@ -89,10 +90,13 @@ class AppManager {
    * @return 所有 plugin 的字符串集合
    * @date 2021-2-16 23:14:03
    */
-  public getPluginModules(): CommonObject[] {
+  public getPluginModules(): PluginModuleInfo[] {
     return this.getPluginList().map(plugin => {
       const target = path.resolve(this.basePath, 'node_modules', plugin)
-      return require(target)
+      return {
+        requireResult: require(target),
+        absolutePath: target
+      }
     })
   }
 

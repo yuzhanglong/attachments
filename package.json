@@ -10,10 +10,12 @@
   "scripts": {
     "lint": "eslint --ext .ts --max-warnings 0 packages/",
     "test": "jest --no-cache",
+    "test:coverage": "jest --no-cache --coverage",
     "lerna:build": "lerna run build",
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",
-    "lerna:publish": "yarn lerna:build && lerna publish --no-push"
+    "lerna:publish": "yarn lerna:build && lerna publish --no-push",
+    "clear": "node playground/delete.js"
   },
   "repository": {
     "type": "git",
