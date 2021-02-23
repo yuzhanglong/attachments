@@ -18,6 +18,12 @@ export interface ScriptOptions {
   inquiryResult?: CommonObject
 }
 
+export interface RuntimeOptions {
+  appManager: AppManager
+  scriptHooks: ScriptBaseHooks
+  matchPlugin: (name: string) => PluginFactory
+}
+
 export interface ConstructionOptions {
   appManager: AppManager
   matchPlugin: (name: string) => PluginFactory

@@ -18,17 +18,21 @@ import getDevServerConfig from '../webpack/devServerConfig'
 import getBaseConfig from '../webpack/webpackBase'
 import { clearConsole } from '../utils/console'
 import { DEFAULT_WEBPACK_DEV_SERVER_HOST, DEFAULT_WEBPACK_DEV_SERVER_PORT } from '../common/constants'
+import { ReactServiceHooks } from '../types/hooks'
 
 class ReactService {
-  private readonly devServerConfig: WebpackDevServerConfiguration
   private readonly appManager: AppManager
 
+  private devServerConfig: WebpackDevServerConfiguration
   private webpackConfig: WebpackConfiguration
 
-  constructor() {
+  private hooks: ReactServiceHooks
+
+  constructor(hooks: ReactServiceHooks) {
     this.appManager = new AppManager(process.cwd())
     this.webpackConfig = getBaseConfig()
     this.devServerConfig = getDevServerConfig()
+    this.hooks = hooks
   }
 
   /**
@@ -41,6 +45,10 @@ class ReactService {
     this.webpackConfig = webpackMerge(this.webpackConfig, ...configurations)
   }
 
+  private mergeDevServerConfig(...configurations: WebpackDevServerConfiguration[]): void {
+    this.devServerConfig = webpackMerge(this.devServerConfig, ...configurations)
+  }
+
 
   /**
    * 启动项目(开发环境)
@@ -49,6 +57,10 @@ class ReactService {
    * @date 2021-2-3 12:15:09
    */
   public start(): void {
+    // 执行 hooks
+    this.hooks.beforeWebpackStart.call(this.mergeWebpackConfig.bind(this))
+    this.hooks.beforeDevServerStart.call(this.mergeDevServerConfig.bind(this))
+
     // devServer 选项合并
     const devServerOptions = Object.assign({}, this.devServerConfig)
 

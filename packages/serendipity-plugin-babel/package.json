@@ -8,7 +8,12 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@attachments/serendipity-public": "^0.1.0"
+    "@attachments/serendipity-public": "^0.1.0",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-react": "^7.12.10",
+    "@babel/preset-typescript": "7.12.1",
+    "babel-loader": "^8.2.2"
   },
   "peerDependencies": {
     "@attachments/serendipity-service-react": "~0.0.11"

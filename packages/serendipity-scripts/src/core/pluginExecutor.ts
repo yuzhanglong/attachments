@@ -14,7 +14,7 @@ import {
 import { SyncHook } from 'tapable'
 import { CommonObject, Constructor } from '@attachments/serendipity-public/bin/types/common'
 import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
-import { ConstructionOptions, ScriptBaseHooks, ScriptOptions } from '../types/pluginExecute'
+import { ConstructionOptions, RuntimeOptions, ScriptBaseHooks, ScriptOptions } from '../types/pluginExecute'
 import PluginFactory from './pluginFactory'
 
 
@@ -133,7 +133,7 @@ class PluginExecutor {
           scriptHooks: this.pluginScriptBaseHooks,
           appManager: this.appManager,
           matchPlugin: this.matchPlugin.bind(this)
-        } as ScriptOptions)
+        } as RuntimeOptions)
       }
     }
   }
