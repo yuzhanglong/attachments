@@ -25,7 +25,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const SerendipityWebpackPlugin = require('@attachments/serenipity-webpack-plugin')
+const SerendipityWebpackPlugin = require('@attachments/serendipity-webpack-plugin')
 
 // eslint-disable-next-line max-lines-per-function
 const getBaseConfig = (): WebpackConfiguration => {

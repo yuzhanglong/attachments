@@ -44,7 +44,7 @@ describe('plugin 执行器', () => {
 
     const pluginExecutor = new PluginExecutor()
 
-    pluginExecutor.registerPlugin(FooPlugin)
+    pluginExecutor.registerPluginByConstructor(FooPlugin)
 
     pluginExecutor.executeScript('start')
 
@@ -75,7 +75,7 @@ describe('plugin 执行器', () => {
     class PluginTwo {
       @Runtime()
       tapPluginOne(options: ScriptOptions) {
-        const pluginOne: PluginOne = options.matchPlugin('PluginOne').getPluginInstance()
+        const pluginOne = options.matchPlugin('PluginOne').getPluginInstance() as PluginOne
         pluginOne.myHook.pushTestArray.tap('foo', (arr) => {
           if (Array.isArray(arr)) {
             arr.push('20', 'programmer')
@@ -86,9 +86,9 @@ describe('plugin 执行器', () => {
 
     const pluginExecutor = new PluginExecutor()
 
-    pluginExecutor.registerPlugin(PluginOne, PluginTwo)
+    pluginExecutor.registerPluginByConstructor(PluginOne, PluginTwo)
     pluginExecutor.executeScript('start')
-    const pluginOneInstance: PluginOne = pluginExecutor.getPlugins()[0].getPluginInstance()
+    const pluginOneInstance = pluginExecutor.getPlugins()[0].getPluginInstance() as PluginOne
     expect(pluginOneInstance.testArray).toStrictEqual([
       'yzl',
       '20',
@@ -105,7 +105,7 @@ describe('plugin 执行器', () => {
       async foo(options: ConstructionOptions) {
         // 模板写入
         await options.renderTemplate(
-          '/base',
+          'base',
           {},
           '/target'
         )
@@ -135,14 +135,14 @@ describe('plugin 执行器', () => {
     }
 
     // 文件初始化
-    fs.mkdirSync('/target')
-    fs.mkdirSync('/base')
-    fs.writeFileSync('/base/bar', 'hello world bar')
-    fs.writeFileSync('/base/foo', 'hello world foo')
+    fs.mkdirSync('/templates')
+    fs.mkdirSync('/templates/base')
+    fs.writeFileSync('/templates/base/bar', 'hello world bar')
+    fs.writeFileSync('/templates/base/foo', 'hello world foo')
 
 
     const executor = new PluginExecutor()
-    executor.registerPlugin(HelloWorldPlugin)
+    executor.registerPluginByConstructor(HelloWorldPlugin)
 
     await executor.executeConstruction()
 

@@ -6,7 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '../src/core/decorators'
+import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '../src'
 import PluginFactory from '../src/core/pluginFactory'
 
 // eslint-disable-next-line max-lines-per-function

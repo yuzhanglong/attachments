@@ -7,13 +7,12 @@
  */
 
 
-import { PluginRuntimeOptions } from '@attachments/serendipity-public/bin/types/plugin'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import { appRoot, appSource } from '@attachments/serendipity-public/bin/utils/paths'
 
 const ESLintWebpackPlugin = require('eslint-webpack-plugin')
 
-module.exports = (options: PluginRuntimeOptions) => {
+module.exports = (options) => {
   // 合并 webpack 配置
   options.mergeWebpackConfig({
     plugins: [

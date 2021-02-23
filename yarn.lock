@@ -11,6 +11,14 @@
     reflect-metadata "^0.1.13"
     tapable "^2.2.0"
 
+"@attachments/serendipity-workflows@latest":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-workflows/-/serendipity-workflows-0.1.0.tgz#89419066ae83cd857a8df988bfc63f5d07bbedac"
+  integrity sha512-iScP6hrDiFI6DhW3+yFz+7ag3BMoBhNWOjc2lRD0kefO8vAxpOkD0oKVJYaSHtJOr4htll5NwJuERvk5YTKcVA==
+  dependencies:
+    "@commitlint/types" "^11.0.0"
+    commander "^7.1.0"
+
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.npm.taobao.org/@babel/code-frame/download/@babel/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
@@ -3276,8 +3284,8 @@ commander@^6.2.0:
 
 commander@^7.0.0, commander@^7.1.0:
   version "7.1.0"
-  resolved "https://registry.npmjs.org/commander/-/commander-7.1.0.tgz#f2eaecf131f10e36e07d894698226e36ae0eb5ff"
-  integrity sha512-pRxBna3MJe6HKnBGsDyMv8ETbptw3axEdYHoqNh7gu5oDcew8fs0xnivZGm06Ogk8zGAJ9VX+OPEr2GXEQK4dg==
+  resolved "https://registry.npm.taobao.org/commander/download/commander-7.1.0.tgz#f2eaecf131f10e36e07d894698226e36ae0eb5ff"
+  integrity sha1-8urs8THxDjbgfYlGmCJuNq4Otf8=
 
 commondir@^1.0.1:
   version "1.0.1"

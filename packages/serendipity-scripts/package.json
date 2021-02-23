@@ -9,6 +9,9 @@
   "files": [
     "bin"
   ],
+  "bin": {
+    "serendipity-scripts": "./bin/core/starter.js"
+  },
   "scripts": {
     "start": "tsc -w",
     "build": "tsc"
@@ -25,6 +28,7 @@
   },
   "dependencies": {
     "@attachments/serendipity-public": "^0.1.0",
+    "commander": "^7.1.0",
     "reflect-metadata": "^0.1.13",
     "tapable": "^2.2.0"
   }

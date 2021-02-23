@@ -7,9 +7,7 @@
  */
 
 
-import { PluginConstructionOptions } from '@attachments/serendipity-public/bin/types/plugin'
-
-module.exports = (options: PluginConstructionOptions) => {
+module.exports = (options) => {
   options.mergePackageConfig({
     // eslint 配置
     eslintConfig: {
