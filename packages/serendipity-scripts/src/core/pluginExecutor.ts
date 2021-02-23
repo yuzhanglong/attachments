@@ -212,6 +212,7 @@ class PluginExecutor {
    * @date 2021-2-23 14:44:04
    */
   private mergeScriptsInfoPackageConfig(): void {
+    let isScriptAppear = false
     for (const plugin of this.plugins) {
       const metaData = plugin.getPluginMetaData()
       for (const script of metaData.scripts) {
@@ -220,7 +221,17 @@ class PluginExecutor {
             [script.command]: `serendipity-scripts run ${script.command}`
           }
         })
+        isScriptAppear = true
       }
+    }
+
+    // 如果插件中带有脚本，我们就要 serendipity-scripts，它是用来执行脚本的
+    if (isScriptAppear) {
+      this.appManager.packageManager.mergeIntoCurrent({
+        dependencies: {
+          ['@attachments/serendipity-scripts']: 'D:\\projects\\serendipity\\packages\\serendipity-scripts'
+        }
+      })
     }
   }
 }

@@ -9,6 +9,7 @@
 
 import { Construction, Inquiry, Script, SerendipityPlugin } from '@attachments/serendipity-scripts'
 import { ConstructionOptions } from '@attachments/serendipity-scripts/bin/types/pluginExecute'
+import { serendipityEnv } from '@attachments/serendipity-public'
 import { ReactPluginInquireResult } from '../types/inquiry'
 import ReactService from './ReactService'
 
@@ -70,6 +71,7 @@ class SerendipityReactPlugin {
 
   @Script('react-start')
   startReactApp() {
+    serendipityEnv.setProjectDevelopment()
     const reactService = new ReactService()
     reactService.start()
     return

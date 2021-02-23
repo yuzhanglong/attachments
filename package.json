@@ -15,7 +15,7 @@
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",
     "lerna:publish": "yarn lerna:build && lerna publish --no-push",
-    "clear": "node playground/delete.js"
+    "clear": "serendipity-workflows clear"
   },
   "repository": {
     "type": "git",

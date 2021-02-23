@@ -54,10 +54,10 @@ const getTemplatesData = async (templateBasePath: string, targetBasePath: string
  * @param options ejs 配置
  * @date 2021-1-29 12:35:22
  */
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const renderTemplateData = (data: TemplateFilesMapper, options: unknown): void => {
   // TODO: 基于 ejs 渲染数据
-  console.log(data)
-  console.log(options)
 }
 
 /**

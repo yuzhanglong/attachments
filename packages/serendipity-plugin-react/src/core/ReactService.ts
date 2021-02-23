@@ -49,8 +49,6 @@ class ReactService {
    * @date 2021-2-3 12:15:09
    */
   public start(): void {
-    serendipityEnv.setSerendipityDevelopment()
-
     // devServer 选项合并
     const devServerOptions = Object.assign({}, this.devServerConfig)
 
