@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-scripts",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "bin/index.js",
   "files": [
     "bin"
@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@attachments/serendipity-public": "^0.1.0",
+    "@attachments/serendipity-public": "^0.1.2",
     "commander": "^7.1.0",
     "reflect-metadata": "^0.1.13",
     "tapable": "^2.2.0"
