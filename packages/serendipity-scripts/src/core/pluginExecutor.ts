@@ -229,6 +229,7 @@ class PluginExecutor {
     if (isScriptAppear) {
       this.appManager.packageManager.mergeIntoCurrent({
         dependencies: {
+          // TODO: 将这里的绝对路径改为 latest
           ['@attachments/serendipity-scripts']: 'D:\\projects\\serendipity\\packages\\serendipity-scripts'
         }
       })

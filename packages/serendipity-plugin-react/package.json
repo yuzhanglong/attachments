@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-plugin-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "bin/index.js",
   "license": "MIT",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@attachments/serendipity-public": "^0.1.0",
-    "@attachments/serendipity-scripts": "latest",
+    "@attachments/serendipity-scripts": "^0.1.0",
     "@attachments/serendipity-webpack-plugin": "^0.1.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/webpack-dev-server": "^3.11.1",
