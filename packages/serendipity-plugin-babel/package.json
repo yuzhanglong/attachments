@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@attachments/serendipity-public": "^0.1.2",
+    "@attachments/serendipity-scripts": "^0.1.2",
+    "@attachments/serendipity-plugin-react": "^0.1.2",
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.10",
