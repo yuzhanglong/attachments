@@ -19,6 +19,14 @@ jest.mock('execa')
 describe('cli Manager 模块测试', () => {
   beforeEach(() => {
     process.env.SERENDIPITY_CONFIG = 'DEVELOPMENT'
+
+    const exitMock = jest.fn()
+
+    const realProcess = process
+    global.process = {
+      ...realProcess,
+      exit: exitMock as never
+    }
   })
 
 

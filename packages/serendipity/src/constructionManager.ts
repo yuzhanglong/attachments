@@ -8,8 +8,7 @@
 
 
 import * as path from 'path'
-import * as fs from 'fs'
-import { AppConfig, CommonObject, CreateOptions } from '@attachments/serendipity-public/bin/types/common'
+import { AppConfig } from '@attachments/serendipity-public/bin/types/common'
 import {
   writeFilePromise,
   runCommand,
@@ -17,66 +16,36 @@ import {
   AppManager
 } from '@attachments/serendipity-public'
 import { PluginExecutor } from '@attachments/serendipity-scripts'
-import axios from 'axios'
 import { getBasePackageJsonContent } from './utils'
 import { SerendipityPreset } from './types/preset'
+import { DEFAULT_COMMIT_MESSAGE } from './common'
 
 class ConstructionManager {
   private readonly basePath: string
-  private readonly createOptions: CreateOptions
   private readonly pluginExecutor: PluginExecutor
   private readonly appManager: AppManager
-  private preset: SerendipityPreset
 
-  constructor(basePath: string, createOptions: CreateOptions) {
-    this.createOptions = createOptions
+  constructor(basePath: string) {
     this.basePath = basePath
     // 构建模式下并没有 App 配置文件， 我们使用默认的
     this.appManager = new AppManager(basePath, {}, getBasePackageJsonContent())
     this.pluginExecutor = new PluginExecutor(this.appManager)
-    this.preset = {}
   }
 
-  /**
-   * 初始化项目 preset
-   *
-   * @author yuzhanglong
-   * @param preset 可选的 preset，是个对象，如果没有传入这个参数，我们会通过网络请求拿到这个 preset
-   * @date 2021-2-21 11:46:48
-   */
-  public async initPreset(preset?: CommonObject) {
-    if (!preset) {
-      const target = this.createOptions.preset
-      if (!target) {
-        logger.error('不合法的 preset, preset 的值为一个本地路径或者 url 字符串')
-      }
-      if (target.startsWith('http://') || target.startsWith('https://')) {
-        const response = await axios.get(target)
-        const targetPath = path.resolve(this.basePath, 'serendipityPreset.js')
-        await writeFilePromise(targetPath, response.data)
-        this.preset = require(targetPath)
-        // 移除临时 preset 文件
-        fs.unlinkSync(targetPath)
-      } else {
-        this.preset = require(target)
-      }
-    } else {
-      this.preset = preset
-    }
-  }
 
   /**
    * 从 preset 安装 plugins
    *
    * @author yuzhanglong
+   * @param preset preset 信息
    * @date 2021-2-22 01:28:12
    */
-  public async installPluginsFromPresets() {
+  public async installPluginsFromPresets(preset: SerendipityPreset) {
     const packageManager = this.appManager.packageManager
 
-    if (Array.isArray(this.preset.plugins)) {
+    if (Array.isArray(preset.plugins)) {
       const depMapper = {}
-      this.preset.plugins.forEach(res => {
+      preset.plugins.forEach(res => {
         // 路径优先，版本其次，否则使用最新版本 latest
         depMapper[res.name] = res.path || res.version || 'latest'
       })
@@ -85,7 +54,6 @@ class ConstructionManager {
         dependencies: depMapper
       })
     }
-
     await packageManager.writePackageConfig()
     await packageManager.installDependencies()
   }
@@ -125,20 +93,18 @@ class ConstructionManager {
    * @author yuzhanglong
    * @date 2021-1-30 19:27:18
    */
-  async initGit(): Promise<void> {
-    if (this.createOptions.git) {
-      logger.info('正在初始化 git 仓库...')
-      try {
-        // init git
-        await runCommand('git init', [], this.basePath)
+  async initGit(message?: string): Promise<void> {
+    logger.info('正在初始化 git 仓库...')
+    try {
+      // init git
+      await runCommand('git init', [], this.basePath)
 
-        // init first commit
-        await this.initFirstCommit(this.createOptions.commit)
-      } catch (e) {
-        logger.error('git 初始化失败！')
-      }
-      logger.done('git 初始化完成！')
+      // init first commit
+      await this.initFirstCommit(message || DEFAULT_COMMIT_MESSAGE)
+    } catch (e) {
+      logger.error('git 初始化失败！')
     }
+    logger.done('git 初始化完成！')
   }
 
   /**
@@ -150,16 +116,6 @@ class ConstructionManager {
   async initFirstCommit(message: string): Promise<void> {
     await runCommand('git add -A', [], this.basePath)
     await runCommand('git', ['commit', '-m', message, '--no-verify'], this.basePath)
-  }
-
-  /**
-   * preset getter
-   *
-   * @author yuzhanglong
-   * @date 2021-2-21 22:40:02
-   */
-  public getPreset() {
-    return this.preset
   }
 
   /**
