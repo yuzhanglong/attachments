@@ -1,10 +1,6 @@
 {
   "name": "@attachments/serendipity-scripts",
-  "version": "0.1.0",
-  "description": "> TODO: description",
-  "author": "coderyzl <yuzl1123@163.com>",
-  "homepage": "https://github.com/yuzhanglong/serendipity/tree/master/packages/serendipity-scripts#readme",
-  "license": "ISC",
+  "version": "0.1.2",
   "main": "bin/index.js",
   "files": [
     "bin"
@@ -16,18 +12,9 @@
     "start": "tsc -w",
     "build": "tsc"
   },
-  "publishConfig": {
-    "registry": "https://registry.npm.taobao.org/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yuzhanglong/serendipity.git"
-  },
-  "bugs": {
-    "url": "https://github.com/yuzhanglong/serendipity/issues"
-  },
+  "license": "MIT",
   "dependencies": {
-    "@attachments/serendipity-public": "^0.1.0",
+    "@attachments/serendipity-public": "^0.1.2",
     "commander": "^7.1.0",
     "reflect-metadata": "^0.1.13",
     "tapable": "^2.2.0"

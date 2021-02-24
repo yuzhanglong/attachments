@@ -5,7 +5,7 @@
   "scripts": {
     "create-hello-world": "node ../packages/serendipity/bin/serendipity.js create hello -p D:\\projects\\serendipity\\examples\\presets\\helloWorld.js",
     "create-by-remote-preset": "node ../packages/serendipity/bin/serendipity.js create hello -p http://cdn.yuzzl.top/serendipityPreset.js",
-    "create-react-app": "node ../packages/serendipity/bin/serendipity.js create hello-react -p D:\\projects\\serendipity\\examples\\presets\\reactApp.js"
+    "create-react-app": "node ../packages/serendipity/bin/serendipity.js create hello -p D:\\projects\\serendipity\\examples\\presets\\reactApp.js"
   },
   "license": "MIT",
   "dependencies": {

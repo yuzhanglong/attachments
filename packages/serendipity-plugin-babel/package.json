@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-plugin-babel",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "main": "./bin/index.js",
   "license": "MIT",
   "scripts": {
@@ -8,10 +8,14 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@attachments/serendipity-public": "^0.1.0"
-  },
-  "peerDependencies": {
-    "@attachments/serendipity-service-react": "~0.0.11"
+    "@attachments/serendipity-public": "^0.1.2",
+    "@attachments/serendipity-scripts": "^0.1.2",
+    "@attachments/serendipity-plugin-react": "^0.1.2",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-react": "^7.12.10",
+    "@babel/preset-typescript": "7.12.1",
+    "babel-loader": "^8.2.2"
   },
   "files": [
     "bin",

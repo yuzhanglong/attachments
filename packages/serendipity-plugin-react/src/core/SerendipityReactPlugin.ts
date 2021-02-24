@@ -10,13 +10,20 @@
 import { Construction, Inquiry, Script, SerendipityPlugin } from '@attachments/serendipity-scripts'
 import { ConstructionOptions } from '@attachments/serendipity-scripts/bin/types/pluginExecute'
 import { serendipityEnv } from '@attachments/serendipity-public'
+import { SyncHook } from 'tapable'
 import { ReactPluginInquireResult } from '../types/inquiry'
+import { ReactServiceHooks } from '../types/hooks'
 import ReactService from './ReactService'
 
 @SerendipityPlugin('serendipity-react-plugin')
 class SerendipityReactPlugin {
   private baseDeps = {}
   private useTypeScript = false
+
+  public reactServiceHooks: ReactServiceHooks = {
+    beforeWebpackStart: new SyncHook(['webpackConfig']),
+    beforeDevServerStart: new SyncHook(['devServerConfig'])
+  }
 
   @Construction()
   createReactProject(options: ConstructionOptions) {
@@ -72,9 +79,8 @@ class SerendipityReactPlugin {
   @Script('react-start')
   startReactApp() {
     serendipityEnv.setProjectDevelopment()
-    const reactService = new ReactService()
+    const reactService = new ReactService(this.reactServiceHooks)
     reactService.start()
-    return
   }
 
   @Script('react-build')

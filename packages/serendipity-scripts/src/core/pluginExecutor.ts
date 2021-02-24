@@ -14,7 +14,7 @@ import {
 import { SyncHook } from 'tapable'
 import { CommonObject, Constructor } from '@attachments/serendipity-public/bin/types/common'
 import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
-import { ConstructionOptions, ScriptBaseHooks, ScriptOptions } from '../types/pluginExecute'
+import { ConstructionOptions, RuntimeOptions, ScriptBaseHooks, ScriptOptions } from '../types/pluginExecute'
 import PluginFactory from './pluginFactory'
 
 
@@ -40,7 +40,7 @@ class PluginExecutor {
 
   constructor(appManager?: AppManager) {
     this.plugins = []
-    this.appManager = appManager
+    this.appManager = appManager || new AppManager(process.cwd(), {}, {})
   }
 
   /**
@@ -125,7 +125,7 @@ class PluginExecutor {
    * @author yuzhanglong
    * @date 2021-2-20 22:55:38
    */
-  private executeRuntime() {
+  public executeRuntime() {
     for (const plugin of this.plugins) {
       const metaData = plugin.getPluginMetaData()
       for (const pluginMethodMetaBase of metaData.runtime) {
@@ -133,7 +133,7 @@ class PluginExecutor {
           scriptHooks: this.pluginScriptBaseHooks,
           appManager: this.appManager,
           matchPlugin: this.matchPlugin.bind(this)
-        } as ScriptOptions)
+        } as RuntimeOptions)
       }
     }
   }
@@ -229,6 +229,7 @@ class PluginExecutor {
     if (isScriptAppear) {
       this.appManager.packageManager.mergeIntoCurrent({
         dependencies: {
+          // TODO: 将这里的绝对路径改为 latest
           ['@attachments/serendipity-scripts']: 'D:\\projects\\serendipity\\packages\\serendipity-scripts'
         }
       })

@@ -13,6 +13,10 @@ module.exports = {
     {
       name: '@attachments/serendipity-plugin-react',
       path: path.resolve(__dirname, '../../packages/serendipity-plugin-react')
+    },
+    {
+      name: '@attachments/serendipity-plugin-babel',
+      path: path.resolve(__dirname, '../../packages/serendipity-plugin-babel')
     }
   ]
 }
