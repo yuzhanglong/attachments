@@ -12,6 +12,7 @@ import { program } from 'commander'
 import { commitMessage } from './vcs/commitMessage'
 import { preCommit } from './vcs/preCommit'
 import { prePush } from './vcs/prePush'
+import { clear } from './utils/clear'
 
 // 版本信息
 program.version(`serendipity-workflows ${require('../package').version}`)
@@ -21,6 +22,12 @@ program
   .option('-p --path <git-commit-path>', 'git commit 临时文件路径')
   .action((opt) => {
     commitMessage(opt.path)
+  })
+
+program
+  .command('clear')
+  .action(() => {
+    clear()
   })
 
 

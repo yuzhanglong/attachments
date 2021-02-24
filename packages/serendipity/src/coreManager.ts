@@ -10,9 +10,8 @@
 import * as fs from 'fs'
 import { chalk, logger, serendipityEnv } from '@attachments/serendipity-public'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
-import ServiceManager from './serviceManager'
+import ConstructionManager from './constructionManager'
 import { AddOption, BaseCommandValidateResult } from './types/options'
-import PluginManager from './pluginManager'
 
 
 class CoreManager {
@@ -33,7 +32,7 @@ class CoreManager {
    * @author yuzhanglong
    * @date 2021-1-26
    */
-  initWorkDir(): void {
+  public initWorkDir(): void {
     if (!fs.existsSync(this.basePath)) {
       fs.mkdirSync(this.basePath)
     } else {
@@ -47,7 +46,7 @@ class CoreManager {
   }
 
   /**
-   * 基本命令校验（不包括 service 层注入的命令）
+   * 基本命令校验
    *
    * @author yuzhanglong
    * @param options 创建选项
@@ -61,8 +60,8 @@ class CoreManager {
       }
     }
 
-    if (!options.type) {
-      return getValidateErr('service 类型为空，请选择一个正确的项目类型，例如 \'react\'')
+    if (!options.preset) {
+      return getValidateErr('preset 为空，请选择一个正确的 preset，可以是一个本地路径或者 http url')
     }
 
     return {
@@ -78,16 +77,16 @@ class CoreManager {
    * @param name 项目名称
    * @param options 项目选项
    * @see CreateOptions
-   * @date 2021-1-26
+   * @date 2021-2-21 10:43:58
    */
   async create(name: string, options: CreateOptions): Promise<void> {
     this.options = options
 
     logger.info(`在 ${chalk.yellow(this.basePath)} 创建项目中...`)
 
+    // 参数验证
     const validateResult = CoreManager.validateCreateCommand(options)
 
-    // 参数验证
     if (!validateResult.validated) {
       logger.error(`传入的选项有误：${validateResult.message}`)
       return
@@ -96,45 +95,24 @@ class CoreManager {
     // 初始化项目目录
     this.initWorkDir()
 
-    // 初始化脚手架 service
-    const serviceManager = new ServiceManager(this.basePath, options)
+    // 初始化 ConstructionManager（构建管理）
+    const constructionManager = new ConstructionManager(this.basePath, options)
 
-    // 安装用户提供的 service
-    await serviceManager.installServicePackage()
+    // 初始化 preset
+    await constructionManager.initPreset()
 
-    // 执行 service inquirer
-    await serviceManager.runServiceInquirer()
+    // 安装 preset 列出的所有插件
+    await constructionManager.installPluginsFromPresets()
+
+    // 此时所有插件都已经安装完成
+    // 接下来执行插件 @construction 下的逻辑, 合并 package.json
+    await constructionManager.runPluginConstruction()
+
+    // 安装合并进来的依赖
+    await constructionManager.installDependencies()
 
     // 初始化 git (如果 没有配置 initGit 选项，这个步骤会被跳过)
-    await serviceManager.initServiceGit()
-
-    // 写入 package.json 文件 -- 此时只安装用户选定的 service
-    await serviceManager.writePackageConfig()
-
-    // 执行 cli Service 构建时业务逻辑
-    serviceManager.runCreateWorkTasks()
-
-    // 执行 service 层注册的所有插件
-    await serviceManager.runPluginsConstruction()
-
-    // 写入 package.json 文件 -- 此时安装 service 层写入的 deps
-    await serviceManager.writePackageConfig()
-
-    // 写入项目配置文件
-    await serviceManager.setAppConfig()
-
-    // 初始化首次 commit
-    if (options.initGit) {
-      try {
-        await serviceManager.initFirstCommit(options.commit)
-      } catch (e) {
-        logger.error('git 初始化失败！')
-        logger.error(e)
-      }
-    }
-
-    // 安装所有依赖
-    await serviceManager.install()
+    await constructionManager.initGit()
 
     // 成功提示
     logger.done(`创建项目 ${name} 成功~, happy coding!`)
@@ -149,18 +127,8 @@ class CoreManager {
    * @date 2021-2-5 14:28:38
    */
   async add(name: string, opt: AddOption): Promise<void> {
-
-    // 初始化 pluginManager，此时 plugin 还没有安装
-    const pluginManager = PluginManager.createByAddCommand(
-      this.basePath,
-      name,
-      opt
-    )
-
-    // 安装 plugin
-    await pluginManager.installPlugin()
-
-    logger.done(`插件 ${pluginManager.name} 安装成功~`)
+    console.log(name)
+    console.log(opt)
   }
 }
 

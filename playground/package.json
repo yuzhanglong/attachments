@@ -1,11 +1,11 @@
 {
-  "name": "serendipity-playground",
+  "name": "serendipity-project",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "create-react-project": "node ../packages/serendipity/bin/serendipity.js create foo1 -t react -s D:\\projects\\serendipity\\packages\\serendipity-service-react",
-    "add-react-plugin": "cd hello-serendipity && node ../../packages/serendipity/bin/serendipity.js add -p D:\\projects\\serendipity\\packages\\serendipity-plugin-react",
-    "add-eslint-plugin": "cd hello-serendipity && node ../../packages/serendipity/bin/serendipity.js add -p D:\\projects\\serendipity\\packages\\serendipity-plugin-eslint"
+    "create-hello-world": "node ../packages/serendipity/bin/serendipity.js create hello -p D:\\projects\\serendipity\\examples\\presets\\helloWorld.js",
+    "create-by-remote-preset": "node ../packages/serendipity/bin/serendipity.js create hello -p http://cdn.yuzzl.top/serendipityPreset.js",
+    "create-react-app": "node ../packages/serendipity/bin/serendipity.js create hello -p D:\\projects\\serendipity\\examples\\presets\\reactApp.js"
   },
   "license": "MIT",
   "dependencies": {

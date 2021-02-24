@@ -1,6 +1,8 @@
 module.exports = {
+  preset: 'ts-jest',
   testPathIgnorePatterns: [
-    'playground'
+    'playground',
+    'examples'
   ]
 }
 

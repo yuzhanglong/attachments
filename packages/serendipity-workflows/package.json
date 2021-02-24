@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-workflows",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "bin": {
     "serendipity-workflows": "./bin/index.js"
   },
@@ -13,7 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "@commitlint/types": "^11.0.0",
-    "commander": "^7.1.0"
+    "commander": "^7.1.0",
+    "globby": "^11.0.2"
   },
   "files": [
     "bin"

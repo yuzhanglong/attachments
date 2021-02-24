@@ -10,7 +10,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { AppConfig, CommonObject } from '../types/common'
-import { PluginModule } from '../types/plugin'
+import { PluginModuleInfo } from '../types/plugin'
 import { configFile } from './paths'
 import { isPlugin, writeFilePromise } from './files'
 import PackageManager from './packageManager'
@@ -18,19 +18,25 @@ import PackageManager from './packageManager'
 class AppManager {
   private readonly basePath: string
 
-  private packageManager: PackageManager
+  // package 管理模块
+  public packageManager: PackageManager
+
+  // App 配置管理模块
   private appConfig: AppConfig
 
 
   constructor(basePath: string, appConfig?: AppConfig, packageConfig?: CommonObject) {
     this.basePath = basePath
+
     // 如果用户传入配置，我们使用用户的，否则从文件中读取配置，如果读取失败则赋值一个空对象：{}
     if (appConfig) {
       this.appConfig = appConfig
     } else {
       this.readAppConfig()
     }
+
     if (packageConfig) {
+      // 如果用户传入 package 配置，我们使用用户的，否则从 package.json 中读取相应配置
       this.packageManager = new PackageManager(basePath)
       this.packageManager.setPackageConfig(packageConfig)
     } else {
@@ -84,9 +90,13 @@ class AppManager {
    * @return 所有 plugin 的字符串集合
    * @date 2021-2-16 23:14:03
    */
-  public getPluginModules(): PluginModule[] {
+  public getPluginModules(): PluginModuleInfo[] {
     return this.getPluginList().map(plugin => {
-      return require(plugin)
+      const target = path.resolve(this.basePath, 'node_modules', plugin)
+      return {
+        requireResult: require(target),
+        absolutePath: target
+      }
     })
   }
 
@@ -110,6 +120,15 @@ class AppManager {
     return this.packageManager.getPackageConfig()
   }
 
+  /**
+   * base path getter
+   *
+   * @author yuzhanglong
+   * @date 2021-2-21 00:11:42
+   */
+  public getBasePath(): string {
+    return this.basePath
+  }
 }
 
 export default AppManager

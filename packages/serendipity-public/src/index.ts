@@ -16,7 +16,7 @@ import serendipityEnv from './utils/env'
 import { runCommand } from './utils/command'
 import logger from './utils/logger'
 import { fileTreeWriting, isPlugin, writeFilePromise } from './utils/files'
-import { getTemplatesData, renderTemplateData } from './utils/template'
+import { getTemplatesData, renderTemplate, renderTemplateData } from './utils/template'
 import AppManager from './utils/appManager'
 import PackageManager from './utils/packageManager'
 
@@ -33,6 +33,7 @@ export {
   writeFilePromise,
   getTemplatesData,
   renderTemplateData,
+  renderTemplate,
   AppManager,
   PackageManager,
   isPlugin
