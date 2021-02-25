@@ -1,9 +1,3 @@
-# 开发中...
+# Serendipity(开发中 -- 一个前端脚手架) 
 
-## 现在可以体验一下 react 项目创建（仅供测试）
-
-你只需要执行下面的命令即可创建一个 react 项目：
-
-```shell
-npx @attachments/serendipity create -t react
-```
+[![codecov](https://codecov.io/gh/yuzhanglong/serendipity/branch/0.2.x/graph/badge.svg)](https://codecov.io/gh/yuzhanglong/serendipity)
