@@ -19,6 +19,14 @@ jest.mock('execa')
 describe('cli Manager 模块测试', () => {
   beforeEach(() => {
     process.env.SERENDIPITY_CONFIG = 'DEVELOPMENT'
+
+    const exitMock = jest.fn()
+
+    const realProcess = process
+    global.process = {
+      ...realProcess,
+      exit: exitMock as never
+    }
   })
 
 
@@ -53,5 +61,14 @@ describe('cli Manager 模块测试', () => {
       commit: 'feat: initial commit'
     })
     expect(logger.error).toBeCalledWith('传入的选项有误：preset 为空，请选择一个正确的 preset，可以是一个本地路径或者 http url')
+  })
+
+  test('add 命令下用户输入不合法的 plugin 名称', async () => {
+    logger.error = jest.fn()
+    const cm = new CoreManager([], path.resolve('/'))
+    await cm.add('bad-name', {
+      version: '1.0.0'
+    })
+    expect(logger.error).toBeCalledWith('bad-name 不是一个合法的插件名称，名称应该以 serendipity-plugin 或者 @attachments/serendipity-plugin 开头')
   })
 })

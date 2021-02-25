@@ -9,6 +9,7 @@
 import * as path from 'path'
 import * as fs from 'fs'
 import ConstructionManager from '../src/constructionManager'
+import PresetManager from '../src/presetManager'
 
 const mockedExeca = require('../../../__mocks__/execa')
 
@@ -18,8 +19,9 @@ jest.mock('execa')
 describe('serviceManager 模块', () => {
   test('installPluginsFromPresets - plugin 信息是否正确写入 package.json', async () => {
     const base = path.resolve('/')
-    const cs = new ConstructionManager(base, {})
-    await cs.initPreset({
+    const cs = new ConstructionManager(base)
+    const pm = new PresetManager('/')
+    pm.initPresetByObject({
       plugins: [
         {
           name: '@attachments/serendipity-plugin-react'
@@ -32,7 +34,7 @@ describe('serviceManager 模块', () => {
         }
       ]
     })
-    await cs.installPluginsFromPresets()
+    await cs.installPluginsFromPresets(pm.getPreset())
 
     const res = fs.readFileSync('/package.json')
 

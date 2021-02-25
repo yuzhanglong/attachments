@@ -8,10 +8,11 @@
 
 
 import * as fs from 'fs'
-import { chalk, logger, serendipityEnv } from '@attachments/serendipity-public'
+import { chalk, isPlugin, logger, serendipityEnv } from '@attachments/serendipity-public'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import ConstructionManager from './constructionManager'
 import { AddOption, BaseCommandValidateResult } from './types/options'
+import PresetManager from './presetManager'
 
 
 class CoreManager {
@@ -82,6 +83,9 @@ class CoreManager {
   async create(name: string, options: CreateOptions): Promise<void> {
     this.options = options
 
+    const pm = new PresetManager(this.basePath)
+    await pm.initPresetByUrl(options.preset)
+
     logger.info(`在 ${chalk.yellow(this.basePath)} 创建项目中...`)
 
     // 参数验证
@@ -89,20 +93,18 @@ class CoreManager {
 
     if (!validateResult.validated) {
       logger.error(`传入的选项有误：${validateResult.message}`)
-      return
+      process.exit(0)
     }
 
     // 初始化项目目录
     this.initWorkDir()
 
     // 初始化 ConstructionManager（构建管理）
-    const constructionManager = new ConstructionManager(this.basePath, options)
+    const constructionManager = new ConstructionManager(this.basePath)
 
-    // 初始化 preset
-    await constructionManager.initPreset()
 
     // 安装 preset 列出的所有插件
-    await constructionManager.installPluginsFromPresets()
+    await constructionManager.installPluginsFromPresets(pm.getPreset())
 
     // 此时所有插件都已经安装完成
     // 接下来执行插件 @construction 下的逻辑, 合并 package.json
@@ -111,8 +113,10 @@ class CoreManager {
     // 安装合并进来的依赖
     await constructionManager.installDependencies()
 
-    // 初始化 git (如果 没有配置 initGit 选项，这个步骤会被跳过)
-    await constructionManager.initGit()
+    // 初始化 git(如果用户选择的话)
+    if (options.git) {
+      await constructionManager.initGit(options.commit)
+    }
 
     // 成功提示
     logger.done(`创建项目 ${name} 成功~, happy coding!`)
@@ -123,12 +127,29 @@ class CoreManager {
    *
    * @author yuzhanglong
    * @param name 插件名称（如果传入的话）
-   * @param opt 插件选项
+   * @param options 插件选项
    * @date 2021-2-5 14:28:38
    */
-  async add(name: string, opt: AddOption): Promise<void> {
-    console.log(name)
-    console.log(opt)
+  async add(name: string, options: AddOption): Promise<void> {
+    logger.info(`添加插件 ${name} 中...`)
+
+    if (!isPlugin(name)) {
+      logger.error(`${name} 不是一个合法的插件名称，名称应该以 serendipity-plugin 或者 @attachments/serendipity-plugin 开头`)
+      process.exit(0)
+    }
+
+    // 初始化 ConstructionManager（构建管理）
+    const constructionManager = new ConstructionManager(this.basePath)
+    await constructionManager.installPlugin(
+      name, options.localPath || options.version
+    )
+    // 此时所有插件都已经安装完成
+    // 接下来执行插件 @construction 下的逻辑, 合并 package.json
+    await constructionManager.runPluginConstruction()
+
+    // 安装合并进来的依赖
+    await constructionManager.installDependencies()
+    logger.info('添加插件成功~')
   }
 }
 
