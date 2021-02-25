@@ -90,8 +90,8 @@ describe('appManager 模块测试', () => {
     const am = new AppManager('/', null, {})
     const opt = am.getPluginOptionByName('serendipity-plugin-foo')
     expect(opt).toStrictEqual({
-      name: 'serendipity-plugin-foo',
-      options: { foo: path.resolve('/foo', 'bar'), bar: 'hello world' }
-    })
+        foo: path.resolve('/foo', 'bar'), bar: 'hello world'
+      }
+    )
   })
 })

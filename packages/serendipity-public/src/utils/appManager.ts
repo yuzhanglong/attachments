@@ -149,7 +149,7 @@ class AppManager {
           logger.warn(`插件 ${name} 在配置文件中被声明了两次`)
         }
         // 如果发生重复声明，我们只取最前面的一个
-        result = Object.assign(result, pg[0])
+        result = Object.assign(result, pg[0].options)
       }
     }
     return result
