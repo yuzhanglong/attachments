@@ -10,12 +10,12 @@
   "scripts": {
     "lint": "eslint --ext .ts --max-warnings 0 packages/",
     "test": "jest --no-cache",
-    "test:coverage": "jest --no-cache --coverage",
     "lerna:build": "lerna run build",
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",
     "lerna:publish": "yarn lerna:build && lerna publish --no-push",
-    "clear": "serendipity-workflows clear"
+    "clear": "serendipity-workflows clear",
+    "codecov": "codecov"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "@typescript-eslint/eslint-plugin": "^4.15.2",
     "@typescript-eslint/parser": "^4.15.2",
     "axios": "^0.21.1",
+    "codecov": "^3.8.1",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-import": "^2.22.1",
