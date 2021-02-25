@@ -56,14 +56,16 @@ class PluginExecutor {
         this.plugins.push(
           new PluginFactory(
             (plugin as { default: Constructor }).default,
-            pm.absolutePath
+            pm.absolutePath,
+            pm.options
           )
         )
       } else {
         this.plugins.push(
           new PluginFactory(
-            plugin as unknown as Constructor,
-            pm.absolutePath
+            plugin as Constructor,
+            pm.absolutePath,
+            pm.options
           )
         )
       }

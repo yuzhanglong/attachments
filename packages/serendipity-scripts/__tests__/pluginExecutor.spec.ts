@@ -19,7 +19,7 @@ jest.mock('fs')
 
 // eslint-disable-next-line max-lines-per-function
 describe('plugin 执行器', () => {
-  test('多个 @script 下，只执行第一个', () => {
+  test('多个 @script', () => {
     const beforeCallback = jest.fn()
 
     const executeCallback = jest.fn()

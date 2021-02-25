@@ -7,7 +7,7 @@
  */
 
 
-import { Constructor } from '@attachments/serendipity-public/bin/types/common'
+import { CommonObject, Constructor } from '@attachments/serendipity-public/bin/types/common'
 import {
   PLUGIN_CONSTRUCTION_META_KEY,
   PLUGIN_INQUIRY_META_KEY,
@@ -20,8 +20,8 @@ class PluginFactory {
   private readonly pluginInstance: unknown
   private readonly absolutePath: string
 
-  constructor(pluginModule: Constructor, path?: string) {
-    this.pluginInstance = new (pluginModule as new (...args: unknown[]) => unknown)()
+  constructor(pluginModule: Constructor, path?: string, options?: CommonObject) {
+    this.pluginInstance = new pluginModule(options)
     this.absolutePath = path
   }
 

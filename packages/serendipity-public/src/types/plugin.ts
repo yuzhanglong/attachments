@@ -9,6 +9,8 @@
 
 // 模板文件映射表
 
+import { CommonObject } from './common'
+
 export type TemplateFilesMapper = Record<string, string>
 
 // plugin 基本信息
@@ -18,4 +20,7 @@ export interface PluginModuleInfo {
 
   // 该插件的绝对路径
   absolutePath?: string
+
+  // 额外的参数
+  options?: CommonObject
 }
