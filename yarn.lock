@@ -5796,7 +5796,7 @@ fs-minipass@^2.0.0:
   dependencies:
     minipass "^3.0.0"
 
-fs-monkey@1.0.1:
+fs-monkey@1.0.1, fs-monkey@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/fs-monkey/download/fs-monkey-1.0.1.tgz#4a82f36944365e619f4454d9fff106553067b781"
   integrity sha1-SoLzaUQ2XmGfRFTZ//EGVTBnt4E=

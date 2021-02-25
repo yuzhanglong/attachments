@@ -11,9 +11,9 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { AppConfig, CommonObject } from '../types/common'
 import { PluginModuleInfo } from '../types/plugin'
-import { configFile } from './paths'
 import { isPlugin, writeFilePromise } from './files'
 import PackageManager from './packageManager'
+import logger from './logger'
 
 class AppManager {
   private readonly basePath: string
@@ -51,7 +51,8 @@ class AppManager {
    * @date 2021-2-16 22:53:52
    */
   private readAppConfig() {
-    this.appConfig = fs.existsSync(configFile) ? require(configFile) : {}
+    const configPath = path.resolve(this.getBasePath(), 'serendipity.js')
+    this.appConfig = fs.existsSync(configPath) ? require(configPath) : {}
   }
 
   /**
@@ -95,7 +96,8 @@ class AppManager {
       const target = path.resolve(this.basePath, 'node_modules', plugin)
       return {
         requireResult: require(target),
-        absolutePath: target
+        absolutePath: target,
+        options: this.getPluginOptionByName(plugin)
       }
     })
   }
@@ -128,6 +130,29 @@ class AppManager {
    */
   public getBasePath(): string {
     return this.basePath
+  }
+
+  /**
+   * 通过 plugin 的名称(这个名称基于 package.json dependence 的 key)
+   * 从 app 配置中寻找 options(如果有的话)
+   *
+   * @author yuzhanglong
+   * @param name plugin 名称
+   * @date 2021-2-25 20:54:17
+   */
+  public getPluginOptionByName(name: string) {
+    let result = {}
+    if (this.appConfig?.plugins) {
+      const pg = this.appConfig.plugins.filter(plugin => plugin.name === name)
+      if (pg.length >= 1) {
+        if (pg.length >= 2) {
+          logger.warn(`插件 ${name} 在配置文件中被声明了两次`)
+        }
+        // 如果发生重复声明，我们只取最前面的一个
+        result = Object.assign(result, pg[0].options)
+      }
+    }
+    return result
   }
 }
 

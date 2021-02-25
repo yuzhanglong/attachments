@@ -7,7 +7,11 @@
  */
 
 
-import { AppManager } from '../bin/index'
+import * as fs from 'fs'
+import * as path from 'path'
+import { patchRequire } from 'fs-monkey'
+import AppManager from '../src/utils/appManager'
+
 
 describe('appManager 模块测试', () => {
   test('传入已知的 app/package 等配置，不从文件读取', () => {
@@ -49,9 +53,7 @@ describe('appManager 模块测试', () => {
   })
 
   test('获取插件模块', () => {
-    const appConfig = {
-
-    }
+    const appConfig = {}
     const packageConfig = {
       'dependencies': {
         '@attachments/serendipity-plugin-babel': '~0.0.12',
@@ -63,5 +65,33 @@ describe('appManager 模块测试', () => {
     const modules = manager.getPluginModules()
     // 只有模块读取成功才会走到这一步
     expect(modules.length).toStrictEqual(2)
+  })
+
+  test('读取配置文件，并在配置文件中传递插件 options', () => {
+    jest.mock('fs')
+    jest.mock('execa')
+
+    const configFileMockContent = `
+    const path = require('path')
+    
+    module.exports = {
+      plugins: [
+        {
+          name: 'serendipity-plugin-foo',
+          options: {
+            foo: path.resolve('/foo', 'bar'),
+            bar: 'hello world'
+          }
+        }
+      ]
+    }`
+    fs.writeFileSync('/serendipity.js', configFileMockContent)
+    patchRequire(fs)
+    const am = new AppManager('/', null, {})
+    const opt = am.getPluginOptionByName('serendipity-plugin-foo')
+    expect(opt).toStrictEqual({
+        foo: path.resolve('/foo', 'bar'), bar: 'hello world'
+      }
+    )
   })
 })
