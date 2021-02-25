@@ -8,7 +8,7 @@
 
 
 import * as fs from 'fs'
-import { chalk, logger, serendipityEnv } from '@attachments/serendipity-public'
+import { chalk, isPlugin, logger, serendipityEnv } from '@attachments/serendipity-public'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import ConstructionManager from './constructionManager'
 import { AddOption, BaseCommandValidateResult } from './types/options'
@@ -132,12 +132,24 @@ class CoreManager {
    */
   async add(name: string, options: AddOption): Promise<void> {
     logger.info(`添加插件 ${name} 中...`)
-    // 初始化 ConstructionManager（构建管理）
-    if (options.version) {
 
+    if (!isPlugin(name)) {
+      logger.error(`${name} 不是一个合法的插件名称，名称应该以 serendipity-plugin 或者 @attachments/serendipity-plugin 开头`)
+      process.exit(0)
     }
+
+    // 初始化 ConstructionManager（构建管理）
     const constructionManager = new ConstructionManager(this.basePath)
-    console.log(constructionManager)
+    await constructionManager.installPlugin(
+      name, options.localPath || options.version
+    )
+    // 此时所有插件都已经安装完成
+    // 接下来执行插件 @construction 下的逻辑, 合并 package.json
+    await constructionManager.runPluginConstruction()
+
+    // 安装合并进来的依赖
+    await constructionManager.installDependencies()
+    logger.info('添加插件成功~')
   }
 }
 

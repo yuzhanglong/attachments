@@ -50,7 +50,7 @@ class ConstructionManager {
         depMapper[res.name] = res.path || res.version || 'latest'
       })
 
-      this.appManager.packageManager.mergeIntoCurrent({
+      packageManager.mergeIntoCurrent({
         dependencies: depMapper
       })
     }
@@ -128,6 +128,25 @@ class ConstructionManager {
     // 不要忘记再写入一遍
     await this.appManager.packageManager.writePackageConfig()
     await this.appManager.packageManager.installDependencies()
+  }
+
+  /**
+   * 安装插件
+   *
+   * @author yuzhanglong
+   * @param name 插件的名称
+   * @param version 插件的版本号，对应 dependence 的 value，所以也可以传入一个本地路径
+   * @date 2021-2-25 11:32:01
+   */
+  public async installPlugin(name: string, version?: string): Promise<void> {
+    const packageManager = this.appManager.packageManager
+    packageManager.mergeIntoCurrent({
+      dependencies: {
+        [name]: version || 'latest'
+      }
+    })
+    await packageManager.writePackageConfig()
+    await packageManager.installDependencies()
   }
 }
 
