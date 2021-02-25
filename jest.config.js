@@ -3,6 +3,8 @@ module.exports = {
   testPathIgnorePatterns: [
     'playground',
     'examples'
-  ]
+  ],
+  'coverageDirectory': './coverage/',
+  'collectCoverage': true
 }
 
