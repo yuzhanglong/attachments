@@ -25,10 +25,14 @@ class ConstructionManager {
   private readonly pluginExecutor: PluginExecutor
   private readonly appManager: AppManager
 
-  constructor(basePath: string) {
+  constructor(basePath: string, resolvePackageConfig?: boolean) {
     this.basePath = basePath
     // 构建模式下并没有 App 配置文件， 我们使用默认的
-    this.appManager = new AppManager(basePath, {}, getBasePackageJsonContent())
+    this.appManager = new AppManager(
+      basePath,
+      null,
+      resolvePackageConfig ? null : getBasePackageJsonContent()
+    )
     this.pluginExecutor = new PluginExecutor(this.appManager)
   }
 

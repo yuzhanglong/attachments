@@ -139,7 +139,7 @@ class CoreManager {
     }
 
     // 初始化 ConstructionManager（构建管理）
-    const constructionManager = new ConstructionManager(this.basePath)
+    const constructionManager = new ConstructionManager(this.basePath, true)
     await constructionManager.installPlugin(
       name, options.localPath || options.version
     )

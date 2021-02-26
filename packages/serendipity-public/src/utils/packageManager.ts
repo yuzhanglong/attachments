@@ -56,7 +56,7 @@ class PackageManager {
       this.packageConfig = require(packageConfigPath)
       return true
     } catch (e) {
-      console.log(e)
+      this.packageConfig = {}
       return false
     }
   }
