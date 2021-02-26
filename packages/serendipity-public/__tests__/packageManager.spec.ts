@@ -6,13 +6,12 @@
  * Email: yuzl1123@163.com
  */
 
-import * as fs from 'fs'
-import { patchRequire } from 'fs-monkey'
 import { PackageManager } from '../src'
 
 const mockedExeca = require('../../../__mocks__/execa')
 
 jest.mock('execa')
+jest.mock('fs')
 
 describe('packageManager 测试模块', () => {
   test('模块安装字符串生成', () => {
@@ -31,15 +30,6 @@ describe('packageManager 测试模块', () => {
     expect(packageManager.getInstallCommand({
       name: 'foo'
     })).toStrictEqual('yarn add foo')
-  })
-
-  test('从文件系统中获取 package 配置', () => {
-    fs.writeFileSync('/package.json', '{"version": "1.0.0"}')
-    patchRequire(fs)
-    const pm = PackageManager.createWithResolve('/')
-    expect(pm.getPackageConfig()).toStrictEqual({
-      'version': '1.0.0'
-    })
   })
 
   test('配置合并', () => {

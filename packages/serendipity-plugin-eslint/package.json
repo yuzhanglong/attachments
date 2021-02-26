@@ -13,11 +13,9 @@
   },
   "dependencies": {
     "@attachments/serendipity-public": "^0.1.2",
-    "eslint-webpack-plugin": "^2.4.3"
-  },
-  "peerDependencies": {
-    "@attachments/serendipity-service-react": "~0.0.11",
-    "webpack": "^5.21.2"
+    "@attachments/serendipity-scripts": "^0.1.2",
+    "eslint-webpack-plugin": "^2.4.3",
+    "@attachments/serendipity-plugin-react": "^0.1.2"
   },
   "files": [
     "bin"
