@@ -12,6 +12,7 @@ import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
 import { logger, writeFilePromise } from '@attachments/serendipity-public'
 import axios from 'axios'
 import { SerendipityPreset } from './types/preset'
+import { DEFAULT_PRESET_NAME } from './common'
 
 class PresetManager {
   private readonly basePath: string
@@ -19,6 +20,7 @@ class PresetManager {
 
   constructor(basePath?: string) {
     this.basePath = basePath
+    this.preset = {}
   }
 
   /**
@@ -47,7 +49,7 @@ class PresetManager {
     }
     if (preset.startsWith('http://') || preset.startsWith('https://')) {
       const response = await axios.get(preset)
-      const targetPath = tempPath || path.resolve(this.basePath, 'serendipityPreset.js')
+      const targetPath = tempPath || path.resolve(this.basePath, DEFAULT_PRESET_NAME)
       await writeFilePromise(targetPath, response.data)
       this.preset = require(targetPath)
       // 移除临时 preset 文件
@@ -65,6 +67,20 @@ class PresetManager {
    */
   public getPreset() {
     return this.preset
+  }
+
+  /**
+   * 获取所有需要在构建结束之后删除的 plugins
+   *
+   * @author yuzhanglong
+   * @date 2021-2-26 23:45:24
+   */
+  public getPluginNamesShouldRemove(): string[] {
+    if (Array.isArray(this.preset?.plugins)) {
+      const data = this.preset?.plugins?.filter(res => res.removeAfterConstruction)
+      return data.map(res => res.name)
+    }
+    return []
   }
 }
 

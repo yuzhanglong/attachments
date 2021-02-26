@@ -118,6 +118,8 @@ class CoreManager {
       await constructionManager.initGit(options.commit)
     }
 
+    await constructionManager.removePlugin(...pm.getPluginNamesShouldRemove())
+
     // 成功提示
     logger.done(`创建项目 ${name} 成功~, happy coding!`)
   }
@@ -149,7 +151,14 @@ class CoreManager {
 
     // 安装合并进来的依赖
     await constructionManager.installDependencies()
-    logger.info('添加插件成功~')
+    logger.info(`插件 ${name} 安装成功!`)
+
+    // 移除无关的依赖，对于一些只有 construction 模式的插件，在构建完毕之后失去作用，我们直接移除它们
+    if (options.delete) {
+      logger.info('正在移除无关的依赖...')
+      await constructionManager.removePlugin(name)
+      logger.info('移除成功!')
+    }
   }
 }
 

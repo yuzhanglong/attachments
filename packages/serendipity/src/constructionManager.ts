@@ -154,6 +154,19 @@ class ConstructionManager {
     await packageManager.writePackageConfig()
     await packageManager.installDependencies()
   }
+
+  /**
+   * 移除 plugin
+   *
+   * @author yuzhanglong
+   * @param names 插件的名称(可以传入多个)
+   * @date 2021-2-26 21:59:35
+   */
+  public async removePlugin(...names: string[]) {
+    for (const name of names) {
+      await this.appManager.packageManager.removeDependency(name)
+    }
+  }
 }
 
 export default ConstructionManager

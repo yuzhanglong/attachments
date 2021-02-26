@@ -12,6 +12,7 @@ import SerendipityReactPlugin from '@attachments/serendipity-plugin-react'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import { appRoot, appSource } from '@attachments/serendipity-public/bin/utils/paths'
 import { EslintInquiryOptions } from './types'
+import { ESLINT_OPTION_TO_CONFIG } from './common'
 
 const ESLintWebpackPlugin = require('eslint-webpack-plugin')
 
@@ -58,22 +59,48 @@ class SerendipityEslintPlugin {
    * @date 2021-2-26 14:48:06
    */
   @Construction()
-  constructionForBase(options: ConstructionOptions) {
+  async constructionForBase(options: ConstructionOptions) {
     const inquiryOpts = options.inquiryResult as EslintInquiryOptions
+
+    if (inquiryOpts.extendConfig !== 'recommend') {
+      await options.appManager.packageManager.addAndInstallModule({
+        // 安装相应的 eslint config package
+        name: ESLINT_OPTION_TO_CONFIG[inquiryOpts.extendConfig].package
+      })
+    }
 
     options.appManager.packageManager.mergeIntoCurrent({
       dependencies: Object.assign(
+        // 基本的 eslint 依赖
         {
           'eslint': '^7.19.0'
         },
+
+        // 是否需要 typescript
         inquiryOpts.useTypeScript ? {
           '@typescript-eslint/eslint-plugin': '^4.15.0',
           '@typescript-eslint/parser': '^4.15.0'
+        } : {},
+
+        // 是否需要引入 config
+        inquiryOpts.extendConfig !== 'recommend' ? {
+          [ESLINT_OPTION_TO_CONFIG[inquiryOpts.extendConfig].package]: ESLINT_OPTION_TO_CONFIG[inquiryOpts.extendConfig].version
         } : {}
       ),
+
       // 提供 npm run lint script 启动 eslint 检查
       scripts: {
         'lint': `eslint ${inquiryOpts.useTypeScript ? '--ext .ts --ext .tsx' : '--ext .js --ext .jsx'} --max-warnings 0 ./src`
+      },
+      eslintConfig: {
+        root: true,
+        extends: [
+          ESLINT_OPTION_TO_CONFIG[inquiryOpts.extendConfig].extendName
+        ],
+        parserOptions: {
+          ecmaVersion: 2018,
+          sourceType: 'module'
+        }
       }
     })
   }
@@ -134,9 +161,25 @@ class SerendipityEslintPlugin {
       },
       {
         type: 'confirm',
-        message: '你的项目使用 typescript 吗',
+        message: '是否添加 typescript 解析支持',
         name: 'useTypeScript',
         default: false
+      },
+      {
+        type: 'list',
+        message: '选择一个 eslint 规范',
+        name: 'extendConfig',
+        choices: [
+          {
+            message: 'eslint:recommended(eslint 默认)',
+            name: 'recommend'
+          },
+          {
+            message: 'Airbnb',
+            name: 'Airbnb'
+          }
+        ],
+        default: 'recommend'
       }
     ]
   }

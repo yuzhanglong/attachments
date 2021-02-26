@@ -7,6 +7,7 @@
  */
 
 import * as path from 'path'
+import * as fs from 'fs'
 import { CommonObject, ModuleInstallOptions, PackageManagerCli } from '../types/common'
 import { MergePackageConfigOptions } from '../types/cliService'
 import { deepmerge, runCommand, writeFilePromise } from '../index'
@@ -23,9 +24,8 @@ class PackageManager {
 
 
   constructor(basePath: string, cliName?: PackageManagerCli) {
-    // 默认采用 yarn 来管理
-    this.cliName = cliName ? cliName : 'yarn'
     this.basePath = basePath
+    this.cliName = cliName || this.getPackageManagerCliName()
     this.packageConfig = {}
   }
 
@@ -251,6 +251,30 @@ class PackageManager {
     return require(
       path.resolve(this.basePath, 'node_modules', name)
     )
+  }
+
+  /**
+   * 判断选择哪个包管理工具
+   * 如果工作目录下存在 package.lock.json 则为 npm, 否则为 yarn
+   *
+   * @author yuzhanglong
+   * @return PackageManagerCli package cli 类型
+   * @date 2021-2-26 21:45:13
+   */
+  private getPackageManagerCliName(): PackageManagerCli {
+    const isPackageLockJsonExist = fs.existsSync(path.resolve(this.basePath, 'package-lock.json'))
+    return isPackageLockJsonExist ? 'npm' : 'yarn'
+  }
+
+  /**
+   * 调用 npm/yarn remove 移除某个依赖
+   *
+   * @author yuzhanglong
+   * @return PackageManagerCli package cli 类型
+   * @date 2021-2-26 21:50:51
+   */
+  public async removeDependency(name: string) {
+    await runCommand(`${this.cliName}`, ['remove', name], this.basePath)
   }
 }
 
