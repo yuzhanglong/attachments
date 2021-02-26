@@ -23,4 +23,7 @@ export interface PluginModuleInfo {
 
   // 额外的参数
   options?: CommonObject
+
+  // 名称
+  name?: string
 }

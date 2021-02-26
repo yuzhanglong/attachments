@@ -21,7 +21,8 @@ describe('plugin 测试', () => {
     expect(am.packageManager.getPackageConfig()).toStrictEqual({
       'babel': {
         'presets': [
-          '@babel/preset-react'
+          '@babel/preset-react',
+          "@babel/preset-typescript"
         ]
       }
     })

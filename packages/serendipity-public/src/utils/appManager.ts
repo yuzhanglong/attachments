@@ -97,7 +97,8 @@ class AppManager {
       return {
         requireResult: require(target),
         absolutePath: target,
-        options: this.getPluginOptionByName(plugin)
+        options: this.getPluginOptionByName(plugin),
+        name: plugin
       }
     })
   }

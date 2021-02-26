@@ -9,12 +9,7 @@
 
 import * as path from 'path'
 import { AppConfig } from '@attachments/serendipity-public/bin/types/common'
-import {
-  writeFilePromise,
-  runCommand,
-  logger,
-  AppManager
-} from '@attachments/serendipity-public'
+import { AppManager, logger, runCommand, writeFilePromise } from '@attachments/serendipity-public'
 import { PluginExecutor } from '@attachments/serendipity-scripts'
 import { getBasePackageJsonContent } from './utils'
 import { SerendipityPreset } from './types/preset'
@@ -66,10 +61,17 @@ class ConstructionManager {
    * 执行 plugin 构建流程
    *
    * @author yuzhanglong
+   * @param names 需要执行的 plugins 名称，如果不传入此参数则执行所有的插件
    * @date 2021-2-21 11:05:50
    */
-  public async runPluginConstruction() {
-    this.pluginExecutor.registerPlugin(...this.appManager.getPluginModules())
+  public async runPluginConstruction(names?: string[]) {
+    const pluginModules = this.appManager.getPluginModules()
+    if (!Array.isArray(names) || names.length === 0) {
+      this.pluginExecutor.registerPlugin(...pluginModules)
+    } else {
+      const newModules = pluginModules.filter(res => names.indexOf(res.name) >= 0)
+      this.pluginExecutor.registerPlugin(...newModules)
+    }
     await this.pluginExecutor.executeConstruction()
   }
 
