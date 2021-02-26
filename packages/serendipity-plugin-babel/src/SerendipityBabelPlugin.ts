@@ -56,7 +56,8 @@ class SerendipityBabelPlugin {
     options.appManager.packageManager.mergeIntoCurrent({
       'babel': {
         'presets': [
-          '@babel/preset-react'
+          '@babel/preset-react',
+          '@babel/preset-typescript'
         ]
       }
     })

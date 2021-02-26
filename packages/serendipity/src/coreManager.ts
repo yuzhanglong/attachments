@@ -139,13 +139,13 @@ class CoreManager {
     }
 
     // 初始化 ConstructionManager（构建管理）
-    const constructionManager = new ConstructionManager(this.basePath)
+    const constructionManager = new ConstructionManager(this.basePath, true)
     await constructionManager.installPlugin(
       name, options.localPath || options.version
     )
     // 此时所有插件都已经安装完成
     // 接下来执行插件 @construction 下的逻辑, 合并 package.json
-    await constructionManager.runPluginConstruction()
+    await constructionManager.runPluginConstruction([name])
 
     // 安装合并进来的依赖
     await constructionManager.installDependencies()

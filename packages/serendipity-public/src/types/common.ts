@@ -39,7 +39,7 @@ export type InquiryResult = CommonObject
 
 export interface AppConfigPlugin {
   name: string,
-  options: unknown
+  options?: CommonObject
 }
 
 // app 配置，针对 service 的额外配置可以
@@ -65,4 +65,4 @@ export interface ModuleInstallOptions {
   onError?: (e: Error) => void
 }
 
-export type Constructor = unknown;
+export type Constructor<T = unknown> = new (...args: unknown[]) => T;

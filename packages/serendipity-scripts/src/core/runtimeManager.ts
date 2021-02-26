@@ -15,7 +15,7 @@ class RuntimeManager {
   public readonly pluginExecutor: PluginExecutor
 
   constructor(basePath: string) {
-    this.appManager = new AppManager(basePath, {})
+    this.appManager = new AppManager(basePath)
     this.pluginExecutor = new PluginExecutor(this.appManager)
   }
 

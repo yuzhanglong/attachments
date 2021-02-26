@@ -27,7 +27,7 @@ export interface RuntimeOptions {
 export interface ConstructionOptions {
   appManager: AppManager
   matchPlugin: (name: string) => PluginFactory
-  inquiryResult: CommonObject
+  inquiryResult: unknown
   renderTemplate: (base: string, options?: CommonObject, target?: string) => void
 }
 

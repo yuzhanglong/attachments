@@ -65,6 +65,27 @@ describe('pluginFactory 测试', () => {
     expect(pluginFactory.getPluginMetaName()).toStrictEqual('FooPlugin')
   })
 
+  test('plugin 自定义参数支持', () => {
+    const callFn = jest.fn((opt) => {
+      expect(opt).toStrictEqual({
+        foo: 'hello',
+        bar: 'world'
+      })
+    })
+
+    class ParamPlugin {
+      constructor(options: unknown) {
+        callFn(options)
+      }
+    }
+
+    new PluginFactory(ParamPlugin, null, {
+      foo: 'hello',
+      bar: 'world'
+    })
+    expect(callFn).toBeCalledTimes(1)
+  })
+
   test('@Inquiry 元数据注册', () => {
     class InquiryPlugin {
       @Inquiry()
