@@ -14,4 +14,5 @@ export interface BaseCommandValidateResult {
 export interface AddOption {
   version?: string
   localPath?: string
+  delete?: boolean
 }

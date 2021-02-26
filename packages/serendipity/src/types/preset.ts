@@ -12,6 +12,7 @@ export interface PresetPlugin {
   name: string
   path?: string
   version?: string
+  removeAfterConstruction?: boolean
 }
 
 // 预设

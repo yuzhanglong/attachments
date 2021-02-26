@@ -6,7 +6,18 @@
  * Email: yuzl1123@163.com
  */
 
+
+export type ConfigOptions = 'Airbnb' | 'recommend'
+
 export interface EslintInquiryOptions {
   environment: 'React' | '其他项目'
   useTypeScript: boolean
+  extendConfig: ConfigOptions
 }
+
+export interface EslintCustomConfig {
+  package: string
+  extendName: string
+  version: string
+}
+

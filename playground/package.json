@@ -7,7 +7,7 @@
     "create-by-remote-preset": "node ../packages/serendipity/bin/serendipity.js create hello -p http://cdn.yuzzl.top/serendipityPreset.js",
     "create-react-app": "node ../packages/serendipity/bin/serendipity.js create hello-react -p D:\\projects\\serendipity\\examples\\presets\\reactApp.js",
     "add-plugin": "cd hello && node ../../packages/serendipity/bin/serendipity.js add serendipity-plugin-hello-world -l D:\\projects\\serendipity\\examples\\plugins\\helloWorld",
-    "add-eslint-plugin": "cd hello-react && node ../../packages/serendipity/bin/serendipity.js add @attachments/serendipity-plugin-eslint -l D:\\projects\\serendipity\\packages\\serendipity-plugin-eslint"
+    "add-eslint-plugin": "cd hello-react && node ../../packages/serendipity/bin/serendipity.js add @attachments/serendipity-plugin-eslint -l D:\\projects\\serendipity\\packages\\serendipity-plugin-eslint -d"
   },
   "license": "MIT",
   "dependencies": {
