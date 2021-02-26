@@ -6,17 +6,21 @@
  * Email: yuzl1123@163.com
  */
 
+import { WebpackConfiguration, WebpackDevServerConfiguration } from '@attachments/serendipity-public/bin/types/common'
 
-import { AppConfig } from '@attachments/serendipity-public/bin/types/common'
+export interface ReactPluginOptions {
+  // webpack 配置
+  webpackConfig?: WebpackConfiguration
 
-export interface ReactServiceInquire {
-  eslintSupport: boolean
+  // dev server 配置
+  devServerConfig?: WebpackDevServerConfiguration
+
+  // 端口
+  port?: number
+
+  // host
+  host?: string
+
+  // webpack analysis port
+  analysisPort?: number
 }
-
-export interface ReactServiceAppConfigOptions {
-  webpackDevServerPort?: number
-  webpackDevServerHost?: string
-  webpackAnalysisPort?: number
-}
-
-export type ReactServiceAppConfig = AppConfig

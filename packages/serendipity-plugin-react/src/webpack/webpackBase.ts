@@ -19,6 +19,7 @@ import {
   DEFAULT_WEBPACK_DEV_SERVER_HOST,
   DEFAULT_WEBPACK_DEV_SERVER_PORT
 } from '../common/constants'
+import { ReactPluginOptions } from '../types/common'
 import { getHtmlWebpackPluginOptions } from './configurations'
 
 const TerserPlugin = require('terser-webpack-plugin')
@@ -28,10 +29,11 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const SerendipityWebpackPlugin = require('@attachments/serendipity-webpack-plugin')
 
 // eslint-disable-next-line max-lines-per-function
-const getBaseConfig = (): WebpackConfiguration => {
-  const host = DEFAULT_WEBPACK_DEV_SERVER_HOST
-  const port = DEFAULT_WEBPACK_DEV_SERVER_PORT
-  const analysisPort = DEFAULT_WEBPACK_ANALYSIS_PORT
+const getBaseConfig = (options: ReactPluginOptions): WebpackConfiguration => {
+  const host = options?.host || DEFAULT_WEBPACK_DEV_SERVER_HOST
+  const port = options?.port || DEFAULT_WEBPACK_DEV_SERVER_PORT
+  const analysisPort = options?.analysisPort || DEFAULT_WEBPACK_ANALYSIS_PORT
+
   return {
     // 项目入口
     entry: appEntry,

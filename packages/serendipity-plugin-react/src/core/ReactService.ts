@@ -19,20 +19,22 @@ import getBaseConfig from '../webpack/webpackBase'
 import { clearConsole } from '../utils/console'
 import { DEFAULT_WEBPACK_DEV_SERVER_HOST, DEFAULT_WEBPACK_DEV_SERVER_PORT } from '../common/constants'
 import { ReactServiceHooks } from '../types/hooks'
+import { ReactPluginOptions } from '../types/common'
 
 class ReactService {
   private readonly appManager: AppManager
 
   private devServerConfig: WebpackDevServerConfiguration
   private webpackConfig: WebpackConfiguration
-
+  private options: ReactPluginOptions
   private hooks: ReactServiceHooks
 
-  constructor(hooks: ReactServiceHooks) {
+  constructor(hooks: ReactServiceHooks, options?: ReactPluginOptions) {
     this.appManager = new AppManager(process.cwd())
-    this.webpackConfig = getBaseConfig()
+    this.webpackConfig = getBaseConfig(options)
     this.devServerConfig = getDevServerConfig()
     this.hooks = hooks
+    this.options = options
   }
 
   /**
@@ -62,17 +64,25 @@ class ReactService {
     this.hooks.beforeDevServerStart.call(this.mergeDevServerConfig.bind(this))
 
     // devServer 选项合并
-    const devServerOptions = Object.assign({}, this.devServerConfig)
+    this.mergeDevServerConfig(
+      this.options.devServerConfig || {}
+    )
+
+    // webpack 配置合并
+    this.mergeWebpackConfig(
+      this.options?.webpackConfig || {}
+    )
 
     // 初始化 webpack compiler 见 webpack node.js API
-    const compiler = webpack(this.webpackConfig as Configuration)
+    // @ts-ignore
+    const compiler = webpack(this.webpackConfig)
 
     // 启动 webpackDevServer 服务器
-    const server = new WebpackDevServer(compiler, devServerOptions)
+    const server = new WebpackDevServer(compiler, this.devServerConfig)
 
     server.listen(
-      DEFAULT_WEBPACK_DEV_SERVER_PORT,
-      DEFAULT_WEBPACK_DEV_SERVER_HOST,
+      this.options?.port || DEFAULT_WEBPACK_DEV_SERVER_PORT,
+      this.options?.host || DEFAULT_WEBPACK_DEV_SERVER_HOST,
       ReactService.onWebpackServerListen
     )
   }

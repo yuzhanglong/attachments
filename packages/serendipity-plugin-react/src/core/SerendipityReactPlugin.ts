@@ -13,12 +13,18 @@ import { serendipityEnv } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
 import { ReactPluginInquireResult } from '../types/inquiry'
 import { ReactServiceHooks } from '../types/hooks'
+import { ReactPluginOptions } from '../types/common'
 import ReactService from './ReactService'
 
 @SerendipityPlugin('serendipity-react-plugin')
 class SerendipityReactPlugin {
   private baseDeps = {}
   private useTypeScript = false
+  private options: ReactPluginOptions
+
+  constructor(options: ReactPluginOptions) {
+    this.options = options
+  }
 
   public reactServiceHooks: ReactServiceHooks = {
     beforeWebpackStart: new SyncHook(['webpackConfig']),
@@ -37,27 +43,6 @@ class SerendipityReactPlugin {
 
     // 拷贝模板 typescript
     options.renderTemplate(this.useTypeScript ? 'react-template-typescript' : 'react-template')
-  }
-
-  getPackageDependence() {
-    return Object.assign(
-      this.baseDeps,
-      // 添加 react 相关依赖
-      // 理论上这两行不需要加，但是为了方便 IDE 的智能提示（它们会从 package.json）来搜索依赖，故加上它们
-      // 不过它们不会被重复安装
-      {
-        'react': '^17.0.1',
-        'react-dom': '^17.0.1'
-      },
-
-      // 对于 typescript 项目，需要添加 typescript 相关类型声明
-      this.useTypeScript ? {
-        '@types/node': '^12.0.0',
-        '@types/react': '^17.0.0',
-        '@types/react-dom': '^17.0.0',
-        'typescript': '^4.1.3'
-      } : undefined
-    )
   }
 
   @Inquiry()
@@ -79,13 +64,34 @@ class SerendipityReactPlugin {
   @Script('react-start')
   startReactApp() {
     serendipityEnv.setProjectDevelopment()
-    const reactService = new ReactService(this.reactServiceHooks)
+    const reactService = new ReactService(this.reactServiceHooks, this.options)
     reactService.start()
   }
 
   @Script('react-build')
   buildReactApp() {
     return
+  }
+
+  getPackageDependence() {
+    return Object.assign(
+      this.baseDeps,
+      // 添加 react 相关依赖
+      // 理论上这两行不需要加，但是为了方便 IDE 的智能提示（它们会从 package.json）来搜索依赖，故加上它们
+      // 不过它们不会被重复安装
+      {
+        'react': '^17.0.1',
+        'react-dom': '^17.0.1'
+      },
+
+      // 对于 typescript 项目，需要添加 typescript 相关类型声明
+      this.useTypeScript ? {
+        '@types/node': '^12.0.0',
+        '@types/react': '^17.0.0',
+        '@types/react-dom': '^17.0.0',
+        'typescript': '^4.1.3'
+      } : undefined
+    )
   }
 }
 
