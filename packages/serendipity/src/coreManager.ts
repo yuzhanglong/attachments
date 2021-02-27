@@ -96,8 +96,10 @@ class CoreManager {
       process.exit(0)
     }
 
-    // 初始化项目目录
-    this.initWorkDir()
+    // 如果用户传入了名称，那么更路径为 当前执行路径 + name
+    if (name) {
+      this.initWorkDir()
+    }
 
     // 初始化 ConstructionManager（构建管理）
     const constructionManager = new ConstructionManager(this.basePath)

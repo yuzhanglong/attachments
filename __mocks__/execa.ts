@@ -6,7 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-const calledCommands = []
+let calledCommands = []
 
 const execa = (command: string, args: []) => {
   if (args.length) {
@@ -16,7 +16,10 @@ const execa = (command: string, args: []) => {
 }
 
 execa.getCommands = () => {
-  return calledCommands
+  const tmp = calledCommands.slice()
+  // 移除旧内容
+  calledCommands = []
+  return tmp
 }
 
 module.exports = execa

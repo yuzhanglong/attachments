@@ -7,22 +7,23 @@
  */
 
 import * as fs from 'fs'
+import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
 import { renderTemplate } from '../src'
 
-jest.mock('fs')
 
 describe('模板处理相关', () => {
+  const fsHelper = generateTempPathInfo()
+
+  afterAll(() => {
+    fsHelper.removeDir()
+  })
+
   test('渲染并写入模板', async () => {
-    fs.mkdirSync('/hello')
-    fs.mkdirSync('/world')
-    fs.mkdirSync('/wow')
-    fs.writeFileSync('/hello/foo', '111')
-    fs.writeFileSync('/hello/bar', '222')
-    await renderTemplate('/hello', {}, '/world')
-    expect(fs.existsSync('/world/foo')).toBeTruthy()
-    expect(fs.existsSync('/world/bar')).toBeTruthy()
-    await renderTemplate('/hello', null, '/wow')
-    expect(fs.existsSync('/wow/foo')).toBeTruthy()
-    expect(fs.existsSync('/wow/bar')).toBeTruthy()
+    fs.mkdirSync(fsHelper.resolve('hello'))
+    fs.mkdirSync(fsHelper.resolve('world'))
+    fs.writeFileSync(fsHelper.resolve('hello/foo'), '111')
+    await renderTemplate(fsHelper.resolve('hello'), {}, fsHelper.resolve('world'))
+    await renderTemplate(fsHelper.resolve('hello'), null, fsHelper.resolve('world'))
+    expect(fs.existsSync(fsHelper.resolve('hello/foo'))).toBeTruthy()
   })
 })
