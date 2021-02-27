@@ -199,10 +199,11 @@ class PackageManager {
     try {
       // 执行安装命令
       await runCommand(this.getInstallCommand(installOptions), [], this.basePath)
+      return require(path.resolve(this.basePath, 'node_modules', installOptions.name))
     } catch (e) {
       installOptions?.onError(e)
     }
-    return require(path.resolve(this.basePath, 'node_modules', installOptions.name))
+    return {}
   }
 
 
