@@ -9,11 +9,16 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { patchRequire } from 'fs-monkey'
+import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
+import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
 import AppManager from '../src/utils/appManager'
 
 
 describe('appManager 模块测试', () => {
+  beforeEach(() => {
+    initTestDir()
+  })
+
   test('传入已知的 app/package 等配置，不从文件读取', () => {
     const appConfig = {}
     const packageConfig = {
@@ -26,7 +31,7 @@ describe('appManager 模块测试', () => {
       }
     }
 
-    const manager = new AppManager(process.cwd(), appConfig, packageConfig)
+    const manager = new AppManager(playgroundTestPath, appConfig, packageConfig)
     expect(manager.getAppConfig()).toStrictEqual(appConfig)
     expect(manager.getPackageConfig()).toStrictEqual(packageConfig)
   })
@@ -44,7 +49,7 @@ describe('appManager 模块测试', () => {
         '@attachments/serendipity-plugin-react': '~0.0.10'
       }
     }
-    const manager = new AppManager(process.cwd(), appConfig, packageConfig)
+    const manager = new AppManager(playgroundTestPath, appConfig, packageConfig)
     expect(manager.getPluginList()).toStrictEqual([
       '@attachments/serendipity-plugin-babel',
       '@attachments/serendipity-plugin-eslint',
@@ -63,12 +68,12 @@ describe('appManager 模块测试', () => {
     }
     const manager = new AppManager(process.cwd(), appConfig, packageConfig)
     const modules = manager.getPluginModules()
+
     // 只有模块读取成功才会走到这一步
     expect(modules.length).toStrictEqual(2)
   })
 
   test('读取配置文件，并在配置文件中传递插件 options', () => {
-    jest.mock('fs')
     jest.mock('execa')
 
     const configFileMockContent = `
@@ -85,12 +90,14 @@ describe('appManager 模块测试', () => {
         }
       ]
     }`
-    fs.writeFileSync('/serendipity.js', configFileMockContent)
-    patchRequire(fs)
-    const am = new AppManager('/', null, {})
+    const base = path.resolve(playgroundTestPath, 'serendipity.js')
+    fs.writeFileSync(base, configFileMockContent)
+    const am = new AppManager(playgroundTestPath, null, {})
     const opt = am.getPluginOptionByName('serendipity-plugin-foo')
-    expect(opt).toStrictEqual({
-        foo: path.resolve('/foo', 'bar'), bar: 'hello world'
+    expect(opt).toStrictEqual(
+      {
+        foo: path.resolve('/foo', 'bar'),
+        bar: 'hello world'
       }
     )
   })

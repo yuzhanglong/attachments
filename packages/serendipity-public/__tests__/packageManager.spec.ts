@@ -11,7 +11,6 @@ import { PackageManager } from '../src'
 const mockedExeca = require('../../../__mocks__/execa')
 
 jest.mock('execa')
-jest.mock('fs')
 
 describe('packageManager 测试模块', () => {
   test('模块安装字符串生成', () => {

@@ -7,22 +7,23 @@
  */
 
 import * as fs from 'fs'
+import * as path from 'path'
+import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
+import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
 import { renderTemplate } from '../src'
 
-jest.mock('fs')
 
 describe('模板处理相关', () => {
+  beforeEach(() => {
+    initTestDir()
+  })
+
   test('渲染并写入模板', async () => {
-    fs.mkdirSync('/hello')
-    fs.mkdirSync('/world')
-    fs.mkdirSync('/wow')
-    fs.writeFileSync('/hello/foo', '111')
-    fs.writeFileSync('/hello/bar', '222')
-    await renderTemplate('/hello', {}, '/world')
-    expect(fs.existsSync('/world/foo')).toBeTruthy()
-    expect(fs.existsSync('/world/bar')).toBeTruthy()
-    await renderTemplate('/hello', null, '/wow')
-    expect(fs.existsSync('/wow/foo')).toBeTruthy()
-    expect(fs.existsSync('/wow/bar')).toBeTruthy()
+    fs.mkdirSync(path.resolve(playgroundTestPath, 'hello'))
+    fs.mkdirSync(path.resolve(playgroundTestPath, 'world'))
+    fs.writeFileSync(path.resolve(playgroundTestPath, 'hello/foo'), '111')
+    await renderTemplate(path.resolve(playgroundTestPath, 'hello'), {}, path.resolve(playgroundTestPath, 'world'))
+    await renderTemplate(path.resolve(playgroundTestPath, 'hello'), null, path.resolve(playgroundTestPath, 'world'))
+    expect(fs.existsSync(path.resolve(playgroundTestPath, 'hello/foo'))).toBeTruthy()
   })
 })

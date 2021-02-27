@@ -8,17 +8,23 @@
 
 
 import * as fs from 'fs'
+import * as path from 'path'
 import { SyncHook } from 'tapable'
+import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
+import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
 import { Construction, Runtime, Script } from '../src'
 import PluginExecutor from '../src/core/pluginExecutor'
 import { ConstructionOptions, ScriptOptions } from '../src/types/pluginExecute'
 import { Inquiry, SerendipityPlugin } from '../bin'
 
 jest.mock('inquirer')
-jest.mock('fs')
 
 // eslint-disable-next-line max-lines-per-function
 describe('plugin 执行器', () => {
+  beforeEach(() => {
+    initTestDir()
+  })
+
   test('多个 @script', () => {
     const beforeCallback = jest.fn()
 
@@ -135,10 +141,10 @@ describe('plugin 执行器', () => {
     }
 
     // 文件初始化
-    fs.mkdirSync('/templates')
-    fs.mkdirSync('/templates/base')
-    fs.writeFileSync('/templates/base/bar', 'hello world bar')
-    fs.writeFileSync('/templates/base/foo', 'hello world foo')
+    fs.mkdirSync(path.resolve(playgroundTestPath, 'templates'))
+    fs.mkdirSync(path.resolve(playgroundTestPath, 'templates/base'))
+    fs.writeFileSync(path.resolve(playgroundTestPath, 'templates/base/bar'), 'hello world bar')
+    fs.writeFileSync(path.resolve(playgroundTestPath, 'templates/base/foo'), 'hello world foo')
 
 
     const executor = new PluginExecutor()
@@ -146,7 +152,7 @@ describe('plugin 执行器', () => {
 
     await executor.executeConstruction()
 
-    expect(fs.existsSync('/target/bar')).toBeTruthy()
-    expect(fs.existsSync('/target/foo')).toBeTruthy()
+    expect(fs.existsSync(path.resolve(playgroundTestPath, 'templates/base/foo'))).toBeTruthy()
+    expect(fs.existsSync(path.resolve(playgroundTestPath, 'templates/base/bar'))).toBeTruthy()
   })
 })

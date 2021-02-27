@@ -10,19 +10,25 @@ import { PluginExecutor, SerendipityPlugin } from '@attachments/serendipity-scri
 import { AppManager } from '@attachments/serendipity-public'
 import { ReactServiceHooks } from '@attachments/serendipity-plugin-react/bin/types/hooks'
 import { SyncHook } from 'tapable'
+import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
+import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
 import SerendipityBabelPlugin from '../src'
 
 describe('plugin 测试', () => {
+  beforeEach(() => {
+    initTestDir()
+  })
+
   test('构建模式测试', async () => {
-    const am = new AppManager('/', {}, {})
+    const am = new AppManager(playgroundTestPath, {}, {})
     const pm = new PluginExecutor(am)
-    pm['registerPluginByConstructor'](SerendipityBabelPlugin)
+    pm.registerPluginByConstructor(SerendipityBabelPlugin)
     await pm.executeConstruction()
     expect(am.packageManager.getPackageConfig()).toStrictEqual({
       'babel': {
         'presets': [
           '@babel/preset-react',
-          "@babel/preset-typescript"
+          '@babel/preset-typescript'
         ]
       }
     })
@@ -45,9 +51,9 @@ describe('plugin 测试', () => {
     }
 
     const pm = new PluginExecutor()
-    pm['registerPluginByConstructor'](MockPlugin, SerendipityBabelPlugin)
+    pm.registerPluginByConstructor(MockPlugin, SerendipityBabelPlugin)
     pm.registerPlugin()
-    pm['executeRuntime']()
+    pm.executeRuntime()
     const target = pm.getPlugins().find(res => res.getPluginMetaName() === 'serendipity-react-plugin')
     expect(target).toBeTruthy()
     const instance = target.getPluginInstance() as MockPlugin

@@ -10,14 +10,17 @@ import * as process from 'process'
 import * as path from 'path'
 import * as fs from 'fs'
 import { logger } from '@attachments/serendipity-public/bin'
+import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
+import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
 import CoreManager from '../src/coreManager'
 
-jest.mock('fs')
 jest.mock('inquirer')
 jest.mock('execa')
 
 describe('cli Manager 模块测试', () => {
   beforeEach(() => {
+    initTestDir()
+
     process.env.SERENDIPITY_CONFIG = 'DEVELOPMENT'
 
     const exitMock = jest.fn()
@@ -32,7 +35,7 @@ describe('cli Manager 模块测试', () => {
 
   test('重复创建工程 应该提示用户该目录已经存在', async () => {
     logger.error = jest.fn()
-    const target = path.resolve('/foo')
+    const target = path.resolve(playgroundTestPath, 'foo')
     if (!fs.existsSync(target)) {
       fs.mkdirSync(target)
     }
@@ -43,18 +46,18 @@ describe('cli Manager 模块测试', () => {
   })
 
   test('coreManager 流程测试', async () => {
-    const coreManager = new CoreManager([], '/')
+    const coreManager = new CoreManager([], playgroundTestPath)
     await coreManager.create('foo-project', {
       git: false,
       commit: '',
       preset: ''
     })
-    expect(fs.existsSync('/foo-project'))
+    expect(fs.existsSync(path.resolve(playgroundTestPath, 'foo-project')))
   })
 
   test('用户没有传入 preset', async () => {
     logger.error = jest.fn()
-    const cm = new CoreManager([], '/hello')
+    const cm = new CoreManager([], playgroundTestPath)
     await cm.create('hello', {
       preset: '',
       git: true,
@@ -65,7 +68,7 @@ describe('cli Manager 模块测试', () => {
 
   test('add 命令下用户输入不合法的 plugin 名称', async () => {
     logger.error = jest.fn()
-    const cm = new CoreManager([], path.resolve('/'))
+    const cm = new CoreManager([], path.resolve(playgroundTestPath))
     await cm.add('bad-name', {
       version: '1.0.0'
     })

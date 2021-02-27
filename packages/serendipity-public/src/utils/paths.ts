@@ -73,6 +73,9 @@ const appEntry = resolveAppEntry('src/index')
 // app 根目录
 const appRoot = resolveAppPath('.')
 
+// playground 目录(开发用)
+const playgroundTestPath = resolveAppPath('playground/test')
+
 export {
   resolveAppPath,
   appBuild,
@@ -82,5 +85,6 @@ export {
   appHtml,
   configFile,
   appEntry,
-  appRoot
+  appRoot,
+  playgroundTestPath
 }

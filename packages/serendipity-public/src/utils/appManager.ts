@@ -94,8 +94,14 @@ class AppManager {
   public getPluginModules(): PluginModuleInfo[] {
     return this.getPluginList().map(plugin => {
       const target = path.resolve(this.basePath, 'node_modules', plugin)
+      let requireResult
+      try {
+        requireResult = require(target)
+      } catch (e) {
+        requireResult = null
+      }
       return {
-        requireResult: require(target),
+        requireResult: requireResult,
         absolutePath: target,
         options: this.getPluginOptionByName(plugin),
         name: plugin
