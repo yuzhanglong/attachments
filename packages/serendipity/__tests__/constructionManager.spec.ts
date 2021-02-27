@@ -6,10 +6,8 @@
  * Email: yuzl1123@163.com
  */
 
-import * as path from 'path'
 import * as fs from 'fs'
-import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
-import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
+import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
 import ConstructionManager from '../src/constructionManager'
 import PresetManager from '../src/presetManager'
 
@@ -17,16 +15,16 @@ const mockedExeca = require('../../../__mocks__/execa')
 
 jest.mock('execa')
 
-
 describe('serviceManager 模块', () => {
-  beforeEach(() => {
-    initTestDir()
+  const fsHelper = generateTempPathInfo()
+
+  afterAll(() => {
+    fsHelper.removeDir()
   })
 
   test('installPluginsFromPresets - plugin 信息是否正确写入 package.json', async () => {
-    const base = path.resolve(playgroundTestPath)
-    const cs = new ConstructionManager(base)
-    const pm = new PresetManager(playgroundTestPath)
+    const cs = new ConstructionManager(fsHelper.path)
+    const pm = new PresetManager(fsHelper.path)
     pm.initPresetByObject({
       plugins: [
         {
@@ -42,7 +40,7 @@ describe('serviceManager 模块', () => {
     })
     await cs.installPluginsFromPresets(pm.getPreset())
 
-    const res = fs.readFileSync(path.resolve(playgroundTestPath, 'package.json'))
+    const res = fs.readFileSync(fsHelper.resolve('package.json'))
 
     expect(JSON.parse(res.toString())).toStrictEqual({
       'name': 'serendipity-project',

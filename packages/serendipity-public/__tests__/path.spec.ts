@@ -15,6 +15,7 @@ describe('app 路径相关测试', () => {
   beforeEach(() => {
     serendipityEnv.setSerendipityDevelopment()
   })
+
   test('构造 app 子路径', () => {
     expect(appBuild).toStrictEqual(path.resolve(process.cwd(), 'build'))
     const indexPath = resolveAppPath('public/index.html')

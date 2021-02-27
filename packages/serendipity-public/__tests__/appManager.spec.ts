@@ -9,14 +9,15 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
-import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
+import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
 import AppManager from '../src/utils/appManager'
 
 
 describe('appManager 模块测试', () => {
-  beforeEach(() => {
-    initTestDir()
+  const fsHelper = generateTempPathInfo()
+
+  afterAll(() => {
+    fsHelper.removeDir()
   })
 
   test('传入已知的 app/package 等配置，不从文件读取', () => {
@@ -31,7 +32,7 @@ describe('appManager 模块测试', () => {
       }
     }
 
-    const manager = new AppManager(playgroundTestPath, appConfig, packageConfig)
+    const manager = new AppManager(fsHelper.path, appConfig, packageConfig)
     expect(manager.getAppConfig()).toStrictEqual(appConfig)
     expect(manager.getPackageConfig()).toStrictEqual(packageConfig)
   })
@@ -49,7 +50,7 @@ describe('appManager 模块测试', () => {
         '@attachments/serendipity-plugin-react': '~0.0.10'
       }
     }
-    const manager = new AppManager(playgroundTestPath, appConfig, packageConfig)
+    const manager = new AppManager(fsHelper.path, appConfig, packageConfig)
     expect(manager.getPluginList()).toStrictEqual([
       '@attachments/serendipity-plugin-babel',
       '@attachments/serendipity-plugin-eslint',
@@ -90,9 +91,9 @@ describe('appManager 模块测试', () => {
         }
       ]
     }`
-    const base = path.resolve(playgroundTestPath, 'serendipity.js')
+    const base = fsHelper.resolve('serendipity.js')
     fs.writeFileSync(base, configFileMockContent)
-    const am = new AppManager(playgroundTestPath, null, {})
+    const am = new AppManager(fsHelper.path, null, {})
     const opt = am.getPluginOptionByName('serendipity-plugin-foo')
     expect(opt).toStrictEqual(
       {

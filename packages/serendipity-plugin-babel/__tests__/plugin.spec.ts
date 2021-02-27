@@ -10,17 +10,18 @@ import { PluginExecutor, SerendipityPlugin } from '@attachments/serendipity-scri
 import { AppManager } from '@attachments/serendipity-public'
 import { ReactServiceHooks } from '@attachments/serendipity-plugin-react/bin/types/hooks'
 import { SyncHook } from 'tapable'
-import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
-import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
+import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
 import SerendipityBabelPlugin from '../src'
 
 describe('plugin 测试', () => {
-  beforeEach(() => {
-    initTestDir()
+  const fsHelper = generateTempPathInfo()
+
+  afterAll(() => {
+    fsHelper.removeDir()
   })
 
   test('构建模式测试', async () => {
-    const am = new AppManager(playgroundTestPath, {}, {})
+    const am = new AppManager(fsHelper.path, {}, {})
     const pm = new PluginExecutor(am)
     pm.registerPluginByConstructor(SerendipityBabelPlugin)
     await pm.executeConstruction()

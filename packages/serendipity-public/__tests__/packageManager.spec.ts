@@ -8,18 +8,18 @@
 
 import * as path from 'path'
 import * as fs from 'fs'
-import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
-import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
+import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
 import { PackageManager } from '../src'
 
 const mockedExeca = require('../../../__mocks__/execa')
 
 // eslint-disable-next-line max-lines-per-function
 describe('packageManager 测试模块', () => {
-  beforeEach(() => {
-    initTestDir()
-  })
+  const fsHelper = generateTempPathInfo()
 
+  afterAll(() => {
+    fsHelper.removeDir()
+  })
   test('模块安装字符串生成', () => {
     const packageManager = new PackageManager(process.cwd(), 'yarn')
     expect(packageManager.getInstallCommand({
@@ -99,12 +99,12 @@ describe('packageManager 测试模块', () => {
 
   test('从文件系统读取 package.json(无配置预设)', () => {
     fs.writeFileSync(
-      path.resolve(playgroundTestPath, 'package.json'),
+      fsHelper.resolve('package.json'),
       JSON.stringify({
         name: 'yzl',
         version: '1.0.0'
       }))
-    const pm = PackageManager.createWithResolve(path.resolve(playgroundTestPath))
+    const pm = PackageManager.createWithResolve(path.resolve(fsHelper.path))
 
     expect(pm.getPackageConfig()).toStrictEqual({
       'name': 'yzl',
@@ -113,7 +113,7 @@ describe('packageManager 测试模块', () => {
   })
 
   test('在读取 package.json 配置失败时，将配置值置为空对象 {}', () => {
-    const pm = PackageManager.createWithResolve(path.resolve(playgroundTestPath, 'foo'))
+    const pm = PackageManager.createWithResolve(fsHelper.resolve('foo'))
     expect(pm.getPackageConfig()).toStrictEqual({})
   })
 
@@ -133,7 +133,7 @@ describe('packageManager 测试模块', () => {
 
   test('安装命令执行失败时，从 onError 回调中获取错误信息', () => {
     jest.mock('execa')
-    const pm = new PackageManager(path.resolve(playgroundTestPath))
+    const pm = new PackageManager(path.resolve(fsHelper.path))
     pm.addAndInstallModule({
       name: 'axios',
       onError: (e) => {

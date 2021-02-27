@@ -32,6 +32,7 @@
     "@attachments/serendipity-workflows": "latest",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "@types/fs-extra": "^9.0.7",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.22",
     "@typescript-eslint/eslint-plugin": "^4.15.2",

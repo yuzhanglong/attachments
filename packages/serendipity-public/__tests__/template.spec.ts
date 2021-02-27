@@ -7,23 +7,23 @@
  */
 
 import * as fs from 'fs'
-import * as path from 'path'
-import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
-import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
+import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
 import { renderTemplate } from '../src'
 
 
 describe('模板处理相关', () => {
-  beforeEach(() => {
-    initTestDir()
+  const fsHelper = generateTempPathInfo()
+
+  afterAll(() => {
+    fsHelper.removeDir()
   })
 
   test('渲染并写入模板', async () => {
-    fs.mkdirSync(path.resolve(playgroundTestPath, 'hello'))
-    fs.mkdirSync(path.resolve(playgroundTestPath, 'world'))
-    fs.writeFileSync(path.resolve(playgroundTestPath, 'hello/foo'), '111')
-    await renderTemplate(path.resolve(playgroundTestPath, 'hello'), {}, path.resolve(playgroundTestPath, 'world'))
-    await renderTemplate(path.resolve(playgroundTestPath, 'hello'), null, path.resolve(playgroundTestPath, 'world'))
-    expect(fs.existsSync(path.resolve(playgroundTestPath, 'hello/foo'))).toBeTruthy()
+    fs.mkdirSync(fsHelper.resolve('hello'))
+    fs.mkdirSync(fsHelper.resolve('world'))
+    fs.writeFileSync(fsHelper.resolve('hello/foo'), '111')
+    await renderTemplate(fsHelper.resolve('hello'), {}, fsHelper.resolve('world'))
+    await renderTemplate(fsHelper.resolve('hello'), null, fsHelper.resolve('world'))
+    expect(fs.existsSync(fsHelper.resolve('hello/foo'))).toBeTruthy()
   })
 })

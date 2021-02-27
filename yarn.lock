@@ -2443,6 +2443,13 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/fs-extra@^9.0.7":
+  version "9.0.7"
+  resolved "https://registry.npm.taobao.org/@types/fs-extra/download/@types/fs-extra-9.0.7.tgz#a9ef2ffdab043def080c5bec94c03402f793577f"
+  integrity sha1-qe8v/asEPe8IDFvslMA0AveTV38=
+  dependencies:
+    "@types/node" "*"
+
 "@types/glob@^7.1.1":
   version "7.1.3"
   resolved "https://registry.npm.taobao.org/@types/glob/download/@types/glob-7.1.3.tgz?cache=0&sync_timestamp=1613378611554&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fglob%2Fdownload%2F%40types%2Fglob-7.1.3.tgz#e6ba80f36b7daad2c685acd9266382e68985c183"

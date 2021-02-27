@@ -7,24 +7,20 @@
  */
 
 import * as process from 'process'
-import * as path from 'path'
 import * as fs from 'fs'
 import { logger } from '@attachments/serendipity-public/bin'
-import { playgroundTestPath } from '@attachments/serendipity-public/bin/utils/paths'
-import { initTestDir } from '@attachments/serendipity-public/bin/utils/testUtils'
+import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
 import CoreManager from '../src/coreManager'
 
 jest.mock('inquirer')
 jest.mock('execa')
 
 describe('cli Manager 模块测试', () => {
+  const fsHelper = generateTempPathInfo()
+
   beforeEach(() => {
-    initTestDir()
-
     process.env.SERENDIPITY_CONFIG = 'DEVELOPMENT'
-
     const exitMock = jest.fn()
-
     const realProcess = process
     global.process = {
       ...realProcess,
@@ -32,32 +28,25 @@ describe('cli Manager 模块测试', () => {
     }
   })
 
+  afterAll(() => {
+    fsHelper.removeDir()
+  })
 
   test('重复创建工程 应该提示用户该目录已经存在', async () => {
     logger.error = jest.fn()
-    const target = path.resolve(playgroundTestPath, 'foo')
-    if (!fs.existsSync(target)) {
-      fs.mkdirSync(target)
+    const base = fsHelper.resolve('hello')
+    if (!fs.existsSync(base)) {
+      fs.mkdirSync(base)
     }
 
-    const manager = new CoreManager([], target)
+    const manager = new CoreManager([], base)
     manager.initWorkDir()
     expect(logger.error).toBeCalledWith('该目录已经存在，请删除旧目录或者在其他目录下执行创建命令！')
   })
 
-  test('coreManager 流程测试', async () => {
-    const coreManager = new CoreManager([], playgroundTestPath)
-    await coreManager.create('foo-project', {
-      git: false,
-      commit: '',
-      preset: ''
-    })
-    expect(fs.existsSync(path.resolve(playgroundTestPath, 'foo-project')))
-  })
-
   test('用户没有传入 preset', async () => {
     logger.error = jest.fn()
-    const cm = new CoreManager([], playgroundTestPath)
+    const cm = new CoreManager([], fsHelper.path)
     await cm.create('hello', {
       preset: '',
       git: true,
@@ -68,7 +57,7 @@ describe('cli Manager 模块测试', () => {
 
   test('add 命令下用户输入不合法的 plugin 名称', async () => {
     logger.error = jest.fn()
-    const cm = new CoreManager([], path.resolve(playgroundTestPath))
+    const cm = new CoreManager([], fsHelper.path)
     await cm.add('bad-name', {
       version: '1.0.0'
     })
