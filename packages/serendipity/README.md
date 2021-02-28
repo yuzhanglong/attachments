@@ -1,1 +1,3 @@
-# cli 的核心部分
+# @attachments/serendipity
+
+CLI 核心模块

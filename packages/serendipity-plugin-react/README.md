@@ -1,1 +1,3 @@
-# react cli 插件
+# @attachments/serendipity-plugin-react
+
+serendipity-plugin-react

@@ -15,7 +15,8 @@
     "lerna:clean": "lerna clean",
     "lerna:publish": "yarn lerna:build && lerna publish --no-push",
     "clear": "serendipity-workflows clear",
-    "codecov": "codecov"
+    "codecov": "codecov",
+    "docs:serve": "docsify serve ./docs"
   },
   "repository": {
     "type": "git",
