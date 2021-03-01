@@ -6,7 +6,8 @@
  * Email: yuzl1123@163.com
  */
 
-import { WebpackConfiguration, WebpackDevServerConfiguration } from '@attachments/serendipity-public/bin/types/common'
+import { Configuration as WebpackConfiguration } from 'webpack'
+import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server'
 
 export interface ReactPluginOptions {
   // webpack 配置

@@ -7,7 +7,9 @@
  */
 
 import { SyncHook } from 'tapable'
-import { WebpackConfiguration, WebpackDevServerConfiguration } from '@attachments/serendipity-public/bin/types/common'
+import { Configuration as WebpackConfiguration } from 'webpack'
+import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server'
+
 
 export interface ReactServiceHooks {
   beforeWebpackStart: SyncHook<(...configurations: WebpackConfiguration[]) => void>

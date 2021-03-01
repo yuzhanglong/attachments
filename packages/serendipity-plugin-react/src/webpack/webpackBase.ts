@@ -8,7 +8,7 @@
 
 
 import * as HtmlWebpackPlugin from 'html-webpack-plugin'
-import { WebpackConfiguration } from '@attachments/serendipity-public/bin/types/common'
+import { Configuration as WebpackConfiguration } from 'webpack'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import * as webpack from 'webpack'
 import { appBuild, appEntry } from '@attachments/serendipity-public/bin/utils/paths'

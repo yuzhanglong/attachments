@@ -7,7 +7,7 @@
  */
 
 
-import { WebpackDevServerConfiguration } from '@attachments/serendipity-public/bin/types/common'
+import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server'
 import { DEFAULT_PORT } from '../common/constants'
 
 const getDevServerConfig = (): WebpackDevServerConfiguration => {

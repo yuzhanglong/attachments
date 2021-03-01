@@ -1,0 +1,25 @@
+{
+  "name": "@attachments/serendipity-plugin-init",
+  "version": "0.1.4",
+  "author": "yuzhanglong <yuzl1123@163.com>",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc"
+  },
+  "main": "bin/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuzhanglong/serendipity.git"
+  },
+  "dependencies": {
+    "@attachments/serendipity-public": "^0.1.4",
+    "@attachments/serendipity-scripts": "^0.1.4"
+  },
+  "bugs": {
+    "url": "https://github.com/yuzhanglong/serendipity/issues"
+  }
+}

@@ -11,6 +11,7 @@ import * as fs from 'fs'
 import { CommonObject, ModuleInstallOptions, PackageManagerCli } from '../types/common'
 import { MergePackageConfigOptions } from '../types/cliService'
 import { deepmerge, runCommand, writeFilePromise } from '../index'
+import { PACKAGE_JSON_BASE } from '../common/constant'
 import logger from './logger'
 
 
@@ -56,7 +57,7 @@ class PackageManager {
       this.packageConfig = require(packageConfigPath)
       return true
     } catch (e) {
-      this.packageConfig = {}
+      this.packageConfig = PACKAGE_JSON_BASE
       return false
     }
   }

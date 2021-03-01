@@ -7,12 +7,9 @@
  */
 
 
-import { Configuration, webpack } from 'webpack'
+import { Configuration as WebpackConfiguration, webpack } from 'webpack'
+import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server'
 import * as WebpackDevServer from 'webpack-dev-server'
-import {
-  WebpackConfiguration,
-  WebpackDevServerConfiguration
-} from '@attachments/serendipity-public/bin/types/common'
 import { AppManager, logger, webpackMerge } from '@attachments/serendipity-public'
 import getDevServerConfig from '../webpack/devServerConfig'
 import getBaseConfig from '../webpack/webpackBase'
@@ -103,7 +100,7 @@ class ReactService {
     )
 
     // 初始化 webpack compiler
-    const compiler = webpack(this.webpackConfig as Configuration)
+    const compiler = webpack(this.webpackConfig as WebpackConfiguration)
     compiler.run(() => {
       return
     })
