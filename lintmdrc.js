@@ -1,0 +1,10 @@
+module.exports = {
+  'excludeFiles': [],
+  'rules': {
+    'no-empty-code': 1,
+    'no-long-code': [2, {
+      'length': 100,
+      'exclude': ['dot']
+    }]
+  }
+}
