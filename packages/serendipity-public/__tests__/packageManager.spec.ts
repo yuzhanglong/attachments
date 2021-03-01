@@ -114,7 +114,12 @@ describe('packageManager 测试模块', () => {
 
   test('在读取 package.json 配置失败时，将配置值置为空对象 {}', () => {
     const pm = PackageManager.createWithResolve(fsHelper.resolve('foo'))
-    expect(pm.getPackageConfig()).toStrictEqual({})
+    expect(pm.getPackageConfig()).toStrictEqual({
+      'license': 'MIT',
+      'main': 'index.js',
+      'name': 'your-name',
+      'version': '1.0.0'
+    })
   })
 
   test('通过名称获取当前管理目录下的模块', () => {

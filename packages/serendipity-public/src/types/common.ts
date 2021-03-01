@@ -7,9 +7,6 @@
  */
 
 
-import { Configuration } from 'webpack'
-import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
-
 // 项目创建时配置
 export interface CreateOptions {
   // 是否初始化 git
