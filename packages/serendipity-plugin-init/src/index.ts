@@ -1,3 +1,11 @@
-import SerendipityBasePlugin from './serendipityBasePlugin'
+/*
+ * File: index.ts
+ * Description: plugin 出口
+ * Created: 2021-3-1 18:55:43
+ * Author: yuzhanglong
+ * Email: yuzl1123@163.com
+ */
 
-export default SerendipityBasePlugin
+import SerendipityInitPlugin from './serendipityInitPlugin'
+
+export default SerendipityInitPlugin

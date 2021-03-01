@@ -10,9 +10,14 @@
     "start": "tsc -w",
     "build": "tsc"
   },
+  "main": "bin/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yuzhanglong/serendipity.git"
+  },
+  "dependencies": {
+    "@attachments/serendipity-public": "^0.1.3",
+    "@attachments/serendipity-scripts": "^0.1.3"
   },
   "bugs": {
     "url": "https://github.com/yuzhanglong/serendipity/issues"

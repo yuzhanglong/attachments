@@ -25,11 +25,6 @@ export interface CreateOptions {
 // object 类型，不要使用 any
 export type CommonObject = Record<string, unknown>
 
-// webpack 配置别名，由各个包共享而不额外安装
-export type WebpackConfiguration = Configuration
-
-// webpack-dev-server 配置别名，由各个包共享而不额外安装
-export type WebpackDevServerConfiguration = DevServerConfiguration
 
 // 质询问题结果
 export type InquiryResult = CommonObject
