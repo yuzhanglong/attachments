@@ -18,9 +18,9 @@ import ReactService from './ReactService'
 
 @SerendipityPlugin('serendipity-react-plugin')
 class SerendipityReactPlugin {
+  private readonly options: ReactPluginOptions
   private baseDeps = {}
   private useTypeScript = false
-  private options: ReactPluginOptions
 
   constructor(options: ReactPluginOptions) {
     this.options = options
@@ -70,7 +70,9 @@ class SerendipityReactPlugin {
 
   @Script('react-build')
   buildReactApp() {
-    return
+    serendipityEnv.setProjectProduction()
+    const reactService = new ReactService(this.reactServiceHooks, this.options)
+    reactService.build()
   }
 
   getPackageDependence() {

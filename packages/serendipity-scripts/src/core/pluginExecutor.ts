@@ -104,14 +104,16 @@ class PluginExecutor {
     for (const plugin of this.plugins) {
       const metaData = plugin.getPluginMetaData()
       for (const script of metaData.scripts) {
-        plugin.getPluginInstance()[script.methodName]({
-          scriptHooks: this.pluginScriptBaseHooks,
-          appManager: this.appManager,
-          matchPlugin: this.matchPlugin.bind(this)
-        } as ScriptOptions)
-
         // 匹配到正确的 command，执行相应的 tap
         if (script.command === command) {
+          // 运行实例
+          plugin.getPluginInstance()[script.methodName]({
+            scriptHooks: this.pluginScriptBaseHooks,
+            appManager: this.appManager,
+            matchPlugin: this.matchPlugin.bind(this)
+          } as ScriptOptions)
+
+          // 执行 hooks
           this.pluginScriptBaseHooks.beforeScriptExecute.call()
           this.pluginScriptBaseHooks.scriptExecute.call()
           this.pluginScriptBaseHooks.afterExecute.call()

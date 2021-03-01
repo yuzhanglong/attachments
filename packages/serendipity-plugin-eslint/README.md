@@ -1,1 +1,3 @@
-# eslint plugin
+# @attachments/serendipity-plugin-eslint
+
+serendipity-plugin-eslint
