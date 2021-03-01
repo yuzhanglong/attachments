@@ -1,13 +1,16 @@
-import { Construction, Inquiry, Runtime, Script } from '@attachments/serendipity-scripts'
+import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '@attachments/serendipity-scripts'
+import { ConstructionOptions, RuntimeOptions } from '@attachments/serendipity-scripts/bin/types/pluginExecute'
 
+
+@SerendipityPlugin('my-plugin')
 class MyPlugin {
   @Construction()
-  myConstruction() {
+  myConstruction(options: ConstructionOptions) {
     // 在构建模式下做些什么
   }
 
   @Runtime()
-  myRuntime() {
+  myRuntime(options: RuntimeOptions) {
     // 在 runtime 模式下做些什么
   }
 

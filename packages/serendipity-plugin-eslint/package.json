@@ -8,7 +8,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/webpack": "^4.41.26",
     "webpack": "^5.21.2"
   },
   "dependencies": {
