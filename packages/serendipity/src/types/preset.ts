@@ -9,10 +9,20 @@
 
 // 预设 plugin 字段
 export interface PresetPlugin {
+  // plugin 名称
   name: string
+
+  // plugin 所在的本地路径
   path?: string
+
+  // plugin 版本
   version?: string
+
+  // 是否在构建阶段之后移除之
   removeAfterConstruction?: boolean
+
+  // 质询覆盖
+  overrideInquiries?: unknown
 }
 
 // 预设

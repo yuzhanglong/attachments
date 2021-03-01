@@ -13,7 +13,7 @@ import {
   WebpackConfiguration,
   WebpackDevServerConfiguration
 } from '@attachments/serendipity-public/bin/types/common'
-import { AppManager, logger, serendipityEnv, webpackMerge } from '@attachments/serendipity-public'
+import { AppManager, logger, webpackMerge } from '@attachments/serendipity-public'
 import getDevServerConfig from '../webpack/devServerConfig'
 import getBaseConfig from '../webpack/webpackBase'
 import { clearConsole } from '../utils/console'
@@ -94,11 +94,16 @@ class ReactService {
    * @date 2021-2-6 18:28:34
    */
   public build(): void {
-    serendipityEnv.setProjectProduction()
+    // 执行 hooks
+    this.hooks.beforeWebpackStart.call(this.mergeWebpackConfig.bind(this))
+
+    // webpack 配置合并
+    this.mergeWebpackConfig(
+      this.options?.webpackConfig || {}
+    )
 
     // 初始化 webpack compiler
     const compiler = webpack(this.webpackConfig as Configuration)
-
     compiler.run(() => {
       return
     })

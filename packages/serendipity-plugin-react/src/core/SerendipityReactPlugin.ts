@@ -70,7 +70,9 @@ class SerendipityReactPlugin {
 
   @Script('react-build')
   buildReactApp() {
-    return
+    serendipityEnv.setProjectProduction()
+    const reactService = new ReactService(this.reactServiceHooks, this.options)
+    reactService.build()
   }
 
   getPackageDependence() {
