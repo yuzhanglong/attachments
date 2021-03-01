@@ -1,0 +1,2 @@
+# @attachments/serendipity-plugin-init
+
