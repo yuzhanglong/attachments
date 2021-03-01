@@ -8,8 +8,9 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint --ext .ts --max-warnings 0 packages/",
-    "lint:md": "lint-md ./docs --config ./lintmdrc.js",
+    "lint": "yarn lint:ts && yarn lint:md",
+    "lint:ts": "eslint --ext .ts --max-warnings 0 packages/",
+    "lint:md": "lint-md ./docs --config lintmdrc.json",
     "test": "jest --no-cache",
     "lerna:build": "lerna run build",
     "lerna:link": "lerna bootstrap",
