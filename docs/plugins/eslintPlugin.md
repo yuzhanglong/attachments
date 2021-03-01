@@ -1,1 +1,1 @@
-[eslint-plugin](https://cdn.jsdelivr.net/gh/yuzhanglong/serendipity@0.1.3/packages/serendipity-plugin-eslint/README.md ':include')
+[eslint-plugin](https://cdn.jsdelivr.net/gh/yuzhanglong/serendipity@docs/packages/serendipity-plugin-eslint/README.md ':include')
