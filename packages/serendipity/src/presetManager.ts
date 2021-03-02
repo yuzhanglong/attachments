@@ -8,7 +8,6 @@
 
 import * as path from 'path'
 import * as fs from 'fs'
-import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
 import { logger, writeFilePromise } from '@attachments/serendipity-public'
 import axios from 'axios'
 import { SerendipityPreset } from './types/preset'
@@ -30,7 +29,7 @@ class PresetManager {
    * @param preset 对象
    * @date 2021-2-24 22:00:04
    */
-  public initPresetByObject(preset: CommonObject) {
+  public initPresetByObject(preset: SerendipityPreset) {
     this.preset = preset
   }
 
@@ -43,19 +42,36 @@ class PresetManager {
    * @date 2021-2-21 11:46:48
    */
   public async initPresetByUrl(preset: string, tempPath?: string) {
+    let presetTmp
+
     if (!preset) {
       logger.error('不合法的 preset, preset 的值为一个本地路径或者 url 字符串')
       process.exit(0)
     }
     if (preset.startsWith('http://') || preset.startsWith('https://')) {
       const response = await axios.get(preset)
-      const targetPath = tempPath || path.resolve(this.basePath, DEFAULT_PRESET_NAME)
+
+      // 不要把 preset 的名字写死，否则在本函数被连续调用两次时，第二次的 preset 结果是第一次的内容
+      // 这是因为两次的绝对路径相同，require 的缓存机制会导致第二次不重新 require
+      const targetPath = tempPath || path.resolve(
+        this.basePath,
+        `${DEFAULT_PRESET_NAME}-${new Date().getTime().toString()}.js`
+      )
       await writeFilePromise(targetPath, response.data)
-      this.preset = require(targetPath)
+      presetTmp = require(targetPath)
+
       // 移除临时 preset 文件
       fs.unlinkSync(targetPath)
     } else {
-      this.preset = require(preset)
+      // require 预设
+      presetTmp = require(preset)
+    }
+
+    // 如果是一个函数，我们执行之
+    if (typeof presetTmp === 'function') {
+      this.preset = await presetTmp()
+    } else {
+      this.preset = presetTmp
     }
   }
 
