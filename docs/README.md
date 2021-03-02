@@ -1,12 +1,14 @@
 # Serendipity
 
+[![version](https://img.shields.io/github/package-json/v/yuzhanglong/serendipity)](https://github.com/yuzhanglong/serendipity)
+[![codecov](https://codecov.io/gh/yuzhanglong/serendipity/branch/0.2.x/graph/badge.svg)](https://codecov.io/gh/yuzhanglong/serendipity)
+
 > 一个插件化的前端脚手架工具。
 
 ## 总述
 
-Serendipity 是一个插件化的前端脚手架工具。
-你可以通过添加 [plugin](plugins/about.md) 快速初始化一个项目(例如 `webpack` + `React`)，或者初始化一些开箱即用的配置 (如 `eslint`、`GitHub
-actions` 等)。
+Serendipity 是一个插件化的前端脚手架工具。 你可以通过添加 [plugin](plugins/about.md) 快速初始化一个项目(例如 `webpack` + `React`)，或者初始化一些开箱即用的配置 (
+如 `eslint`、`GitHub actions` 等)。
 
 另外，各个 plugin 还可以通过 [preset](presets/about.md) 结合在一起工作。
 

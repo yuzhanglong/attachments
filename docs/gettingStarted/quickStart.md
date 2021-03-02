@@ -1,5 +1,15 @@
 # 快速开始
 
+[![version](https://img.shields.io/github/package-json/v/yuzhanglong/serendipity)](https://github.com/yuzhanglong/serendipity)
+
+> 需要安装 node.js 环境
+
+## 安装脚手架
+
+```bash
+npm install -g @attachments/serendipity
+```
+
 当前有两种方案来创建或者扩展已有项目：
 
 - 使用 `preset`
@@ -12,7 +22,7 @@
 ### 安装
 
 ```bash
-npx @attachments/serendipity create hello-react -p reactApp
+serendipity create hello-react -p reactApp
 ```
 
 ```bash
@@ -81,7 +91,7 @@ Use Ctrl+C to close it
 
 ```bash
 cd /your/project/base/dir
-npx @attachments/serendipity add @attachments/serendipity-plugin-eslint
+serendipity add @attachments/serendipity-plugin-eslint
 ```
 
 ```bash
