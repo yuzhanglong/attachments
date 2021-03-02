@@ -31,10 +31,7 @@ describe('serviceManager 模块', () => {
           name: '@attachments/serendipity-plugin-react'
         },
         {
-          name: '@attachments/serendipity-plugin-eslint',
-          overrideInquiry: {
-            foo: 'foo'
-          }
+          name: '@attachments/serendipity-plugin-eslint'
         }
       ]
     })
