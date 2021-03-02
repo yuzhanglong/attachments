@@ -23,11 +23,9 @@ describe('preset Manager 模块测试', () => {
     '  plugins: [\n' +
     '    {\n' +
     '      name: \'@attachments/serendipity-plugin-react\',\n' +
-    '      path: path.resolve(__dirname, \'../../packages/serendipity-plugin-react\')\n' +
     '    },\n' +
     '    {\n' +
     '      name: \'@attachments/serendipity-plugin-babel\',\n' +
-    '      path: path.resolve(__dirname, \'../../packages/serendipity-plugin-babel\')\n' +
     '    }\n' +
     '  ]\n' +
     '}')
@@ -108,12 +106,10 @@ describe('preset Manager 模块测试', () => {
     expect(pm.getPreset()).toStrictEqual({
       'plugins': [
         {
-          'name': '@attachments/serendipity-plugin-react',
-          'path': 'D:\\projects\\serendipity\\playground\\packages\\serendipity-plugin-react'
+          'name': '@attachments/serendipity-plugin-react'
         },
         {
-          'name': '@attachments/serendipity-plugin-babel',
-          'path': 'D:\\projects\\serendipity\\playground\\packages\\serendipity-plugin-babel'
+          'name': '@attachments/serendipity-plugin-babel'
         }
       ]
     })
