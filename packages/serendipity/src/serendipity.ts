@@ -16,7 +16,8 @@ import { AddOption } from './types/options'
 
 
 // 版本信息
-program.version(`serendipity ${require('../package').version}`)
+program
+  .version(`serendipity ${require('../package').version}`)
 
 // serendipity create，创建一个由 serendipity 管理的项目
 program

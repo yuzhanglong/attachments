@@ -1,6 +1,6 @@
 {
   "name": "serendipity",
-  "version": "0.0.2",
+  "version": "0.1.4",
   "description": "An extensible, out-of-the-box cli",
   "main": "index.js",
   "private": true,
