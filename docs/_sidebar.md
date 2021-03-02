@@ -13,5 +13,8 @@
 - 预设 (Presets)
   - [介绍](presets/about.md)
 
-- API
-    - [CLI 命令](API/cli.md)
+- API 参考 (API Reference)
+    - [命令行接口](API/commandInterface.md)
+    - [插件](API/plugin.md)
+    - [预设](API/preset.md)
+    - [基础 API](API/basic.md)
