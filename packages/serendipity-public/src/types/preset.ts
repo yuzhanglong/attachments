@@ -7,6 +7,8 @@
  */
 
 
+import { CommonObject } from './common'
+
 // 预设 plugin 字段
 export interface PresetPlugin {
   // plugin 名称
@@ -22,7 +24,7 @@ export interface PresetPlugin {
   removeAfterConstruction?: boolean
 
   // 质询覆盖
-  overrideInquiries?: unknown
+  overrideInquiries?: CommonObject
 }
 
 // 预设

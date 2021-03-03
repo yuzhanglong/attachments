@@ -8,11 +8,10 @@
 
 
 import * as fs from 'fs'
-import { chalk, isPlugin, logger, serendipityEnv } from '@attachments/serendipity-public'
+import { chalk, isPlugin, logger, PresetManager, serendipityEnv } from '@attachments/serendipity-public'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import ConstructionManager from './constructionManager'
 import { AddOption, BaseCommandValidateResult } from './types/options'
-import PresetManager from './presetManager'
 
 
 class CoreManager {
@@ -110,7 +109,7 @@ class CoreManager {
 
     // 此时所有插件都已经安装完成
     // 接下来执行插件 @construction 下的逻辑, 合并 package.json
-    await constructionManager.runPluginConstruction()
+    await constructionManager.runPluginConstruction(null, pm.getPreset())
 
     // 安装合并进来的依赖
     await constructionManager.installDependencies()

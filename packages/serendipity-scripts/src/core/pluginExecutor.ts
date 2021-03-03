@@ -7,13 +7,11 @@
  */
 
 import * as path from 'path'
-import {
-  AppManager,
-  inquirer, renderTemplate
-} from '@attachments/serendipity-public'
+import { AppManager, inquirer, renderTemplate } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
 import { CommonObject, Constructor } from '@attachments/serendipity-public/bin/types/common'
 import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
+import { SerendipityPreset } from '@attachments/serendipity-public/bin/types/preset'
 import { ConstructionOptions, RuntimeOptions, ScriptBaseHooks, ScriptOptions } from '../types/pluginExecute'
 import PluginFactory from './pluginFactory'
 
@@ -51,24 +49,7 @@ class PluginExecutor {
    */
   public registerPlugin(...pluginModule: PluginModuleInfo[]) {
     for (const pm of pluginModule) {
-      const plugin = pm.requireResult
-      if (typeof plugin === 'object') {
-        this.plugins.push(
-          new PluginFactory(
-            (plugin as { default: Constructor }).default,
-            pm.absolutePath,
-            pm.options
-          )
-        )
-      } else {
-        this.plugins.push(
-          new PluginFactory(
-            plugin as Constructor,
-            pm.absolutePath,
-            pm.options
-          )
-        )
-      }
+      this.plugins.push(new PluginFactory(pm))
     }
   }
 
@@ -87,7 +68,6 @@ class PluginExecutor {
     })
     this.registerPlugin(...result)
   }
-
 
   /**
    * 执行某个脚本
@@ -146,18 +126,19 @@ class PluginExecutor {
    * 各插件构建方法执行
    *
    * @author yuzhanglong
+   * @param preset 预设（可选）
    * @date 2021-2-20 22:55:38
    */
-  public async executeConstruction() {
+  public async executeConstruction(preset?: SerendipityPreset) {
     for (const plugin of this.plugins) {
       const metaData = plugin.getPluginMetaData()
-      // 在执行每个 plugin 之前，首先发起质询
-      // 用户可以加了多个质询注解, 拿到当前插件的所有质询注解，然后拍平数组，调用 inquiry.js
-      const inquiries = metaData.inquiries
-        .map(res => plugin.getPluginInstance()[res.methodName]())
-        .flat()
 
-      const inquiryResult = await inquirer.prompt(inquiries)
+      // 匹配正确的 override 信息
+      const overridePlugin = preset?.plugins.filter(res => res.name === plugin.getPluginModuleName())
+
+      const overrideInfo = overridePlugin?.length > 0 ? overridePlugin[0].overrideInquiries : {}
+
+      const inquiryResult = await this.runPluginInquiry(plugin, overrideInfo as CommonObject)
 
       for (const construction of metaData.constructions) {
         await plugin.getPluginInstance()[construction.methodName]({
@@ -170,6 +151,45 @@ class PluginExecutor {
     }
     // 将执行脚本写入 package.json 以方便用户调用
     this.mergeScriptsInfoPackageConfig()
+  }
+
+  /**
+   * 各插件构建方法执行
+   *
+   * @author yuzhanglong
+   * @param overrideInquiry 欲覆盖的质询
+   * @param plugin 插件对象
+   * example:
+   * 如果我们传入下面的对象。那么所有 name 为 hello / world 的质询结果将被覆盖，不再向用户询问
+   * {
+   *   "hello":"1111",
+   *   "world":"2222"
+   * }
+   * @date 2021-3-3 10:37:59
+   */
+  private async runPluginInquiry(plugin: PluginFactory, overrideInquiry?: CommonObject) {
+    overrideInquiry = overrideInquiry || {}
+
+    const metaData = plugin.getPluginMetaData()
+    // 在执行每个 plugin 之前，首先发起质询
+    // 用户可以加了多个质询注解, 拿到当前插件的所有质询注解，然后拍平数组，调用 inquiry.js
+    // 最终的质询结果
+    // 要覆盖的质询内容
+    const overrideKeys = Object.keys(overrideInquiry)
+
+    // 最终的质询结果
+    const inquiries = metaData.inquiries
+      .map(res => plugin.getPluginInstance()[res.methodName]())
+      .flat()
+      .filter(question => !(question.name in (overrideInquiry)))
+
+    const inquiryResult = await inquirer.prompt(inquiries)
+
+    // 覆盖内容
+    overrideKeys.forEach(res => {
+      inquiryResult[res] = overrideInquiry[res]
+    })
+    return inquiryResult
   }
 
   /**

@@ -8,8 +8,8 @@
 
 import * as fs from 'fs'
 import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
+import { PresetManager } from '@attachments/serendipity-public'
 import ConstructionManager from '../src/constructionManager'
-import PresetManager from '../src/presetManager'
 
 const mockedExeca = require('../../../__mocks__/execa')
 
