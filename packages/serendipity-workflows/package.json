@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-workflows",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "bin": {
     "serendipity-workflows": "./bin/index.js"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-public",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "./bin/index.js",
   "scripts": {
     "start": "tsc -w",

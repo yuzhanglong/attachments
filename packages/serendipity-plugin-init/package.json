@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-plugin-init",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "yuzhanglong <yuzl1123@163.com>",
   "license": "ISC",
   "publishConfig": {
@@ -16,8 +16,8 @@
     "url": "git+https://github.com/yuzhanglong/serendipity.git"
   },
   "dependencies": {
-    "@attachments/serendipity-public": "^0.1.4",
-    "@attachments/serendipity-scripts": "^0.1.4"
+    "@attachments/serendipity-public": "^0.1.5",
+    "@attachments/serendipity-scripts": "^0.1.5"
   },
   "bugs": {
     "url": "https://github.com/yuzhanglong/serendipity/issues"
