@@ -92,6 +92,8 @@ describe('preset Manager 模块测试', () => {
     const pm = new PresetManager(fsHelper.path)
     await pm.initPresetByUrl('http://mock_preset_async_fn')
     expect(pm.getPreset()).toStrictEqual({
+      'initialDir': true,
+      'initialDirDefaultName': 'hello-serendipity',
       'plugins': [
         {
           'name': 'bar-plugin'
@@ -104,6 +106,8 @@ describe('preset Manager 模块测试', () => {
     const pm = new PresetManager(fsHelper.path)
     await pm.initPresetByUrl('http://mock_preset')
     expect(pm.getPreset()).toStrictEqual({
+      'initialDir': true,
+      'initialDirDefaultName': 'hello-serendipity',
       'plugins': [
         {
           'name': '@attachments/serendipity-plugin-react'

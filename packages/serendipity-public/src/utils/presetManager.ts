@@ -10,7 +10,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 import axios from 'axios'
 import { SerendipityPreset } from '../types/preset'
-import { DEFAULT_PRESET_NAME } from '../common/constant'
+import { DEFAULT_PRESET_NAME, DEFAULT_PROJECT_NAME } from '../common/constant'
 import { writeFilePromise } from './files'
 import logger from './logger'
 
@@ -21,6 +21,8 @@ class PresetManager {
   constructor(basePath?: string) {
     this.basePath = basePath
     this.preset = {
+      initialDir: true,
+      initialDirDefaultName: DEFAULT_PROJECT_NAME,
       plugins: []
     }
   }
@@ -51,6 +53,7 @@ class PresetManager {
       logger.error('不合法的 preset, preset 的值为一个本地路径或者 url 字符串')
       process.exit(0)
     }
+
     if (preset.startsWith('http://') || preset.startsWith('https://')) {
       const response = await axios.get(preset)
 
@@ -72,9 +75,10 @@ class PresetManager {
 
     // 如果是一个函数，我们执行之
     if (typeof presetTmp === 'function') {
-      this.preset = await presetTmp()
+      const p = await presetTmp()
+      this.preset = Object.assign(this.preset, p)
     } else {
-      this.preset = presetTmp
+      this.preset = Object.assign(this.preset, presetTmp)
     }
   }
 
