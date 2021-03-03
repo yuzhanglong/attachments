@@ -12,3 +12,5 @@ export const PACKAGE_JSON_BASE = {
   'main': 'index.js',
   'license': 'MIT'
 }
+
+export const DEFAULT_PRESET_NAME = 'serendipityPreset.js'

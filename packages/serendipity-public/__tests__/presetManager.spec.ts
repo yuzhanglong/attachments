@@ -9,7 +9,7 @@
 import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
-import PresetManager from '../src/presetManager'
+import PresetManager from '../src/utils/presetManager'
 
 // eslint-disable-next-line max-lines-per-function
 describe('preset Manager 模块测试', () => {

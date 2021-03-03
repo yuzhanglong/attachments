@@ -8,11 +8,10 @@
 
 
 import * as fs from 'fs'
-import { chalk, isPlugin, logger, serendipityEnv } from '@attachments/serendipity-public'
+import { chalk, isPlugin, logger, PresetManager, serendipityEnv } from '@attachments/serendipity-public'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import ConstructionManager from './constructionManager'
 import { AddOption, BaseCommandValidateResult } from './types/options'
-import PresetManager from './presetManager'
 
 
 class CoreManager {

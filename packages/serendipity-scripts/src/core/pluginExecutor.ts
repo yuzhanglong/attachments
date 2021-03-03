@@ -11,7 +11,7 @@ import { AppManager, inquirer, renderTemplate } from '@attachments/serendipity-p
 import { SyncHook } from 'tapable'
 import { CommonObject, Constructor } from '@attachments/serendipity-public/bin/types/common'
 import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
-import { SerendipityPreset } from '@attachments/serendipity/bin/types/preset'
+import { SerendipityPreset } from '@attachments/serendipity-public/bin/types/preset'
 import { ConstructionOptions, RuntimeOptions, ScriptBaseHooks, ScriptOptions } from '../types/pluginExecute'
 import PluginFactory from './pluginFactory'
 

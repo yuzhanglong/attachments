@@ -12,5 +12,3 @@ export const DEFAULT_PROJECT_NAME = 'hello-serendipity'
 export const APP_CONFIG_NAME = 'serendipity.js'
 
 export const DEFAULT_COMMIT_MESSAGE = 'initial commit'
-
-export const DEFAULT_PRESET_NAME = 'serendipityPreset.js'

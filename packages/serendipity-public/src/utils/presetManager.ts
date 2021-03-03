@@ -8,10 +8,11 @@
 
 import * as path from 'path'
 import * as fs from 'fs'
-import { logger, writeFilePromise } from '@attachments/serendipity-public'
 import axios from 'axios'
-import { SerendipityPreset } from './types/preset'
-import { DEFAULT_PRESET_NAME } from './common'
+import { SerendipityPreset } from '../types/preset'
+import { DEFAULT_PRESET_NAME } from '../common/constant'
+import { writeFilePromise } from './files'
+import logger from './logger'
 
 class PresetManager {
   private readonly basePath: string
