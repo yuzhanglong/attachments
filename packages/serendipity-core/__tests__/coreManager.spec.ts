@@ -78,7 +78,7 @@ describe('cli Manager 模块测试', () => {
   test('用户没有传入 preset', async () => {
     logger.error = jest.fn()
     const cm = new CoreManager(fsHelper.path)
-    await cm.create('hello', {
+    await cm.create('react', {
       preset: '',
       git: true,
       commit: 'feat: initial commit'

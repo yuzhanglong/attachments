@@ -44,7 +44,7 @@ describe('preset Manager 模块测试', () => {
     '  ]\n' +
     '}')
 
-  mock.onGet(`${PRESET_CDN_BASE_URL}/react`).reply(200, 'const path = require(\'path\')\n' +
+  mock.onGet(`${PRESET_CDN_BASE_URL}/react.js`).reply(200, 'const path = require(\'path\')\n' +
     '\n' +
     'module.exports = {\n' +
     '  plugins: [\n' +
@@ -116,7 +116,7 @@ describe('preset Manager 模块测试', () => {
     ])
   })
 
-  test('执行函数形式的 preset, 异步环境下', async () => {
+  test('在异步环境下执行函数形式的 preset，执行之，并将其返回值作为 preset 结果', async () => {
     const pm = new PresetManager(fsHelper.path)
     await pm.initPresetByUrl('http://mock_preset_async_fn')
     expect(pm.getPreset()).toStrictEqual({
