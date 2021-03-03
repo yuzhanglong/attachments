@@ -8,21 +8,20 @@
 
 
 import * as fs from 'fs'
-import { chalk, isPlugin, logger, PresetManager, serendipityEnv } from '@attachments/serendipity-public'
+import * as path from 'path'
+import { chalk, isPlugin, logger, PresetManager } from '@attachments/serendipity-public'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
+import { SerendipityPreset } from '@attachments/serendipity-public/bin/types/preset'
 import ConstructionManager from './constructionManager'
-import { AddOption, BaseCommandValidateResult } from './types/options'
+import { AddOption } from './types/options'
 
 
 class CoreManager {
-  private readonly basePath
+  private readonly executeDir: string
+  private basePath: string
 
-  private args
-  private options: CreateOptions
-
-  constructor(args: string[], basePath?: string) {
-    this.args = args
-    this.basePath = basePath
+  constructor(executeDir?: string) {
+    this.executeDir = executeDir || process.cwd()
   }
 
   /**
@@ -32,16 +31,23 @@ class CoreManager {
    * @author yuzhanglong
    * @date 2021-1-26
    */
-  public initWorkDir(): void {
+  public initWorkDir(name: string, preset: SerendipityPreset): void {
+    // 如果 preset 要求创建目录，我们初始化它
+    if (preset.initialDir) {
+      if (!name || name === '') {
+        logger.info(`preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 ${preset.initialDirDefaultName} 替代`)
+      }
+      this.basePath = path.resolve(this.executeDir, name || preset.initialDirDefaultName)
+    } else {
+      this.basePath = path.resolve(this.executeDir, name ? name : '')
+    }
+
+
     if (!fs.existsSync(this.basePath)) {
       fs.mkdirSync(this.basePath)
     } else {
       logger.error('该目录已经存在，请删除旧目录或者在其他目录下执行创建命令！')
-      if (!serendipityEnv.isSerendipityDevelopment()) {
-        process.exit(0)
-      } else {
-        return
-      }
+      process.exit(0)
     }
   }
 
@@ -52,21 +58,10 @@ class CoreManager {
    * @param options 创建选项
    * @date 2021-2-4 12:06:07
    */
-  static validateCreateCommand(options: CreateOptions): BaseCommandValidateResult {
-    const getValidateErr = (message): BaseCommandValidateResult => {
-      return {
-        message: message,
-        validated: false
-      }
-    }
-
+  static validateCreateCommand(options: CreateOptions) {
     if (!options.preset) {
-      return getValidateErr('preset 为空，请选择一个正确的 preset，可以是一个本地路径或者 http url')
-    }
-
-    return {
-      message: null,
-      validated: true
+      logger.error('preset 为空，请选择一个正确的 preset，可以是一个本地路径或者 http url')
+      process.exit(0)
     }
   }
 
@@ -80,25 +75,19 @@ class CoreManager {
    * @date 2021-2-21 10:43:58
    */
   async create(name: string, options: CreateOptions): Promise<void> {
-    this.options = options
+    const pm = new PresetManager(this.executeDir)
 
-    const pm = new PresetManager(this.basePath)
+    logger.info(`从 ${options.preset} 获取 preset 中...`)
+
     await pm.initPresetByUrl(options.preset)
 
+    // 验证输入参数
+    CoreManager.validateCreateCommand(options)
+
+    // 如果用户传入了名称，那么新路径为 当前执行路径 + name
+    this.initWorkDir(name, pm.getPreset())
+
     logger.info(`在 ${chalk.yellow(this.basePath)} 创建项目中...`)
-
-    // 参数验证
-    const validateResult = CoreManager.validateCreateCommand(options)
-
-    if (!validateResult.validated) {
-      logger.error(`传入的选项有误：${validateResult.message}`)
-      process.exit(0)
-    }
-
-    // 如果用户传入了名称，那么更路径为 当前执行路径 + name
-    if (name) {
-      this.initWorkDir()
-    }
 
     // 初始化 ConstructionManager（构建管理）
     const constructionManager = new ConstructionManager(this.basePath)
@@ -122,7 +111,7 @@ class CoreManager {
     await constructionManager.removePlugin(...pm.getPluginNamesShouldRemove())
 
     // 成功提示
-    logger.done(`创建项目 ${name} 成功~, happy coding!`)
+    logger.done(`✨ 创建项目成功~, happy coding!`)
   }
 
   /**
@@ -134,6 +123,9 @@ class CoreManager {
    * @date 2021-2-5 14:28:38
    */
   async add(name: string, options: AddOption): Promise<void> {
+    // 在 add 模式下，basePath 就是当前路径
+    this.basePath = this.executeDir
+
     logger.info(`添加插件 ${name} 中...`)
 
     if (!isPlugin(name)) {
@@ -160,6 +152,10 @@ class CoreManager {
       await constructionManager.removePlugin(name)
       logger.info('移除成功!')
     }
+  }
+
+  public getBasePath() {
+    return this.basePath
   }
 }
 

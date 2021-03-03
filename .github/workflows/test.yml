@@ -19,3 +19,6 @@ jobs:
 
       - name: Run tests
         run: sudo yarn test
+
+      - name: Analysis coverage
+        run: yarn codecov

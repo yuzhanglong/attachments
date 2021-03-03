@@ -17,7 +17,7 @@ export interface PresetPlugin {
   // plugin 所在的本地路径
   path?: string
 
-  // plugin 版本
+  // 要安装的 plugin 版本，默认为 latest
   version?: string
 
   // 是否在构建阶段之后移除之
@@ -29,5 +29,7 @@ export interface PresetPlugin {
 
 // 预设
 export interface SerendipityPreset {
-  plugins?: PresetPlugin[]
+  initialDir?: boolean
+  initialDirDefaultName?: string
+  plugins: PresetPlugin[]
 }

@@ -1,6 +1,6 @@
 /*
  * File: reactApp.js
- * Description: react-app preset
+ * Description: react-app preset (本地测试，远程下载无法使用)
  * Created: 2021-2-21 11:41:03
  * Author: yuzhanglong
  * Email: yuzl1123@163.com

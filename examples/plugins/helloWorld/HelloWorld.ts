@@ -1,6 +1,6 @@
 /*
  * File: HelloWorld.ts
- * Description: 一个 hello world plugin
+ * Description: 一个 hello world plugin，供测试使用
  * Created: 2021-2-22 13:22:47
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
@@ -48,7 +48,7 @@ class HelloWorldPlugin {
   tryConstruction(options: ConstructionOptions) {
     // 质询的结果会在这里提示
     console.log(options.inquiryResult)
-    if (options.inquiryResult.loveNode) {
+    if ((options.inquiryResult as Record<string, unknown>).loveNode) {
       console.log('用户喜欢 node.js!')
     } else {
       console.log('用户不喜欢 node.js!')
