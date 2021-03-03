@@ -10,10 +10,10 @@
 import * as fs from 'fs'
 import { SyncHook } from 'tapable'
 import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
-import { Construction, Runtime, Script } from '../src'
+import { Construction, Runtime, Script, Inquiry, SerendipityPlugin } from '../src'
 import PluginExecutor from '../src/core/pluginExecutor'
 import { ConstructionOptions, ScriptOptions } from '../src/types/pluginExecute'
-import { Inquiry, SerendipityPlugin } from '../bin'
+
 
 jest.mock('inquirer')
 
@@ -155,4 +155,56 @@ describe('plugin 执行器', () => {
     expect(fs.existsSync(fsHelper.resolve('templates/base/foo'))).toBeTruthy()
     expect(fs.existsSync(fsHelper.resolve('templates/base/bar'))).toBeTruthy()
   })
+
+  // test('质询的默认值覆盖，用户不会收到这些质询，且最终结果包含覆盖的值', async () => {
+  //   const executor = new PluginExecutor()
+  //
+  //   const testConstructionFn = jest.fn((options: ConstructionOptions) => {
+  //     expect(options.inquiryResult).toStrictEqual({
+  //       'bar': 'I love TypeScript!',
+  //       'baz': 'I am 20 years old!',
+  //       'foo': 'I love JavaScript!',
+  //       'quz': 'I love coding!'
+  //     })
+  //   })
+  //
+  //   class TestInquiryPlugin {
+  //     @Construction()
+  //     myConstruction(options: ConstructionOptions) {
+  //       testConstructionFn(options)
+  //     }
+  //
+  //     @Inquiry()
+  //     myInquiry() {
+  //       return [
+  //         {
+  //           type: 'text',
+  //           name: 'foo',
+  //           message: '111',
+  //           default: 'hello world!'
+  //         },
+  //         {
+  //           type: 'text',
+  //           name: 'bar',
+  //           message: '222',
+  //           default: 'I love programming!'
+  //         },
+  //         {
+  //           type: 'text',
+  //           name: 'baz',
+  //           message: '333',
+  //           default: 'I am 20 years old!'
+  //         }
+  //       ]
+  //     }
+  //   }
+  //
+  //   executor.registerPluginByConstructor(TestInquiryPlugin)
+  //   await executor.executeConstruction({
+  //     foo: 'I love JavaScript!',
+  //     bar: 'I love TypeScript!',
+  //     quz: 'I love coding!'
+  //   })
+  //   expect(testConstructionFn).toBeCalledTimes(1)
+  // })
 })

@@ -29,7 +29,9 @@ describe('pluginFactory 测试', () => {
       }
     }
 
-    const pluginFactory = new PluginFactory(FooPlugin)
+    const pluginFactory = new PluginFactory({
+      requireResult: FooPlugin
+    })
     const scriptMetas = pluginFactory.getPluginMetaData().scripts
 
     const names = scriptMetas.map(res => res.command)
@@ -61,7 +63,9 @@ describe('pluginFactory 测试', () => {
       // hello world!
     }
 
-    const pluginFactory = new PluginFactory(FooPlugin)
+    const pluginFactory = new PluginFactory({
+      requireResult: FooPlugin
+    })
     expect(pluginFactory.getPluginMetaName()).toStrictEqual('FooPlugin')
   })
 
@@ -79,9 +83,12 @@ describe('pluginFactory 测试', () => {
       }
     }
 
-    new PluginFactory(ParamPlugin, null, {
-      foo: 'hello',
-      bar: 'world'
+    new PluginFactory({
+      requireResult: ParamPlugin,
+      options: {
+        foo: 'hello',
+        bar: 'world'
+      }
     })
     expect(callFn).toBeCalledTimes(1)
   })
@@ -109,7 +116,9 @@ describe('pluginFactory 测试', () => {
       }
     }
 
-    const pluginFactory = new PluginFactory(InquiryPlugin)
+    const pluginFactory = new PluginFactory({
+      requireResult: InquiryPlugin
+    })
     expect(pluginFactory.getPluginMetaData().inquiries)
       .toStrictEqual([
         {
@@ -140,7 +149,9 @@ describe('pluginFactory 测试', () => {
       }
     }
 
-    const pluginFactory = new PluginFactory(ConstructionPlugin)
+    const pluginFactory = new PluginFactory({
+      requireResult: ConstructionPlugin
+    })
     expect(pluginFactory.getPluginMetaData()['constructions'])
       .toStrictEqual([
         {
@@ -161,7 +172,9 @@ describe('pluginFactory 测试', () => {
       }
     }
 
-    const pluginFactory = new PluginFactory(RuntimePlugin)
+    const pluginFactory = new PluginFactory({
+      requireResult: RuntimePlugin
+    })
     const meta = pluginFactory.getPluginMetaData()
     expect(meta)
       .toStrictEqual({

@@ -7,7 +7,8 @@
  */
 
 
-import { CommonObject, Constructor } from '@attachments/serendipity-public/bin/types/common'
+import { Constructor } from '@attachments/serendipity-public/bin/types/common'
+import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
 import {
   PLUGIN_CONSTRUCTION_META_KEY,
   PLUGIN_INQUIRY_META_KEY,
@@ -18,11 +19,17 @@ import { PluginMetaData } from '../types/pluginMeta'
 
 class PluginFactory {
   private readonly pluginInstance: unknown
-  private readonly absolutePath: string
+  private readonly pluginModuleInfo: PluginModuleInfo
 
-  constructor(pluginModule: Constructor, path?: string, options?: CommonObject) {
-    this.pluginInstance = new pluginModule(options)
-    this.absolutePath = path
+
+  constructor(pluginModuleInfo?: PluginModuleInfo) {
+    const plugin = pluginModuleInfo.requireResult
+    if (typeof plugin === 'object') {
+      this.pluginInstance = new (plugin as { default: Constructor }).default(pluginModuleInfo.options)
+    } else {
+      this.pluginInstance = new (plugin as Constructor)(pluginModuleInfo.options)
+    }
+    this.pluginModuleInfo = pluginModuleInfo
   }
 
   public getPluginInstance() {
@@ -124,8 +131,19 @@ class PluginFactory {
     }
   }
 
+  /**
+   * 获取 plugin 绝对路径
+   *
+   * @author yuzhanglong
+   * @see PluginMetaData
+   * @date 2021-3-3 10:51:43
+   */
   public getAbsolutePath() {
-    return this.absolutePath
+    return this.pluginModuleInfo.absolutePath
+  }
+
+  public getPluginModuleName() {
+    return this.pluginModuleInfo.name
   }
 }
 
