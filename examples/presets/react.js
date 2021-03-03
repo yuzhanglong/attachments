@@ -7,6 +7,8 @@
  */
 
 module.exports = {
+  initialDir: true,
+  initialDirDefaultName: 'hello-react',
   plugins: [
     {
       name: '@attachments/serendipity-plugin-react'
