@@ -191,4 +191,27 @@ describe('pluginFactory 测试', () => {
     const method = meta['runtime'][0]['methodName']
     expect(pluginFactory.getPluginInstance()[method]()).toStrictEqual('runtime~')
   })
+
+  test('exports.xxx=xxx 类型的模块测试', () => {
+    const foo = jest.fn()
+    const myModule = {
+      default:
+        class FooPlugin {
+          constructor() {
+            foo()
+          }
+
+          bar() {
+            return 'hello world!'
+          }
+        }
+    }
+    const pluginFactory = new PluginFactory({
+      requireResult: myModule
+    })
+    expect(foo).toBeCalledTimes(1)
+
+    const pluginInstance = pluginFactory.getPluginInstance()
+    expect(pluginInstance['bar']()).toStrictEqual('hello world!')
+  })
 })
