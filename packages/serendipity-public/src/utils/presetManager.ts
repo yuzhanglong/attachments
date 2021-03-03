@@ -20,7 +20,9 @@ class PresetManager {
 
   constructor(basePath?: string) {
     this.basePath = basePath
-    this.preset = {}
+    this.preset = {
+      plugins: []
+    }
   }
 
   /**
