@@ -69,7 +69,6 @@ class PluginExecutor {
     this.registerPlugin(...result)
   }
 
-
   /**
    * 执行某个脚本
    *
@@ -140,6 +139,7 @@ class PluginExecutor {
       const overrideInfo = overridePlugin?.length > 0 ? overridePlugin[0].overrideInquiries : {}
 
       const inquiryResult = await this.runPluginInquiry(plugin, overrideInfo as CommonObject)
+
       for (const construction of metaData.constructions) {
         await plugin.getPluginInstance()[construction.methodName]({
           appManager: this.appManager,

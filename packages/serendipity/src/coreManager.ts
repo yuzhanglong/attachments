@@ -110,7 +110,7 @@ class CoreManager {
 
     // 此时所有插件都已经安装完成
     // 接下来执行插件 @construction 下的逻辑, 合并 package.json
-    await constructionManager.runPluginConstruction()
+    await constructionManager.runPluginConstruction(null, pm.getPreset())
 
     // 安装合并进来的依赖
     await constructionManager.installDependencies()

@@ -8,6 +8,8 @@
 
 
 // 预设 plugin 字段
+import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
+
 export interface PresetPlugin {
   // plugin 名称
   name: string
@@ -22,7 +24,7 @@ export interface PresetPlugin {
   removeAfterConstruction?: boolean
 
   // 质询覆盖
-  overrideInquiries?: unknown
+  overrideInquiries?: CommonObject
 }
 
 // 预设
