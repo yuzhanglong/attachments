@@ -61,8 +61,12 @@ class PresetManager {
 
     // 如果是一个远程路径，或者不是本地路径，我们从网络中得到
     if (isRemotePath || !isLocalPath) {
+      const url = isRemotePath ? preset : `${PRESET_CDN_BASE_URL}/${preset}.js`
+
+      logger.info(`⚙ 从 ${url} 获取 preset 中...`)
+
       // 如果是 http 路径
-      const response = await axios.get(isRemotePath ? preset : `${PRESET_CDN_BASE_URL}/${preset}.js`)
+      const response = await axios.get(url)
 
       // 不要把 preset 的名字写死，否则在本函数被连续调用两次时，第二次的 preset 结果是第一次的内容
       // 这是因为两次的绝对路径相同，require 的缓存机制会导致第二次不重新 require

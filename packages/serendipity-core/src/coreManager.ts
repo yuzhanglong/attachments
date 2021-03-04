@@ -35,7 +35,7 @@ class CoreManager {
     // 如果 preset 要求创建目录，我们初始化它
     if (preset.initialDir) {
       if (!name || name === '') {
-        logger.info(`preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 ${preset.initialDirDefaultName} 替代`)
+        logger.info(`preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 ${preset.initialDirDefaultName} 替代\n`)
       }
       this.basePath = path.resolve(this.executeDir, name || preset.initialDirDefaultName)
     } else {
@@ -77,8 +77,6 @@ class CoreManager {
   async create(name: string, options: CreateOptions): Promise<void> {
     const pm = new PresetManager(this.executeDir)
 
-    logger.info(`从 ${options.preset} 获取 preset 中...`)
-
     await pm.initPresetByUrl(options.preset)
 
     // 验证输入参数
@@ -87,11 +85,10 @@ class CoreManager {
     // 如果用户传入了名称，那么新路径为 当前执行路径 + name
     this.initWorkDir(name, pm.getPreset())
 
-    logger.info(`在 ${chalk.yellow(this.basePath)} 创建项目中...`)
+    logger.info(`🚀 在 ${chalk.yellow(this.basePath)} 创建项目中...\n`)
 
     // 初始化 ConstructionManager（构建管理）
     const constructionManager = new ConstructionManager(this.basePath)
-
 
     // 安装 preset 列出的所有插件
     await constructionManager.installPluginsFromPresets(pm.getPreset())

@@ -3,9 +3,9 @@
 
 
 "@attachments/serendipity-workflows@latest":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@attachments/serendipity-workflows/-/serendipity-workflows-0.1.2.tgz#57dfdf95ebdecc5ea8d1687eba36c190d819121a"
-  integrity sha512-B0gqPajUu1qyqsCwTMkhKP4BuGN2zeHpHekNW2s6Ch4unTSC34BgU716FZuG7AbMJ/HKXc8egWGpJw4KpAjWog==
+  version "0.1.6"
+  resolved "https://registry.npmjs.org/@attachments/serendipity-workflows/-/serendipity-workflows-0.1.6.tgz#96da1aff94dad267dc2fb34a5a208d58fc046477"
+  integrity sha512-+yho0pL29kp8TX2pTx2m3PfBGvVTYZx8VGJK3KefaS2V4T5bYleBveN1YsjlAaBdnY9AtorXTTL9k+3kps+RSA==
   dependencies:
     "@commitlint/types" "^11.0.0"
     commander "^7.1.0"
@@ -3343,7 +3343,7 @@ axios-mock-adapter@^1.19.0:
 
 axios@^0.21.1:
   version "0.21.1"
-  resolved "https://registry.npm.taobao.org/axios/download/axios-0.21.1.tgz?cache=0&sync_timestamp=1608609324963&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Faxios%2Fdownload%2Faxios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  resolved "https://registry.npm.taobao.org/axios/download/axios-0.21.1.tgz?cache=0&sync_timestamp=1608611162952&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Faxios%2Fdownload%2Faxios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
   integrity sha1-IlY0gZYvTWvemnbVFu8OXTwJsrg=
   dependencies:
     follow-redirects "^1.10.0"
