@@ -101,7 +101,7 @@ describe('cli Manager 模块测试', () => {
     await cm.create('', {
       preset: 'http://preset_init_dir'
     })
-    expect(logger.info).toBeCalledWith('preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 be-happy 替代')
+    expect(logger.info).toBeCalledWith('preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 be-happy 替代\n')
     expect(fs.existsSync(path.resolve(fsHelper.path, 'be-happy'))).toBeTruthy()
   })
 
@@ -111,7 +111,7 @@ describe('cli Manager 模块测试', () => {
     await cm.create('', {
       preset: 'http://preset_init_dir_no_default_name'
     })
-    expect(logger.info).toBeCalledWith('preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 hello-serendipity 替代')
+    expect(logger.info).toBeCalledWith('preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 hello-serendipity 替代\n')
     expect(fs.existsSync(path.resolve(fsHelper.path, 'hello-serendipity'))).toBeTruthy()
   })
 

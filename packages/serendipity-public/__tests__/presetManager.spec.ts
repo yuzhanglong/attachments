@@ -61,7 +61,6 @@ describe('preset Manager 模块测试', () => {
   mock.onGet('http://mock_preset_async_fn').reply(200, 'const axios = require("axios")\n' +
     'module.exports = async () => {\n' +
     '      const isFooPlugin = false\n' +
-    '      result = await axios.get(\'http://mock_preset\')\n' +
     '      return {\n' +
     '        plugins: [\n' +
     '          {\n' +

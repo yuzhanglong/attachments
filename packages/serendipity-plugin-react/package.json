@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-plugin-react",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "main": "bin/index.js",
   "license": "MIT",
   "scripts": {
@@ -8,9 +8,9 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@attachments/serendipity-public": "^0.1.6",
-    "@attachments/serendipity-scripts": "^0.1.6",
-    "@attachments/serendipity-webpack-plugin": "^0.1.6",
+    "@attachments/serendipity-public": "^0.1.7",
+    "@attachments/serendipity-scripts": "^0.1.7",
+    "@attachments/serendipity-webpack-plugin": "^0.1.7",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/webpack-dev-server": "^3.11.1",
     "commander": "^7.0.0",
