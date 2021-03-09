@@ -25,6 +25,3 @@ jobs:
 
       - name: Run eslint
         run: yarn lint
-
-      - name: Run markdown lint
-        run: yarn lint:md

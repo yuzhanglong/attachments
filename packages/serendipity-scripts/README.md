@@ -4,8 +4,9 @@
 
 ## Usage
 
-```
+```text
 const serendipityScripts = require('serendipity-scripts');
 
 // TODO: DEMONSTRATE API
 ```
+
