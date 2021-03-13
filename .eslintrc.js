@@ -6,14 +6,15 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
-    'plugin:lint-md/recommend'
+    'plugin:@lint-md/recommend',
+    'eslint:recommended'
   ],
   overrides: [
     {
       files: ['*.md'],
-      parser: 'eslint-plugin-lint-md/src/parser',
+      parser: '@lint-md/eslint-plugin/src/parser',
       rules: {
-        'lint-md/no-long-code': [2, {
+        '@lint-md/no-long-code': [2, {
           'length': 1000,
           'exclude': []
         }]
@@ -42,7 +43,8 @@ module.exports = {
   },
   'env': {
     'node': true,
-    'browser': false
+    'browser': false,
+    'jest': true
   },
   'ignorePatterns': [
     'playground',

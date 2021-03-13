@@ -1,0 +1,23 @@
+{
+  "name": "@attachments/serendipity-test-utils",
+  "version": "0.1.7",
+  "description": "serendipity-test-utils",
+  "author": "yuzhanglong <yuzl1123@163.com>",
+  "homepage": "https://github.com/yuzhanglong/serendipity/tree/master/packages/serendipity-test-utils#readme",
+  "license": "MIT",
+  "main": "./bin/index.js",
+  "files": [
+    "bin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuzhanglong/serendipity.git"
+  },
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc"
+  },
+  "bugs": {
+    "url": "https://github.com/yuzhanglong/serendipity/issues"
+  }
+}
