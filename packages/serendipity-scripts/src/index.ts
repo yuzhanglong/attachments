@@ -7,7 +7,6 @@
  */
 
 import PluginExecutor from './core/pluginExecutor'
-import PluginFactory from './core/pluginFactory'
 import {
   Script,
   SerendipityPlugin,
@@ -18,7 +17,6 @@ import {
 
 export {
   PluginExecutor,
-  PluginFactory,
   Script,
   SerendipityPlugin,
   Inquiry,

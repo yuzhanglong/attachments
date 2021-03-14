@@ -1,5 +1,5 @@
 /*
- * File: testUtils.ts
+ * File: generateTempPathInfo.ts
  * Description: 测试工具集合
  * Created: 2021-2-27 14:08:15
  * Author: yuzhanglong
@@ -23,7 +23,7 @@ import * as fs from 'fs-extra'
  * - clear 清空临时目录
  * @date 2021-2-27 19:11:10
  */
-export const generateTempPathInfo = () => {
+const generateTempPathInfo = () => {
   const tmpName = new Date().getTime().toString()
   const testRootDir = path.resolve(process.cwd(), 'playground', 'test', tmpName)
 
@@ -37,3 +37,5 @@ export const generateTempPathInfo = () => {
     removeDir: () => fs.removeSync(testRootDir)
   }
 }
+
+export default generateTempPathInfo

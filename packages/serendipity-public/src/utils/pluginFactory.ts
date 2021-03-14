@@ -7,15 +7,17 @@
  */
 
 
-import { Constructor } from '@attachments/serendipity-public/bin/types/common'
-import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
 import {
   PLUGIN_CONSTRUCTION_META_KEY,
   PLUGIN_INQUIRY_META_KEY,
-  PLUGIN_NAME_META_KEY, PLUGIN_RUNTIME_META_KEY,
-  PLUGIN_SCRIPT_META_KEY
+  PLUGIN_NAME_META_KEY,
+  PLUGIN_RUNTIME_META_KEY, PLUGIN_SCRIPT_META_KEY
 } from '../common/pluginMetaKeys'
-import { PluginMetaData } from '../types/pluginMeta'
+import 'reflect-metadata'
+import { PluginModuleInfo } from '../types/plugin'
+import { Constructor } from '../types/common'
+import { PluginMetaData } from './pluginMeta'
+
 
 class PluginFactory {
   private readonly pluginInstance: unknown

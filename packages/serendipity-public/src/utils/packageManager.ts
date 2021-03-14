@@ -197,12 +197,18 @@ class PackageManager {
    * @date 2021-2-12 23:47:51
    */
   public async addAndInstallModule(installOptions: ModuleInstallOptions): Promise<CommonObject> {
-    try {
-      // 执行安装命令
-      await runCommand(this.getInstallCommand(installOptions), [], this.basePath)
-      return require(path.resolve(this.basePath, 'node_modules', installOptions.name))
-    } catch (e) {
-      installOptions?.onError(e)
+    if (installOptions) {
+      try {
+        // 执行安装命令
+        await runCommand(this.getInstallCommand(installOptions), [], this.basePath)
+        return require(path.resolve(this.basePath, 'node_modules', installOptions.name))
+      } catch (e) {
+        if (installOptions.onError && typeof installOptions.onError === 'function') {
+          installOptions?.onError(e)
+        } else {
+          throw new Error(e)
+        }
+      }
     }
     return {}
   }
