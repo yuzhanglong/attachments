@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@attachments/serendipity-public": "^0.1.7",
-    "@attachments/serendipity-scripts": "^0.1.7",
     "@attachments/serendipity-webpack-plugin": "^0.1.7",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/webpack-dev-server": "^3.11.1",

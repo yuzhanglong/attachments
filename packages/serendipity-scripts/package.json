@@ -15,6 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "@attachments/serendipity-public": "^0.1.7",
+    "@attachments/serendipity-core": "^0.1.7",
     "commander": "^7.1.0",
     "tapable": "^2.2.0"
   }

@@ -7,10 +7,10 @@
  */
 
 
-import { Construction, Inquiry, Script, SerendipityPlugin } from '@attachments/serendipity-scripts'
-import { ConstructionOptions } from '@attachments/serendipity-scripts/bin/types/pluginExecute'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
+import { ConstructionOptions } from '@attachments/serendipity-core/bin/types/pluginExecute'
+import { Construction, Inquiry, Script, SerendipityPlugin } from '@attachments/serendipity-core'
 import { ReactPluginInquireResult } from '../types/inquiry'
 import { ReactServiceHooks } from '../types/hooks'
 import { ReactPluginOptions } from '../types/common'

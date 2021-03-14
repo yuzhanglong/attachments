@@ -10,9 +10,9 @@
 import * as fs from 'fs'
 import { SyncHook } from 'tapable'
 import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
-import { Construction, Runtime, Script, Inquiry, SerendipityPlugin } from '../src'
-import PluginExecutor from '../src/core/pluginExecutor'
 import { ConstructionOptions, ScriptOptions } from '../src/types/pluginExecute'
+import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '../src/decorators'
+import PluginExecutor from '../src/pluginExecutor'
 
 
 jest.mock('inquirer')

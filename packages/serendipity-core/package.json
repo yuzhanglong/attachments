@@ -1,0 +1,19 @@
+{
+  "name": "@attachments/serendipity-core",
+  "version": "0.1.7",
+  "description": "> TODO: description",
+  "author": "yuzhanglong <yuzl1123@163.com>",
+  "homepage": "https://github.com/yuzhanglong/serendipity/tree/master/packages/serendipity-core#readme",
+  "license": "MIT",
+  "main": "bin/index.js",
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@attachments/serendipity-public": "^0.1.7"
+  },
+  "files": [
+    "bin"
+  ]
+}

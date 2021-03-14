@@ -6,9 +6,9 @@
  * Email: yuzl1123@163.com
  */
 
-import { AppManager } from '@attachments/serendipity-public'
 import { Constructor } from '@attachments/serendipity-public/bin/types/common'
 import PluginExecutor from './pluginExecutor'
+import AppManager from './appManager'
 
 class RuntimeManager {
   public readonly appManager: AppManager

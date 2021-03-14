@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
- * File: DemoCli.js
+ * File: serendipity.js
  * Description: Cli Demo
  * Created: 2021-1-23 14:33:58
  * Author: yuzhanglong
@@ -10,8 +10,8 @@
 
 import { program } from 'commander'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
-import CoreManager from './coreManager'
-import { AddOption } from './types/options'
+import { CoreManager } from '@attachments/serendipity-core'
+import { AddOption } from '@attachments/serendipity-core/bin/types/options'
 
 
 // 版本信息

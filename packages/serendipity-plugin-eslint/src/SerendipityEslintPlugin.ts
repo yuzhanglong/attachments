@@ -6,11 +6,11 @@
  * Email: yuzl1123@163.com
  */
 
-import { Construction, Inquiry, Runtime } from '@attachments/serendipity-scripts'
-import { ConstructionOptions, RuntimeOptions } from '@attachments/serendipity-scripts/bin/types/pluginExecute'
 import SerendipityReactPlugin from '@attachments/serendipity-plugin-react'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import { appRoot, appSource } from '@attachments/serendipity-public/bin/utils/paths'
+import { ConstructionOptions, RuntimeOptions } from '@attachments/serendipity-core/bin/types/pluginExecute'
+import { Construction, Inquiry, Runtime } from '@attachments/serendipity-core'
 import { EslintInquiryOptions } from './types'
 import { ESLINT_OPTION_TO_CONFIG } from './common'
 

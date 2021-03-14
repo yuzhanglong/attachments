@@ -13,7 +13,6 @@
   "dependencies": {
     "@attachments/serendipity-plugin-react": "^0.1.7",
     "@attachments/serendipity-public": "^0.1.7",
-    "@attachments/serendipity-scripts": "^0.1.7",
     "eslint-webpack-plugin": "^2.4.3"
   },
   "files": [

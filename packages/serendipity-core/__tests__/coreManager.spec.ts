@@ -9,7 +9,7 @@
 import * as process from 'process'
 import * as fs from 'fs'
 import * as path from 'path'
-import { logger } from '@attachments/serendipity-public/bin'
+import { logger } from '@attachments/serendipity-public'
 import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
