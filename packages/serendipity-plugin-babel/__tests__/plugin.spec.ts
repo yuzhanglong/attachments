@@ -6,11 +6,10 @@
  * Email: yuzl1123@163.com
  */
 
-import { PluginExecutor, SerendipityPlugin } from '@attachments/serendipity-scripts'
-import { AppManager } from '@attachments/serendipity-public'
 import { ReactServiceHooks } from '@attachments/serendipity-plugin-react/bin/types/hooks'
 import { SyncHook } from 'tapable'
-import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
+import { AppManager, PluginExecutor, SerendipityPlugin } from '@attachments/serendipity-core'
+import { generateTempPathInfo } from '@attachments/serendipity-public'
 import SerendipityBabelPlugin from '../src'
 
 describe('plugin 测试', () => {
@@ -45,7 +44,7 @@ describe('plugin 测试', () => {
 
       mock() {
         this.reactServiceHooks.beforeWebpackStart.call((data) => {
-          expect(data.hasOwnProperty('module')).toBeTruthy()
+          expect(Object.prototype.hasOwnProperty.call(data, 'module')).toBeTruthy()
           expect(data.module.rules.length).toStrictEqual(1)
         })
       }

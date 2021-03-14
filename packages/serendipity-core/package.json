@@ -1,19 +1,17 @@
 {
-  "name": "@attachments/serendipity",
-  "version": "0.1.7",
-  "main": "./bin/serendipity.js",
-  "bin": {
-    "serendipity": "./bin/serendipity.js"
-  },
+  "name": "@attachments/serendipity-core",
+  "version": "0.1.8",
+  "description": "> TODO: description",
+  "author": "yuzhanglong <yuzl1123@163.com>",
+  "homepage": "https://github.com/yuzhanglong/serendipity/tree/master/packages/serendipity-core#readme",
+  "license": "MIT",
+  "main": "bin/index.js",
   "scripts": {
     "start": "tsc -w",
     "build": "tsc"
   },
-  "license": "MIT",
   "dependencies": {
-    "@attachments/serendipity-public": "^0.1.7",
-    "@attachments/serendipity-scripts": "^0.1.7",
-    "commander": "^7.0.0"
+    "@attachments/serendipity-public": "^0.1.8"
   },
   "files": [
     "bin"

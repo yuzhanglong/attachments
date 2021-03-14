@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-public",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "main": "./bin/index.js",
   "scripts": {
     "start": "tsc -w",
@@ -16,6 +16,7 @@
     "fs-extra": "^9.1.0",
     "globby": "^11.0.2",
     "inquirer": "^7.3.3",
+    "reflect-metadata": "^0.1.13",
     "semver": "^7.3.4",
     "webpack-merge": "^5.7.3"
   },

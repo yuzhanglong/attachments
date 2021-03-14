@@ -9,8 +9,8 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
-import AppManager from '../src/utils/appManager'
+import { generateTempPathInfo } from '@attachments/serendipity-public'
+import AppManager from '../src/appManager'
 
 
 describe('appManager 模块测试', () => {

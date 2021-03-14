@@ -7,13 +7,14 @@
  */
 
 import * as path from 'path'
-import { AppManager, inquirer, renderTemplate } from '@attachments/serendipity-public'
+import { inquirer, renderTemplate } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
 import { CommonObject, Constructor } from '@attachments/serendipity-public/bin/types/common'
 import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
 import { SerendipityPreset } from '@attachments/serendipity-public/bin/types/preset'
-import { ConstructionOptions, RuntimeOptions, ScriptBaseHooks, ScriptOptions } from '../types/pluginExecute'
-import PluginFactory from './pluginFactory'
+import PluginFactory from '@attachments/serendipity-public/bin/utils/pluginFactory'
+import { ConstructionOptions, RuntimeOptions, ScriptBaseHooks, ScriptOptions } from './types/pluginExecute'
+import AppManager from './appManager'
 
 
 class PluginExecutor {

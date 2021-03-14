@@ -7,6 +7,7 @@
  */
 
 
+// eslint-disable-next-line no-undef
 interface SerendipityEnv extends NodeJS.ProcessEnv {
   SERENDIPITY_CONFIG: 'DEVELOPMENT' | 'PRODUCTION'
   PROJECT_CONDITION: 'DEVELOPMENT' | 'PRODUCTION'

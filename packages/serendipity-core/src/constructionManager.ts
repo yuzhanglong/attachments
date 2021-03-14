@@ -9,11 +9,12 @@
 
 import * as path from 'path'
 import { AppConfig } from '@attachments/serendipity-public/bin/types/common'
-import { AppManager, logger, runCommand, writeFilePromise } from '@attachments/serendipity-public'
-import { PluginExecutor } from '@attachments/serendipity-scripts'
+import { logger, runCommand, writeFilePromise } from '@attachments/serendipity-public'
 import { SerendipityPreset } from '@attachments/serendipity-public/bin/types/preset'
-import { getBasePackageJsonContent } from './utils'
 import { DEFAULT_COMMIT_MESSAGE } from './common'
+import { getBasePackageJsonContent } from './utils'
+import PluginExecutor from './pluginExecutor'
+import AppManager from './appManager'
 
 
 class ConstructionManager {

@@ -1,5 +1,12 @@
-# @attachments/serendipity
+# `serendipity-core`
 
-CLI 核心模块
+> TODO: description
 
+## Usage
+
+```plain
+const serendipityCore = require('serendipity-core');
+
+// TODO: DEMONSTRATE API
+```
 

@@ -17,9 +17,9 @@ import { runCommand } from './utils/command'
 import logger from './utils/logger'
 import { fileTreeWriting, isPlugin, writeFilePromise } from './utils/files'
 import { getTemplatesData, renderTemplate, renderTemplateData } from './utils/template'
-import AppManager from './utils/appManager'
 import PackageManager from './utils/packageManager'
 import PresetManager from './utils/presetManager'
+import generateTempPathInfo from './utils/testUtils/generateTempPathInfo'
 
 export {
   execa,
@@ -35,8 +35,8 @@ export {
   getTemplatesData,
   renderTemplateData,
   renderTemplate,
-  AppManager,
   PackageManager,
   isPlugin,
-  PresetManager
+  PresetManager,
+  generateTempPathInfo
 }

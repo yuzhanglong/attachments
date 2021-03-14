@@ -1,27 +1,28 @@
+#!/usr/bin/env node
+
 /*
  * File: index.ts
- * Description: scripts 出口
- * Created: 2021-2-21 10:58:21
+ * Description: @script 在这里通过命令行的形式被执行
+ * Created: 2021-2-23 01:39:41
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
 
-import PluginExecutor from './core/pluginExecutor'
-import PluginFactory from './core/pluginFactory'
-import {
-  Script,
-  SerendipityPlugin,
-  Inquiry,
-  Construction,
-  Runtime
-} from './core/decorators'
+import { program } from 'commander'
+import { RuntimeManager } from '@attachments/serendipity-core'
 
-export {
-  PluginExecutor,
-  PluginFactory,
-  Script,
-  SerendipityPlugin,
-  Inquiry,
-  Construction,
-  Runtime
-}
+// 版本信息
+program.version(`serendipity script ${require('../package.json').version}`)
+
+
+program
+  .command('run [command]')
+  .description('执行某个命令')
+  .action((command: string) => {
+    const rm = new RuntimeManager(process.cwd())
+    rm.registerPluginsFromPackage()
+    rm.runCommand(command)
+  })
+
+
+program.parse(process.argv)

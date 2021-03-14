@@ -8,11 +8,10 @@
 
 import 'reflect-metadata'
 import {
-  PLUGIN_SCRIPT_META_KEY,
-  PLUGIN_NAME_META_KEY,
+  PLUGIN_CONSTRUCTION_META_KEY,
   PLUGIN_INQUIRY_META_KEY,
-  PLUGIN_CONSTRUCTION_META_KEY, PLUGIN_RUNTIME_META_KEY
-} from '../common/pluginMetaKeys'
+  PLUGIN_NAME_META_KEY, PLUGIN_RUNTIME_META_KEY, PLUGIN_SCRIPT_META_KEY
+} from '@attachments/serendipity-public/bin/common/pluginMetaKeys'
 
 
 export const Script = (command: string) => {

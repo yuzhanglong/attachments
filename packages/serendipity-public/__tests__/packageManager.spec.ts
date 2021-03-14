@@ -8,8 +8,7 @@
 
 import * as path from 'path'
 import * as fs from 'fs'
-import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
-import { PackageManager } from '../src'
+import { PackageManager, generateTempPathInfo } from '../src'
 
 const mockedExeca = require('../../../__mocks__/execa')
 

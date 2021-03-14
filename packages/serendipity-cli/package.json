@@ -1,12 +1,9 @@
 {
-  "name": "@attachments/serendipity-scripts",
+  "name": "@attachments/serendipity",
   "version": "0.1.8",
-  "main": "bin/index.js",
-  "files": [
-    "bin"
-  ],
+  "main": "./bin/serendipity.js",
   "bin": {
-    "serendipity-scripts": "./bin/core/starter.js"
+    "serendipity": "./bin/serendipity.js"
   },
   "scripts": {
     "start": "tsc -w",
@@ -16,7 +13,9 @@
   "dependencies": {
     "@attachments/serendipity-core": "^0.1.8",
     "@attachments/serendipity-public": "^0.1.8",
-    "commander": "^7.1.0",
-    "tapable": "^2.2.0"
-  }
+    "commander": "^7.0.0"
+  },
+  "files": [
+    "bin"
+  ]
 }

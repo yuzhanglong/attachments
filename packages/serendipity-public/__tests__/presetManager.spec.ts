@@ -8,9 +8,9 @@
 
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
+import { generateTempPathInfo } from '../src'
 import PresetManager from '../src/utils/presetManager'
 import { PRESET_CDN_BASE_URL } from '../src/common/constant'
-import { generateTempPathInfo } from '../src/utils/testUtils'
 
 // eslint-disable-next-line max-lines-per-function
 describe('preset Manager 模块测试', () => {
