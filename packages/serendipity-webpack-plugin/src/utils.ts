@@ -14,7 +14,7 @@ export const uniqueBy = <T>(arr: T[], fun: (args: T) => string): T[] => {
   const appeared = {}
   return arr.filter(el => {
     const element = fun(el)
-    if (appeared.hasOwnProperty(element)) {
+    if (Object.prototype.hasOwnProperty.call(appeared, element)) {
       return false
     } else {
       appeared[element] = true

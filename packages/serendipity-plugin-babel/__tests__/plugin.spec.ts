@@ -45,7 +45,7 @@ describe('plugin 测试', () => {
 
       mock() {
         this.reactServiceHooks.beforeWebpackStart.call((data) => {
-          expect(data.hasOwnProperty('module')).toBeTruthy()
+          expect(Object.prototype.hasOwnProperty.call(data, 'module')).toBeTruthy()
           expect(data.module.rules.length).toStrictEqual(1)
         })
       }
