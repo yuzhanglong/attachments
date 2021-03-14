@@ -7,8 +7,7 @@
  */
 
 import * as fs from 'fs'
-import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
-import { renderTemplate } from '../src'
+import { renderTemplate , generateTempPathInfo } from '../src'
 
 
 describe('模板处理相关', () => {

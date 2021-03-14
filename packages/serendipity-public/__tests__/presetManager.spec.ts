@@ -8,7 +8,7 @@
 
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
-import { generateTempPathInfo } from '@attachments/serendipity-public/bin/utils/testUtils'
+import { generateTempPathInfo } from '../src'
 import PresetManager from '../src/utils/presetManager'
 import { PRESET_CDN_BASE_URL } from '../src/common/constant'
 
