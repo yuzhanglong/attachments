@@ -12,6 +12,7 @@ import { program } from 'commander'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import { CoreManager } from '@attachments/serendipity-core'
 import { AddOption } from '@attachments/serendipity-core/bin/types/options'
+import { registerCreateHook } from './hooksRegister'
 
 
 // 版本信息
@@ -28,6 +29,10 @@ program
   .action(async (name: string, opt: CreateOptions) => {
     // 初始化 manager
     const manager = new CoreManager()
+
+    manager.getCoreManagerHooks()
+
+    registerCreateHook(manager)
 
     // 执行创建脚本
     await manager.create(name, opt)
