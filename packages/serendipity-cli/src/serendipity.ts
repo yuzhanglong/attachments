@@ -30,8 +30,7 @@ program
     // 初始化 manager
     const manager = new CoreManager()
 
-    manager.getCoreManagerHooks()
-
+    // 注册钩子
     registerCreateHook(manager)
 
     // 执行创建脚本
@@ -48,6 +47,10 @@ program
   .action(async (name: string, opt: AddOption) => {
     // 初始化 manager
     const manager = new CoreManager()
+
+    // 注册钩子
+    registerCreateHook(manager)
+
     await manager.add(name, opt)
   })
 

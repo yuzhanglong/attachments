@@ -11,9 +11,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { AppConfig, CommonObject } from '@attachments/serendipity-public/bin/types/common'
 import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
-import { isPlugin, writeFilePromise } from '@attachments/serendipity-public/bin/utils/files'
-import PackageManager from '@attachments/serendipity-public/src/utils/packageManager'
-import logger from '@attachments/serendipity-public/bin/utils/logger'
+import { isPlugin, writeFilePromise, PackageManager, logger } from '@attachments/serendipity-public'
+
 
 class AppManager {
   private readonly basePath: string
