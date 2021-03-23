@@ -11,7 +11,7 @@ import * as fs from 'fs'
 import { SyncHook } from 'tapable'
 import { generateTempPathInfo } from '@attachments/serendipity-public'
 import { ConstructionOptions, ScriptOptions } from '../src/types/pluginExecute'
-import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '../src/decorators'
+import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '../src'
 import PluginExecutor from '../src/pluginExecutor'
 
 

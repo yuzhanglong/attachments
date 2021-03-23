@@ -9,16 +9,18 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { chalk, isPlugin, logger, PresetManager } from '@attachments/serendipity-public'
+import { isPlugin, logger, PresetManager } from '@attachments/serendipity-public'
 import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import { SerendipityPreset } from '@attachments/serendipity-public/bin/types/preset'
 import ConstructionManager from './constructionManager'
 import { AddOption } from './types/options'
+import createCoreManagerHooks from './hooks/coreManagerHooks'
 
 
 class CoreManager {
   private readonly executeDir: string
   private basePath: string
+  private coreManagerHooks = createCoreManagerHooks()
 
   constructor(executeDir?: string) {
     this.executeDir = executeDir || process.cwd()
@@ -46,7 +48,7 @@ class CoreManager {
     if (!fs.existsSync(this.basePath)) {
       fs.mkdirSync(this.basePath)
     } else {
-      logger.error('该目录已经存在，请删除旧目录或者在其他目录下执行创建命令！')
+      this.coreManagerHooks.onInitWorkDirFail.call([])
       process.exit(0)
     }
   }
@@ -58,9 +60,10 @@ class CoreManager {
    * @param options 创建选项
    * @date 2021-2-4 12:06:07
    */
-  static validateCreateCommand(options: CreateOptions) {
+  validateCreateCommand(options: CreateOptions) {
     if (!options.preset) {
-      logger.error('preset 为空，请选择一个正确的 preset，可以是一个本地路径或者 http url')
+      // [hooks] -- onCreateSuccess 在参数验证失败时做些什么
+      this.coreManagerHooks.onCreateValidateError.call(options)
       process.exit(0)
     }
   }
@@ -80,12 +83,13 @@ class CoreManager {
     await pm.initPresetByUrl(options.preset)
 
     // 验证输入参数
-    CoreManager.validateCreateCommand(options)
+    this.validateCreateCommand(options)
 
     // 如果用户传入了名称，那么新路径为 当前执行路径 + name
     this.initWorkDir(name, pm.getPreset())
 
-    logger.info(`🚀 在 ${chalk.yellow(this.basePath)} 创建项目中...\n`)
+    // [hooks] -- beforePluginInstall 在 plugin 安装前做些什么
+    this.coreManagerHooks.onCreateStart.call(this)
 
     // 初始化 ConstructionManager（构建管理）
     const constructionManager = new ConstructionManager(this.basePath)
@@ -107,8 +111,8 @@ class CoreManager {
 
     await constructionManager.removePlugin(...pm.getPluginNamesShouldRemove())
 
-    // 成功提示
-    logger.done(`✨ 创建项目成功~, happy coding!`)
+    // [hooks] -- onCreateSuccess 在 create 执行结束时做些什么
+    this.coreManagerHooks.onCreateSuccess.call(this)
   }
 
   /**
@@ -123,10 +127,18 @@ class CoreManager {
     // 在 add 模式下，basePath 就是当前路径
     this.basePath = this.executeDir
 
-    logger.info(`添加插件 ${name} 中...`)
+    // [hooks] -- onAddStart 在 add 执行开始时做些什么
+    this.coreManagerHooks.onAddStart.call({
+      name: name,
+      option: options
+    })
 
     if (!isPlugin(name)) {
-      logger.error(`${name} 不是一个合法的插件名称，名称应该以 serendipity-plugin 或者 @attachments/serendipity-plugin 开头`)
+      // [hooks] -- onAddValidateError 在 add 验证失败时做些什么
+      this.coreManagerHooks.onAddValidateError.call({
+        name: name,
+        option: options
+      })
       process.exit(0)
     }
 
@@ -141,18 +153,31 @@ class CoreManager {
 
     // 安装合并进来的依赖
     await constructionManager.installDependencies()
-    logger.info(`插件 ${name} 安装成功!`)
+
+    // [hooks] -- onPluginInstallSuccess 在 add 验证失败时做些什么
+    this.coreManagerHooks.onPluginInstallSuccess.call({
+      name: name,
+      option: options
+    })
 
     // 移除无关的依赖，对于一些只有 construction 模式的插件，在构建完毕之后失去作用，我们直接移除它们
     if (options.delete) {
-      logger.info('正在移除无关的依赖...')
+      // [hooks] -- beforePluginDelete 在 plugin 即将被删除时做些什么
+      this.coreManagerHooks.beforePluginDelete.call([])
+
       await constructionManager.removePlugin(name)
-      logger.info('移除成功!')
+
+      // [hooks] -- beforePluginDelete 在 plugin 删除之后做些什么
+      this.coreManagerHooks.afterPluginDelete.call([])
     }
   }
 
   public getBasePath() {
     return this.basePath
+  }
+
+  public getCoreManagerHooks() {
+    return this.coreManagerHooks
   }
 }
 

@@ -9,7 +9,7 @@
 import * as process from 'process'
 import * as fs from 'fs'
 import * as path from 'path'
-import { logger , generateTempPathInfo } from '@attachments/serendipity-public'
+import { logger, generateTempPathInfo } from '@attachments/serendipity-public'
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
 import CoreManager from '../src/coreManager'
@@ -60,7 +60,7 @@ describe('cli Manager 模块测试', () => {
     fsHelper.removeDir()
   })
 
-  test('重复创建工程 应该提示用户该目录已经存在', async () => {
+  test('用户在已存在的目录中尝试重新创建工程', async () => {
     logger.error = jest.fn()
     const base = fsHelper.resolve('hello')
     if (!fs.existsSync(base)) {
@@ -68,9 +68,15 @@ describe('cli Manager 模块测试', () => {
     }
 
     const manager = new CoreManager(fsHelper.path)
+
+    manager.getCoreManagerHooks().onInitWorkDirFail.tap('onInitWorkDirFail', () => {
+      logger.error('该目录已经存在，请删除旧目录或者在其他目录下执行创建命令！')
+    })
+
     manager.initWorkDir('hello', {
       plugins: []
     })
+
     expect(logger.error).toBeCalledWith('该目录已经存在，请删除旧目录或者在其他目录下执行创建命令！')
   })
 
@@ -88,6 +94,11 @@ describe('cli Manager 模块测试', () => {
   test('add 命令下用户输入不合法的 plugin 名称', async () => {
     logger.error = jest.fn()
     const cm = new CoreManager(fsHelper.path)
+
+    cm.getCoreManagerHooks().onAddValidateError.tap('onAddValidateError', ({ name }) => {
+      logger.error(`${name} 不是一个合法的插件名称，名称应该以 serendipity-plugin 或者 @attachments/serendipity-plugin 开头`)
+    })
+
     await cm.add('bad-name', {
       version: '1.0.0'
     })

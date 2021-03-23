@@ -4,7 +4,7 @@ module.exports = {
     'playground',
     'examples'
   ],
-  'coverageDirectory': './coverage/',
-  'collectCoverage': true
+  coverageDirectory: './coverage/',
+  collectCoverage: true
 }
 
