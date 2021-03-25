@@ -7,9 +7,9 @@
  */
 
 
-import { CommonObject } from './common'
-
 // 预设 plugin 字段
+import { CommonObject } from '@attachments/serendipity-public'
+
 export interface PresetPlugin {
   // plugin 名称
   name: string

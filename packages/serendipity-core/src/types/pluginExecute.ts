@@ -7,9 +7,9 @@
  */
 
 import { SyncHook } from 'tapable'
-import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
-import PluginFactory from '@attachments/serendipity-public/bin/utils/pluginFactory'
+import { CommonObject } from '@attachments/serendipity-public'
 import AppManager from '../appManager'
+import PluginFactory from '../pluginFactory'
 
 export interface ScriptOptions {
   appManager: AppManager

@@ -9,7 +9,7 @@
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
 import { generateTempPathInfo } from '@attachments/serendipity-public'
-import { PRESET_CDN_BASE_URL } from '@attachments/serendipity-public/bin/common/constant'
+import { PRESET_CDN_BASE_URL } from '@attachments/serendipity-public/lib/common/constant'
 import PresetManager from '../src/presetManager'
 
 // eslint-disable-next-line max-lines-per-function

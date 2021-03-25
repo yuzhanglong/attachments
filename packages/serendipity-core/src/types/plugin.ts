@@ -7,12 +7,9 @@
  */
 
 
-// 模板文件映射表
-
-import { CommonObject } from './common'
-
-
 // plugin 基本信息
+import { CommonObject } from '@attachments/serendipity-public'
+
 export interface PluginModuleInfo {
   // require 的结果
   requireResult: unknown

@@ -8,7 +8,7 @@
 
 
 import * as path from 'path'
-import { RuntimeManager, Script } from '@attachments/serendipity-core'
+import { RuntimeManager, Script } from '../src'
 
 
 describe('runtimeManager 测试', () => {

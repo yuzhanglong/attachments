@@ -19,6 +19,7 @@ import { fileTreeWriting, isPlugin, writeFilePromise } from './utils/files'
 import { getTemplatesData, renderTemplate, renderTemplateData } from './utils/template'
 import PackageManager from './utils/packageManager'
 import generateTempPathInfo from './utils/testUtils/generateTempPathInfo'
+import flatDeep from './utils/flatDeep'
 
 export {
   CommonObject,
@@ -45,5 +46,6 @@ export {
   renderTemplate,
   PackageManager,
   isPlugin,
-  generateTempPathInfo
+  generateTempPathInfo,
+  flatDeep
 }

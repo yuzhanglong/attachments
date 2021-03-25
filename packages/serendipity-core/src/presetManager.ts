@@ -10,8 +10,12 @@ import * as path from 'path'
 import * as fs from 'fs'
 import axios from 'axios'
 import { logger, writeFilePromise } from '@attachments/serendipity-public'
+import {
+  DEFAULT_PRESET_NAME,
+  DEFAULT_PROJECT_NAME,
+  PRESET_CDN_BASE_URL
+} from '@attachments/serendipity-public/lib/common/constant'
 import { SerendipityPreset } from './types/preset'
-import { DEFAULT_PRESET_NAME, DEFAULT_PROJECT_NAME, PRESET_CDN_BASE_URL } from './common/constant'
 
 class PresetManager {
   private readonly basePath: string

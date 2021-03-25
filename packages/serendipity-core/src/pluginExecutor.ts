@@ -7,14 +7,13 @@
  */
 
 import * as path from 'path'
-import { inquirer, renderTemplate } from '@attachments/serendipity-public'
+import { CommonObject, Constructor, flatDeep, inquirer, renderTemplate } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
-import { CommonObject, Constructor } from '@attachments/serendipity-public/bin/types/common'
-import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
-import { SerendipityPreset } from '@attachments/serendipity-public/bin/types/preset'
-import PluginFactory from '@attachments/serendipity-public/bin/utils/pluginFactory'
 import { ConstructionOptions, RuntimeOptions, ScriptBaseHooks, ScriptOptions } from './types/pluginExecute'
 import AppManager from './appManager'
+import { SerendipityPreset } from './types/preset'
+import { PluginModuleInfo } from './types/plugin'
+import PluginFactory from './pluginFactory'
 
 
 class PluginExecutor {
@@ -179,10 +178,8 @@ class PluginExecutor {
     const overrideKeys = Object.keys(overrideInquiry)
 
     // 最终的质询结果
-    const inquiries = metaData.inquiries
-      .map(res => plugin.getPluginInstance()[res.methodName]())
-      .flat()
-      .filter(question => !(question.name in (overrideInquiry)))
+    const tmp = flatDeep(metaData.inquiries.map(res => plugin.getPluginInstance()[res.methodName]()) as never)
+    const inquiries = tmp.filter(question => !(question.name in (overrideInquiry)))
 
     const inquiryResult = await inquirer.prompt(inquiries)
 

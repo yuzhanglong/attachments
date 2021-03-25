@@ -8,6 +8,7 @@
 
 
 // 项目创建时配置
+
 import { CommonObject } from '@attachments/serendipity-public'
 
 export interface CreateOptions {
@@ -19,6 +20,12 @@ export interface CreateOptions {
 
   // 项目预设
   preset?: string
+}
+
+export interface AddOption {
+  version?: string
+  localPath?: string
+  delete?: boolean
 }
 
 // 质询问题结果

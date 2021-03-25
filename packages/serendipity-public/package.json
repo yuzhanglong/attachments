@@ -5,8 +5,8 @@
   "module": "esm/index.js",
   "scripts": {
     "start": "tsc -w",
-    "lib:cjs": "tsc -p tsconfig.json --target ES5 --module commonjs --outDir lib",
-    "lib:esm": "tsc -p tsconfig.json --target ES5 --module ESNext --outDir esm",
+    "lib:cjs": "tsc -p tsconfig.json --target ESNext --module commonjs --outDir lib",
+    "lib:esm": "tsc -p tsconfig.json --target ESNext --module ESNext --outDir esm",
     "build": "run-p lib:*",
     "clean": "rimraf lib esm"
   },

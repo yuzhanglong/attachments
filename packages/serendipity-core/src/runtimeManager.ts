@@ -6,7 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-import { Constructor } from '@attachments/serendipity-public/bin/types/common'
+import { Constructor } from '@attachments/serendipity-public'
 import PluginExecutor from './pluginExecutor'
 import AppManager from './appManager'
 

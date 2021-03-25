@@ -9,9 +9,9 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { AppConfig, CommonObject } from '@attachments/serendipity-public/bin/types/common'
-import { PluginModuleInfo } from '@attachments/serendipity-public/bin/types/plugin'
-import { isPlugin, writeFilePromise, PackageManager, logger } from '@attachments/serendipity-public'
+import { isPlugin, writeFilePromise, PackageManager, logger, CommonObject } from '@attachments/serendipity-public'
+import { AppConfig } from './types/common'
+import { PluginModuleInfo } from './types/plugin'
 
 
 class AppManager {
