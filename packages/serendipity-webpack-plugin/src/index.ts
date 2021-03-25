@@ -6,6 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-const SerendipityWebpackPlugin = require('./serendipityWebpackPlugin')
+import SerendipityWebpackPlugin from './serendipityWebpackPlugin'
+
 
 module.exports = SerendipityWebpackPlugin

@@ -9,4 +9,4 @@
 
 import SerendipityBabelPlugin from './SerendipityBabelPlugin'
 
-export default SerendipityBabelPlugin
+module.exports = SerendipityBabelPlugin

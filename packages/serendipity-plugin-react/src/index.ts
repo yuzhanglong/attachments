@@ -8,4 +8,8 @@
 
 import SerendipityReactPlugin from './core/SerendipityReactPlugin'
 
-export default SerendipityReactPlugin
+export {
+  SerendipityReactPlugin
+}
+
+module.exports = SerendipityReactPlugin

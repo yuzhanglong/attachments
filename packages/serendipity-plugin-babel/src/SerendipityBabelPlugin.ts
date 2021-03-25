@@ -7,10 +7,10 @@
  */
 
 
-import SerendipityReactPlugin from '@attachments/serendipity-plugin-react'
 import { Construction, Runtime } from '@attachments/serendipity-core'
-import { ConstructionOptions, RuntimeOptions } from '@attachments/serendipity-core/bin/types/pluginExecute'
 import { appSource } from '@attachments/serendipity-public/lib/utils/paths'
+import { ConstructionOptions, RuntimeOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
+import { SerendipityReactPlugin } from '@attachments/serendipity-plugin-react'
 
 class SerendipityBabelPlugin {
   static BASE_CONFIG = {

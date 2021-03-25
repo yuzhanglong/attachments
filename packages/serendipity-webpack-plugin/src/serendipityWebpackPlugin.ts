@@ -189,4 +189,4 @@ class SerendipityWebpackPlugin {
   }
 }
 
-module.exports = SerendipityWebpackPlugin
+export default SerendipityWebpackPlugin

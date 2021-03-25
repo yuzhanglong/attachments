@@ -1,11 +1,13 @@
 {
   "name": "@attachments/serendipity-plugin-babel",
   "version": "0.1.8",
-  "main": "./bin/index.js",
+  "main": "./lib/index.js",
   "license": "MIT",
   "scripts": {
     "start": "tsc -w",
-    "build": "tsc"
+    "lib:cjs": "tsc -p tsconfig.json --target ESNext --module commonjs --outDir lib",
+    "build": "run-p lib:*",
+    "clean": "rimraf lib esm"
   },
   "dependencies": {
     "@attachments/serendipity-core": "^0.1.8",
@@ -18,7 +20,8 @@
     "babel-loader": "^8.2.2"
   },
   "files": [
-    "bin",
+    "lib",
+    "src",
     "templates"
   ]
 }

@@ -6,8 +6,8 @@
  * Email: yuzl1123@163.com
  */
 
-import { ConstructionOptions } from '@attachments/serendipity-core/bin/types/pluginExecute'
 import { Construction, Inquiry } from '@attachments/serendipity-core'
+import { ConstructionOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
 import { PluginInitOptions } from './types'
 
 class SerendipityInitPlugin {
