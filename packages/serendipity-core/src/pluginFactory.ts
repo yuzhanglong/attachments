@@ -14,7 +14,7 @@ import {
   PLUGIN_RUNTIME_META_KEY, PLUGIN_SCRIPT_META_KEY
 } from './common/pluginMetaKeys'
 import { PluginModuleInfo } from './types/plugin'
-import { PluginMetaData } from './pluginMeta'
+import { PluginMetaData } from './types/pluginMeta'
 import 'reflect-metadata'
 
 

@@ -1,13 +1,15 @@
 {
   "name": "@attachments/serendipity",
   "version": "0.1.8",
-  "main": "./bin/serendipity.js",
+  "main": "./lib/serendipity.js",
   "bin": {
-    "serendipity": "./bin/serendipity.js"
+    "serendipity": "./lib/serendipity.js"
   },
   "scripts": {
     "start": "tsc -w",
-    "build": "tsc"
+    "lib:cjs": "tsc -p tsconfig.json --target ESNext --module commonjs --outDir lib",
+    "build": "run-p lib:*",
+    "clean": "rimraf lib esm"
   },
   "license": "MIT",
   "dependencies": {
@@ -16,6 +18,7 @@
     "commander": "^7.0.0"
   },
   "files": [
-    "bin"
+    "esm",
+    "src"
   ]
 }
