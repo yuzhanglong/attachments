@@ -12,10 +12,10 @@ import {
   PLUGIN_INQUIRY_META_KEY,
   PLUGIN_NAME_META_KEY,
   PLUGIN_RUNTIME_META_KEY, PLUGIN_SCRIPT_META_KEY
-} from '../common/pluginMetaKeys'
+} from './common/pluginMetaKeys'
 import 'reflect-metadata'
-import { PluginModuleInfo } from '../types/plugin'
-import { Constructor } from '../types/common'
+import { PluginModuleInfo } from './types/plugin'
+import { Constructor } from './types/common'
 import { PluginMetaData } from './pluginMeta'
 
 

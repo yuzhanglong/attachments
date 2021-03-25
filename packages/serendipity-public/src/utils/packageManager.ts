@@ -8,10 +8,9 @@
 
 import * as path from 'path'
 import * as fs from 'fs'
-import { CommonObject, ModuleInstallOptions, PackageManagerCli } from '../types/common'
-import { MergePackageConfigOptions } from '../types/cliService'
 import { deepmerge, runCommand, writeFilePromise } from '../index'
 import { PACKAGE_JSON_BASE } from '../common/constant'
+import { CommonObject, MergePackageConfigOptions, ModuleInstallOptions, PackageManagerCli } from '../types'
 import logger from './logger'
 
 

@@ -11,7 +11,6 @@
 
 import { CommonObject } from './common'
 
-export type TemplateFilesMapper = Record<string, string>
 
 // plugin 基本信息
 export interface PluginModuleInfo {

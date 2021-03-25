@@ -7,37 +7,9 @@
  */
 
 
-// 项目创建时配置
-export interface CreateOptions {
-  // 是否初始化 git
-  git?: boolean
-
-  // 自定义初次 commit 的 message
-  commit?: string
-
-  // 项目预设
-  preset?: string
-}
-
 // object 类型，不要使用 any
 export type CommonObject = Record<string, unknown>
 
-
-// 质询问题结果
-export type InquiryResult = CommonObject
-
-
-// app 配置中 plugins
-
-export interface AppConfigPlugin {
-  name: string,
-  options?: CommonObject
-}
-
-// app 配置，针对 service 的额外配置可以
-export interface AppConfig {
-  plugins?: AppConfigPlugin[]
-}
 
 // 包管理工具类型
 export type PackageManagerCli = 'yarn' | 'npm'
@@ -57,4 +29,12 @@ export interface ModuleInstallOptions {
   onError?: (e: Error) => void
 }
 
+// 合并 package.json 配置选项
+export interface MergePackageConfigOptions {
+  merge?: boolean
+  ignoreNullOrUndefined?: boolean
+}
+
 export type Constructor<T = unknown> = new (...args: unknown[]) => T;
+
+export type TemplateFilesMapper = Record<string, string>

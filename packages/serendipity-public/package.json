@@ -1,10 +1,14 @@
 {
   "name": "@attachments/serendipity-public",
   "version": "0.1.8",
-  "main": "./bin/index.js",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
   "scripts": {
     "start": "tsc -w",
-    "build": "tsc"
+    "lib:cjs": "tsc -p tsconfig.json --target ES5 --module commonjs --outDir lib",
+    "lib:esm": "tsc -p tsconfig.json --target ES5 --module ESNext --outDir esm",
+    "build": "run-p lib:*",
+    "clean": "rimraf lib esm"
   },
   "license": "MIT",
   "dependencies": {
@@ -21,6 +25,8 @@
     "webpack-merge": "^5.7.3"
   },
   "files": [
-    "bin"
+    "esm",
+    "lib",
+    "src"
   ]
 }
