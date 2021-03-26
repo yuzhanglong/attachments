@@ -6,11 +6,11 @@
  * Email: yuzl1123@163.com
  */
 
-import { ReactServiceHooks } from '@attachments/serendipity-plugin-react/bin/types/hooks'
 import { SyncHook } from 'tapable'
 import { AppManager, PluginExecutor, SerendipityPlugin } from '@attachments/serendipity-core'
 import { generateTempPathInfo } from '@attachments/serendipity-public'
-import SerendipityBabelPlugin from '../src'
+import { ReactServiceHooks } from '@attachments/serendipity-plugin-react/lib/types/hooks'
+import SerendipityBabelPlugin from '../src/SerendipityBabelPlugin'
 
 describe('plugin 测试', () => {
   const fsHelper = generateTempPathInfo()

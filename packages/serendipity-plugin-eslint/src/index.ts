@@ -9,4 +9,4 @@
 
 import SerendipityEslintPlugin from './SerendipityEslintPlugin'
 
-export default SerendipityEslintPlugin
+module.exports = SerendipityEslintPlugin

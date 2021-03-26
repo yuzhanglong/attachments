@@ -13,6 +13,7 @@
     "lerna:build": "lerna run build",
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",
+    "lerna:clean-build": "lerna run clean",
     "lerna:publish": "yarn lerna:build && lerna publish --no-push",
     "clear": "serendipity-workflows clear",
     "codecov": "codecov",
