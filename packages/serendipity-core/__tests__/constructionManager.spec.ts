@@ -57,4 +57,21 @@ describe('serviceManager 模块', () => {
         'yarn install'
       ])
   })
+
+  test('移除一个或者多个插件', async () => {
+    const cs = new ConstructionManager(fsHelper.path)
+    await cs.removePlugin('111', '222', '333')
+    expect(mockedExeca.getCommands())
+      .toStrictEqual([
+        'yarn remove 111',
+        'yarn remove 222',
+        'yarn remove 333'
+      ])
+  })
+
+  test('写入 App 配置', async () => {
+    await ConstructionManager.writeAppConfig(fsHelper.path)
+    const f = fs.readFileSync(fsHelper.resolve('serendipity.js')).toString()
+    expect(f).toStrictEqual('module.exports = undefined')
+  })
 })
