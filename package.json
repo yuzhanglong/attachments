@@ -17,7 +17,8 @@
     "lerna:publish": "yarn lerna:build && lerna publish --no-push",
     "clear": "serendipity-workflows clear",
     "codecov": "codecov",
-    "docs:serve": "docsify serve ./docs"
+    "docs:serve": "docsify serve ./docs",
+    "cnpm-sync": "./scripts/cnpm-sync.sh"
   },
   "repository": {
     "type": "git",
