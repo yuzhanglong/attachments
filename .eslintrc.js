@@ -50,6 +50,8 @@ module.exports = {
   'ignorePatterns': [
     'playground',
     'templates',
+    'esm',
+    'lib',
     'bin'
   ]
 }

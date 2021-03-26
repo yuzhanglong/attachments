@@ -12,6 +12,8 @@ import { Configuration as WebpackConfiguration } from 'webpack'
 import { serendipityEnv } from '@attachments/serendipity-public'
 import * as webpack from 'webpack'
 
+import { appBuild, appEntry } from '@attachments/serendipity-public/lib/utils/paths'
+import { SerendipityWebpackPluginOption } from '@attachments/serendipity-webpack-plugin/lib/types'
 import {
   DEFAULT_WEBPACK_ANALYSIS_PORT,
   DEFAULT_WEBPACK_DEV_SERVER_HOST,
@@ -19,8 +21,6 @@ import {
 } from '../common/constants'
 import { ReactPluginOptions } from '../types/common'
 import { getHtmlWebpackPluginOptions } from './configurations'
-import { appBuild, appEntry } from '@attachments/serendipity-public/lib/utils/paths'
-import { SerendipityWebpackPluginOption } from '@attachments/serendipity-webpack-plugin/lib/types'
 
 const TerserPlugin = require('terser-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')

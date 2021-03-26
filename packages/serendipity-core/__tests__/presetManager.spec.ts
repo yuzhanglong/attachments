@@ -18,7 +18,7 @@ describe('preset Manager 模块测试', () => {
 
   const mock = new MockAdapter(axios)
 
-  mock.onGet('http://mock_preset').reply(200, 'const path = require(\'path\')\n' +
+  mock.onGet('https://mock_preset').reply(200, 'const path = require(\'path\')\n' +
     '\n' +
     'module.exports = {\n' +
     '  plugins: [\n' +
@@ -31,7 +31,7 @@ describe('preset Manager 模块测试', () => {
     '  ]\n' +
     '}')
 
-  mock.onGet('http://mock_preset').reply(200, 'const path = require(\'path\')\n' +
+  mock.onGet('https://mock_preset').reply(200, 'const path = require(\'path\')\n' +
     '\n' +
     'module.exports = {\n' +
     '  plugins: [\n' +
@@ -58,7 +58,7 @@ describe('preset Manager 模块测试', () => {
     '}')
 
 
-  mock.onGet('http://mock_preset_async_fn').reply(200, 'const axios = require("axios")\n' +
+  mock.onGet('https://mock_preset_async_fn').reply(200, 'const axios = require("axios")\n' +
     'module.exports = async () => {\n' +
     '      const isFooPlugin = false\n' +
     '      return {\n' +
@@ -117,7 +117,7 @@ describe('preset Manager 模块测试', () => {
 
   test('在异步环境下执行函数形式的 preset，执行之，并将其返回值作为 preset 结果', async () => {
     const pm = new PresetManager(fsHelper.path)
-    await pm.initPresetByUrl('http://mock_preset_async_fn')
+    await pm.initPresetByUrl('https://mock_preset_async_fn')
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
       'initialDirDefaultName': 'hello-serendipity',
@@ -131,7 +131,7 @@ describe('preset Manager 模块测试', () => {
 
   test('通过网络请求来获取 preset', async () => {
     const pm = new PresetManager(fsHelper.path)
-    await pm.initPresetByUrl('http://mock_preset')
+    await pm.initPresetByUrl('https://mock_preset')
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
       'initialDirDefaultName': 'hello-serendipity',

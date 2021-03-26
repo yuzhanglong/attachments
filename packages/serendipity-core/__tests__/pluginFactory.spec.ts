@@ -11,6 +11,7 @@
 import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '../src'
 import PluginFactory from '../src/pluginFactory'
 
+// eslint-disable-next-line max-lines-per-function
 describe('pluginFactory 测试', () => {
   test('@script 元数据注册', () => {
     class FooPlugin {
