@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-core",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "> TODO: description",
   "author": "yuzhanglong <yuzl1123@163.com>",
   "homepage": "https://github.com/yuzhanglong/serendipity/tree/master/packages/serendipity-core#readme",
@@ -15,7 +15,7 @@
     "clean": "rimraf lib esm"
   },
   "dependencies": {
-    "@attachments/serendipity-public": "^0.1.8",
+    "@attachments/serendipity-public": "^0.1.9",
     "tapable": "^2.2.0"
   },
   "files": [

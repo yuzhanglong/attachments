@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-plugin-react",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "license": "MIT",
@@ -12,9 +12,9 @@
     "clean": "rimraf lib esm"
   },
   "dependencies": {
-    "@attachments/serendipity-public": "^0.1.8",
-    "@attachments/serendipity-webpack-plugin": "^0.1.8",
-    "@attachments/serendipity-core": "^0.1.8",
+    "@attachments/serendipity-core": "^0.1.9",
+    "@attachments/serendipity-public": "^0.1.9",
+    "@attachments/serendipity-webpack-plugin": "^0.1.9",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/webpack-dev-server": "^3.11.1",
     "commander": "^7.0.0",
