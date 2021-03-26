@@ -4,7 +4,12 @@ module.exports = {
     'playground',
     'examples'
   ],
-  coverageDirectory: './coverage/',
   collectCoverage: true
+  // collectCoverageFrom: [
+  //   'packages/**/*.ts',
+  //   '!**/node_modules/**',
+  //   '!**/templates/**',
+  //   '!**/bin/**'
+  // ]
 }
 

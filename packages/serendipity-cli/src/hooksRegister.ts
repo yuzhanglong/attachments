@@ -6,8 +6,8 @@
  * Email: yuzl1123@163.com
  */
 
-import { CoreManager } from '@attachments/serendipity-core'
 import { chalk, logger } from '@attachments/serendipity-public'
+import { CoreManager } from '@attachments/serendipity-core'
 
 export const registerCreateHook = (manager: CoreManager) => {
   const coreManagerHooks = manager.getCoreManagerHooks()

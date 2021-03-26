@@ -7,9 +7,8 @@
  */
 
 import { SyncHook } from 'tapable'
-import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
 import CoreManager from '../coreManager'
-import { AddOption } from '../types/options'
+import { AddOption, CreateOptions } from '../types/common'
 
 const createCoreManagerHooks = () => {
   return {

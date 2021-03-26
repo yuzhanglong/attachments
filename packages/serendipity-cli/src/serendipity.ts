@@ -9,9 +9,8 @@
  */
 
 import { program } from 'commander'
-import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
+import { AddOption, CreateOptions } from '@attachments/serendipity-core/lib/types/common'
 import { CoreManager } from '@attachments/serendipity-core'
-import { AddOption } from '@attachments/serendipity-core/bin/types/options'
 import { registerCreateHook } from './hooksRegister'
 
 

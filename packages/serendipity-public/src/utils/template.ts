@@ -9,8 +9,7 @@
 
 import * as path from 'path'
 import * as globby from 'globby'
-import { TemplateFilesMapper } from '../types/plugin'
-import { CommonObject } from '../types/common'
+import { CommonObject, TemplateFilesMapper } from '../types'
 import { fileTreeWriting, readFilePromise } from './files'
 
 

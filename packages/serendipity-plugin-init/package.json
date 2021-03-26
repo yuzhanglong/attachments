@@ -2,15 +2,14 @@
   "name": "@attachments/serendipity-plugin-init",
   "version": "0.1.8",
   "author": "yuzhanglong <yuzl1123@163.com>",
-  "license": "ISC",
-  "publishConfig": {
-    "access": "public"
-  },
+  "license": "MIT",
   "scripts": {
     "start": "tsc -w",
-    "build": "tsc"
+    "lib:cjs": "tsc -p tsconfig.json --target ESNext --module commonjs --outDir lib",
+    "build": "run-p lib:*",
+    "clean": "rimraf lib esm"
   },
-  "main": "bin/index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yuzhanglong/serendipity.git"
@@ -20,5 +19,9 @@
   },
   "bugs": {
     "url": "https://github.com/yuzhanglong/serendipity/issues"
-  }
+  },
+  "files": [
+    "lib",
+    "src"
+  ]
 }

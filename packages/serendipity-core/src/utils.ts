@@ -7,7 +7,7 @@
  */
 
 import * as path from 'path'
-import { CommonObject } from '@attachments/serendipity-public/bin/types/common'
+import { CommonObject } from '@attachments/serendipity-public'
 import { APP_CONFIG_NAME } from './common'
 
 

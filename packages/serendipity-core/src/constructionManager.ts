@@ -8,13 +8,13 @@
 
 
 import * as path from 'path'
-import { AppConfig } from '@attachments/serendipity-public/bin/types/common'
 import { logger, runCommand, writeFilePromise } from '@attachments/serendipity-public'
-import { SerendipityPreset } from '@attachments/serendipity-public/bin/types/preset'
 import { DEFAULT_COMMIT_MESSAGE } from './common'
 import { getBasePackageJsonContent } from './utils'
 import PluginExecutor from './pluginExecutor'
 import AppManager from './appManager'
+import { SerendipityPreset } from './types/preset'
+import { AppConfig } from './types/common'
 
 
 class ConstructionManager {

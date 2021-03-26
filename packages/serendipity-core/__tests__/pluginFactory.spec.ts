@@ -6,8 +6,10 @@
  * Email: yuzl1123@163.com
  */
 
-import PluginFactory from '@attachments/serendipity-public/bin/utils/pluginFactory'
-import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '@attachments/serendipity-core'
+
+// eslint-disable-next-line max-lines-per-function
+import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '../src'
+import PluginFactory from '../src/pluginFactory'
 
 // eslint-disable-next-line max-lines-per-function
 describe('pluginFactory 测试', () => {

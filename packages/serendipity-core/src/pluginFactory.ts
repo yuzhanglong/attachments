@@ -6,17 +6,16 @@
  * Email: yuzl1123@163.com
  */
 
-
+import { Constructor } from '@attachments/serendipity-public'
 import {
   PLUGIN_CONSTRUCTION_META_KEY,
   PLUGIN_INQUIRY_META_KEY,
   PLUGIN_NAME_META_KEY,
   PLUGIN_RUNTIME_META_KEY, PLUGIN_SCRIPT_META_KEY
-} from '../common/pluginMetaKeys'
+} from './common/pluginMetaKeys'
+import { PluginModuleInfo } from './types/plugin'
+import { PluginMetaData } from './types/pluginMeta'
 import 'reflect-metadata'
-import { PluginModuleInfo } from '../types/plugin'
-import { Constructor } from '../types/common'
-import { PluginMetaData } from './pluginMeta'
 
 
 class PluginFactory {

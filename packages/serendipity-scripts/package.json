@@ -1,16 +1,19 @@
 {
   "name": "@attachments/serendipity-scripts",
   "version": "0.1.8",
-  "main": "bin/index.js",
+  "main": "lib/index.js",
   "files": [
-    "bin"
+    "lib",
+    "src"
   ],
   "bin": {
-    "serendipity-scripts": "./bin/core/starter.js"
+    "serendipity-scripts": "./lib/core/starter.js"
   },
   "scripts": {
     "start": "tsc -w",
-    "build": "tsc"
+    "lib:cjs": "tsc -p tsconfig.json --target ESNext --module commonjs --outDir lib",
+    "build": "run-p lib:*",
+    "clean": "rimraf lib esm"
   },
   "license": "MIT",
   "dependencies": {

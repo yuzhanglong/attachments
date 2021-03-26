@@ -7,9 +7,9 @@
  */
 
 import * as fs from 'fs'
-import { generateTempPathInfo , PresetManager } from '@attachments/serendipity-public'
-
+import { generateTempPathInfo } from '@attachments/serendipity-public'
 import ConstructionManager from '../src/constructionManager'
+import PresetManager from '../src/presetManager'
 
 const mockedExeca = require('../../../__mocks__/execa')
 
@@ -24,6 +24,7 @@ describe('serviceManager 模块', () => {
 
   test('installPluginsFromPresets - plugin 信息是否正确写入 package.json', async () => {
     const cs = new ConstructionManager(fsHelper.path)
+    // eslint-disable-next-line no-undef
     const pm = new PresetManager(fsHelper.path)
     pm.initPresetByObject({
       plugins: [

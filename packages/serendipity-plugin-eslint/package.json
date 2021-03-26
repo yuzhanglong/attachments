@@ -1,10 +1,12 @@
 {
   "name": "@attachments/serendipity-plugin-eslint",
   "version": "0.1.8",
-  "main": "./bin/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "start": "tsc -w",
-    "build": "tsc"
+    "lib:cjs": "tsc -p tsconfig.json --target ESNext --module commonjs --outDir lib",
+    "build": "run-p lib:*",
+    "clean": "rimraf lib esm"
   },
   "license": "MIT",
   "devDependencies": {
@@ -12,10 +14,12 @@
   },
   "dependencies": {
     "@attachments/serendipity-plugin-react": "^0.1.8",
+    "@attachments/serendipity-core": "^0.1.8",
     "@attachments/serendipity-public": "^0.1.8",
     "eslint-webpack-plugin": "^2.4.3"
   },
   "files": [
-    "bin"
+    "lib",
+    "src"
   ]
 }

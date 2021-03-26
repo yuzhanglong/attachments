@@ -23,7 +23,7 @@ describe('cli Manager 模块测试', () => {
 
   const mock = new MockAdapter(axios)
 
-  mock.onGet('http://preset_init_dir').reply(
+  mock.onGet('https://preset_init_dir').reply(
     200,
     'module.exports = {\n' +
     '    plugins: [],\n' +
@@ -31,14 +31,14 @@ describe('cli Manager 模块测试', () => {
     '    initialDirDefaultName: \'be-happy\'\n' +
     '  }'
   )
-  mock.onGet('http://preset_init_dir_no_default_name').reply(
+  mock.onGet('https://preset_init_dir_no_default_name').reply(
     200,
     'module.exports = {\n' +
     '    plugins: [],\n' +
     '    initialDir: true,\n' +
     '  }'
   )
-  mock.onGet('http://preset_no_init_dir').reply(
+  mock.onGet('https://preset_no_init_dir').reply(
     200,
     'module.exports = {\n' +
     '    plugins: [],\n' +
@@ -109,7 +109,7 @@ describe('cli Manager 模块测试', () => {
     const cm = new CoreManager(fsHelper.path)
     logger.info = jest.fn()
     await cm.create('', {
-      preset: 'http://preset_init_dir'
+      preset: 'https://preset_init_dir'
     })
     expect(logger.info).toBeCalledWith('preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 be-happy 替代\n')
     expect(fs.existsSync(path.resolve(fsHelper.path, 'be-happy'))).toBeTruthy()
@@ -119,7 +119,7 @@ describe('cli Manager 模块测试', () => {
     const cm = new CoreManager(fsHelper.path)
     logger.info = jest.fn()
     await cm.create('', {
-      preset: 'http://preset_init_dir_no_default_name'
+      preset: 'https://preset_init_dir_no_default_name'
     })
     expect(logger.info).toBeCalledWith('preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 hello-serendipity 替代\n')
     expect(fs.existsSync(path.resolve(fsHelper.path, 'hello-serendipity'))).toBeTruthy()
@@ -129,7 +129,7 @@ describe('cli Manager 模块测试', () => {
     const cm = new CoreManager(fsHelper.path)
     logger.info = jest.fn()
     await cm.create('', {
-      preset: 'http://preset_no_init_dir'
+      preset: 'https://preset_no_init_dir'
     })
     expect(cm.getBasePath()).toStrictEqual(fsHelper.path)
   })

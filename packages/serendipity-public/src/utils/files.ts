@@ -10,7 +10,7 @@
 import * as fs from 'fs'
 import { promisify } from 'util'
 import * as path from 'path'
-import { TemplateFilesMapper } from '../types/plugin'
+import { TemplateFilesMapper } from '../types'
 
 
 /**

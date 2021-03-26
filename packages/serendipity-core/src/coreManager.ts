@@ -9,12 +9,12 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { isPlugin, logger, PresetManager } from '@attachments/serendipity-public'
-import { CreateOptions } from '@attachments/serendipity-public/bin/types/common'
-import { SerendipityPreset } from '@attachments/serendipity-public/bin/types/preset'
+import { isPlugin, logger } from '@attachments/serendipity-public'
 import ConstructionManager from './constructionManager'
-import { AddOption } from './types/options'
 import createCoreManagerHooks from './hooks/coreManagerHooks'
+import PresetManager from './presetManager'
+import { SerendipityPreset } from './types/preset'
+import { AddOption, CreateOptions } from './types/common'
 
 
 class CoreManager {

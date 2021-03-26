@@ -9,25 +9,30 @@
 import AppManager from './appManager'
 import ConstructionManager from './constructionManager'
 import CoreManager from './coreManager'
-import {
+import PluginExecutor from './pluginExecutor'
+import PluginFactory from './pluginFactory'
+import PresetManager from './presetManager'
+import RuntimeManager from './runtimeManager'
+import { getAppConfigFromConfigFile, getBasePackageJsonContent } from './utils'
+
+
+export {
   SerendipityPlugin,
   Construction,
   Inquiry,
   Runtime,
   Script
 } from './decorators'
-import PluginExecutor from './pluginExecutor'
-import RuntimeManager from './runtimeManager'
+
 
 export {
   CoreManager,
   ConstructionManager,
   RuntimeManager,
   PluginExecutor,
-  Construction,
-  Inquiry,
-  Runtime,
-  Script,
-  SerendipityPlugin,
-  AppManager
+  AppManager,
+  PluginFactory,
+  PresetManager,
+  getAppConfigFromConfigFile,
+  getBasePackageJsonContent
 }

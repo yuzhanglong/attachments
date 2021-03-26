@@ -7,9 +7,9 @@
  */
 
 
-import { InquiryResult } from '@attachments/serendipity-public/bin/types/common'
-
 // inquiry 选项
+import { InquiryResult } from '@attachments/serendipity-core/lib/types/common'
+
 export interface ReactPluginInquireResult extends InquiryResult {
   language: 'JavaScript' | 'TypeScript'
 }

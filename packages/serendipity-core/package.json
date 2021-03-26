@@ -5,16 +5,22 @@
   "author": "yuzhanglong <yuzl1123@163.com>",
   "homepage": "https://github.com/yuzhanglong/serendipity/tree/master/packages/serendipity-core#readme",
   "license": "MIT",
-  "main": "bin/index.js",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
   "scripts": {
     "start": "tsc -w",
-    "build": "tsc"
+    "lib:cjs": "tsc -p tsconfig.json --target ESNext --module commonjs --outDir lib",
+    "lib:esm": "tsc -p tsconfig.json --target ESNext --module ESNext --outDir esm",
+    "build": "run-p lib:*",
+    "clean": "rimraf lib esm"
   },
   "dependencies": {
     "@attachments/serendipity-public": "^0.1.8",
     "tapable": "^2.2.0"
   },
   "files": [
-    "bin"
+    "esm",
+    "lib",
+    "src"
   ]
 }
