@@ -1,5 +1,5 @@
 import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '@attachments/serendipity-core'
-import { ConstructionOptions, RuntimeOptions } from '@attachments/serendipity-core/bin/types/pluginExecute'
+import { ConstructionOptions, RuntimeOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
 
 
 @SerendipityPlugin('my-plugin')
