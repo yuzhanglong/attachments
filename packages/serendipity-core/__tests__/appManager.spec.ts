@@ -12,7 +12,9 @@ import * as path from 'path'
 import { generateTempPathInfo } from '@attachments/serendipity-public'
 import AppManager from '../src/appManager'
 
+jest.mock('execa')
 
+// eslint-disable-next-line max-lines-per-function
 describe('appManager 模块测试', () => {
   const fsHelper = generateTempPathInfo()
 
@@ -101,5 +103,81 @@ describe('appManager 模块测试', () => {
         bar: 'hello world'
       }
     )
+  })
+  test('写入 App 配置文件测试', async () => {
+    const appManager = new AppManager(fsHelper.path, {
+      plugins: [
+        {
+          name: 'serendipity-plugin-foo',
+          options: {
+            foo: 'foo',
+            bar: 'bar'
+          }
+        }
+      ]
+    }, {})
+    await appManager.writeAppConfig()
+    const res = fs.readFileSync(fsHelper.resolve('serendipity.js')).toString()
+    expect(res).toStrictEqual('module.exports = {\n' +
+      '  "plugins": [\n' +
+      '    {\n' +
+      '      "name": "serendipity-plugin-foo",\n' +
+      '      "options": {\n' +
+      '        "foo": "foo",\n' +
+      '        "bar": "bar"\n' +
+      '      }\n' +
+      '    }\n' +
+      '  ]\n' +
+      '}')
+  })
+
+  test('无效的 plugin, 我们将其 require 结果置为 null', () => {
+    const appConfig = {}
+    const packageConfig = {
+      'dependencies': {
+        '@attachments/serendipity-plugin-foo': '~0.0.9'
+      }
+    }
+    const manager = new AppManager(process.cwd(), appConfig, packageConfig)
+    const modules = manager.getPluginModules()
+
+    // 只有模块读取成功才会走到这一步
+    expect(modules.length).toStrictEqual(1)
+    expect(modules[0].requireResult).toBeNull()
+  })
+
+  test('多次重复声明同一个插件', () => {
+    const appConfig = {
+      plugins: [
+        {
+          name: '@attachments/serendipity-plugin-init',
+          options: {
+            foo: 'foo1',
+            bar: 'bar1'
+          }
+        },
+        {
+          name: '@attachments/serendipity-plugin-init',
+          options: {
+            foo: 'foo2',
+            bar: 'bar2'
+          }
+        }
+      ]
+    }
+    const packageConfig = {
+      'dependencies': {
+        '@attachments/serendipity-plugin-init': '~0.0.9'
+      }
+    }
+    const manager = new AppManager(process.cwd(), appConfig, packageConfig)
+    const modules = manager.getPluginModules()
+
+    // 只有模块读取成功才会走到这一步
+    expect(modules.length).toStrictEqual(1)
+    expect(modules[0].options).toStrictEqual({
+      foo: 'foo1',
+      bar: 'bar1'
+    })
   })
 })

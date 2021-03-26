@@ -133,4 +133,12 @@ describe('cli Manager 模块测试', () => {
     })
     expect(cm.getBasePath()).toStrictEqual(fsHelper.path)
   })
+
+  test('用户传入了 --delete 参数, 删除之', async () => {
+    const cm = new CoreManager(fsHelper.path)
+    await cm.add('foo', {
+      delete: true
+    })
+    expect(cm.getBasePath()).toStrictEqual(fsHelper.path)
+  })
 })
