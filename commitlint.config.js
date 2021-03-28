@@ -6,4 +6,4 @@
  * Email: yuzl1123@163.com
  */
 
-module.exports = require('@attachments/serendipity-workflows/bin/vcs/commitLint').config
+module.exports = require('./scripts/commit-lint')
