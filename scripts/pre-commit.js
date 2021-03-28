@@ -7,9 +7,11 @@
  */
 
 
-import { runEsLint, runJestTest } from '../utils/common'
+const { runEsLint, runJestTest } = require('./public')
 
-export const preCommit = (): void => {
+const preCommit = () => {
   runEsLint()
   runJestTest()
 }
+
+preCommit()

@@ -5,8 +5,8 @@
   "scripts": {
     "create-hello-world": "node ../packages/serendipity-core/bin/serendipity.js create hello -p D:\\\\projects\\\\serendipity\\\\examples\\\\presets\\\\helloWorld.js",
     "create-by-remote-preset": "node ../packages/serendipity-core/bin/serendipity.js create hello -p http://cdn.yuzzl.top/serendipityPreset.js",
-    "create-react-app": "node ../packages/serendipity-core/bin/serendipity.js create -p react",
-    "add-plugin": "cd hello && node ../../packages/serendipity/bin/serendipity.js add serendipity-plugin-hello-init -l D:\\projects\\serendipity\\packages\\serendipity-plugin-init",
+    "create-react-app": "node ../packages/serendipity-cli/lib/serendipity.js create -p react",
+    "add-plugin": "cd foo && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-init -l D:\\projects\\serendipity\\packages\\serendipity-plugin-init",
     "add-eslint-plugin": "cd hello-react && node ../../packages/serendipity/bin/serendipity.js add @attachments/serendipity-plugin-eslint -l D:\\projects\\serendipity\\packages\\serendipity-plugin-eslint -d"
   },
   "license": "MIT",

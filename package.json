@@ -15,7 +15,6 @@
     "lerna:clean": "lerna clean",
     "lerna:clean-build": "lerna run clean",
     "lerna:publish": "yarn lerna:build && lerna publish --no-push",
-    "clear": "serendipity-workflows clear",
     "codecov": "codecov",
     "docs:serve": "docsify serve ./docs",
     "cnpm-sync": "./scripts/cnpm-sync.sh"
@@ -32,7 +31,6 @@
   },
   "homepage": "https://github.com/yuzhanglong/serendipity#readme",
   "dependencies": {
-    "@attachments/serendipity-workflows": "latest",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@lint-md/eslint-plugin": "^0.0.3",
@@ -60,9 +58,9 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "serendipity-workflows pre-commit",
-      "pre-push": "serendipity-workflows pre-push",
-      "commit-msg": "serendipity-workflows commit-message -p ./.git/COMMIT_EDITMSG"
+      "pre-commit": "node ./scripts/pre-commit.js",
+      "pre-push": "node ./scripts/pre-push.js",
+      "commit-msg": "commitlint -e ./.git/COMMIT_EDITMSG"
     }
   }
 }

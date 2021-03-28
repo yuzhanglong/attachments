@@ -1,16 +1,12 @@
 /*
- * File: commitLint.ts
+ * File: commitLint.js
  * Description: CommitLint 配置
  * Created: 2021-2-15 22:07:41
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
 
-
-import { UserConfig } from '@commitlint/types'
-
-export const config: UserConfig = {
-  // @ts-ignore
+module.exports = {
   parserPreset: {
     parserOpts: {
       headerPattern: /^(?::\w*:\s)?(?<type>\w*)(?:\((?<scope>.*)\))?!?:\s(?<subject>(?:(?!#).)*(?:(?!\s).))\s?(?<ticket>#\d*)?$/,
