@@ -15,17 +15,17 @@ class SerendipityInitPlugin {
   createPluginTemplate(options: ConstructionOptions) {
     options.appManager.packageManager.mergeIntoCurrent({
       name: `serendipity-plugin-${(options.inquiryResult as PluginInitOptions).name}`,
-      'scripts': {
+      main: 'lib/index.js',
+      scripts: {
         'start': 'tsc -w',
         'build': 'tsc'
       },
-      'dependencies': {
+      dependencies: {
         '@attachments/serendipity-public': 'latest',
         '@attachments/serendipity-scripts': 'latest'
       },
-      'main': 'bin/index.js',
-      'files': [
-        'bin',
+      files: [
+        'lib',
         'templates'
       ]
     })

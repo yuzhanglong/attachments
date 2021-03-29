@@ -13,12 +13,16 @@ export const ESLINT_OPTION_TO_CONFIG: Record<string, EslintCustomConfig> = {
   'Airbnb': {
     package: 'eslint-config-airbnb',
     extendName: ['airbnb-base'],
-    version: 'latest'
+    version: 'latest',
+    defaultRules: {}
   },
   'recommend': {
     package: null,
     extendName: ['eslint:recommended'],
-    version: 'latest'
+    version: 'latest',
+    defaultRules: {
+      'no-multiple-empty-lines': 1,
+    }
   },
   'import': {
     package: 'eslint-plugin-import',
@@ -27,6 +31,10 @@ export const ESLINT_OPTION_TO_CONFIG: Record<string, EslintCustomConfig> = {
       'plugin:import/warnings',
       'plugin:import/typescript'
     ],
-    version: 'latest'
+    version: 'latest',
+    defaultRules: {
+      'import/no-unresolved': 'off',
+      'import/order': 'warn'
+    }
   }
 }

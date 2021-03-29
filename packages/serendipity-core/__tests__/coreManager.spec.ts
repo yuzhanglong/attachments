@@ -60,7 +60,7 @@ describe('cli Manager 模块测试', () => {
     fsHelper.removeDir()
   })
 
-  test('用户在已存在的目录中尝试重新创建工程', async () => {
+  test('用户在已存在的目录中尝试重新创建工程, 允许创建', async () => {
     logger.error = jest.fn()
     const base = fsHelper.resolve('hello')
     if (!fs.existsSync(base)) {
@@ -69,15 +69,12 @@ describe('cli Manager 模块测试', () => {
 
     const manager = new CoreManager(fsHelper.path)
 
-    manager.getCoreManagerHooks().onInitWorkDirFail.tap('onInitWorkDirFail', () => {
-      logger.error('该目录已经存在，请删除旧目录或者在其他目录下执行创建命令！')
-    })
 
     manager.initWorkDir('hello', {
       plugins: []
     })
 
-    expect(logger.error).toBeCalledWith('该目录已经存在，请删除旧目录或者在其他目录下执行创建命令！')
+    expect(logger.error).toBeCalledTimes(0)
   })
 
   test('用户没有传入 preset', async () => {

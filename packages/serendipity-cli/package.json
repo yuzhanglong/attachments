@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "./lib/serendipity.js",
   "bin": {
     "serendipity": "./lib/serendipity.js"
@@ -13,12 +13,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@attachments/serendipity-core": "^0.1.9",
-    "@attachments/serendipity-public": "^0.1.9",
+    "@attachments/serendipity-core": "^0.1.10",
+    "@attachments/serendipity-public": "^0.1.10",
     "commander": "^7.0.0"
   },
   "files": [
-    "esm",
+    "lib",
     "src"
-  ]
+  ],
+  "gitHead": "49d6e80c784169331de048713142cc8b19dac1ff"
 }

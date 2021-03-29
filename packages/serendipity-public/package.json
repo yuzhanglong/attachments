@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-public",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "scripts": {
@@ -28,5 +28,6 @@
     "esm",
     "lib",
     "src"
-  ]
+  ],
+  "gitHead": "49d6e80c784169331de048713142cc8b19dac1ff"
 }

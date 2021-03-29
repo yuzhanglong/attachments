@@ -1,0 +1,19 @@
+{
+  "name": "@attachments/serendipity-plugin-typescript",
+  "version": "0.1.10",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@attachments/serendipity-core": "^0.1.10",
+    "@attachments/serendipity-public": "^0.1.10"
+  },
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc"
+  },
+  "files": [
+    "lib",
+    "templates"
+  ],
+  "gitHead": "49d6e80c784169331de048713142cc8b19dac1ff"
+}

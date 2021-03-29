@@ -58,7 +58,7 @@ class PresetManager {
       return
     }
 
-    const isLocalPath = preset.startsWith('/') || preset.match(/[a-zA-Z]:(\\\\)|(\/\/)/)
+    const isLocalPath = preset.startsWith('/') || (preset.match(/[a-zA-Z]:(\\\\)|(\/\/)/) !== null)
 
     const isRemotePath = preset.startsWith('http://') || preset.startsWith('https://')
 

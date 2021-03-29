@@ -2,11 +2,10 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "bin",
+    "outDir": "lib",
     "rootDir": "./src"
   },
   "include": [
-    "src/**/*",
-    "../serendipity-plugin-react/bin/template.d.ts"
+    "src/**/*"
   ]
 }
