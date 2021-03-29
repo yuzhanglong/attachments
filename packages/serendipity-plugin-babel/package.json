@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-plugin-babel",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "./lib/index.js",
   "license": "MIT",
   "scripts": {
@@ -10,9 +10,9 @@
     "clean": "rimraf lib esm"
   },
   "dependencies": {
-    "@attachments/serendipity-core": "^0.1.9",
-    "@attachments/serendipity-plugin-react": "^0.1.9",
-    "@attachments/serendipity-public": "^0.1.9",
+    "@attachments/serendipity-core": "^0.1.10",
+    "@attachments/serendipity-plugin-react": "^0.1.10",
+    "@attachments/serendipity-public": "^0.1.10",
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.10",
@@ -23,5 +23,6 @@
     "lib",
     "src",
     "templates"
-  ]
+  ],
+  "gitHead": "49d6e80c784169331de048713142cc8b19dac1ff"
 }
