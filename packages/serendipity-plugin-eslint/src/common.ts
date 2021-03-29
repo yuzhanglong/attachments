@@ -6,17 +6,27 @@
  * Email: yuzl1123@163.com
  */
 
-import { ConfigOptions, EslintCustomConfig } from './types'
+import { EslintCustomConfig } from './types'
 
-export const ESLINT_OPTION_TO_CONFIG: Record<ConfigOptions, EslintCustomConfig> = {
+
+export const ESLINT_OPTION_TO_CONFIG: Record<string, EslintCustomConfig> = {
   'Airbnb': {
     package: 'eslint-config-airbnb',
-    extendName: 'airbnb-base',
+    extendName: ['airbnb-base'],
     version: 'latest'
   },
   'recommend': {
     package: null,
-    extendName: 'eslint:recommended',
+    extendName: ['eslint:recommended'],
+    version: 'latest'
+  },
+  'import': {
+    package: 'eslint-plugin-import',
+    extendName: [
+      'plugin:import/errors',
+      'plugin:import/warnings',
+      'plugin:import/typescript'
+    ],
     version: 'latest'
   }
 }

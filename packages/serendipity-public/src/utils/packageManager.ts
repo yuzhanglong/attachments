@@ -8,7 +8,7 @@
 
 import * as path from 'path'
 import * as fs from 'fs'
-import { deepmerge, runCommand, writeFilePromise } from '../index'
+import { runCommand, webpackMerge, writeFilePromise } from '../index'
 import { PACKAGE_JSON_BASE } from '../common/constant'
 import { CommonObject, MergePackageConfigOptions, ModuleInstallOptions, PackageManagerCli } from '../types'
 import logger from './logger'
@@ -98,7 +98,7 @@ class PackageManager {
       }
 
       // 是依赖包相关字段
-      if (typeof val === 'object' && typeof isDependenciesKey) {
+      if (typeof val === 'object' && isDependenciesKey) {
         this.packageConfig[key] = PackageManager.mergeDependencies(
           (oldValue as CommonObject),
           (val as CommonObject)
@@ -108,7 +108,7 @@ class PackageManager {
 
       // 普通字段合并
       if (typeof val === 'object' && typeof oldValue === 'object') {
-        this.packageConfig[key] = deepmerge(oldValue, val)
+        this.packageConfig[key] = webpackMerge(oldValue, val)
       }
     }
   }

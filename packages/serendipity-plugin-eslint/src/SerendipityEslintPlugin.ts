@@ -61,16 +61,32 @@ class SerendipityEslintPlugin {
   @Construction()
   async constructionForBase(options: ConstructionOptions) {
     const inquiryOpts = options.inquiryResult as EslintInquiryOptions
+    const packageManager = options.appManager.packageManager
 
-    if (inquiryOpts.extendConfig !== 'recommend') {
-      await options.appManager.packageManager.addAndInstallModule({
-        // 安装相应的 eslint config package
-        name: ESLINT_OPTION_TO_CONFIG[inquiryOpts.extendConfig].package
+    console.log(inquiryOpts.extendConfig)
+
+    // 合并用户选择的 eslint 配置
+    inquiryOpts.extendConfig.forEach(conf => {
+      const target = ESLINT_OPTION_TO_CONFIG[conf]
+      if (conf) {
+        packageManager.mergeIntoCurrent({
+          devDependencies: {
+            [ESLINT_OPTION_TO_CONFIG[conf].package]: ESLINT_OPTION_TO_CONFIG[conf].version
+          }
+        })
+      }
+
+      packageManager.mergeIntoCurrent({
+        eslintConfig: {
+          extends: [...target.extendName]
+        }
       })
-    }
+    })
+
+    console.log(packageManager.getPackageConfig())
 
     options.appManager.packageManager.mergeIntoCurrent({
-      dependencies: Object.assign(
+      devDependencies: Object.assign(
         // 基本的 eslint 依赖
         {
           'eslint': '^7.19.0'
@@ -80,11 +96,6 @@ class SerendipityEslintPlugin {
         inquiryOpts.useTypeScript ? {
           '@typescript-eslint/eslint-plugin': '^4.15.0',
           '@typescript-eslint/parser': '^4.15.0'
-        } : {},
-
-        // 是否需要引入 config
-        inquiryOpts.extendConfig !== 'recommend' ? {
-          [ESLINT_OPTION_TO_CONFIG[inquiryOpts.extendConfig].package]: ESLINT_OPTION_TO_CONFIG[inquiryOpts.extendConfig].version
         } : {}
       ),
 
@@ -92,15 +103,15 @@ class SerendipityEslintPlugin {
       scripts: {
         'lint': `eslint ${inquiryOpts.useTypeScript ? '--ext .ts --ext .tsx' : '--ext .js --ext .jsx'} --max-warnings 0 ./src`
       },
+
+      // eslint 基础配置
       eslintConfig: {
         root: true,
-        extends: [
-          ESLINT_OPTION_TO_CONFIG[inquiryOpts.extendConfig].extendName
-        ],
         parserOptions: {
           ecmaVersion: 2018,
           sourceType: 'module'
-        }
+        },
+        plugins: inquiryOpts.useTypeScript ? ['@typescript-eslint'] : []
       }
     })
   }
@@ -166,20 +177,24 @@ class SerendipityEslintPlugin {
         default: false
       },
       {
-        type: 'list',
-        message: '选择一个 eslint 规范',
+        type: 'checkbox',
+        message: '选择一个或者多个 eslint 规范',
         name: 'extendConfig',
         choices: [
           {
-            message: 'eslint:recommended(eslint 默认)',
+            message: 'eslint:recommended(eslint default)',
             name: 'recommend'
           },
           {
             message: 'Airbnb',
             name: 'Airbnb'
+          },
+          {
+            message: 'plugin import(import statement lint)',
+            name: 'import'
           }
         ],
-        default: 'recommend'
+        default: ['recommend']
       }
     ]
   }

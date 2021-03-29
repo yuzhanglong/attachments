@@ -7,7 +7,7 @@
  */
 
 
-export type ConfigOptions = 'Airbnb' | 'recommend'
+export type ConfigOptions = ['Airbnb' | 'recommend' | 'import']
 
 export interface EslintInquiryOptions {
   environment: 'React' | '其他项目'
@@ -17,7 +17,7 @@ export interface EslintInquiryOptions {
 
 export interface EslintCustomConfig {
   package: string
-  extendName: string
+  extendName: string[]
   version: string
 }
 
