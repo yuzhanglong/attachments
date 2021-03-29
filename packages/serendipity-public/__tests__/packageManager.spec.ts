@@ -37,7 +37,7 @@ describe('packageManager 测试模块', () => {
     })).toStrictEqual('yarn add foo')
   })
 
-  test('配置合并', () => {
+  test('配置合并 -- 对象', () => {
     const pm = new PackageManager('/')
     pm.setPackageConfig({
       'version': '1.0.1',
@@ -62,6 +62,43 @@ describe('packageManager 测试模块', () => {
         'bar': '1.0.0'
       },
       'version': '1.0.1'
+    })
+  })
+
+  test('配置合并 -- Array', () => {
+    const pm = new PackageManager('/')
+    pm.setPackageConfig({
+      'eslintConfig': {
+        'plugins': [
+          'foo',
+          'bar'
+        ]
+      }
+    })
+    pm.mergeIntoCurrent({
+      'eslintConfig': {
+        'plugins': [
+          'baz'
+        ]
+      }
+    })
+    pm.mergeIntoCurrent({
+      'eslintConfig': {
+        'plugins': [
+          'quz'
+        ]
+      }
+    })
+
+    expect(pm.getPackageConfig()).toStrictEqual({
+      'eslintConfig': {
+        'plugins': [
+          'foo',
+          'bar',
+          'baz',
+          'quz'
+        ]
+      }
     })
   })
 
