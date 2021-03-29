@@ -2,7 +2,7 @@
 
 /*
  * File: serendipity.js
- * Description: Cli Demo
+ * Description: Cli Entry
  * Created: 2021-1-23 14:33:58
  * Author: yuzhanglong
  * Email: yuzl1123@163.com

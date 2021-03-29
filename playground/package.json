@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "add-eslint-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-eslint -l D:\\projects\\serendipity\\packages\\serendipity-plugin-eslint -d"
+    "add-eslint-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-eslint -l D:\\projects\\serendipity\\packages\\serendipity-plugin-eslint -d",
+    "add-init-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-init -l D:\\projects\\serendipity\\packages\\serendipity-plugin-init -d",
+    "add-ts-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-typescript -l D:\\projects\\serendipity\\packages\\serendipity-plugin-typescript -d"
   },
-  "license": "MIT",
-  "dependencies": {
-    "axios": "^0.21.1"
-  }
+  "license": "MIT"
 }

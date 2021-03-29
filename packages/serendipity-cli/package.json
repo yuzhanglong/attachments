@@ -18,7 +18,7 @@
     "commander": "^7.0.0"
   },
   "files": [
-    "esm",
+    "lib",
     "src"
   ]
 }
