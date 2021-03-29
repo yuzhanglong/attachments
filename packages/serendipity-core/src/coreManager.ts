@@ -40,16 +40,16 @@ class CoreManager {
         logger.info(`preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 ${preset.initialDirDefaultName} 替代\n`)
       }
       this.basePath = path.resolve(this.executeDir, name || preset.initialDirDefaultName)
+
+      if (!fs.existsSync(this.basePath)) {
+        fs.mkdirSync(this.basePath)
+      } else {
+        this.coreManagerHooks.onInitWorkDirFail.call([])
+        process.exit(0)
+      }
+
     } else {
       this.basePath = path.resolve(this.executeDir, name ? name : '')
-    }
-
-
-    if (!fs.existsSync(this.basePath)) {
-      fs.mkdirSync(this.basePath)
-    } else {
-      this.coreManagerHooks.onInitWorkDirFail.call([])
-      process.exit(0)
     }
   }
 
@@ -92,7 +92,8 @@ class CoreManager {
     this.coreManagerHooks.onCreateStart.call(this)
 
     // 初始化 ConstructionManager（构建管理）
-    const constructionManager = new ConstructionManager(this.basePath)
+    // TODO: 深入考虑第二个参数
+    const constructionManager = new ConstructionManager(this.basePath, true)
 
     // 安装 preset 列出的所有插件
     await constructionManager.installPluginsFromPresets(pm.getPreset())

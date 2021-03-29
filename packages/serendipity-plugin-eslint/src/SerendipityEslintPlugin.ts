@@ -63,8 +63,6 @@ class SerendipityEslintPlugin {
     const inquiryOpts = options.inquiryResult as EslintInquiryOptions
     const packageManager = options.appManager.packageManager
 
-    console.log(inquiryOpts.extendConfig)
-
     // 合并用户选择的 eslint 配置
     inquiryOpts.extendConfig.forEach(conf => {
       const target = ESLINT_OPTION_TO_CONFIG[conf]
@@ -72,6 +70,11 @@ class SerendipityEslintPlugin {
         packageManager.mergeIntoCurrent({
           devDependencies: {
             [ESLINT_OPTION_TO_CONFIG[conf].package]: ESLINT_OPTION_TO_CONFIG[conf].version
+          },
+          eslintConfig: {
+            rules: {
+              ...target.defaultRules
+            }
           }
         })
       }
@@ -82,8 +85,6 @@ class SerendipityEslintPlugin {
         }
       })
     })
-
-    console.log(packageManager.getPackageConfig())
 
     options.appManager.packageManager.mergeIntoCurrent({
       devDependencies: Object.assign(
@@ -111,7 +112,19 @@ class SerendipityEslintPlugin {
           ecmaVersion: 2018,
           sourceType: 'module'
         },
-        plugins: inquiryOpts.useTypeScript ? ['@typescript-eslint'] : []
+        env: {
+          browser: true,
+          node: true
+        },
+        plugins: inquiryOpts.useTypeScript ? ['@typescript-eslint'] : [],
+        rules: inquiryOpts.useTypeScript ? {
+          '@typescript-eslint/no-empty-interface': 'warn',
+          '@typescript-eslint/no-var-requires': 'off',
+          '@typescript-eslint/ban-ts-comment': 'off',
+          '@typescript-eslint/explicit-module-boundary-types': 'off',
+          '@typescript-eslint/no-explicit-any': 'off',
+          '@typescript-eslint/no-empty-function': 'off'
+        } : {}
       }
     })
   }
@@ -149,7 +162,7 @@ class SerendipityEslintPlugin {
       packageManager.mergeIntoCurrent({
         // eslint 配置
         eslintConfig: {
-          'extends': [
+          extends: [
             'react-app'
           ]
         }
