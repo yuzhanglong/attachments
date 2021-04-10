@@ -6,7 +6,8 @@
     "add-eslint-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-eslint -l D:\\projects\\serendipity\\packages\\serendipity-plugin-eslint -d",
     "add-init-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-init -l D:\\projects\\serendipity\\packages\\serendipity-plugin-init -d",
     "add-ts-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-typescript -l D:\\projects\\serendipity\\packages\\serendipity-plugin-typescript -d",
-    "add-ts-preset": "cd foo && node ../../packages/serendipity-cli/lib/serendipity.js create -p D:\\\\projects\\serendipity\\examples\\presets\\ts-local.js"
+    "add-ts-preset": "cd foo && node ../../packages/serendipity-cli/lib/serendipity.js create -p D:\\\\projects\\serendipity\\examples\\presets\\ts-local.js",
+    "add-react": "serendipity create -p react"
   },
   "license": "MIT"
 }
