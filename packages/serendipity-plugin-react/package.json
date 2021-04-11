@@ -19,6 +19,7 @@
     "commander": "^7.0.0",
     "css-loader": "^5.0.1",
     "css-minimizer-webpack-plugin": "^1.2.0",
+    "fork-ts-checker-webpack-plugin": "^6.2.1",
     "globby": "^11.0.2",
     "html-webpack-plugin": "^5.2.0",
     "node-sass": "^5.0.0",
