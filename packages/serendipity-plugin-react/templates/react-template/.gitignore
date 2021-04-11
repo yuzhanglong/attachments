@@ -1,0 +1,12 @@
+# IDE configurations
+.idea
+.vscode
+
+# Dependency directories
+node_modules
+
+# coverage files
+coverage
+
+# build files
+build
