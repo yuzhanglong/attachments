@@ -168,12 +168,6 @@ class SerendipityWebpackPlugin {
    * @date 2021-2-10 12:23:42
    */
   apply(compiler: webpack.Compiler): void {
-    // TODO: 执行父类以复用 processPlugin 显示打包进度
-    // 不知道这里为什么 compiler 前后不一致，猜测版本兼容性问题
-    // new ProgressPlugin(() => {
-    //   console.log('111')
-    // }).apply(compiler)
-
     if (compiler.hooks) {
       // 在 webpack 构建完成时做些什么
       compiler.hooks.done.tap(

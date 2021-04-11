@@ -27,9 +27,11 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const SerendipityWebpackPlugin = require('@attachments/serendipity-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 // eslint-disable-next-line max-lines-per-function
 const getBaseConfig = (options: ReactPluginOptions): WebpackConfiguration => {
+  // TODO: 使用全局环境变量来处理它们
   const host = options?.host || DEFAULT_WEBPACK_DEV_SERVER_HOST
   const port = options?.port || DEFAULT_WEBPACK_DEV_SERVER_PORT
   const analysisPort = options?.analysisPort || DEFAULT_WEBPACK_ANALYSIS_PORT
@@ -122,7 +124,17 @@ const getBaseConfig = (options: ReactPluginOptions): WebpackConfiguration => {
       serendipityEnv.isProjectDevelopment() && new webpack.HotModuleReplacementPlugin(),
 
       // 官方的 react 热更新 webpack 插件
-      serendipityEnv.isProjectDevelopment() && new ReactRefreshWebpackPlugin()
+      serendipityEnv.isProjectDevelopment() && new ReactRefreshWebpackPlugin(),
+
+      serendipityEnv.isProjectDevelopment() && new ForkTsCheckerWebpackPlugin({
+        typescript: {
+          diagnosticOptions: {
+            semantic: true,
+            syntactic: true
+          },
+          mode: 'write-references'
+        }
+      })
     ].filter(Boolean),
 
 
