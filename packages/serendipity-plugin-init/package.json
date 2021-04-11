@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity-plugin-init",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "author": "yuzhanglong <yuzl1123@163.com>",
   "license": "MIT",
   "scripts": {
