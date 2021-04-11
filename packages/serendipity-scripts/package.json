@@ -7,7 +7,7 @@
     "src"
   ],
   "bin": {
-    "serendipity-scripts": "./lib/core/starter.js"
+    "serendipity-scripts": "./lib/index.js"
   },
   "scripts": {
     "start": "tsc -w",
