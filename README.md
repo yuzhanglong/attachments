@@ -1,4 +1,4 @@
-# Serendipity
+# serendipity
 
 [![version](https://img.shields.io/github/package-json/v/yuzhanglong/serendipity)](https://github.com/yuzhanglong/serendipity)
 [![codecov](https://codecov.io/gh/yuzhanglong/serendipity/branch/main/graph/badge.svg)](https://codecov.io/gh/yuzhanglong/serendipity)
