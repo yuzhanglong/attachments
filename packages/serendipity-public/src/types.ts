@@ -8,11 +8,11 @@
 
 
 // object 类型，不要使用 any
-export type CommonObject = Record<string, unknown>
+export type BaseObject = Record<string, unknown>
 
 
 // 包管理工具类型
-export type PackageManagerCli = 'yarn' | 'npm'
+export type PackageManagerName = 'yarn' | 'npm'
 
 // packageManager 模块安装选项
 export interface ModuleInstallOptions {
@@ -35,6 +35,12 @@ export interface MergePackageConfigOptions {
   ignoreNullOrUndefined?: boolean
 }
 
-export type Constructor<T = unknown> = new (...args: unknown[]) => T;
+export interface PackageManagerOptions {
+  basePath: string
+  managerName?: PackageManagerName
+}
+
+export type Constructable<T = unknown> = new (...args: unknown[]) => T;
 
 export type TemplateFilesMapper = Record<string, string>
+

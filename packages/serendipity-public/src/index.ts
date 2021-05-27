@@ -6,46 +6,36 @@
  * Email: yuzl1123@163.com
  */
 
+export { default as webpackMerge } from 'webpack-merge'
+export { serendipityEnv } from './utils/env'
+export { runCommand } from './utils/run-command'
+export { logger } from './utils/logger'
+export { fileTreeWriting, isPlugin, writeFilePromise } from './utils/files'
+export { getTemplatesData, renderTemplate, renderTemplateData } from './utils/template'
+export { PackageManager } from './utils/package-manager'
+export { fsMock } from './utils/fs-mock'
+export { arrayFlat } from './utils/array-flat'
+export { DEFAULT_PRESET_NAME, DEFAULT_PROJECT_NAME, PRESET_CDN_BASE_URL, PACKAGE_JSON_BASE } from './common/constant'
+
+// export types
+export {
+  BaseObject,
+  PackageManagerName,
+  ModuleInstallOptions,
+  MergePackageConfigOptions,
+  Constructable,
+  TemplateFilesMapper
+} from './types'
 
 import * as execa from 'execa'
 import * as chalk from 'chalk'
 import * as deepmerge from 'deepmerge'
 import * as inquirer from 'inquirer'
-import webpackMerge from 'webpack-merge'
-import serendipityEnv from './utils/env'
-import { runCommand } from './utils/command'
-import logger from './utils/logger'
-import { fileTreeWriting, isPlugin, writeFilePromise } from './utils/files'
-import { getTemplatesData, renderTemplate, renderTemplateData } from './utils/template'
-import PackageManager from './utils/packageManager'
-import generateTempPathInfo from './utils/testUtils/generateTempPathInfo'
-import flatDeep from './utils/flatDeep'
 
-export {
-  CommonObject,
-  PackageManagerCli,
-  ModuleInstallOptions,
-  MergePackageConfigOptions,
-  Constructor,
-  TemplateFilesMapper
-} from './types'
 
 export {
   execa,
   chalk,
-  runCommand,
-  webpackMerge,
-  serendipityEnv,
   deepmerge,
-  inquirer,
-  logger,
-  fileTreeWriting,
-  writeFilePromise,
-  getTemplatesData,
-  renderTemplateData,
-  renderTemplate,
-  PackageManager,
-  isPlugin,
-  generateTempPathInfo,
-  flatDeep
+  inquirer
 }

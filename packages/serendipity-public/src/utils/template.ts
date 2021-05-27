@@ -9,7 +9,7 @@
 
 import * as path from 'path'
 import * as globby from 'globby'
-import { CommonObject, TemplateFilesMapper } from '../types'
+import { BaseObject, TemplateFilesMapper } from '../types'
 import { fileTreeWriting, readFilePromise } from './files'
 
 
@@ -68,7 +68,7 @@ const renderTemplateData = (data: TemplateFilesMapper, options: unknown): void =
  * @param target 目标路径
  * @date 2021-1-29 13:33:43
  */
-const renderTemplate = async (base: string, options?: CommonObject, target?: string): Promise<void> => {
+const renderTemplate = async (base: string, options?: BaseObject, target?: string): Promise<void> => {
   // 获取映射表
   const filesMapper = await getTemplatesData(base, target)
 

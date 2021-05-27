@@ -33,14 +33,7 @@ module.exports = {
     'no-multiple-empty-lines': 1,
     'import/order': 'warn',
     'no-unused-vars': 'off',
-    'max-lines-per-function': [
-      'warn',
-      {
-        'max': 80,
-        'skipComments': true,
-        'skipBlankLines': true
-      }
-    ]
+    'max-lines-per-function': 'off'
   },
   'env': {
     'node': true,

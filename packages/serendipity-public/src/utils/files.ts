@@ -21,7 +21,7 @@ import { TemplateFilesMapper } from '../types'
  * @return boolean 是否写入成功
  * @date 2021-1-29 11:51:38
  */
-const fileTreeWriting = (fileMap: TemplateFilesMapper): boolean => {
+export const fileTreeWriting = (fileMap: TemplateFilesMapper): boolean => {
   if (typeof fileMap !== 'object') {
     throw new Error('fileMap 格式错误')
   }
@@ -40,17 +40,17 @@ const fileTreeWriting = (fileMap: TemplateFilesMapper): boolean => {
   return true
 }
 
-const readFilePromise = promisify(fs.readFile)
-
-const writeFilePromise = promisify(fs.writeFile)
-
-const isPlugin = (name: string): boolean => {
+/**
+ * 判断传入的字符串是不是合法的脚手架插件名称
+ *
+ * @param name 名称
+ * @return {boolean} 是否合法
+ * @date 2021-5-27 18:58:11
+ */
+export const isPlugin = (name: string): boolean => {
   return name.startsWith('serendipity-plugin-') || name.startsWith('@attachments/serendipity-plugin-')
 }
 
-export {
-  fileTreeWriting,
-  readFilePromise,
-  writeFilePromise,
-  isPlugin
-}
+export const readFilePromise = promisify(fs.readFile)
+
+export const writeFilePromise = promisify(fs.writeFile)

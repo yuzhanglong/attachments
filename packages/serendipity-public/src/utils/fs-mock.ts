@@ -9,6 +9,22 @@
 
 import * as path from 'path'
 import * as fs from 'fs-extra'
+import { BaseObject } from '../types'
+
+export const initFiles = (config: BaseObject, base = '/') => {
+  const entries = Object.entries(config)
+  for (const [k, v] of entries) {
+    const target = path.resolve(base, k)
+    // 如果值是对象，则 k 为一个目录
+    if (typeof v === 'object') {
+      fs.ensureDirSync(target)
+      // 递归创建
+      initFiles(v as BaseObject, base)
+    } else if (typeof v === 'string') {
+      fs.writeFileSync(target, v)
+    }
+  }
+}
 
 /**
  * 生成一个临时目录供测试使用，由于 jest 在执行多个 .spec 的时候是并行操作的，而单个则是串行
@@ -23,12 +39,14 @@ import * as fs from 'fs-extra'
  * - clear 清空临时目录
  * @date 2021-2-27 19:11:10
  */
-const generateTempPathInfo = () => {
+export const fsMock = (config: BaseObject) => {
   const tmpName = new Date().getTime().toString()
   const testRootDir = path.resolve(process.cwd(), 'playground', 'test', tmpName)
 
   // 建立新的工作目录
   fs.ensureDirSync(testRootDir)
+
+  initFiles(config, testRootDir)
 
   return {
     path: testRootDir,
@@ -38,4 +56,4 @@ const generateTempPathInfo = () => {
   }
 }
 
-export default generateTempPathInfo
+
