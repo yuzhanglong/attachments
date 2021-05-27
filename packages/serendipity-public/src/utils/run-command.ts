@@ -9,7 +9,7 @@
 import * as execa from 'execa'
 
 
-const runCommand = async (command: string, args: string[], path?: string): Promise<execa.ExecaChildProcess> => {
+export const runCommand = async (command: string, args: string[], path?: string): Promise<execa.ExecaChildProcess> => {
   let p = path
   if (!p) {
     p = process.cwd()
@@ -29,6 +29,3 @@ const runCommand = async (command: string, args: string[], path?: string): Promi
   )
 }
 
-export {
-  runCommand
-}

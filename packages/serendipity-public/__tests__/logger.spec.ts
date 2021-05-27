@@ -7,7 +7,7 @@
  */
 
 
-import logger from '../src/utils/logger'
+import { logger } from '../src'
 
 describe('logger 测试', () => {
   test('info', () => {

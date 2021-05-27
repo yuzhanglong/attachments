@@ -4,7 +4,7 @@ module.exports = {
     'playground',
     'examples'
   ],
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: [
     // packages 子包
     'packages/serendipity-public/**/*.ts',

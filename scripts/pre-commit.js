@@ -7,11 +7,10 @@
  */
 
 
-const { runEsLint, runJestTest } = require('./public')
+const { runEsLint } = require('./public')
 
 const preCommit = () => {
   runEsLint()
-  runJestTest()
 }
 
 preCommit()
