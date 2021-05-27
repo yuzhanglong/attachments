@@ -16,7 +16,13 @@ describe('packageManager 测试模块', () => {
         'main': 'index.js',
         'name': 'your-name',
         'version': '1.0.0'
-      })
+      }),
+      'node_modules': {
+        'foo.json': JSON.stringify({
+          a: 1,
+          b: 2
+        })
+      }
     })
 
     const packageManager = PackageManager.createWithResolve(f.path)
@@ -26,6 +32,38 @@ describe('packageManager 测试模块', () => {
       'name': 'your-name',
       'version': '1.0.0'
     })
+
+    expect(packageManager.getPackageModule('foo.json'))
+      .toStrictEqual({
+        a: 1,
+        b: 2
+      })
+
+    // @ts-ignore
+    expect(packageManager.managerName).toStrictEqual('npm')
+  })
+
+  test('用户工作目录下出现 yarn.lock, 我们设置管理工具为 yarn，否则为默认值 npm', () => {
+    const f = fsMock({
+      'package.json': JSON.stringify({
+        'license': 'MIT',
+        'main': 'index.js',
+        'name': 'your-name',
+        'version': '1.0.0'
+      }),
+      'yarn.lock': 'foo'
+    })
+
+    const packageManager = PackageManager.createWithResolve(f.path)
+    expect(packageManager.getPackageConfig()).toStrictEqual({
+      'license': 'MIT',
+      'main': 'index.js',
+      'name': 'your-name',
+      'version': '1.0.0'
+    })
+
+    // @ts-ignore
+    expect(packageManager.managerName).toStrictEqual('yarn')
   })
 
   // const mockedExeca = require('../../../__mocks__/execa')

@@ -1,7 +1,7 @@
 /*
  * File: packageManager.ts
  * Description: 包管理模块
- * Created: 2021-2-12 22:58:04
+ * Created: 2021-5-28 00:36:26
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
@@ -33,7 +33,7 @@ export class PackageManager {
 
   constructor(options: PackageManagerOptions) {
     this.basePath = options.basePath
-    this.managerName = options.managerName || 'yarn'
+    this.managerName = options.managerName || 'npm'
     this.packageConfig = PACKAGE_JSON_BASE
   }
 
@@ -41,6 +41,7 @@ export class PackageManager {
    * 工厂函数，基于某个已经存在的工作目录初始化 manager
    *
    * @author yuzhanglong
+   * @param basePath 基础路径
    * @date 2021-2-12 23:20:11
    */
   public static createWithResolve(basePath: string): PackageManager {
@@ -277,15 +278,15 @@ export class PackageManager {
 
   /**
    * 判断选择哪个包管理工具
-   * 如果工作目录下存在 package.lock.json 则为 npm, 否则为 yarn
+   * 如果工作目录下存在 yarn.lock 则为 yarn, 否则为 npm
    *
    * @author yuzhanglong
    * @return PackageManagerName package cli 类型
    * @date 2021-2-26 21:45:13
    */
   private static getPackageManagerName(basePath: string): PackageManagerName {
-    const isPackageLockJsonExist = fs.existsSync(path.resolve(basePath, 'package-lock.json'))
-    return isPackageLockJsonExist ? 'npm' : 'yarn'
+    const isYarnLockJsonExist = fs.existsSync(path.resolve(basePath, 'yarn.lock'))
+    return isYarnLockJsonExist ? 'yarn' : 'npm'
   }
 
   /**

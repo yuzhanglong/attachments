@@ -19,7 +19,7 @@ export const initFiles = (config: BaseObject, base = '/') => {
     if (typeof v === 'object') {
       fs.ensureDirSync(target)
       // 递归创建
-      initFiles(v as BaseObject, base)
+      initFiles(v as BaseObject, target)
     } else if (typeof v === 'string') {
       fs.writeFileSync(target, v)
     }
