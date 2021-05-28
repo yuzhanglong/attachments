@@ -38,6 +38,7 @@ export interface MergePackageConfigOptions {
 export interface PackageManagerOptions {
   basePath: string
   managerName?: PackageManagerName
+  packageConfig?: BaseObject
 }
 
 export type Constructable<T = unknown> = new (...args: unknown[]) => T;

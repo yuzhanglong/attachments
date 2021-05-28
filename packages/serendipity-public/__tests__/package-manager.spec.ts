@@ -8,6 +8,9 @@
 
 import { PackageManager, fsMock } from '../src'
 
+jest.mock('execa')
+const mockedExeca = require('../../../__mocks__/execa')
+
 describe('packageManager 测试模块', () => {
   test('在已存在的 npm/yarn 工作目录下初始化 packageManager', () => {
     const f = fsMock({
@@ -16,28 +19,16 @@ describe('packageManager 测试模块', () => {
         'main': 'index.js',
         'name': 'your-name',
         'version': '1.0.0'
-      }),
-      'node_modules': {
-        'foo.json': JSON.stringify({
-          a: 1,
-          b: 2
-        })
-      }
+      })
     })
 
     const packageManager = PackageManager.createWithResolve(f.path)
-    expect(packageManager.getPackageConfig()).toStrictEqual({
+    expect(packageManager.getPackageConfig()).toEqual({
       'license': 'MIT',
       'main': 'index.js',
       'name': 'your-name',
       'version': '1.0.0'
     })
-
-    expect(packageManager.getPackageModule('foo.json'))
-      .toStrictEqual({
-        a: 1,
-        b: 2
-      })
 
     // @ts-ignore
     expect(packageManager.managerName).toStrictEqual('npm')
@@ -55,7 +46,7 @@ describe('packageManager 测试模块', () => {
     })
 
     const packageManager = PackageManager.createWithResolve(f.path)
-    expect(packageManager.getPackageConfig()).toStrictEqual({
+    expect(packageManager.getPackageConfig()).toEqual({
       'license': 'MIT',
       'main': 'index.js',
       'name': 'your-name',
@@ -66,24 +57,136 @@ describe('packageManager 测试模块', () => {
     expect(packageManager.managerName).toStrictEqual('yarn')
   })
 
-  // const mockedExeca = require('../../../__mocks__/execa')
-  // test('模块安装字符串生成', () => {
-  //   const packageManager = new PackageManager(process.cwd(), 'yarn')
-  //   expect(packageManager.getInstallCommand({
-  //     name: 'foo',
-  //     localPath: '/usr/foo',
-  //     version: '1.0.0'
-  //   })).toStrictEqual('yarn add file:/usr/foo')
-  //
-  //   expect(packageManager.getInstallCommand({
-  //     name: 'foo',
-  //     version: '1.0.0'
-  //   })).toStrictEqual('yarn add foo@1.0.0')
-  //
-  //   expect(packageManager.getInstallCommand({
-  //     name: 'foo'
-  //   })).toStrictEqual('yarn add foo')
-  // })
+  test('尝试获取当前工作目录下的某个模块', () => {
+    const f = fsMock({
+      'package.json': JSON.stringify({
+        'license': 'MIT',
+        'main': 'index.js',
+        'name': 'your-name',
+        'version': '1.0.0'
+      }),
+      'node_modules': {
+        'foo.json': JSON.stringify({
+          a: 1,
+          b: 2
+        })
+      }
+    })
+
+    const packageManager = PackageManager.createWithResolve(f.path)
+
+    expect(packageManager.getPackageModule('foo.json'))
+      .toStrictEqual({
+        a: 1,
+        b: 2
+      })
+  })
+
+  test('安装依赖，但没有传入参数，我们直接返回一个空对象', async () => {
+    const f = fsMock({
+      'package.json': JSON.stringify({
+        'main': 'index.js'
+      })
+    })
+
+    const packageManager = PackageManager.createWithResolve(f.path)
+    // @ts-ignore
+    expect(await packageManager.addAndInstallModule()).toStrictEqual({})
+  })
+
+  test('安装依赖，且这个依赖属于本地文件，我们最终执行的是 npm install file: 命令', async () => {
+    const f = fsMock({
+      'package.json': JSON.stringify({
+        'main': 'index.js'
+      })
+    })
+
+    const packageManager = PackageManager.createWithResolve(f.path)
+    await packageManager.addAndInstallModule({
+      name: 'foo',
+      localPath: '/usr/foo',
+      version: '1.0.0',
+      onError: () => {
+        return
+      }
+    })
+
+    expect(mockedExeca.getCommands()).toStrictEqual([
+      'npm install file:/usr/foo'
+    ])
+  })
+
+  test('安装依赖，且这个依赖属于 npm 上的第三方库，我们最终执行的是 npm install xxx 命令', async () => {
+    const f = fsMock({
+      'package.json': JSON.stringify({
+        'main': 'index.js'
+      })
+    })
+
+    const packageManager = PackageManager.createWithResolve(f.path)
+    await packageManager.addAndInstallModule({
+      name: 'foo',
+      onError: () => {
+        return
+      }
+    })
+
+    expect(mockedExeca.getCommands()).toStrictEqual([
+      'npm install foo'
+    ])
+  })
+
+  test('安装依赖，指定了版本号', async () => {
+    const f = fsMock({
+      'package.json': JSON.stringify({
+        'main': 'index.js'
+      })
+    })
+
+    const packageManager = PackageManager.createWithResolve(f.path)
+    await packageManager.addAndInstallModule({
+      name: 'foo',
+      version: '1.0.0',
+      onError: () => {
+        return
+      }
+    })
+
+    expect(mockedExeca.getCommands()).toStrictEqual([
+      'npm install foo@1.0.0'
+    ])
+  })
+
+  test('移除依赖', async () => {
+    const f = fsMock({
+      'package.json': JSON.stringify({
+        'main': 'index.js'
+      })
+    })
+
+    const packageManager = PackageManager.createWithResolve(f.path)
+    await packageManager.removeDependency('foo')
+
+    expect(mockedExeca.getCommands()).toStrictEqual([
+      'npm remove foo'
+    ])
+  })
+
+  test('安装所有依赖，我们最终执行的是 npm install 命令', async () => {
+    const f = fsMock({
+      'package.json': JSON.stringify({
+        'main': 'index.js'
+      })
+    })
+
+    const packageManager = PackageManager.createWithResolve(f.path)
+    await packageManager.installDependencies()
+
+    expect(mockedExeca.getCommands()).toStrictEqual([
+      'npm install'
+    ])
+  })
+
   //
   // test('尝试安装相关依赖', async () => {
   //   jest.mock('execa')

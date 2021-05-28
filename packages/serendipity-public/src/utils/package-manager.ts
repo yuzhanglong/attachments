@@ -8,6 +8,7 @@
 
 import * as path from 'path'
 import * as fs from 'fs'
+import { sortPackageJson } from 'sort-package-json'
 import { PACKAGE_JSON_BASE, runCommand, webpackMerge, writeFilePromise } from '../index'
 import {
   BaseObject,
@@ -18,7 +19,6 @@ import {
 } from '../types'
 import { logger } from './logger'
 import { resolveModule } from './resolve-module'
-
 
 export class PackageManager {
   // 包管理路径
@@ -34,7 +34,7 @@ export class PackageManager {
   constructor(options: PackageManagerOptions) {
     this.basePath = options.basePath
     this.managerName = options.managerName || 'npm'
-    this.packageConfig = PACKAGE_JSON_BASE
+    this.packageConfig = options.packageConfig || PACKAGE_JSON_BASE
   }
 
   /**
@@ -192,13 +192,14 @@ export class PackageManager {
   }
 
   /**
-   * packageConfig getter
+   * 获取 package.json 配置
+   * 注意：这里获得的配置会进行一次必要的排序，主要是为了输出的美观，所以尽量使用此方法获取配置
    *
    * @author yuzhanglong
    * @date 2021-2-2 22:06:32
    */
   public getPackageConfig(): BaseObject {
-    return this.packageConfig
+    return sortPackageJson(this.packageConfig)
   }
 
 
@@ -216,7 +217,7 @@ export class PackageManager {
       try {
         // 执行安装命令
         await runCommand(this.getInstallCommand(installOptions), [], this.basePath)
-        return require(path.resolve(this.basePath, 'node_modules', installOptions.name))
+        return resolveModule(path.resolve(this.basePath, 'node_modules', installOptions.name))
       } catch (e) {
         if (installOptions.onError && typeof installOptions.onError === 'function') {
           installOptions?.onError(e)
@@ -237,7 +238,7 @@ export class PackageManager {
    * @return 结果字符串
    * @date 2021-2-17 17:47:04
    */
-  public getInstallCommand(installOptions: ModuleInstallOptions): string {
+  private getInstallCommand(installOptions: ModuleInstallOptions): string {
     const command = `${this.managerName} ${this.managerName === 'yarn' ? 'add' : 'install'}`
     // 如果传入了本地路径，我们从本地路径安装
     // yarn add file:/path/to/local/folder
