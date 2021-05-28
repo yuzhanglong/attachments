@@ -70,6 +70,9 @@ const configFile = resolveAppPath('serendipity.js')
 // app 入口
 const appEntry = resolveAppEntry('src/index')
 
+// app 入口 ts
+const appEntryTs = resolveAppEntry('src/index', ['ts'])
+
 // app 根目录
 const appRoot = resolveAppPath('.')
 
@@ -86,5 +89,6 @@ export {
   configFile,
   appEntry,
   appRoot,
-  playgroundTestPath
+  playgroundTestPath,
+  appEntryTs
 }

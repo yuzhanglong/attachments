@@ -1,14 +1,12 @@
 module.exports = {
   preset: 'ts-jest',
-  testPathIgnorePatterns: [
-    'playground',
-    'examples'
+  testMatch: [
+    "**/serendipity-public/**/?(*.)+(spec|test).[jt]s?(x)"
   ],
   collectCoverage: false,
   collectCoverageFrom: [
     // packages 子包
     'packages/serendipity-public/**/*.ts',
-    'packages/serendipity-core/**/*.ts',
 
     // 第三方包文件
     '!**/node_modules/**',
@@ -22,9 +20,10 @@ module.exports = {
     '!**/lib/**',
 
     // 命令行模块不考虑
-    '!packages/serendipity-cli/**/*.ts'
+    '!packages/serendipity-cli/**/*.ts',
 
     // 插件的测试暂时忽略，未来会单独开一个插件测试的包
+    '!packages/serendipity-core/**/*.ts'
   ]
 }
 

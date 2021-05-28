@@ -33,7 +33,8 @@ module.exports = {
     'no-multiple-empty-lines': 1,
     'import/order': 'warn',
     'no-unused-vars': 'off',
-    'max-lines-per-function': 'off'
+    'max-lines-per-function': 'off',
+    '@typescript-eslint/no-explicit-any': 'off'
   },
   'env': {
     'node': true,

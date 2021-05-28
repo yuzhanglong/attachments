@@ -1,13 +1,14 @@
 /*
  * File: packageManager.ts
  * Description: 包管理模块
- * Created: 2021-2-12 22:58:04
+ * Created: 2021-5-28 00:36:26
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
 
 import * as path from 'path'
 import * as fs from 'fs'
+import { sortPackageJson } from 'sort-package-json'
 import { PACKAGE_JSON_BASE, runCommand, webpackMerge, writeFilePromise } from '../index'
 import {
   BaseObject,
@@ -16,9 +17,8 @@ import {
   PackageManagerName,
   PackageManagerOptions
 } from '../types'
-import { logger } from './logger'
 import { resolveModule } from './resolve-module'
-
+import { mergeDependencies } from './merge-deps'
 
 export class PackageManager {
   // 包管理路径
@@ -33,14 +33,15 @@ export class PackageManager {
 
   constructor(options: PackageManagerOptions) {
     this.basePath = options.basePath
-    this.managerName = options.managerName || 'yarn'
-    this.packageConfig = PACKAGE_JSON_BASE
+    this.managerName = options.managerName || 'npm'
+    this.packageConfig = options.packageConfig || PACKAGE_JSON_BASE
   }
 
   /**
    * 工厂函数，基于某个已经存在的工作目录初始化 manager
    *
    * @author yuzhanglong
+   * @param basePath 基础路径
    * @date 2021-2-12 23:20:11
    */
   public static createWithResolve(basePath: string): PackageManager {
@@ -54,6 +55,17 @@ export class PackageManager {
 
     manager.resolvePackageConfig()
     return manager
+  }
+
+  /**
+   * 工厂函数，基于 PackageManagerOptions 初始化 manager
+   *
+   * @author yuzhanglong
+   * @param options manager 选项
+   * @date 2021-5-28 09:03:11
+   */
+  public static createWithOptions(options: PackageManagerOptions): PackageManager {
+    return new PackageManager(options)
   }
 
   /**
@@ -85,7 +97,7 @@ export class PackageManager {
   public mergeIntoCurrent(data: BaseObject, options?: MergePackageConfigOptions): void {
     const resultOptions: MergePackageConfigOptions = {
       merge: true,
-      ignoreNullOrUndefined: false
+      ignoreNullOrUndefined: true
     }
 
     Object.assign(resultOptions, options)
@@ -114,7 +126,7 @@ export class PackageManager {
 
       // 是依赖包相关字段
       if (typeof val === 'object' && isDependenciesKey) {
-        this.packageConfig[key] = PackageManager.mergeDependencies(
+        this.packageConfig[key] = mergeDependencies(
           (oldValue as BaseObject),
           (val as BaseObject)
         )
@@ -126,39 +138,6 @@ export class PackageManager {
         this.packageConfig[key] = webpackMerge(oldValue, val)
       }
     }
-  }
-
-  /**
-   * 合并 依赖配置
-   *
-   * @author yuzhanglong
-   * @param source 旧依赖
-   * @param extend 要被合并上的依赖
-   * @date 2021-1-30 18:15:53
-   */
-  static mergeDependencies(source: BaseObject, extend: BaseObject): BaseObject {
-    // TODO: 对于配置冲突 我们暂时采取直接覆盖的方式，之后需要基于 semver 规范优化相关代码
-    const result = Object.assign({}, source)
-
-    for (const depName of Object.keys(extend)) {
-      const sourceDep = source[depName]
-      const extendDep = extend[depName]
-
-      // 值为 null 跳过
-      if (extendDep === null) {
-        logger.warn(`不合法的版本依赖：${depName}`)
-        continue
-      }
-
-      // 依赖相同，跳过
-      if (sourceDep === extendDep) {
-        continue
-      }
-
-      // TODO: 细化版本处理
-      result[depName] = extendDep
-    }
-    return result
   }
 
   /**
@@ -191,13 +170,14 @@ export class PackageManager {
   }
 
   /**
-   * packageConfig getter
+   * 获取 package.json 配置
+   * 注意：这里获得的配置会进行一次必要的排序，主要是为了输出的美观，所以尽量使用此方法获取配置
    *
    * @author yuzhanglong
    * @date 2021-2-2 22:06:32
    */
   public getPackageConfig(): BaseObject {
-    return this.packageConfig
+    return sortPackageJson(this.packageConfig)
   }
 
 
@@ -215,7 +195,7 @@ export class PackageManager {
       try {
         // 执行安装命令
         await runCommand(this.getInstallCommand(installOptions), [], this.basePath)
-        return require(path.resolve(this.basePath, 'node_modules', installOptions.name))
+        return resolveModule(path.resolve(this.basePath, 'node_modules', installOptions.name))
       } catch (e) {
         if (installOptions.onError && typeof installOptions.onError === 'function') {
           installOptions?.onError(e)
@@ -236,7 +216,7 @@ export class PackageManager {
    * @return 结果字符串
    * @date 2021-2-17 17:47:04
    */
-  public getInstallCommand(installOptions: ModuleInstallOptions): string {
+  private getInstallCommand(installOptions: ModuleInstallOptions): string {
     const command = `${this.managerName} ${this.managerName === 'yarn' ? 'add' : 'install'}`
     // 如果传入了本地路径，我们从本地路径安装
     // yarn add file:/path/to/local/folder
@@ -277,15 +257,15 @@ export class PackageManager {
 
   /**
    * 判断选择哪个包管理工具
-   * 如果工作目录下存在 package.lock.json 则为 npm, 否则为 yarn
+   * 如果工作目录下存在 yarn.lock 则为 yarn, 否则为 npm
    *
    * @author yuzhanglong
    * @return PackageManagerName package cli 类型
    * @date 2021-2-26 21:45:13
    */
   private static getPackageManagerName(basePath: string): PackageManagerName {
-    const isPackageLockJsonExist = fs.existsSync(path.resolve(basePath, 'package-lock.json'))
-    return isPackageLockJsonExist ? 'npm' : 'yarn'
+    const isYarnLockJsonExist = fs.existsSync(path.resolve(basePath, 'yarn.lock'))
+    return isYarnLockJsonExist ? 'yarn' : 'npm'
   }
 
   /**
