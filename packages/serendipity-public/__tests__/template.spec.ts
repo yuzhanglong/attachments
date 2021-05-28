@@ -7,11 +7,11 @@
  */
 
 import * as fs from 'fs'
-import { renderTemplate , generateTempPathInfo } from '../src'
+import { renderTemplate, fsMock } from '../src'
 
 
 describe('模板处理相关', () => {
-  const fsHelper = generateTempPathInfo()
+  const fsHelper = fsMock({})
 
   afterAll(() => {
     fsHelper.removeDir()

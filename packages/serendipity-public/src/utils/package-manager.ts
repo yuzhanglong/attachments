@@ -17,8 +17,8 @@ import {
   PackageManagerName,
   PackageManagerOptions
 } from '../types'
-import { logger } from './logger'
 import { resolveModule } from './resolve-module'
+import { mergeDependencies } from './merge-deps'
 
 export class PackageManager {
   // 包管理路径
@@ -58,6 +58,17 @@ export class PackageManager {
   }
 
   /**
+   * 工厂函数，基于 PackageManagerOptions 初始化 manager
+   *
+   * @author yuzhanglong
+   * @param options manager 选项
+   * @date 2021-5-28 09:03:11
+   */
+  public static createWithOptions(options: PackageManagerOptions): PackageManager {
+    return new PackageManager(options)
+  }
+
+  /**
    * 根据传入的 basePath，读取文件，拿到配置对象
    *
    * @author yuzhanglong
@@ -86,7 +97,7 @@ export class PackageManager {
   public mergeIntoCurrent(data: BaseObject, options?: MergePackageConfigOptions): void {
     const resultOptions: MergePackageConfigOptions = {
       merge: true,
-      ignoreNullOrUndefined: false
+      ignoreNullOrUndefined: true
     }
 
     Object.assign(resultOptions, options)
@@ -115,7 +126,7 @@ export class PackageManager {
 
       // 是依赖包相关字段
       if (typeof val === 'object' && isDependenciesKey) {
-        this.packageConfig[key] = PackageManager.mergeDependencies(
+        this.packageConfig[key] = mergeDependencies(
           (oldValue as BaseObject),
           (val as BaseObject)
         )
@@ -127,39 +138,6 @@ export class PackageManager {
         this.packageConfig[key] = webpackMerge(oldValue, val)
       }
     }
-  }
-
-  /**
-   * 合并 依赖配置
-   *
-   * @author yuzhanglong
-   * @param source 旧依赖
-   * @param extend 要被合并上的依赖
-   * @date 2021-1-30 18:15:53
-   */
-  static mergeDependencies(source: BaseObject, extend: BaseObject): BaseObject {
-    // TODO: 对于配置冲突 我们暂时采取直接覆盖的方式，之后需要基于 semver 规范优化相关代码
-    const result = Object.assign({}, source)
-
-    for (const depName of Object.keys(extend)) {
-      const sourceDep = source[depName]
-      const extendDep = extend[depName]
-
-      // 值为 null 跳过
-      if (extendDep === null) {
-        logger.warn(`不合法的版本依赖：${depName}`)
-        continue
-      }
-
-      // 依赖相同，跳过
-      if (sourceDep === extendDep) {
-        continue
-      }
-
-      // TODO: 细化版本处理
-      result[depName] = extendDep
-    }
-    return result
   }
 
   /**

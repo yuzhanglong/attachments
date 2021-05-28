@@ -1,8 +1,7 @@
 module.exports = {
   preset: 'ts-jest',
-  testPathIgnorePatterns: [
-    'playground',
-    'examples'
+  testMatch: [
+    "**/serendipity-public/**/?(*.)+(spec|test).[jt]s?(x)"
   ],
   collectCoverage: false,
   collectCoverageFrom: [
@@ -24,7 +23,7 @@ module.exports = {
     '!packages/serendipity-cli/**/*.ts',
 
     // 插件的测试暂时忽略，未来会单独开一个插件测试的包
-    'packages/serendipity-core/**/*.ts'
+    '!packages/serendipity-core/**/*.ts'
   ]
 }
 

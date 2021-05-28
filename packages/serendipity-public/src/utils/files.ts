@@ -27,15 +27,10 @@ export const fileTreeWriting = (fileMap: TemplateFilesMapper): boolean => {
   }
 
   Object.keys(fileMap).forEach((res) => {
-    try {
-      // TODO：考虑以下问题：文件之前存在，但作出了修改，需要注意 git
-      if (!fs.existsSync(path.dirname(res))) {
-        fs.mkdirSync(path.dirname(res))
-      }
-      fs.writeFileSync(res, fileMap[res])
-    } catch (e) {
-      console.log(e)
+    if (!fs.existsSync(path.dirname(res))) {
+      fs.mkdirSync(path.dirname(res))
     }
+    fs.writeFileSync(res, fileMap[res])
   })
   return true
 }

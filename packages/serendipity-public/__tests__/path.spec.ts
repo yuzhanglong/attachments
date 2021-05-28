@@ -7,12 +7,15 @@
  */
 
 import * as path from 'path'
-import { serendipityEnv } from '@attachments/serendipity-public'
 import { appBuild, resolveAppPath } from '../src/utils/paths'
+import { serendipityEnv } from '../src'
 
 
 describe('app 路径相关测试', () => {
   beforeEach(() => {
+    // 没啥用，只是懒得创建额外的单侧文件了
+    serendipityEnv.setProjectProduction()
+    serendipityEnv.setProjectDevelopment()
     serendipityEnv.setSerendipityDevelopment()
   })
 
