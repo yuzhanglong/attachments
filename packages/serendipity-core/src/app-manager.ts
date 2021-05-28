@@ -9,65 +9,87 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { isPlugin, writeFilePromise, PackageManager, logger, CommonObject } from '@attachments/serendipity-public'
+import { isPlugin, PackageManager, logger, BaseObject } from '@attachments/serendipity-public'
 import { AppConfig } from './types/common'
 import { PluginModuleInfo } from './types/plugin'
 
+interface AppManagerOptions {
+  basePath: string
+  appConfig?: AppConfig
+  packageManager?: PackageManager
+}
 
-class AppManager {
+type BasicCreateOptions = Omit<AppManagerOptions, 'packageManager'> & {
+  packageConfig: BaseObject
+}
+
+export class AppManager {
+  // 根路径
   private readonly basePath: string
 
   // package 管理模块
   public packageManager: PackageManager
 
   // App 配置管理模块
-  private appConfig: AppConfig
+  private readonly appConfig: AppConfig
 
 
-  constructor(basePath: string, appConfig?: AppConfig, packageConfig?: CommonObject) {
+  constructor(options: AppManagerOptions) {
+    const { basePath, appConfig, packageManager } = options
     this.basePath = basePath
+    this.appConfig = appConfig
+    this.packageManager = packageManager
+  }
 
-    // 如果用户传入配置，我们使用用户的，否则从文件中读取配置，如果读取失败则赋值一个空对象：{}
-    if (appConfig) {
-      this.appConfig = appConfig
-    } else {
-      this.readAppConfig()
-    }
+  /**
+   * 基于基本路径，通过读取文件的方式获得 appConfig 和 packageConfig 以初始化 AppManager
+   *
+   * @author yuzhanglong
+   * @param basePath 基本路径
+   * @date 2021-5-29 00:51:04
+   */
+  public static createWithResolve(basePath: string) {
+    const appConfig = AppManager.resolveAppConfig(basePath)
+    const pm = PackageManager.createWithResolve(basePath)
+    return new AppManager({
+      appConfig: appConfig,
+      packageManager: pm,
+      basePath: basePath
+    })
+  }
 
-    if (packageConfig) {
-      // 如果用户传入 package 配置，我们使用用户的，否则从 package.json 中读取相应配置
-      this.packageManager = new PackageManager(basePath)
-      this.packageManager.setPackageConfig(packageConfig)
-    } else {
-      this.packageManager = PackageManager.createWithResolve(basePath)
-    }
+  /**
+   * appManager 默认的工厂方法
+   *
+   * @author yuzhanglong
+   * @date 2021-5-29 01:14:27
+   * @param createOptions 相关选项，请参考相应的类型定义
+   * @see {BasicCreateOptions}
+   */
+  public static createAppManager(createOptions: BasicCreateOptions) {
+    const { appConfig, basePath, packageConfig } = createOptions
+    const pm = PackageManager.createWithOptions({
+      basePath: basePath,
+      packageConfig: packageConfig
+    })
+
+    return new AppManager({
+      appConfig: appConfig,
+      packageManager: pm,
+      basePath: basePath
+    })
   }
 
   /**
    * 从文件中读取 app 配置，如果读取失败则赋值一个空对象：{}
    *
    * @author yuzhanglong
-   * @date 2021-2-16 22:53:52
+   * @param basePath 基本路径
+   * @date 2021-5-29 00:51:04
    */
-  private readAppConfig() {
-    const configPath = path.resolve(this.getBasePath(), 'serendipity.js')
-    this.appConfig = fs.existsSync(configPath) ? require(configPath) : {}
-  }
-
-  /**
-   * 写入 App 配置文件
-   *
-   * @author yuzhanglong
-   * @date 2021-2-16 22:53:54
-   */
-  public async writeAppConfig(): Promise<void> {
-    // stringify
-    const jsonifyResult = JSON.stringify(this.appConfig, null, 2)
-    const result = `module.exports = ${jsonifyResult}`
-    await writeFilePromise(
-      path.resolve(this.basePath, 'serendipity.js'),
-      result
-    )
+  public static resolveAppConfig(basePath: string) {
+    const configPath = path.resolve(basePath, 'serendipity.js')
+    return fs.existsSync(configPath) ? require(configPath) : {}
   }
 
   /**
@@ -76,6 +98,7 @@ class AppManager {
    * @author yuzhanglong
    * @return 所有 plugin 的字符串集合
    * @date 2021-2-16 23:14:03
+   * @see {isPlugin}
    */
   public getPluginList(): string[] {
     const dependenciesKey = Object.keys(this.getPackageConfig().dependencies || {})
@@ -97,6 +120,7 @@ class AppManager {
       try {
         requireResult = require(target)
       } catch (e) {
+        logger.warn(`plugin ${plugin} resolve failed!`)
         requireResult = null
       }
       return {
@@ -124,7 +148,7 @@ class AppManager {
    * @author yuzhanglong
    * @date 2021-2-16 23:26:47
    */
-  public getPackageConfig(): CommonObject {
+  public getPackageConfig() {
     return this.packageManager.getPackageConfig()
   }
 
@@ -161,5 +185,3 @@ class AppManager {
     return result
   }
 }
-
-export default AppManager

@@ -8,7 +8,7 @@
 
 
 // plugin 基本信息
-import { CommonObject } from '@attachments/serendipity-public'
+import { BaseObject } from '@attachments/serendipity-public'
 
 export interface PluginModuleInfo {
   // require 的结果
@@ -18,7 +18,7 @@ export interface PluginModuleInfo {
   absolutePath?: string
 
   // 额外的参数
-  options?: CommonObject
+  options?: BaseObject
 
   // 名称
   name?: string
