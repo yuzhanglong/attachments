@@ -9,18 +9,16 @@
 import * as process from 'process'
 import * as fs from 'fs'
 import * as path from 'path'
-import { logger, generateTempPathInfo } from '@attachments/serendipity-public'
+import { logger } from '@attachments/serendipity-public'
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
-import CoreManager from '../src/coreManager'
+import { CoreManager } from '../src/core-manager'
 
 jest.mock('inquirer')
 jest.mock('execa')
 
 // eslint-disable-next-line max-lines-per-function
 describe('cli Manager 模块测试', () => {
-  const fsHelper = generateTempPathInfo()
-
   const mock = new MockAdapter(axios)
 
   mock.onGet('https://preset_init_dir').reply(

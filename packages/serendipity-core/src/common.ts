@@ -7,6 +7,25 @@
  */
 
 
+import { DEFAULT_PROJECT_NAME } from '@attachments/serendipity-public'
+
 export const APP_CONFIG_NAME = 'serendipity.js'
 
 export const DEFAULT_COMMIT_MESSAGE = 'initial commit'
+
+// pluginMetaKeys
+export const PLUGIN_SCRIPT_META_KEY = 'plugin-script'
+
+export const PLUGIN_NAME_META_KEY = 'plugin-name'
+
+export const PLUGIN_INQUIRY_META_KEY = 'plugin-inquiry'
+
+export const PLUGIN_CONSTRUCTION_META_KEY = 'plugin-construction'
+
+export const PLUGIN_RUNTIME_META_KEY = 'plugin-runtime'
+
+export const DEFAULT_PRESET = {
+  initialDir: true,
+  initialDirDefaultName: DEFAULT_PROJECT_NAME,
+  plugins: []
+}
