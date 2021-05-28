@@ -9,7 +9,7 @@
 
 // 项目创建时配置
 
-import { CommonObject } from '@attachments/serendipity-public'
+import { BaseObject } from '@attachments/serendipity-public'
 
 export interface CreateOptions {
   // 是否初始化 git
@@ -29,14 +29,14 @@ export interface AddOption {
 }
 
 // 质询问题结果
-export type InquiryResult = CommonObject
+export type InquiryResult = BaseObject
 
 
 // app 配置中 plugins
 
 export interface AppConfigPlugin {
   name: string,
-  options?: CommonObject
+  options?: BaseObject
 }
 
 // app 配置，针对 service 的额外配置可以

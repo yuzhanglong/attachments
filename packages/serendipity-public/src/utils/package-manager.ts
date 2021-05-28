@@ -32,9 +32,10 @@ export class PackageManager {
 
 
   constructor(options: PackageManagerOptions) {
-    this.basePath = options.basePath
-    this.managerName = options.managerName || 'npm'
-    this.packageConfig = options.packageConfig || PACKAGE_JSON_BASE
+    const { basePath, managerName, packageConfig } = options
+    this.basePath = basePath
+    this.managerName = managerName || PackageManager.getPackageManagerName(basePath)
+    this.packageConfig = packageConfig || PACKAGE_JSON_BASE
   }
 
   /**
