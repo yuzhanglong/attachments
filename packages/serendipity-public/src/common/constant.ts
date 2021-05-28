@@ -15,7 +15,7 @@ export const PACKAGE_JSON_BASE = {
 
 export const DEFAULT_PRESET_NAME = 'serendipityPreset.js'
 
-export const DEFAULT_PROJECT_NAME = 'hello-serendipity'
+export const DEFAULT_PROJECT_NAME = 'serendipity-project'
 
 export const PRESET_CDN_BASE_URL = 'https://cdn.jsdelivr.net/gh/yuzhanglong/serendipity@main/examples/presets'
 
