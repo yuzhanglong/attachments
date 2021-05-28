@@ -11,7 +11,7 @@ import axios from 'axios'
 import {
   logger, writeFilePromise,
   DEFAULT_PRESET_NAME,
-  BaseObject
+  BaseObject, PRESET_CDN_BASE_URL
 } from '@attachments/serendipity-public'
 import { SerendipityPreset } from './types/preset'
 import { DEFAULT_PRESET } from './common'
@@ -31,8 +31,8 @@ export class PresetManager {
    * @date 2021-5-28 21:45:15
    */
   public static async createPresetManagerByObject(preset: BaseObject) {
-    const p = await PresetManager.initPresetObject(preset);
-    return new PresetManager(p);
+    const p = await PresetManager.initPresetObject(preset)
+    return new PresetManager(p)
   }
 
   /**
@@ -72,13 +72,26 @@ export class PresetManager {
    * @param localPath preset 本地路径
    */
   public static async createPresetManagerByLocalPath(localPath: string) {
-    const isLocalPath = localPath.startsWith('/') || (localPath.match(/[a-zA-Z]:(\\\\)|(\/\/)/) !== null)
+    const isLocalPath = localPath.startsWith('/') || (localPath.match(/[a-zA-Z]:(\\\\)|(\/\/)|(\\)/) !== null)
     if (!isLocalPath) {
-      throw new Error('不合法本地 preset 路径！')
+      throw new Error('不合法的本地 preset 路径！')
     }
     const res = require(localPath)
     const finalPreset = await PresetManager.initPresetObject(res)
     return new PresetManager(finalPreset as SerendipityPreset)
+  }
+
+  /**
+   * 根据 preset 名称获取 presetManager，我们会从 GitHub 仓库的默认 preset 目录下获取
+   *
+   * @author yuzhanglong
+   * @date 2021-5-28 22:43:58
+   * @param basePath 基本路径
+   * @param name preset 名称
+   */
+  public static async createPresetByName(basePath: string, name: string) {
+    const remotePath = `${PRESET_CDN_BASE_URL}/${name}.js`
+    return PresetManager.createPresetManagerByRemotePath(basePath, remotePath)
   }
 
   /**
@@ -95,6 +108,11 @@ export class PresetManager {
         ...DEFAULT_PRESET,
         ...p as BaseObject
       }
+    }
+
+    return {
+      ...DEFAULT_PRESET,
+      ...presetTmp as BaseObject
     }
   }
 
@@ -115,10 +133,7 @@ export class PresetManager {
    * @date 2021-2-26 23:45:24
    */
   public getPluginNamesShouldRemove(): string[] {
-    if (Array.isArray(this.preset?.plugins)) {
-      const data = this.preset?.plugins?.filter(res => res.removeAfterConstruction)
-      return data.map(res => res.name)
-    }
-    return []
+    const data = this.preset?.plugins?.filter(res => res.removeAfterConstruction)
+    return data.map(res => res.name)
   }
 }

@@ -13,7 +13,7 @@ export const PACKAGE_JSON_BASE = {
   'license': 'MIT'
 }
 
-export const DEFAULT_PRESET_NAME = 'serendipityPreset.js'
+export const DEFAULT_PRESET_NAME = 'serendipity-preset'
 
 export const DEFAULT_PROJECT_NAME = 'serendipity-project'
 
