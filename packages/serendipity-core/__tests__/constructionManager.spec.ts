@@ -7,7 +7,6 @@
  */
 
 import * as fs from 'fs'
-import { generateTempPathInfo } from '@attachments/serendipity-public'
 import ConstructionManager from '../src/constructionManager'
 import PresetManager from '../src/presetManager'
 
@@ -16,8 +15,7 @@ const mockedExeca = require('../../../__mocks__/execa')
 jest.mock('execa')
 
 describe('serviceManager 模块', () => {
-  const fsHelper = generateTempPathInfo()
-
+z
   afterAll(() => {
     fsHelper.removeDir()
   })

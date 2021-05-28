@@ -17,7 +17,7 @@ import { SerendipityPreset } from './types/preset'
 import { AddOption, CreateOptions } from './types/common'
 
 
-class CoreManager {
+export class CoreManager {
   private readonly executeDir: string
   private basePath: string
   private coreManagerHooks = createCoreManagerHooks()
@@ -181,6 +181,3 @@ class CoreManager {
     return this.coreManagerHooks
   }
 }
-
-
-export default CoreManager
