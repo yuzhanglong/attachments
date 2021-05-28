@@ -24,7 +24,8 @@ export {
   ModuleInstallOptions,
   MergePackageConfigOptions,
   Constructable,
-  TemplateFilesMapper
+  TemplateFilesMapper,
+  PackageManagerOptions
 } from './types'
 
 import * as execa from 'execa'

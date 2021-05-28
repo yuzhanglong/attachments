@@ -15,7 +15,7 @@
  * @return boolean 是否写入成功
  * @date 2021-5-27 18:56:20
  */
-export const arrayFlat = (arr: never[], depth?: number) => {
+export const arrayFlat = (arr: any[], depth?: number) => {
   if (!depth) {
     depth = 1
   }

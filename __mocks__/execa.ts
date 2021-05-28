@@ -8,6 +8,10 @@
 
 let calledCommands = []
 
+interface ExecaMockReturn {
+  getCommands?: () => string[]
+}
+
 const execa = (command: string, args: []) => {
   if (args.length) {
     command += ' ' + args.join(' ')
@@ -22,4 +26,4 @@ execa.getCommands = () => {
   return tmp
 }
 
-module.exports = execa
+module.exports = execa as ExecaMockReturn
