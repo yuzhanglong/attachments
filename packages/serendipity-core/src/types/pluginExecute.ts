@@ -9,24 +9,24 @@
 import { SyncHook } from 'tapable'
 import { CommonObject } from '@attachments/serendipity-public'
 import AppManager from '../appManager'
-import PluginFactory from '../pluginFactory'
+import SerendipityPlugin from '../pluginFactory'
 
 export interface ScriptOptions {
   appManager: AppManager
   scriptHooks: ScriptBaseHooks
-  matchPlugin: (name: string) => PluginFactory
+  matchPlugin: (name: string) => SerendipityPlugin
   inquiryResult?: CommonObject
 }
 
 export interface RuntimeOptions {
   appManager: AppManager
   scriptHooks: ScriptBaseHooks
-  matchPlugin: (name: string) => PluginFactory
+  matchPlugin: (name: string) => SerendipityPlugin
 }
 
 export interface ConstructionOptions {
   appManager: AppManager
-  matchPlugin: (name: string) => PluginFactory
+  matchPlugin: (name: string) => SerendipityPlugin
   inquiryResult: unknown
   renderTemplate: (base: string, options?: CommonObject, target?: string) => void
 }

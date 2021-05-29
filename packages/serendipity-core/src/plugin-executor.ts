@@ -7,18 +7,18 @@
  */
 
 import * as path from 'path'
-import { CommonObject, Constructor, flatDeep, inquirer, renderTemplate } from '@attachments/serendipity-public'
+import { BaseObject, Constructable, arrayFlat, inquirer, renderTemplate } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
 import { ConstructionOptions, RuntimeOptions, ScriptBaseHooks, ScriptOptions } from './types/pluginExecute'
-import AppManager from './appManager'
+import { AppManager } from './app-manager'
 import { SerendipityPreset } from './types/preset'
 import { PluginModuleInfo } from './types/plugin'
-import PluginFactory from './pluginFactory'
+import { PluginWrapper } from './plugin-wrapper'
 
 
 class PluginExecutor {
   // plugin 列表
-  private readonly plugins: PluginFactory[] = []
+  private readonly plugins: PluginWrapper[] = []
 
   // AppManager
   private readonly appManager: AppManager
@@ -49,7 +49,7 @@ class PluginExecutor {
    */
   public registerPlugin(...pluginModule: PluginModuleInfo[]) {
     for (const pm of pluginModule) {
-      this.plugins.push(new PluginFactory(pm))
+      this.plugins.push(new PluginWrapper(pm))
     }
   }
 
@@ -59,7 +59,7 @@ class PluginExecutor {
    * @author yuzhanglong
    * @date 2021-2-20 22:22:24
    */
-  public registerPluginByConstructor(...plugin: Constructor[]) {
+  public registerPluginByConstructor(...plugin: Constructable[]) {
     const result: PluginModuleInfo[] = plugin.map(p => {
       return {
         absolutePath: '/',
@@ -138,7 +138,7 @@ class PluginExecutor {
 
       const overrideInfo = overridePlugin?.length > 0 ? overridePlugin[0].overrideInquiries : {}
 
-      const inquiryResult = await this.runPluginInquiry(plugin, overrideInfo as CommonObject)
+      const inquiryResult = await this.runPluginInquiry(plugin, overrideInfo as BaseObject)
 
       for (const construction of metaData.constructions) {
         await plugin.getPluginInstance()[construction.methodName]({
@@ -167,7 +167,7 @@ class PluginExecutor {
    * }
    * @date 2021-3-3 10:37:59
    */
-  private async runPluginInquiry(plugin: PluginFactory, overrideInquiry?: CommonObject) {
+  private async runPluginInquiry(plugin: PluginWrapper, overrideInquiry?: BaseObject) {
     overrideInquiry = overrideInquiry || {}
 
     const metaData = plugin.getPluginMetaData()
@@ -178,7 +178,7 @@ class PluginExecutor {
     const overrideKeys = Object.keys(overrideInquiry)
 
     // 最终的质询结果
-    const tmp = flatDeep(metaData.inquiries.map(res => plugin.getPluginInstance()[res.methodName]()) as never)
+    const tmp = arrayFlat(metaData.inquiries.map(res => plugin.getPluginInstance()[res.methodName]()) as never)
     const inquiries = tmp.filter(question => !(question.name in (overrideInquiry)))
 
     const inquiryResult = await inquirer.prompt(inquiries)
@@ -196,7 +196,7 @@ class PluginExecutor {
    * @author yuzhanglong
    * @date 2021-2-20 23:34:13
    */
-  private matchPlugin(pluginName: string): PluginFactory {
+  private matchPlugin(pluginName: string): PluginWrapper {
     return this.getPlugins().find(res => res.getPluginMetaName() === pluginName)
   }
 
@@ -220,7 +220,7 @@ class PluginExecutor {
    * @param target 目标目录
    * @date 2021-2-23 19:03:24
    */
-  private async render(basePath: string, dirName: string, options?: CommonObject, target?: string): Promise<void> {
+  private async render(basePath: string, dirName: string, options?: BaseObject, target?: string): Promise<void> {
     // 最终的路径，对于用户只需要传入一个文件名就可以了
     const finalPath = path.resolve(basePath, 'templates', dirName)
 

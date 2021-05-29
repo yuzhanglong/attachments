@@ -6,8 +6,10 @@
  * Email: yuzl1123@163.com
  */
 
+
 export interface PluginMethodMetaBase {
   methodName: string
+  metaResult: any
 }
 
 export interface PluginMetaScript extends PluginMethodMetaBase {

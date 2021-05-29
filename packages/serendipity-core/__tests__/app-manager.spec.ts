@@ -86,7 +86,6 @@ describe('appManager 模块测试', () => {
       ])
   })
 
-
   test('plugin 模块读取失败, 我们不会阻断程序的执行，但模块记录会被记为 null', () => {
     const f = fsMock({
       'package.json': JSON.stringify({

@@ -10,7 +10,7 @@ import AppManager from './appManager'
 import ConstructionManager from './constructionManager'
 import CoreManager from './coreManager'
 import PluginExecutor from './pluginExecutor'
-import PluginFactory from './pluginFactory'
+import SerendipityPlugin from './pluginFactory'
 import PresetManager from './presetManager'
 import RuntimeManager from './runtimeManager'
 import { getAppConfigFromConfigFile, getBasePackageJsonContent } from './utils'
@@ -31,7 +31,7 @@ export {
   RuntimeManager,
   PluginExecutor,
   AppManager,
-  PluginFactory,
+  SerendipityPlugin,
   PresetManager,
   getAppConfigFromConfigFile,
   getBasePackageJsonContent

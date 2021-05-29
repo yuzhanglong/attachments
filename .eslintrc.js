@@ -31,7 +31,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'import/no-unresolved': 'off',
     'no-multiple-empty-lines': 1,
-    'import/order': 'warn',
+    'import/order': 'error',
     'no-unused-vars': 'off',
     'max-lines-per-function': 'off',
     '@typescript-eslint/no-explicit-any': 'off'
