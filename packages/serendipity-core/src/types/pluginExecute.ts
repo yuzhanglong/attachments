@@ -6,38 +6,24 @@
  * Email: yuzl1123@163.com
  */
 
-import { SyncHook } from 'tapable'
-import { CommonObject } from '@attachments/serendipity-public'
-import AppManager from '../appManager'
-import SerendipityPlugin from '../pluginFactory'
+import { BaseObject } from '@attachments/serendipity-public'
+import { AppManager } from '../app-manager'
+import { PluginWrapper } from '../plugin-wrapper'
 
 export interface ScriptOptions {
   appManager: AppManager
-  scriptHooks: ScriptBaseHooks
-  matchPlugin: (name: string) => SerendipityPlugin
-  inquiryResult?: CommonObject
+  matchPlugin: (name: string) => PluginWrapper
+  inquiryResult?: BaseObject
 }
 
 export interface RuntimeOptions {
   appManager: AppManager
-  scriptHooks: ScriptBaseHooks
-  matchPlugin: (name: string) => SerendipityPlugin
+  matchPlugin: (name: string) => PluginWrapper
 }
 
 export interface ConstructionOptions {
   appManager: AppManager
-  matchPlugin: (name: string) => SerendipityPlugin
+  matchPlugin: (name: string) => PluginWrapper
   inquiryResult: unknown
-  renderTemplate: (base: string, options?: CommonObject, target?: string) => void
-}
-
-export interface ScriptBaseHooks {
-  // 脚本执行前 hook
-  beforeScriptExecute: SyncHook<void>
-
-  // 脚本执行 hook
-  scriptExecute: SyncHook<void>
-
-  // 脚本执行后 hook
-  afterExecute: SyncHook<void>
+  renderTemplate: (base: string, options?: BaseObject, target?: string) => void
 }

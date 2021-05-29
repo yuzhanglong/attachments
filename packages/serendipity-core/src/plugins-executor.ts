@@ -8,8 +8,7 @@
 
 import * as path from 'path'
 import { BaseObject, Constructable, renderTemplate } from '@attachments/serendipity-public'
-import { SyncHook } from 'tapable'
-import { ConstructionOptions, ScriptBaseHooks, ScriptOptions } from './types/pluginExecute'
+import { ConstructionOptions, ScriptOptions } from './types/pluginExecute'
 import { AppManager } from './app-manager'
 import { SerendipityPreset } from './types/preset'
 import { PluginModuleInfo } from './types/plugin'
@@ -23,19 +22,6 @@ export class PluginsExecutor {
 
   // AppManager
   private readonly appManager: AppManager
-
-  // plugin Hooks
-  private readonly pluginScriptBaseHooks: ScriptBaseHooks = {
-    // 脚本执行前 hook
-    beforeScriptExecute: new SyncHook(),
-
-    // 脚本执行 hook
-    scriptExecute: new SyncHook(),
-
-    // 脚本执行后 hook
-    afterExecute: new SyncHook()
-  }
-
 
   constructor(appManager?: AppManager, basePath?: string) {
     this.plugins = []
@@ -82,7 +68,6 @@ export class PluginsExecutor {
 
     for (const plugin of this.plugins) {
       await plugin.executeScript(command, {
-        scriptHooks: this.pluginScriptBaseHooks,
         appManager: this.appManager,
         matchPlugin: this.matchPlugin.bind(this)
       } as ScriptOptions)
@@ -98,7 +83,6 @@ export class PluginsExecutor {
   public async executeRuntime() {
     for (const plugin of this.plugins) {
       await plugin.executeRuntime({
-        scriptHooks: this.pluginScriptBaseHooks,
         appManager: this.appManager,
         matchPlugin: this.matchPlugin.bind(this)
       })

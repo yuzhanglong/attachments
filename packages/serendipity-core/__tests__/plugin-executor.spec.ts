@@ -17,12 +17,6 @@ import { PluginsExecutor } from '../src/plugins-executor'
 jest.mock('inquirer')
 
 describe('plugin 执行器', () => {
-  const fsHelper = generateTempPathInfo()
-
-  afterAll(() => {
-    fsHelper.removeDir()
-  })
-
   test('多个 @script', () => {
     const beforeCallback = jest.fn()
 
