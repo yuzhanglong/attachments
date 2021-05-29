@@ -7,16 +7,17 @@
  */
 
 import * as path from 'path'
-import { BaseObject, Constructable, arrayFlat, inquirer, renderTemplate } from '@attachments/serendipity-public'
+import { BaseObject, Constructable, renderTemplate } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
-import { ConstructionOptions, RuntimeOptions, ScriptBaseHooks, ScriptOptions } from './types/pluginExecute'
+import { ConstructionOptions, ScriptBaseHooks, ScriptOptions } from './types/pluginExecute'
 import { AppManager } from './app-manager'
 import { SerendipityPreset } from './types/preset'
 import { PluginModuleInfo } from './types/plugin'
 import { PluginWrapper } from './plugin-wrapper'
+import { PLUGIN_SCRIPT_META_KEY, SERENDIPITY_SCRIPT_VERSION } from './common'
 
 
-class PluginExecutor {
+export class PluginsExecutor {
   // plugin 列表
   private readonly plugins: PluginWrapper[] = []
 
@@ -36,9 +37,9 @@ class PluginExecutor {
   }
 
 
-  constructor(appManager?: AppManager) {
+  constructor(appManager?: AppManager, basePath?: string) {
     this.plugins = []
-    this.appManager = appManager || new AppManager(process.cwd(), {}, {})
+    this.appManager = appManager || AppManager.createWithResolve(basePath)
   }
 
   /**
@@ -62,7 +63,7 @@ class PluginExecutor {
   public registerPluginByConstructor(...plugin: Constructable[]) {
     const result: PluginModuleInfo[] = plugin.map(p => {
       return {
-        absolutePath: '/',
+        absolutePath: '',
         requireResult: p
       }
     })
@@ -75,31 +76,16 @@ class PluginExecutor {
    * @author yuzhanglong
    * @date 2021-2-20 21:49:09
    */
-  public executeScript(command: string) {
+  public async executeScript(command: string) {
     // 首先初始化所有 plugin 的 runtime
-    this.executeRuntime()
+    await this.executeRuntime()
 
-    // 遍历 plugin，查找含有 @script 的注解，执行之
-    // 一旦有一个匹配，则不再处理其他的 plugin @script 注解
     for (const plugin of this.plugins) {
-      const metaData = plugin.getPluginMetaData()
-      for (const script of metaData.scripts) {
-        // 匹配到正确的 command，执行相应的 tap
-        if (script.command === command) {
-          // 运行实例
-          plugin.getPluginInstance()[script.methodName]({
-            scriptHooks: this.pluginScriptBaseHooks,
-            appManager: this.appManager,
-            matchPlugin: this.matchPlugin.bind(this)
-          } as ScriptOptions)
-
-          // 执行 hooks
-          this.pluginScriptBaseHooks.beforeScriptExecute.call()
-          this.pluginScriptBaseHooks.scriptExecute.call()
-          this.pluginScriptBaseHooks.afterExecute.call()
-          return
-        }
-      }
+      await plugin.executeScript(command, {
+        scriptHooks: this.pluginScriptBaseHooks,
+        appManager: this.appManager,
+        matchPlugin: this.matchPlugin.bind(this)
+      } as ScriptOptions)
     }
   }
 
@@ -107,18 +93,15 @@ class PluginExecutor {
    * 初始化 runtime
    *
    * @author yuzhanglong
-   * @date 2021-2-20 22:55:38
+   * @date 2021-5-29 23:09:53
    */
-  public executeRuntime() {
+  public async executeRuntime() {
     for (const plugin of this.plugins) {
-      const metaData = plugin.getPluginMetaData()
-      for (const pluginMethodMetaBase of metaData.runtime) {
-        plugin.getPluginInstance()[pluginMethodMetaBase.methodName]({
-          scriptHooks: this.pluginScriptBaseHooks,
-          appManager: this.appManager,
-          matchPlugin: this.matchPlugin.bind(this)
-        } as RuntimeOptions)
-      }
+      await plugin.executeRuntime({
+        scriptHooks: this.pluginScriptBaseHooks,
+        appManager: this.appManager,
+        matchPlugin: this.matchPlugin.bind(this)
+      })
     }
   }
 
@@ -131,25 +114,22 @@ class PluginExecutor {
    */
   public async executeConstruction(preset?: SerendipityPreset) {
     for (const plugin of this.plugins) {
-      const metaData = plugin.getPluginMetaData()
-
-      // 匹配正确的 override 信息
+      // 根据 plugin 名称获取需要 override 的选项
       const overridePlugin = preset?.plugins.filter(res => res.name === plugin.getPluginModuleName())
 
       const overrideInfo = overridePlugin?.length > 0 ? overridePlugin[0].overrideInquiries : {}
 
-      const inquiryResult = await this.runPluginInquiry(plugin, overrideInfo as BaseObject)
+      const inquiryResult = await this.runPluginInquiry(overrideInfo)
 
-      for (const construction of metaData.constructions) {
-        await plugin.getPluginInstance()[construction.methodName]({
-          appManager: this.appManager,
-          matchPlugin: this.matchPlugin.bind(this),
-          inquiryResult: inquiryResult,
-          renderTemplate: this.render.bind(this, plugin.getAbsolutePath())
-        } as ConstructionOptions)
-      }
+      await plugin.executeConstruction({
+        appManager: this.appManager,
+        matchPlugin: this.matchPlugin.bind(this),
+        inquiryResult: inquiryResult,
+        renderTemplate: this.render.bind(this, plugin.getAbsolutePath())
+      } as ConstructionOptions)
     }
-    // 将执行脚本写入 package.json 以方便用户调用
+
+    // 将执行脚本写入 package.json 以供用户调用
     this.mergeScriptsInfoPackageConfig()
   }
 
@@ -158,36 +138,12 @@ class PluginExecutor {
    *
    * @author yuzhanglong
    * @param overrideInquiry 欲覆盖的质询
-   * @param plugin 插件对象
-   * example:
-   * 如果我们传入下面的对象。那么所有 name 为 hello / world 的质询结果将被覆盖，不再向用户询问
-   * {
-   *   "hello":"1111",
-   *   "world":"2222"
-   * }
    * @date 2021-3-3 10:37:59
    */
-  private async runPluginInquiry(plugin: PluginWrapper, overrideInquiry?: BaseObject) {
-    overrideInquiry = overrideInquiry || {}
-
-    const metaData = plugin.getPluginMetaData()
-    // 在执行每个 plugin 之前，首先发起质询
-    // 用户可以加了多个质询注解, 拿到当前插件的所有质询注解，然后拍平数组，调用 inquiry.js
-    // 最终的质询结果
-    // 要覆盖的质询内容
-    const overrideKeys = Object.keys(overrideInquiry)
-
-    // 最终的质询结果
-    const tmp = arrayFlat(metaData.inquiries.map(res => plugin.getPluginInstance()[res.methodName]()) as never)
-    const inquiries = tmp.filter(question => !(question.name in (overrideInquiry)))
-
-    const inquiryResult = await inquirer.prompt(inquiries)
-
-    // 覆盖内容
-    overrideKeys.forEach(res => {
-      inquiryResult[res] = overrideInquiry[res]
-    })
-    return inquiryResult
+  private async runPluginInquiry(overrideInquiry?: BaseObject) {
+    for (const plugin of this.plugins) {
+      await plugin.executeInquiry(overrideInquiry)
+    }
   }
 
   /**
@@ -236,11 +192,12 @@ class PluginExecutor {
   private mergeScriptsInfoPackageConfig(): void {
     let isScriptAppear = false
     for (const plugin of this.plugins) {
-      const metaData = plugin.getPluginMetaData()
-      for (const script of metaData.scripts) {
+      const methods = plugin.getPluginMethodsByMetaKey(PLUGIN_SCRIPT_META_KEY)
+      for (const method of methods) {
+        const command = method.metaResult
         this.appManager.packageManager.mergeIntoCurrent({
           scripts: {
-            [script.command]: `serendipity-scripts run ${script.command}`
+            [command]: `serendipity-scripts run ${command}`
           }
         })
         isScriptAppear = true
@@ -250,12 +207,10 @@ class PluginExecutor {
     // 如果插件中带有脚本，我们就要 serendipity-scripts，它是用来执行脚本的
     if (isScriptAppear) {
       this.appManager.packageManager.mergeIntoCurrent({
-        dependencies: {
-          ['@attachments/serendipity-scripts']: 'latest'
+        devDependencies: {
+          ['@attachments/serendipity-scripts']: SERENDIPITY_SCRIPT_VERSION
         }
       })
     }
   }
 }
-
-export default PluginExecutor

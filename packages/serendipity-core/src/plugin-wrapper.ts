@@ -155,7 +155,12 @@ export class PluginWrapper {
 
   /**
    * 执行 plugin 的 meta 逻辑 @Inquiry
-   *
+   * example:
+   * 如果我们传入下面的对象。那么所有 name 为 hello / world 的质询结果将被覆盖，不再向用户询问
+   * {
+   *   "hello":"1111",
+   *   "world":"2222"
+   * }
    * @author yuzhanglong
    * @param overrideInquiry 需要覆盖的质询内容(不在命令行层面上提出质询)
    * @date 2021-5-29 20:05:29

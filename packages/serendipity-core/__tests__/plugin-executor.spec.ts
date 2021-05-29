@@ -9,15 +9,13 @@
 
 import * as fs from 'fs'
 import { SyncHook } from 'tapable'
-import { generateTempPathInfo } from '@attachments/serendipity-public'
 import { ConstructionOptions, ScriptOptions } from '../src/types/pluginExecute'
 import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '../src'
-import PluginExecutor from '../src/pluginExecutor'
+import { PluginsExecutor } from '../src/plugins-executor'
 
 
 jest.mock('inquirer')
 
-// eslint-disable-next-line max-lines-per-function
 describe('plugin 执行器', () => {
   const fsHelper = generateTempPathInfo()
 
@@ -48,7 +46,7 @@ describe('plugin 执行器', () => {
       }
     }
 
-    const pluginExecutor = new PluginExecutor()
+    const pluginExecutor = new PluginsExecutor()
 
     pluginExecutor.registerPluginByConstructor(FooPlugin)
 
@@ -90,7 +88,7 @@ describe('plugin 执行器', () => {
       }
     }
 
-    const pluginExecutor = new PluginExecutor()
+    const pluginExecutor = new PluginsExecutor()
 
     pluginExecutor.registerPluginByConstructor(PluginOne, PluginTwo)
     pluginExecutor.executeScript('start')
@@ -147,7 +145,7 @@ describe('plugin 执行器', () => {
     fs.writeFileSync(fsHelper.resolve('templates/base/foo'), 'hello world foo')
 
 
-    const executor = new PluginExecutor()
+    const executor = new PluginsExecutor()
     executor.registerPluginByConstructor(HelloWorldPlugin)
 
     await executor.executeConstruction()
@@ -157,7 +155,7 @@ describe('plugin 执行器', () => {
   })
 
   test('质询的默认值覆盖，用户不会收到这些质询，且最终结果包含覆盖的值', async () => {
-    const executor = new PluginExecutor()
+    const executor = new PluginsExecutor()
 
     const testConstructionFn = jest.fn((options: ConstructionOptions) => {
       expect(options.inquiryResult).toStrictEqual({

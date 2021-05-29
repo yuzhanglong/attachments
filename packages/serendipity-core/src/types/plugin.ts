@@ -12,7 +12,7 @@ import { BaseObject } from '@attachments/serendipity-public'
 
 export interface PluginModuleInfo {
   // require 的结果
-  requireResult: unknown
+  requireResult: any
 
   // 该插件的绝对路径
   absolutePath?: string
