@@ -11,15 +11,15 @@ import * as path from 'path'
 import { logger, runCommand, writeFilePromise } from '@attachments/serendipity-public'
 import { DEFAULT_COMMIT_MESSAGE } from './common'
 import { getBasePackageJsonContent } from './utils'
-import PluginExecutor from './pluginExecutor'
-import AppManager from './appManager'
+import { PluginsExecutor } from './plugins-executor'
+import { AppManager } from './app-manager'
 import { SerendipityPreset } from './types/preset'
 import { AppConfig } from './types/common'
 
 
 class ConstructionManager {
   private readonly basePath: string
-  private readonly pluginExecutor: PluginExecutor
+  private readonly pluginExecutor: PluginsExecutor
   private readonly appManager: AppManager
 
   constructor(basePath: string, resolvePackageConfig?: boolean) {

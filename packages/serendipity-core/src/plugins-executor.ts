@@ -65,7 +65,7 @@ export class PluginsExecutor {
   public async executeScript(command: string) {
     // 首先初始化所有 plugin 的 runtime
     await this.executeRuntime()
-
+    // TODO: 只保留一个 script 执行！
     for (const plugin of this.plugins) {
       await plugin.executeScript(command, {
         appManager: this.appManager,
