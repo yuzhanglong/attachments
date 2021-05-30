@@ -7,7 +7,7 @@
  */
 
 import * as fs from 'fs'
-import ConstructionManager from '../src/constructionManager'
+import ConstructionManager from '../src/construction-manager'
 import PresetManager from '../src/presetManager'
 
 const mockedExeca = require('../../../__mocks__/execa')

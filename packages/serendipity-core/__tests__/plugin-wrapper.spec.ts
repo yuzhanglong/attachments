@@ -294,7 +294,7 @@ describe('plugin wrapper 测试', () => {
       requireResult: InquiryPlugin
     })
 
-    const res = await pluginFactory.executeInquiry()
+    const res = await pluginFactory.executeInquiry({})
     expect(res).toStrictEqual({
       'language': 'JavaScript'
     })
@@ -339,7 +339,7 @@ describe('plugin wrapper 测试', () => {
       requireResult: InquiryPlugin
     })
 
-    const res = await pluginFactory.executeInquiry()
+    const res = await pluginFactory.executeInquiry({})
     expect(res).toStrictEqual({
       'isLike': 'yes',
       'language': 'JavaScript'

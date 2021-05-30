@@ -34,4 +34,8 @@ export class RuntimeManager {
       requireResult: plugin
     })
   }
+
+  public getPluginExecutor(){
+    return this.pluginExecutor
+  }
 }

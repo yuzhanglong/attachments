@@ -17,7 +17,7 @@ import { SerendipityPreset } from './types/preset'
 import { AppConfig } from './types/common'
 
 
-class ConstructionManager {
+export class ConstructionManager {
   private readonly basePath: string
   private readonly pluginExecutor: PluginsExecutor
   private readonly appManager: AppManager
@@ -171,5 +171,3 @@ class ConstructionManager {
     }
   }
 }
-
-export default ConstructionManager
