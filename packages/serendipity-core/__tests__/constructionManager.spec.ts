@@ -15,7 +15,6 @@ const mockedExeca = require('../../../__mocks__/execa')
 jest.mock('execa')
 
 describe('serviceManager 模块', () => {
-z
   afterAll(() => {
     fsHelper.removeDir()
   })

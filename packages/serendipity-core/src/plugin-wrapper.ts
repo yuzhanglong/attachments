@@ -155,16 +155,18 @@ export class PluginWrapper {
 
   /**
    * 执行 plugin 的 meta 逻辑 @Inquiry
-   *
+   * example:
+   * 如果我们传入下面的对象。那么所有 name 为 hello / world 的质询结果将被覆盖，不再向用户询问
+   * {
+   *   "hello":"1111",
+   *   "world":"2222"
+   * }
    * @author yuzhanglong
    * @param overrideInquiry 需要覆盖的质询内容(不在命令行层面上提出质询)
    * @date 2021-5-29 20:05:29
    */
-  public async executeInquiry(overrideInquiry?: BaseObject) {
+  public async executeInquiry(overrideInquiry: BaseObject) {
     // 用户可以配置多个质询注解, 拿到当前插件的所有质询注解，然后拍平数组，调用 inquiry.js
-    if (!overrideInquiry) {
-      overrideInquiry = {}
-    }
     // 获取所有的质询方法
     const methodMeta = this.getPluginMethodsByMetaKey(PLUGIN_INQUIRY_META_KEY)
     const instance = this.getPluginInstance()

@@ -29,3 +29,5 @@ export const DEFAULT_PRESET = {
   initialDirDefaultName: DEFAULT_PROJECT_NAME,
   plugins: []
 }
+
+export const SERENDIPITY_SCRIPT_VERSION = '^0.1.12'

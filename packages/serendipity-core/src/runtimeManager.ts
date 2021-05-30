@@ -1,43 +1,37 @@
 /*
  * File: runtimeManager.ts
- * Description: 运行时 manager
+ * Description: 运行时(Runtime) manager
  * Created: 2021-2-23 01:45:11
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
 
-import { Constructor } from '@attachments/serendipity-public'
-import PluginExecutor from './pluginExecutor'
-import AppManager from './appManager'
+import { Constructable } from '@attachments/serendipity-public'
+import { PluginsExecutor } from './plugins-executor'
+import { AppManager } from './app-manager'
 
-class RuntimeManager {
+export class RuntimeManager {
   public readonly appManager: AppManager
-  public readonly pluginExecutor: PluginExecutor
+  public readonly pluginExecutor: PluginsExecutor
 
   constructor(basePath: string) {
-    this.appManager = new AppManager(basePath)
-    this.pluginExecutor = new PluginExecutor(this.appManager)
+    this.appManager = AppManager.createWithResolve(basePath)
+    this.pluginExecutor = new PluginsExecutor(this.appManager)
   }
 
-
-  registerPluginsFromPackage(appManager?: AppManager) {
-    if (appManager) {
-      this.pluginExecutor.registerPlugin(...appManager.getPluginModules())
-    } else {
-      this.pluginExecutor.registerPlugin(...this.appManager.getPluginModules())
-    }
+  public registerPluginsFromPackage() {
+    const pluginModules = this.appManager.getPluginModules()
+    this.pluginExecutor.registerPlugin(...pluginModules)
   }
 
-  runCommand(command: string) {
-    this.pluginExecutor.executeScript(command)
+  public async runCommand(command: string) {
+    await this.pluginExecutor.executeScript(command)
   }
 
-  registerPlugin(plugin: Constructor) {
+  registerPlugin(plugin: Constructable) {
     this.pluginExecutor.registerPlugin({
-      absolutePath: 'todo',
+      absolutePath: '',
       requireResult: plugin
     })
   }
 }
-
-export default RuntimeManager
