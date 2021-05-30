@@ -24,7 +24,7 @@ describe('preset Manager 模块测试', () => {
     })
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
-      'initialDirDefaultName': 'hello-serendipity',
+      'initialDirDefaultName': 'serendipity-project',
       'plugins': [
         {
           'name': 'hello-world-plugin'
@@ -51,7 +51,7 @@ describe('preset Manager 模块测试', () => {
     const pm = await PresetManager.createPresetManagerByRemotePath(f.path, 'https://mock_preset')
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
-      'initialDirDefaultName': 'hello-serendipity',
+      'initialDirDefaultName': 'serendipity-project',
       'plugins': [
         {
           'name': '@attachments/serendipity-plugin-react'
@@ -98,7 +98,7 @@ describe('preset Manager 模块测试', () => {
     const pm = await PresetManager.createPresetManagerByLocalPath(f.resolve('foo-preset.js'))
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
-      'initialDirDefaultName': 'hello-serendipity',
+      'initialDirDefaultName': 'serendipity-project',
       'plugins': [
         {
           'name': '@attachments/foo'
@@ -159,7 +159,7 @@ describe('preset Manager 模块测试', () => {
 
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
-      'initialDirDefaultName': 'hello-serendipity',
+      'initialDirDefaultName': 'serendipity-project',
       'plugins': [
         {
           'name': 'bar-plugin'
@@ -185,7 +185,7 @@ describe('preset Manager 模块测试', () => {
     const pm = await PresetManager.createPresetByName(f.path, 'react')
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
-      'initialDirDefaultName': 'hello-serendipity',
+      'initialDirDefaultName': 'serendipity-project',
       'plugins': [
         {
           'name': '@attachments/foo'
