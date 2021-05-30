@@ -30,7 +30,7 @@ class ConstructionManager {
       null,
       resolvePackageConfig ? null : getBasePackageJsonContent()
     )
-    this.pluginExecutor = new PluginExecutor(this.appManager)
+    this.pluginExecutor = new PluginsExecutor(this.appManager)
   }
 
 

@@ -10,7 +10,7 @@ import { Constructable } from '@attachments/serendipity-public'
 import { PluginsExecutor } from './plugins-executor'
 import { AppManager } from './app-manager'
 
-class RuntimeManager {
+export class RuntimeManager {
   public readonly appManager: AppManager
   public readonly pluginExecutor: PluginsExecutor
 
@@ -35,5 +35,3 @@ class RuntimeManager {
     })
   }
 }
-
-export default RuntimeManager

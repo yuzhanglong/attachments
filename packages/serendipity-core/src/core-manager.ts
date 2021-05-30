@@ -12,7 +12,7 @@ import * as path from 'path'
 import { isPlugin, logger } from '@attachments/serendipity-public'
 import ConstructionManager from './constructionManager'
 import createCoreManagerHooks from './hooks/coreManagerHooks'
-import PresetManager from './presetManager'
+import { PresetManager } from './preset-manager'
 import { SerendipityPreset } from './types/preset'
 import { AddOption, CreateOptions } from './types/common'
 

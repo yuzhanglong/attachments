@@ -165,11 +165,8 @@ export class PluginWrapper {
    * @param overrideInquiry 需要覆盖的质询内容(不在命令行层面上提出质询)
    * @date 2021-5-29 20:05:29
    */
-  public async executeInquiry(overrideInquiry?: BaseObject) {
+  public async executeInquiry(overrideInquiry: BaseObject) {
     // 用户可以配置多个质询注解, 拿到当前插件的所有质询注解，然后拍平数组，调用 inquiry.js
-    if (!overrideInquiry) {
-      overrideInquiry = {}
-    }
     // 获取所有的质询方法
     const methodMeta = this.getPluginMethodsByMetaKey(PLUGIN_INQUIRY_META_KEY)
     const instance = this.getPluginInstance()

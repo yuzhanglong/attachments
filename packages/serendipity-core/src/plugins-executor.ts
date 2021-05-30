@@ -63,14 +63,22 @@ export class PluginsExecutor {
    * @date 2021-2-20 21:49:09
    */
   public async executeScript(command: string) {
+    // 标记，确保只执行一次
+    let executed = false
     // 首先初始化所有 plugin 的 runtime
     await this.executeRuntime()
     // TODO: 只保留一个 script 执行！
     for (const plugin of this.plugins) {
+      if (executed) {
+        return
+      }
+
       await plugin.executeScript(command, {
         appManager: this.appManager,
         matchPlugin: this.matchPlugin.bind(this)
       } as ScriptOptions)
+
+      executed = true
     }
   }
 
@@ -124,10 +132,13 @@ export class PluginsExecutor {
    * @param overrideInquiry 欲覆盖的质询
    * @date 2021-3-3 10:37:59
    */
-  private async runPluginInquiry(overrideInquiry?: BaseObject) {
+  private async runPluginInquiry(overrideInquiry: BaseObject) {
+    let res = {}
     for (const plugin of this.plugins) {
-      await plugin.executeInquiry(overrideInquiry)
+      const answers = await plugin.executeInquiry(overrideInquiry)
+      res = { ...res, ...answers }
     }
+    return res
   }
 
   /**
