@@ -1,14 +1,13 @@
 /*
- * File: ServiceManager.ts
- * Description: Service 层管理
+ * File: ConstructionManager.ts
+ * Description: 脚手架构建模式管理
  * Created: 2021-1-30 17:58:46
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
 
 
-import * as path from 'path'
-import { logger, runCommand, writeFilePromise } from '@attachments/serendipity-public'
+import { logger, runCommand } from '@attachments/serendipity-public'
 import { DEFAULT_COMMIT_MESSAGE } from './common'
 import { getBasePackageJsonContent } from './utils'
 import { PluginsExecutor } from './plugins-executor'
@@ -22,14 +21,16 @@ export class ConstructionManager {
   private readonly pluginExecutor: PluginsExecutor
   private readonly appManager: AppManager
 
-  constructor(basePath: string, resolvePackageConfig?: boolean) {
+  constructor(basePath: string) {
     this.basePath = basePath
+
     // 构建模式下并没有 App 配置文件， 我们使用默认的
-    this.appManager = new AppManager(
-      basePath,
-      null,
-      resolvePackageConfig ? null : getBasePackageJsonContent()
-    )
+    this.appManager = AppManager.createAppManager({
+      basePath: basePath,
+      appConfig: null,
+      packageConfig: getBasePackageJsonContent()
+    })
+
     this.pluginExecutor = new PluginsExecutor(this.appManager)
   }
 
@@ -42,7 +43,7 @@ export class ConstructionManager {
    * @date 2021-2-22 01:28:12
    */
   public async installPluginsFromPresets(preset: SerendipityPreset) {
-    const packageManager = this.appManager.packageManager
+    const { packageManager } = this.appManager
 
     if (Array.isArray(preset.plugins)) {
       const depMapper = {}
@@ -55,6 +56,7 @@ export class ConstructionManager {
         dependencies: depMapper
       })
     }
+
     await packageManager.writePackageConfig()
     await packageManager.installDependencies()
   }
@@ -82,18 +84,11 @@ export class ConstructionManager {
    * 写入 App 配置文件
    *
    * @param res 配置文件内容
-   * @param target 目标目录
    * @author yuzhanglong
    * @date 2021-2-5 21:35:05
    */
-  static async writeAppConfig(target: string, res?: AppConfig): Promise<void> {
-    // stringify
-    const jsonifyResult = JSON.stringify(res, null, 2)
-    const result = `module.exports = ${jsonifyResult}`
-    await writeFilePromise(
-      path.resolve(target, 'serendipity.js'),
-      result
-    )
+  async writeAppConfig(res?: AppConfig): Promise<void> {
+    await this.appManager.writeBaseAppConfig(res)
   }
 
   /**
@@ -154,8 +149,7 @@ export class ConstructionManager {
         [name]: version || 'latest'
       }
     })
-    await packageManager.writePackageConfig()
-    await packageManager.installDependencies()
+    await this.installDependencies()
   }
 
   /**

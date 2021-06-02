@@ -11,7 +11,7 @@ import { DEFAULT_PROJECT_NAME } from '@attachments/serendipity-public'
 
 export const APP_CONFIG_NAME = 'serendipity.js'
 
-export const DEFAULT_COMMIT_MESSAGE = 'initial commit'
+export const DEFAULT_COMMIT_MESSAGE = 'chore: initial commit'
 
 // pluginMetaKeys
 export const PLUGIN_SCRIPT_META_KEY = 'plugin-script'

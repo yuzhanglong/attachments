@@ -9,7 +9,7 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { isPlugin, PackageManager, logger, BaseObject } from '@attachments/serendipity-public'
+import { isPlugin, PackageManager, logger, BaseObject, writeFilePromise } from '@attachments/serendipity-public'
 import { AppConfig } from './types/common'
 import { PluginModuleInfo } from './types/plugin'
 
@@ -183,5 +183,21 @@ export class AppManager {
       }
     }
     return result
+  }
+
+  /**
+   * 写入默认的 APP 配置文件
+   *
+   * @author yuzhanglong
+   * @date 2021-6-2 23:24:49
+   */
+  public async writeBaseAppConfig(config?: AppConfig) {
+    // stringify
+    const jsonifyResult = JSON.stringify(config || {}, null, 2)
+    const result = `module.exports = ${jsonifyResult}`
+    await writeFilePromise(
+      path.resolve(this.basePath, 'serendipity.js'),
+      result
+    )
   }
 }

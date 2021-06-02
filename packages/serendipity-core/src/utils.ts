@@ -7,7 +7,7 @@
  */
 
 import * as path from 'path'
-import { CommonObject } from '@attachments/serendipity-public'
+import { BaseObject } from '@attachments/serendipity-public'
 import { APP_CONFIG_NAME } from './common'
 
 
@@ -21,7 +21,7 @@ type ErrorFn = (e: Error) => void
  * @param onError 当出现错误时的回调函数
  * @date 2021-2-13 22:07:47
  */
-export const getAppConfigFromConfigFile = (basePath: string, onError?: ErrorFn): CommonObject => {
+export const getAppConfigFromConfigFile = (basePath: string, onError?: ErrorFn): BaseObject => {
   const configPath = path.resolve(basePath, APP_CONFIG_NAME)
   // tip: 配置文件可能不存在
   try {
