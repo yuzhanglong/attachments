@@ -18,8 +18,8 @@ export interface CreateOptions {
   presetPath: string
 
   // git
-  initGit: boolean
-  gitMessage: string
+  initGit?: boolean
+  gitMessage?: string
 }
 
 export interface AddOption {

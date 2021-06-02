@@ -25,21 +25,22 @@ export async function create(createOptions: CreateOptions) {
   // core hooks
   const coreHooks = createCoreManagerHooks()
 
+  const currentDir = process.cwd()
+  const { presetPath, name, initGit, gitMessage } = createOptions
+
+  // 项目目录
+  const workingDir = path.resolve(currentDir, name)
+
+  // 如果不存在，创建之
+  await fs.ensureDir(workingDir)
+
+
+  // 初始化预设管理器
+  const pm = await PresetManager.createPresetManager(presetPath, workingDir)
+
   const execute = async () => {
-    const currentDir = process.cwd()
-    const { presetPath, name, initGit, gitMessage } = createOptions
-
-    // 项目目录
-    const workingDir = path.resolve(currentDir, name)
-
-    // 如果不存在，创建之
-    await fs.ensureDir(workingDir)
-
-    // 初始化预设管理器
-    const pm = await PresetManager.createPresetManager(presetPath, workingDir)
-
     // [hooks] -- beforePluginInstall 在 plugin 安装前做些什么
-    this.coreManagerHooks.onCreateStart.call(this)
+    coreHooks.onCreateStart.call(this)
 
     // 初始化 ConstructionManager（构建管理）
     const constructionManager = new ConstructionManager(this.basePath)
@@ -65,6 +66,8 @@ export async function create(createOptions: CreateOptions) {
 
   return {
     coreHooks: coreHooks,
-    execute: execute
+    execute: execute,
+    presetManager: pm,
+    workingDir: workingDir
   }
 }

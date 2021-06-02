@@ -7,12 +7,9 @@
  */
 
 
-import * as fs from 'fs'
-import * as path from 'path'
-import { isPlugin, logger } from '@attachments/serendipity-public'
+import { isPlugin } from '@attachments/serendipity-public'
 import { ConstructionManager } from './construction-manager'
 import createCoreManagerHooks from './hooks/core-manager-hooks'
-import { SerendipityPreset } from './types/preset'
 import { AddOption } from './types/common'
 
 
@@ -23,33 +20,6 @@ export class CoreManager {
 
   constructor(executeDir?: string) {
     this.executeDir = executeDir || process.cwd()
-  }
-
-  /**
-   * 初始化工作目录，即 this.basePath
-   * 如果目录已存在，我们不会创建项目
-   *
-   * @author yuzhanglong
-   * @date 2021-1-26
-   */
-  public initWorkDir(name: string, preset: SerendipityPreset): void {
-    // 如果 preset 要求创建目录，我们初始化它
-    if (preset.initialDir) {
-      if (!name || name === '') {
-        logger.info(`preset 要求工作目录不得为空，你没有传入工作目录名称，将以默认值 ${preset.initialDirDefaultName} 替代\n`)
-      }
-      this.basePath = path.resolve(this.executeDir, name || preset.initialDirDefaultName)
-
-      if (!fs.existsSync(this.basePath)) {
-        fs.mkdirSync(this.basePath)
-      } else {
-        this.coreManagerHooks.onInitWorkDirFail.call([])
-        process.exit(0)
-      }
-
-    } else {
-      this.basePath = path.resolve(this.executeDir, name ? name : '')
-    }
   }
 
   /**
@@ -80,7 +50,7 @@ export class CoreManager {
     }
 
     // 初始化 ConstructionManager（构建管理）
-    const constructionManager = new ConstructionManager(this.basePath, true)
+    const constructionManager = new ConstructionManager(this.basePath)
     await constructionManager.installPlugin(
       name, options.localPath || options.version
     )
