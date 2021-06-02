@@ -11,15 +11,15 @@
 
 import { BaseObject } from '@attachments/serendipity-public'
 
+// 创建时相关配置
 export interface CreateOptions {
-  // 是否初始化 git
-  git?: boolean
+  // basic
+  name: string
+  presetPath: string
 
-  // 自定义初次 commit 的 message
-  commit?: string
-
-  // 项目预设
-  preset?: string
+  // git
+  initGit: boolean
+  gitMessage: string
 }
 
 export interface AddOption {

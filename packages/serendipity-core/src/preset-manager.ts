@@ -82,6 +82,27 @@ export class PresetManager {
   }
 
   /**
+   * 根据本地路径获取 presetManager
+   *
+   * @author yuzhanglong
+   * @date 2021-6-3 00:32:34
+   * @param target 目标 url
+   * @param tmpPath preset 临时保存路径
+   */
+  public static async createPresetManager(target: string, tmpPath?: string) {
+    // 判断是否为远程路径
+    const isRemotePath = target.startsWith('http://') || target.startsWith('https://')
+    const isLocalPath = target.startsWith('/') || (target.match(/[a-zA-Z]:(\\\\)|(\/\/)|(\\)/) !== null)
+    if (!isRemotePath && !isLocalPath) {
+      return await PresetManager.createPresetByName(tmpPath, target)
+    }
+    if (isRemotePath) {
+      return await PresetManager.createPresetManagerByRemotePath(tmpPath, target)
+    }
+    return await PresetManager.createPresetManagerByLocalPath(target)
+  }
+
+  /**
    * 根据 preset 名称获取 presetManager，我们会从 GitHub 仓库的默认 preset 目录下获取
    *
    * @author yuzhanglong

@@ -12,9 +12,8 @@ import * as path from 'path'
 import { isPlugin, logger } from '@attachments/serendipity-public'
 import { ConstructionManager } from './construction-manager'
 import createCoreManagerHooks from './hooks/core-manager-hooks'
-import { PresetManager } from './preset-manager'
 import { SerendipityPreset } from './types/preset'
-import { AddOption, CreateOptions } from './types/common'
+import { AddOption } from './types/common'
 
 
 export class CoreManager {
@@ -51,69 +50,6 @@ export class CoreManager {
     } else {
       this.basePath = path.resolve(this.executeDir, name ? name : '')
     }
-  }
-
-  /**
-   * 基本命令校验
-   *
-   * @author yuzhanglong
-   * @param options 创建选项
-   * @date 2021-2-4 12:06:07
-   */
-  validateCreateCommand(options: CreateOptions) {
-    if (!options.preset) {
-      // [hooks] -- onCreateSuccess 在参数验证失败时做些什么
-      this.coreManagerHooks.onCreateValidateError.call(options)
-      process.exit(0)
-    }
-  }
-
-  /**
-   * 创建一个项目
-   *
-   * @author yuzhanglong
-   * @param name 项目名称
-   * @param options 项目选项
-   * @see CreateOptions
-   * @date 2021-2-21 10:43:58
-   */
-  async create(name: string, options: CreateOptions): Promise<void> {
-    const pm = new PresetManager(this.executeDir)
-
-    await pm.initPresetByUrl(options.preset)
-
-    // 验证输入参数
-    this.validateCreateCommand(options)
-
-    // 如果用户传入了名称，那么新路径为 当前执行路径 + name
-    this.initWorkDir(name, pm.getPreset())
-
-    // [hooks] -- beforePluginInstall 在 plugin 安装前做些什么
-    this.coreManagerHooks.onCreateStart.call(this)
-
-    // 初始化 ConstructionManager（构建管理）
-    // TODO: 深入考虑第二个参数
-    const constructionManager = new ConstructionManager(this.basePath, true)
-
-    // 安装 preset 列出的所有插件
-    await constructionManager.installPluginsFromPresets(pm.getPreset())
-
-    // 此时所有插件都已经安装完成
-    // 接下来执行插件 @construction 下的逻辑, 合并 package.json
-    await constructionManager.runPluginConstruction(null, pm.getPreset())
-
-    // 安装合并进来的依赖
-    await constructionManager.installDependencies()
-
-    // 初始化 git(如果用户选择的话)
-    if (options.git) {
-      await constructionManager.initGit(options.commit)
-    }
-
-    await constructionManager.removePlugin(...pm.getPluginNamesShouldRemove())
-
-    // [hooks] -- onCreateSuccess 在 create 执行结束时做些什么
-    this.coreManagerHooks.onCreateSuccess.call(this)
   }
 
   /**

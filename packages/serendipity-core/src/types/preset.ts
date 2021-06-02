@@ -29,12 +29,6 @@ export interface PresetPlugin {
 
 // 预设配置
 export interface SerendipityPreset {
-  // 是否需要初始化工作目录
-  initialDir?: boolean
-
-  // 初始化工作目录的默认名称
-  initialDirDefaultName?: string
-
   // 插件
   plugins: PresetPlugin[]
 }
