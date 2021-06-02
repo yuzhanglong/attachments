@@ -11,9 +11,9 @@ import { BaseObject, Constructable, renderTemplate } from '@attachments/serendip
 import { ConstructionOptions, ScriptOptions } from './types/pluginExecute'
 import { AppManager } from './app-manager'
 import { SerendipityPreset } from './types/preset'
-import { PluginModuleInfo } from './types/plugin'
 import { PluginWrapper } from './plugin-wrapper'
 import { PLUGIN_SCRIPT_META_KEY, SERENDIPITY_SCRIPT_VERSION } from './common'
+import { PluginModuleInfo } from './types/common'
 
 
 export class PluginsExecutor {

@@ -43,3 +43,17 @@ export interface AppConfigPlugin {
 export interface AppConfig {
   plugins?: AppConfigPlugin[]
 }
+
+export interface PluginModuleInfo {
+  // require 的结果
+  requireResult: any
+
+  // 该插件的绝对路径
+  absolutePath?: string
+
+  // 额外的参数
+  options?: BaseObject
+
+  // 名称
+  name?: string
+}

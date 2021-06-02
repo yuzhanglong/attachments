@@ -10,8 +10,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { isPlugin, PackageManager, logger, BaseObject, writeFilePromise } from '@attachments/serendipity-public'
-import { AppConfig } from './types/common'
-import { PluginModuleInfo } from './types/plugin'
+import { AppConfig, PluginModuleInfo } from './types/common'
 
 interface AppManagerOptions {
   basePath: string
