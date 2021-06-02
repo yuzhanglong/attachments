@@ -17,7 +17,6 @@ import { CoreManager } from '../src/core-manager'
 jest.mock('inquirer')
 jest.mock('execa')
 
-// eslint-disable-next-line max-lines-per-function
 describe('cli Manager 模块测试', () => {
   const mock = new MockAdapter(axios)
 

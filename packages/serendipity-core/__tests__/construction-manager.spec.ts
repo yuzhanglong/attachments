@@ -7,68 +7,127 @@
  */
 
 import * as fs from 'fs'
-import ConstructionManager from '../src/construction-manager'
-import PresetManager from '../src/presetManager'
+import { fsMock } from '@attachments/serendipity-public'
+import { ConstructionManager } from '../src/construction-manager'
 
 const mockedExeca = require('../../../__mocks__/execa')
 
 jest.mock('execa')
 
-describe('serviceManager 模块', () => {
-  afterAll(() => {
-    fsHelper.removeDir()
+describe('test constructionManager 模块', () => {
+  test('constructionManager 的初始化', () => {
+    const f = fsMock({})
+    const cm = new ConstructionManager(f.path)
+    // @ts-ignore
+    expect(cm.basePath).toStrictEqual(f.path)
   })
 
-  test('installPluginsFromPresets - plugin 信息是否正确写入 package.json', async () => {
-    const cs = new ConstructionManager(fsHelper.path)
-    // eslint-disable-next-line no-undef
-    const pm = new PresetManager(fsHelper.path)
-    pm.initPresetByObject({
+  test('测试默认 app 配置的写入', async () => {
+    const f = fsMock({})
+    const cm = new ConstructionManager(f.path)
+    await cm.writeAppConfig()
+    const data = fs.readFileSync(f.resolve('serendipity.js')).toString()
+    expect(data).toStrictEqual('module.exports = {}')
+  })
+
+  test('测试 git 的初始化', async () => {
+    const f = fsMock({})
+    const cm = new ConstructionManager(f.path)
+    await cm.initGit('foo')
+    expect(mockedExeca.getCommands()).toStrictEqual([
+      'git init',
+      'git add -A',
+      'git commit -m foo --no-verify'
+    ])
+  })
+
+  test('基于 preset 安装 plugins', async () => {
+    const f = fsMock({})
+    const cm = new ConstructionManager(f.path)
+    await cm.installPluginsFromPresets({
       plugins: [
         {
-          name: '@attachments/serendipity-plugin-react'
+          name: '@serendipity-plugin-bar'
         },
         {
-          name: '@attachments/serendipity-plugin-eslint'
+          name: '@serendipity-plugin-foo',
+          path: '/my/dir/path'
+        },
+        {
+          name: '@serendipity-plugin-baz',
+          version: '1.0'
         }
       ]
     })
-    await cs.installPluginsFromPresets(pm.getPreset())
 
-    const res = fs.readFileSync(fsHelper.resolve('package.json'))
+    // @ts-ignore
+    expect(cm.appManager.packageManager.getPackageConfig())
+      .toEqual({
+        'dependencies': {
+          '@serendipity-plugin-bar': 'latest',
+          '@serendipity-plugin-baz': '1.0',
+          '@serendipity-plugin-foo': '/my/dir/path'
+        },
+        'license': 'MIT',
+        'main': 'index.js',
+        'name': 'serendipity-project',
+        'version': '1.0.0'
+      })
 
-    expect(JSON.parse(res.toString())).toStrictEqual({
-      'name': 'serendipity-project',
-      'version': '1.0.0',
-      'main': 'index.js',
-      'license': 'MIT',
-      'dependencies': {
-        '@attachments/serendipity-plugin-react': 'latest',
-        '@attachments/serendipity-plugin-eslint': 'latest'
-      }
+    expect(mockedExeca.getCommands()).toStrictEqual([
+      'npm install'
+    ])
+  })
+
+  test('测试执行 plugin 构建流程', async () => {
+    const f = fsMock({})
+    const cm = new ConstructionManager(f.path)
+    await cm.installPluginsFromPresets({
+      plugins: [
+        {
+          name: '@serendipity-plugin-bar'
+        },
+        {
+          name: '@serendipity-plugin-foo',
+          path: '/my/dir/path'
+        },
+        {
+          name: '@serendipity-plugin-baz',
+          version: '1.0'
+        }
+      ]
     })
 
-    // 一次 yarn install 被执行
-    expect(mockedExeca.getCommands())
-      .toStrictEqual([
-        'yarn install'
-      ])
+    await cm.runPluginConstruction(['@serendipity-plugin-bar'])
+    await cm.runPluginConstruction()
+
+    expect(mockedExeca.getCommands()).toStrictEqual([
+      'npm install'
+    ])
   })
 
-  test('移除一个或者多个插件', async () => {
-    const cs = new ConstructionManager(fsHelper.path)
-    await cs.removePlugin('111', '222', '333')
-    expect(mockedExeca.getCommands())
-      .toStrictEqual([
-        'yarn remove 111',
-        'yarn remove 222',
-        'yarn remove 333'
-      ])
+  test('测试 plugin 删除', async () => {
+    const f = fsMock({})
+    const cm = new ConstructionManager(f.path)
+    await cm.removePlugin('foo', 'bar')
+    expect(mockedExeca.getCommands()).toStrictEqual([
+      'npm remove foo',
+      'npm remove bar'
+    ])
   })
 
-  test('写入 App 配置', async () => {
-    await ConstructionManager.writeAppConfig(fsHelper.path)
-    const f = fs.readFileSync(fsHelper.resolve('serendipity.js')).toString()
-    expect(f).toStrictEqual('module.exports = undefined')
+  test('测试 plugin 的安装', async () => {
+    const f = fsMock({})
+    const cm = new ConstructionManager(f.path)
+    await cm.installPlugin('foo', '1.0')
+    // @ts-ignore
+    expect(cm.appManager.packageManager.getPackageConfig()['dependencies'])
+      .toEqual( {
+        'foo': '1.0'
+      })
+
+    expect(mockedExeca.getCommands()).toStrictEqual([
+      'npm install'
+    ])
   })
 })
