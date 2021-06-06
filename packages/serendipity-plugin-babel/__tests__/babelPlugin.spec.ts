@@ -10,7 +10,7 @@ import { SyncHook } from 'tapable'
 import { AppManager, PluginExecutor, SerendipityPlugin } from '@attachments/serendipity-core'
 import { generateTempPathInfo } from '@attachments/serendipity-public'
 import { ReactServiceHooks } from '@attachments/serendipity-plugin-react/lib/types/hooks'
-import SerendipityBabelPlugin from '../src/SerendipityBabelPlugin'
+import SerendipityBabelPlugin from '../src/babel-plugin'
 
 describe('plugin 测试', () => {
   const fsHelper = generateTempPathInfo()

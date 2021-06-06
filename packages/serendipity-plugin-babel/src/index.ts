@@ -7,6 +7,6 @@
  */
 
 
-import SerendipityBabelPlugin from './SerendipityBabelPlugin'
+import { SerendipityBabelPlugin } from './babel-plugin'
 
-module.exports = SerendipityBabelPlugin
+export default SerendipityBabelPlugin

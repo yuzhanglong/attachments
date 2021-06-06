@@ -12,8 +12,8 @@ import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-serv
 import * as WebpackDevServer from 'webpack-dev-server'
 import { logger, webpackMerge } from '@attachments/serendipity-public'
 import { AppManager } from '@attachments/serendipity-core'
-import getDevServerConfig from '../webpack/devServerConfig'
-import getBaseConfig from '../webpack/webpackBase'
+import getDevServerConfig from '../webpack/dev-server-config'
+import getBaseConfig from '../webpack/webpack-base'
 import { clearConsole } from '../utils/console'
 import { DEFAULT_WEBPACK_DEV_SERVER_HOST, DEFAULT_WEBPACK_DEV_SERVER_PORT } from '../common/constants'
 import { ReactServiceHooks } from '../types/hooks'
@@ -28,7 +28,7 @@ class ReactService {
   private hooks: ReactServiceHooks
 
   constructor(hooks: ReactServiceHooks, options?: ReactPluginOptions) {
-    this.appManager = new AppManager(process.cwd())
+    this.appManager = AppManager.createWithResolve(process.cwd())
     this.webpackConfig = getBaseConfig(options)
     this.devServerConfig = getDevServerConfig()
     this.hooks = hooks
