@@ -95,7 +95,7 @@ describe('preset Manager 模块测试', () => {
         '}'
     })
 
-    const pm = await PresetManager.createPresetManagerByLocalPath(f.resolve('foo-preset.js'))
+    const pm = await PresetManager.createPresetManager(f.resolve('foo-preset.js'))
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
       'initialDirDefaultName': 'serendipity-project',
@@ -155,7 +155,7 @@ describe('preset Manager 模块测试', () => {
       '    }')
 
     const f = fsMock({})
-    const pm = await PresetManager.createPresetManagerByRemotePath(f.path, 'https://mock_preset_async_fn')
+    const pm = await PresetManager.createPresetManager('https://mock_preset_async_fn', f.path)
 
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
@@ -182,7 +182,7 @@ describe('preset Manager 模块测试', () => {
       '    }\n' +
       '  ]\n' +
       '}')
-    const pm = await PresetManager.createPresetByName(f.path, 'react')
+    const pm = await PresetManager.createPresetManager('react', f.path)
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
       'initialDirDefaultName': 'serendipity-project',

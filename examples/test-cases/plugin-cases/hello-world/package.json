@@ -1,6 +1,6 @@
 {
   "name": "hello-world",
   "version": "1.0.0",
-  "main": "./HelloWorld.js",
+  "main": "./hello-world.js",
   "license": "MIT"
 }

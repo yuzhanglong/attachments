@@ -8,7 +8,7 @@
 
 import { SyncHook } from 'tapable'
 import { CoreManager } from '../core-manager'
-import { AddOption, CreateOptions } from '../types/common'
+import { AddOption, CreateOptions } from '../types'
 
 const createCoreManagerHooks = () => {
   return {

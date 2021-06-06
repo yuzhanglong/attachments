@@ -8,8 +8,9 @@
 
 
 import * as path from 'path'
-import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '@attachments/serendipity-scripts'
-import { ConstructionOptions } from '@attachments/serendipity-scripts/bin/types/pluginExecute'
+import { SerendipityPlugin, Construction, Inquiry } from '@attachments/serendipity-core'
+import { ConstructionOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
+
 
 interface HelloWorldOptions {
   name: string
@@ -27,11 +28,6 @@ class HelloWorldPlugin {
     this.age = options.age
   }
 
-  @Script('start')
-  start() {
-    console.log('start command has been called!')
-  }
-
   @Inquiry()
   inquiry() {
     return [
@@ -45,7 +41,7 @@ class HelloWorldPlugin {
   }
 
   @Construction()
-  tryConstruction(options: ConstructionOptions) {
+  async tryConstruction(options: ConstructionOptions) {
     // 质询的结果会在这里提示
     console.log(options.inquiryResult)
     if ((options.inquiryResult as Record<string, unknown>).loveNode) {
@@ -54,18 +50,13 @@ class HelloWorldPlugin {
       console.log('用户不喜欢 node.js!')
     }
 
-    options.renderTemplate(path.resolve(__dirname, 'helloTemplate'))
+    await options.renderTemplate('hello-template')
 
     options.appManager.packageManager.mergeIntoCurrent({
       dependencies: {
         axios: 'latest'
       }
     })
-  }
-
-  @Runtime()
-  sayNameAndAge() {
-    console.log(`${this.name}-${this.age}`)
   }
 }
 

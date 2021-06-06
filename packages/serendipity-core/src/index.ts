@@ -7,3 +7,29 @@
  */
 
 
+export { RuntimeManager } from './runtime-manager'
+export { PresetManager } from './preset-manager'
+export { PluginsExecutor } from './plugins-executor'
+export { PluginWrapper } from './plugin-wrapper'
+export { useSerendipityCreate } from './create'
+export { ConstructionManager } from './construction-manager'
+export { CoreManager } from './core-manager'
+export { AppManager } from './app-manager'
+export { Script, SerendipityPlugin, Construction, Inquiry, Runtime } from './decorators'
+export {
+  AppConfig,
+  AddOption,
+  AppPluginConfig,
+  CreateOptions,
+  PluginMetaData,
+  PluginMethodMetaBase,
+  PluginMetaConstruction,
+  PluginMetaInquiry,
+  PluginMetaRuntime,
+  PluginMetaScript,
+  RuntimeOptions,
+  SerendipityPreset,
+  ScriptOptions,
+  PluginModuleInfo,
+  ConstructionOptions
+} from './types'

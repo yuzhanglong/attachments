@@ -13,8 +13,8 @@ import {
   DEFAULT_PRESET_NAME,
   BaseObject, PRESET_CDN_BASE_URL
 } from '@attachments/serendipity-public'
-import { SerendipityPreset } from './types/preset'
 import { DEFAULT_PRESET } from './common'
+import { SerendipityPreset } from './types'
 
 export class PresetManager {
   private readonly preset: SerendipityPreset
@@ -79,6 +79,27 @@ export class PresetManager {
     const res = require(localPath)
     const finalPreset = await PresetManager.initPresetObject(res)
     return new PresetManager(finalPreset as SerendipityPreset)
+  }
+
+  /**
+   * 根据本地路径获取 presetManager
+   *
+   * @author yuzhanglong
+   * @date 2021-6-3 00:32:34
+   * @param target 目标 url
+   * @param tmpPath preset 临时保存路径
+   */
+  public static async createPresetManager(target: string, tmpPath?: string) {
+    // 判断是否为远程路径
+    const isRemotePath = target.startsWith('http://') || target.startsWith('https://')
+    const isLocalPath = target.startsWith('/') || (target.match(/[a-zA-Z]:(\\\\)|(\/\/)|(\\)/) !== null)
+    if (!isRemotePath && !isLocalPath) {
+      return await PresetManager.createPresetByName(tmpPath, target)
+    }
+    if (isRemotePath) {
+      return await PresetManager.createPresetManagerByRemotePath(tmpPath, target)
+    }
+    return await PresetManager.createPresetManagerByLocalPath(target)
   }
 
   /**
