@@ -1,5 +1,4 @@
-import { Construction, SerendipityPlugin } from '@attachments/serendipity-core'
-import { ConstructionOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
+import { Construction, ConstructionOptions, SerendipityPlugin } from '@attachments/serendipity-core'
 
 
 @SerendipityPlugin('my-plugin')

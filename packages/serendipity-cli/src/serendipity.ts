@@ -10,8 +10,8 @@
 
 import { program } from 'commander'
 import { useSerendipityCreate } from '@attachments/serendipity-core'
-import { registerCreateHook } from './hooks-register'
 import { DEFAULT_PROJECT_NAME } from '@attachments/serendipity-public'
+import { registerCreateHook } from './hooks-register'
 
 
 // 版本信息

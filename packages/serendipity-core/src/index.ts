@@ -30,5 +30,6 @@ export {
   SerendipityPreset,
   ScriptOptions,
   PluginModuleInfo,
-  ConstructionOptions
+  ConstructionOptions,
+  InquiryResult
 } from './types'

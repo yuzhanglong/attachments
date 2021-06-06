@@ -7,9 +7,8 @@
  */
 
 import { serendipityEnv } from '@attachments/serendipity-public'
-import { Construction, Inquiry, Runtime } from '@attachments/serendipity-core'
-import { ConstructionOptions, RuntimeOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
-import { SerendipityReactPlugin } from '@attachments/serendipity-plugin-react'
+import { Construction, ConstructionOptions, Inquiry, Runtime, RuntimeOptions } from '@attachments/serendipity-core'
+import SerendipityReactPlugin from '@attachments/serendipity-plugin-react'
 import { appRoot, appSource } from '@attachments/serendipity-public/lib/utils/paths'
 import { EslintInquiryOptions } from './types'
 import { ESLINT_OPTION_TO_CONFIG } from './common'

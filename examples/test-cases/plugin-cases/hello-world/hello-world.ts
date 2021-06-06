@@ -7,7 +7,6 @@
  */
 
 
-import * as path from 'path'
 import { SerendipityPlugin, Construction, Inquiry } from '@attachments/serendipity-core'
 import { ConstructionOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
 
