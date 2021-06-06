@@ -41,7 +41,7 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
 
   const execute = async () => {
     // [hooks] -- beforePluginInstall 在 plugin 安装前做些什么
-    coreHooks.onCreateStart.call(this)
+    coreHooks.onCreateStart.call({ projectDir: projectDir })
 
     // 初始化 ConstructionManager（构建管理）
     const constructionManager = new ConstructionManager(projectDir)
@@ -62,7 +62,7 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
     }
 
     // [hooks] -- onCreateSuccess 在 create 执行结束时做些什么
-    coreHooks.onCreateSuccess.call(this)
+    coreHooks.onCreateSuccess.call()
   }
 
   return {

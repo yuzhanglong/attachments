@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "add-eslint-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-eslint -l D:\\projects\\serendipity\\packages\\serendipity-plugin-eslint -d",
-    "add-init-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-init -l D:\\projects\\serendipity\\packages\\serendipity-plugin-init -d",
+    "add-init-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js create -p D:\\projects\\serendipity\\examples\\test-cases\\preset-cases\\init-local.js",
     "add-ts-plugin": "cd hello && node ../../packages/serendipity-cli/lib/serendipity.js add @attachments/serendipity-plugin-typescript -l D:\\projects\\serendipity\\packages\\serendipity-plugin-typescript -d",
     "add-ts-preset": "cd foo && node ../../packages/serendipity-cli/lib/serendipity.js create -p D:\\\\projects\\serendipity\\examples\\presets\\ts-local.js",
     "add-react": "node ../packages/serendipity-cli/lib/serendipity.js create -p D:\\\\projects\\serendipity\\examples\\presets\\react-local.js"

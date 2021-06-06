@@ -10,7 +10,7 @@ import { Construction, Inquiry } from '@attachments/serendipity-core'
 import { ConstructionOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
 import { PluginInitOptions } from './types'
 
-class SerendipityInitPlugin {
+export class SerendipityInitPlugin {
   @Construction()
   createPluginTemplate(options: ConstructionOptions) {
     options.appManager.packageManager.mergeIntoCurrent({
@@ -19,10 +19,6 @@ class SerendipityInitPlugin {
       scripts: {
         'start': 'tsc -w',
         'build': 'tsc'
-      },
-      dependencies: {
-        '@attachments/serendipity-public': 'latest',
-        '@attachments/serendipity-scripts': 'latest'
       },
       files: [
         'lib',
@@ -46,5 +42,3 @@ class SerendipityInitPlugin {
     ]
   }
 }
-
-export default SerendipityInitPlugin

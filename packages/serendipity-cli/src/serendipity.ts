@@ -11,6 +11,7 @@
 import { program } from 'commander'
 import { useSerendipityCreate } from '@attachments/serendipity-core'
 import { registerCreateHook } from './hooks-register'
+import { DEFAULT_PROJECT_NAME } from '@attachments/serendipity-public'
 
 
 // 版本信息
@@ -22,7 +23,7 @@ program
   .command('create [app-name]')
   .description('基于 preset 创建一个前端项目/初始化模板')
   .option('-g --git', '初始化 git', false)
-  .option('-c --commit <message>', '初始化 commit 信息，只有选择初始化 git 时有效', 'initial commit')
+  .option('-c --commit <message>', '初始化 commit 信息，只有选择初始化 git 时有效', 'chore: initial commit')
   .option('-p --preset <preset>', '选择一个创建预设 (preset)，可以是本地文件或者 http 链接')
   .action(async (name: string, opt: any) => {
     const { preset, commit, git } = opt
@@ -30,7 +31,7 @@ program
     // 初始化 manager
     const instance = await useSerendipityCreate({
       initGit: git,
-      name: name,
+      name: name || DEFAULT_PROJECT_NAME,
       presetPath: preset,
       gitMessage: commit
     })
@@ -59,4 +60,4 @@ program
 //     await manager.add(name, opt)
 //   })
 //
-// program.parse(process.argv)
+program.parse(process.argv)

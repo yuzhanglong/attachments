@@ -12,9 +12,9 @@ import { AddOption, CreateOptions } from '../types'
 
 const createCoreManagerHooks = () => {
   return {
-    onCreateStart: new SyncHook<CoreManager>(['coreManagerInstance']),
+    onCreateStart: new SyncHook<any>(['coreManagerInstance']),
 
-    onCreateSuccess: new SyncHook<CoreManager>(['coreManagerInstance']),
+    onCreateSuccess: new SyncHook<any>(['coreManagerInstance']),
 
     onCreateValidateError: new SyncHook<CreateOptions>(['CreateOptions']),
 

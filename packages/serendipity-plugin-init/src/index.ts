@@ -6,6 +6,6 @@
  * Email: yuzl1123@163.com
  */
 
-import SerendipityInitPlugin from './serendipityInitPlugin'
+import { SerendipityInitPlugin } from './init-plugin'
 
 export default SerendipityInitPlugin
