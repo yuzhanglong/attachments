@@ -13,8 +13,8 @@ import {
   DEFAULT_PRESET_NAME,
   BaseObject, PRESET_CDN_BASE_URL
 } from '@attachments/serendipity-public'
-import { SerendipityPreset } from './types/preset'
 import { DEFAULT_PRESET } from './common'
+import { SerendipityPreset } from './types'
 
 export class PresetManager {
   private readonly preset: SerendipityPreset

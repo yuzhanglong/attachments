@@ -8,12 +8,10 @@
 
 import * as path from 'path'
 import { BaseObject, Constructable, renderTemplate } from '@attachments/serendipity-public'
-import { ConstructionOptions, ScriptOptions } from './types/pluginExecute'
 import { AppManager } from './app-manager'
-import { SerendipityPreset } from './types/preset'
 import { PluginWrapper } from './plugin-wrapper'
 import { PLUGIN_SCRIPT_META_KEY, SERENDIPITY_SCRIPT_VERSION } from './common'
-import { PluginModuleInfo } from './types/common'
+import { ConstructionOptions, PluginModuleInfo, ScriptOptions, SerendipityPreset } from './types'
 
 
 export class PluginsExecutor {

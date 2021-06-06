@@ -12,8 +12,7 @@ import { DEFAULT_COMMIT_MESSAGE } from './common'
 import { getBasePackageJsonContent } from './utils'
 import { PluginsExecutor } from './plugins-executor'
 import { AppManager } from './app-manager'
-import { SerendipityPreset } from './types/preset'
-import { AppConfig } from './types/common'
+import { AppConfig, SerendipityPreset } from './types'
 
 
 export class ConstructionManager {

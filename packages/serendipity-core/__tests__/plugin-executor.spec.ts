@@ -10,9 +10,9 @@
 import * as fs from 'fs'
 import { SyncHook } from 'tapable'
 import { fsMock } from '@attachments/serendipity-public'
-import { ConstructionOptions, ScriptOptions } from '../src/types/pluginExecute'
 import { Construction, SerendipityPlugin, Runtime, Inquiry, Script } from '../src/decorators'
 import { PluginsExecutor } from '../src/plugins-executor'
+import { ConstructionOptions, ScriptOptions } from '../src/types'
 
 
 jest.mock('inquirer')

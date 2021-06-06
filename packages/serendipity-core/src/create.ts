@@ -10,7 +10,7 @@ import * as fs from 'fs-extra'
 import { PresetManager } from './preset-manager'
 import createCoreManagerHooks from './hooks/core-manager-hooks'
 import { ConstructionManager } from './construction-manager'
-import { CreateOptions } from './types/common'
+import { CreateOptions } from './types'
 
 
 /**

@@ -12,9 +12,8 @@ import {
   PLUGIN_INQUIRY_META_KEY,
   PLUGIN_NAME_META_KEY, PLUGIN_RUNTIME_META_KEY, PLUGIN_SCRIPT_META_KEY
 } from './common'
-import { PluginMethodMetaBase } from './types/pluginMeta'
 import 'reflect-metadata'
-import { PluginModuleInfo } from './types/common'
+import { PluginMethodMetaBase, PluginModuleInfo } from './types'
 
 
 export class PluginWrapper {

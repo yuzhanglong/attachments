@@ -10,7 +10,7 @@
 import { isPlugin } from '@attachments/serendipity-public'
 import { ConstructionManager } from './construction-manager'
 import createCoreManagerHooks from './hooks/core-manager-hooks'
-import { AddOption } from './types/common'
+import { AddOption } from './types'
 
 
 export class CoreManager {
