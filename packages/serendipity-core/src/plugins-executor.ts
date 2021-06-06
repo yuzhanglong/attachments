@@ -7,7 +7,7 @@
  */
 
 import * as path from 'path'
-import { BaseObject, Constructable, renderTemplate } from '@attachments/serendipity-public'
+import { BaseObject, Constructable, logger, renderTemplate } from '@attachments/serendipity-public'
 import { AppManager } from './app-manager'
 import { PluginWrapper } from './plugin-wrapper'
 import { PLUGIN_SCRIPT_META_KEY, SERENDIPITY_SCRIPT_VERSION } from './common'
@@ -103,13 +103,17 @@ export class PluginsExecutor {
    * @date 2021-2-20 22:55:38
    */
   public async executeConstruction(preset?: SerendipityPreset) {
+    let index = 0
+    const len = this.plugins.length
     for (const plugin of this.plugins) {
       // 根据 plugin 名称获取需要 override 的选项
       const overridePlugin = preset?.plugins.filter(res => res.name === plugin.getPluginModuleName())
 
       const overrideInfo = overridePlugin?.length > 0 ? overridePlugin[0].overrideInquiries : {}
 
-      const inquiryResult = await this.runPluginInquiry(overrideInfo || {})
+      logger.info(`[${index}/${len}] execute plugin:${plugin.getPluginModuleName()} constructions....\n`)
+
+      const inquiryResult = await plugin.executeInquiry(overrideInfo || {})
 
       await plugin.executeConstruction({
         appManager: this.appManager,
@@ -117,26 +121,12 @@ export class PluginsExecutor {
         inquiryResult: inquiryResult,
         renderTemplate: this.render.bind(this, plugin.getAbsolutePath())
       } as ConstructionOptions)
+
+      index += 1
     }
 
     // 将执行脚本写入 package.json 以供用户调用
     this.mergeScriptsInfoPackageConfig()
-  }
-
-  /**
-   * 各插件构建方法执行
-   *
-   * @author yuzhanglong
-   * @param overrideInquiry 欲覆盖的质询
-   * @date 2021-3-3 10:37:59
-   */
-  private async runPluginInquiry(overrideInquiry: BaseObject) {
-    let res = {}
-    for (const plugin of this.plugins) {
-      const answers = await plugin.executeInquiry(overrideInquiry)
-      res = { ...res, ...answers }
-    }
-    return res
   }
 
   /**

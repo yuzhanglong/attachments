@@ -56,6 +56,10 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
     // 安装合并进来的依赖
     await constructionManager.installDependencies()
 
+    // 删除不必要的依赖
+    const pluginsToRemove = pm.getPluginNamesShouldRemove()
+    await constructionManager.removePlugin(...pluginsToRemove)
+
     // 初始化 git(如果用户选择的话)
     if (initGit) {
       await constructionManager.initGit(gitMessage)

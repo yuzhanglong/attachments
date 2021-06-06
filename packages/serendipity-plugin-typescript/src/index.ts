@@ -1,3 +1,3 @@
-import SerendipityPluginTypeScript from './typescript-plugin'
+import { SerendipityPluginTypeScript } from './typescript-plugin'
 
-module.exports = SerendipityPluginTypeScript
+export default SerendipityPluginTypeScript

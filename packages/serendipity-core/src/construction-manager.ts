@@ -150,7 +150,7 @@ export class ConstructionManager {
     })
     await this.installDependencies()
   }
-
+  
   /**
    * 移除 plugin
    *
