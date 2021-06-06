@@ -12,7 +12,7 @@ module.exports = {
   plugins: [
     {
       name: 'serendipity-plugin-hello-world',
-      path: path.resolve(__dirname, '../plugins/helloWorld')
+      path: path.resolve(__dirname, '../plugin-cases/hello-world')
     }
   ]
 }

@@ -6,6 +6,9 @@
     "module": "CommonJS"
   },
   "include": [
-    "plugins/**/*"
+    "test-cases/plugin-cases/**/*"
+  ],
+  "exclude": [
+    "**/templates/**"
   ]
 }

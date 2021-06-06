@@ -1,24 +1,55 @@
-import MockAdapter from 'axios-mock-adapter'
-import axios from 'axios'
-import { create } from '../src/create'
+import * as fs from 'fs'
+import * as path from 'path'
+import { fsMock } from '@attachments/serendipity-public'
+import { useSerendipityCreate } from '../src/create'
+
+jest.unmock('execa')
+
 
 describe('测试 create API', () => {
-  const mock = new MockAdapter(axios)
+  const helloPreset = path.resolve(process.cwd(), 'examples', 'test-cases', 'preset-cases', 'hello-world.js')
 
-  test('初始化 create API', () => {
-    mock.onGet('https://preset_init_dir').reply(
-      200,
-      'module.exports = {\n' +
-      '    plugins: [],\n' +
-      '    initialDir: true,\n' +
-      '    initialDirDefaultName: \'be-happy\'\n' +
-      '  }'
-    )
-    const c = create({
+  test('create API 正常初始化，临时预设文件被创建到项目的根目录下', async () => {
+    const f = fsMock({})
+
+    const c = await useSerendipityCreate({
       name: 'foo',
       gitMessage: 'hello world!',
       initGit: false,
-      presetPath: 'https://preset_init_dir'
+      presetPath: helloPreset,
+      workingDir: f.path
     })
+
+    expect(c.coreHooks).toBeDefined()
+    expect(typeof c.execute).toStrictEqual('function')
+    expect(c.presetManager).toBeDefined()
+    expect(c.workingDir).toBeDefined()
+
+    expect(fs.existsSync(f.resolve('foo'))).toBeTruthy()
+
+    await c.execute()
+
+    expect(fs.existsSync(f.resolve('foo', 'package.json'))).toBeTruthy()
   })
+
+  test('测试 construction 模式，质询、构建阶段应该被正常执行', async () => {
+    const f = fsMock({})
+
+    const c = await useSerendipityCreate({
+      name: 'foo',
+      initGit: false,
+      presetPath: helloPreset,
+      workingDir: f.path
+    })
+
+    expect(fs.existsSync(f.resolve('foo'))).toBeTruthy()
+
+    await c.execute()
+
+    expect(fs.existsSync(f.resolve('foo', 'package.json'))).toBeTruthy()
+
+    // template 写入
+    expect(fs.existsSync(f.resolve('foo', 'foo.js'))).toBeTruthy()
+    expect(fs.existsSync(f.resolve('foo', 'bar.js'))).toBeTruthy()
+  }, 100000)
 })

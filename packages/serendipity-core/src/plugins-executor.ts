@@ -111,7 +111,7 @@ export class PluginsExecutor {
 
       const overrideInfo = overridePlugin?.length > 0 ? overridePlugin[0].overrideInquiries : {}
 
-      const inquiryResult = await this.runPluginInquiry(overrideInfo)
+      const inquiryResult = await this.runPluginInquiry(overrideInfo || {})
 
       await plugin.executeConstruction({
         appManager: this.appManager,
@@ -169,7 +169,7 @@ export class PluginsExecutor {
    * @param options 选项
    * @param dirName 模板文件名
    * @param target 目标目录
-   * @date 2021-2-23 19:03:24
+   * @date 2021-6-6 12:52:48
    */
   private async render(basePath: string, dirName: string, options?: BaseObject, target?: string): Promise<void> {
     // 最终的路径，对于用户只需要传入一个文件名就可以了

@@ -21,35 +21,36 @@ import { CreateOptions } from './types/common'
  * @date 2021-6-3 00:39:38
  * @param createOptions
  */
-export async function create(createOptions: CreateOptions) {
+export async function useSerendipityCreate(createOptions: CreateOptions) {
   // core hooks
   const coreHooks = createCoreManagerHooks()
 
-  const currentDir = process.cwd()
-  const { presetPath, name, initGit, gitMessage } = createOptions
+  // workingDir 表示命令行执行的目录
+  const { presetPath, name, initGit, gitMessage, workingDir } = createOptions
 
-  // 项目目录
-  const workingDir = path.resolve(currentDir, name)
+  const currentDir = workingDir || process.cwd()
 
-  // 如果不存在，创建之
-  await fs.ensureDir(workingDir)
+  // projectDir 表示项目的实际目录(在工作目录之下)，注意和上面的区分
+  const projectDir = path.resolve(currentDir, name)
 
+  // 如果 projectDir 不存在，创建之
+  await fs.ensureDir(projectDir)
 
   // 初始化预设管理器
-  const pm = await PresetManager.createPresetManager(presetPath, workingDir)
+  const pm = await PresetManager.createPresetManager(presetPath, projectDir)
 
   const execute = async () => {
     // [hooks] -- beforePluginInstall 在 plugin 安装前做些什么
     coreHooks.onCreateStart.call(this)
 
     // 初始化 ConstructionManager（构建管理）
-    const constructionManager = new ConstructionManager(this.basePath)
+    const constructionManager = new ConstructionManager(projectDir)
 
     // 安装 preset 列出的所有插件
     await constructionManager.installPluginsFromPresets(pm.getPreset())
 
     // 此时所有插件都已经安装完成
-    // 接下来执行插件 @construction 下的逻辑, 合并 package.json
+    // 接下来执行插件 @Construction 下的逻辑, 合并 package.json
     await constructionManager.runPluginConstruction(null, pm.getPreset())
 
     // 安装合并进来的依赖
@@ -68,6 +69,6 @@ export async function create(createOptions: CreateOptions) {
     coreHooks: coreHooks,
     execute: execute,
     presetManager: pm,
-    workingDir: workingDir
+    workingDir: projectDir
   }
 }

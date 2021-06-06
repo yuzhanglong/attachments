@@ -6,4 +6,4 @@
  * Email: yuzl1123@163.com
  */
 
-
+export { Script, SerendipityPlugin, Construction, Inquiry, Runtime } from './decorators'

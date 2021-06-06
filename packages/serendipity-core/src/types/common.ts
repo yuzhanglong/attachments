@@ -20,6 +20,9 @@ export interface CreateOptions {
   // git
   initGit?: boolean
   gitMessage?: string
+
+  // 基础路径
+  workingDir?: string
 }
 
 export interface AddOption {

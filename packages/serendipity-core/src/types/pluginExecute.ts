@@ -25,5 +25,5 @@ export interface ConstructionOptions {
   appManager: AppManager
   matchPlugin: (name: string) => PluginWrapper
   inquiryResult: unknown
-  renderTemplate: (base: string, options?: BaseObject, target?: string) => void
+  renderTemplate: (name: string, options?: BaseObject) => void
 }
