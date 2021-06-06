@@ -7,7 +7,7 @@
  */
 
 
-import { CommonObject } from '@attachments/serendipity-public'
+import { BaseObject } from '@attachments/serendipity-public'
 
 export type ConfigOptions = ['Airbnb' | 'recommend' | 'import']
 
@@ -21,6 +21,6 @@ export interface EslintCustomConfig {
   package: string
   extendName: string[]
   version: string
-  defaultRules: CommonObject
+  defaultRules: BaseObject
 }
 

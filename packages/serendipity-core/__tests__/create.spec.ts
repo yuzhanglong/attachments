@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { fsMock } from '@attachments/serendipity-public'
-import { useSerendipityCreate } from '../src/create'
+import { useSerendipityCreate } from '../src'
 
 jest.unmock('execa')
 
@@ -30,6 +30,27 @@ describe('测试 create API', () => {
     await c.execute()
 
     expect(fs.existsSync(f.resolve('foo', 'package.json'))).toBeTruthy()
+  })
+
+  test('如果目标路径已经存在，我们不会再其下创建一个项目，而是抛出异常', async () => {
+    const f = fsMock({
+      foo: {
+        'a.out': 'aaa'
+      }
+    })
+
+    try {
+      const c = await useSerendipityCreate({
+        name: 'foo',
+        initGit: false,
+        presetPath: helloPreset,
+        workingDir: f.path
+      })
+
+      await c.execute()
+    } catch (e) {
+      expect(e.message).toStrictEqual('The working directory already exists!')
+    }
   })
 
   test('测试 construction 模式，质询、构建阶段应该被正常执行', async () => {

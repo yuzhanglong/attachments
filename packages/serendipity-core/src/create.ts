@@ -33,6 +33,11 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
   // projectDir 表示项目的实际目录(在工作目录之下)，注意和上面的区分
   const projectDir = path.resolve(currentDir, name)
 
+  // 如果 projectDir 不存在，抛出异常
+  if (fs.existsSync(projectDir)) {
+    throw new Error('The working directory already exists!')
+  }
+
   // 如果 projectDir 不存在，创建之
   await fs.ensureDir(projectDir)
 

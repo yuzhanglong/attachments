@@ -16,7 +16,7 @@ import { ESLINT_OPTION_TO_CONFIG } from './common'
 
 const ESLintWebpackPlugin = require('eslint-webpack-plugin')
 
-class SerendipityEslintPlugin {
+export class EslintPlugin {
   /**
    * 基于 SerendipityReactPlugin 的 runtime 配置
    * 可以在 devServer 控制台展示 eslint 信息
@@ -212,5 +212,3 @@ class SerendipityEslintPlugin {
     ]
   }
 }
-
-export default SerendipityEslintPlugin
