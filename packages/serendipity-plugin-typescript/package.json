@@ -13,7 +13,8 @@
   },
   "files": [
     "lib",
-    "templates"
+    "templates",
+    "src"
   ],
   "gitHead": "49d6e80c784169331de048713142cc8b19dac1ff"
 }

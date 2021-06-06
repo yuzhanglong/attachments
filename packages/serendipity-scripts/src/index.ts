@@ -18,10 +18,10 @@ program.version(`serendipity script ${require('../package.json').version}`)
 program
   .command('run [command]')
   .description('执行某个命令')
-  .action((command: string) => {
+  .action(async (command: string) => {
     const rm = new RuntimeManager(process.cwd())
     rm.registerPluginsFromPackage()
-    rm.runCommand(command)
+    await rm.runCommand(command)
   })
 
 

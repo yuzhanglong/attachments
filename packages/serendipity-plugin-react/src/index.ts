@@ -6,10 +6,6 @@
  * Email: yuzl1123@163.com
  */
 
-import SerendipityReactPlugin from './core/SerendipityReactPlugin'
+import { SerendipityReactPlugin } from './core/react-plugin'
 
-export {
-  SerendipityReactPlugin
-}
-
-module.exports = SerendipityReactPlugin
+export default SerendipityReactPlugin

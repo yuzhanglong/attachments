@@ -25,6 +25,7 @@ export class CoreManager {
   /**
    * 添加一个插件
    *
+   * @deprecated
    * @author yuzhanglong
    * @param name 插件名称（如果传入的话）
    * @param options 插件选项

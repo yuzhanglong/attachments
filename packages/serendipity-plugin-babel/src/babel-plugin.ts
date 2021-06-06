@@ -7,12 +7,11 @@
  */
 
 
-import { Construction, Runtime } from '@attachments/serendipity-core'
+import { Construction, ConstructionOptions, Runtime, RuntimeOptions } from '@attachments/serendipity-core'
 import { appSource } from '@attachments/serendipity-public/lib/utils/paths'
-import { ConstructionOptions, RuntimeOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
-import { SerendipityReactPlugin } from '@attachments/serendipity-plugin-react'
+import SerendipityReactPlugin from '@attachments/serendipity-plugin-react'
 
-class SerendipityBabelPlugin {
+export class SerendipityBabelPlugin {
   static BASE_CONFIG = {
     module: {
       rules: [
@@ -63,5 +62,3 @@ class SerendipityBabelPlugin {
     })
   }
 }
-
-export default SerendipityBabelPlugin

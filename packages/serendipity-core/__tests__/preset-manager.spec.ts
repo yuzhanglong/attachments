@@ -9,7 +9,7 @@
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
 import { fsMock, PRESET_CDN_BASE_URL } from '@attachments/serendipity-public'
-import { PresetManager } from '../src/preset-manager'
+import { PresetManager } from '../src'
 
 describe('preset Manager 模块测试', () => {
   const mock = new MockAdapter(axios)
@@ -24,7 +24,7 @@ describe('preset Manager 模块测试', () => {
     })
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
-      'initialDirDefaultName': 'serendipity-project',
+      'initialDirDefaultName': 'my-project',
       'plugins': [
         {
           'name': 'hello-world-plugin'
@@ -51,7 +51,7 @@ describe('preset Manager 模块测试', () => {
     const pm = await PresetManager.createPresetManagerByRemotePath(f.path, 'https://mock_preset')
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
-      'initialDirDefaultName': 'serendipity-project',
+      'initialDirDefaultName': 'my-project',
       'plugins': [
         {
           'name': '@attachments/serendipity-plugin-react'
@@ -98,7 +98,7 @@ describe('preset Manager 模块测试', () => {
     const pm = await PresetManager.createPresetManager(f.resolve('foo-preset.js'))
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
-      'initialDirDefaultName': 'serendipity-project',
+      'initialDirDefaultName': 'my-project',
       'plugins': [
         {
           'name': '@attachments/foo'
@@ -159,7 +159,7 @@ describe('preset Manager 模块测试', () => {
 
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
-      'initialDirDefaultName': 'serendipity-project',
+      'initialDirDefaultName': 'my-project',
       'plugins': [
         {
           'name': 'bar-plugin'
@@ -185,7 +185,7 @@ describe('preset Manager 模块测试', () => {
     const pm = await PresetManager.createPresetManager('react', f.path)
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
-      'initialDirDefaultName': 'serendipity-project',
+      'initialDirDefaultName': 'my-project',
       'plugins': [
         {
           'name': '@attachments/foo'

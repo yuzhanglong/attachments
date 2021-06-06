@@ -33,6 +33,11 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
   // projectDir 表示项目的实际目录(在工作目录之下)，注意和上面的区分
   const projectDir = path.resolve(currentDir, name)
 
+  // 如果 projectDir 不存在，抛出异常
+  if (fs.existsSync(projectDir)) {
+    throw new Error('The working directory already exists!')
+  }
+
   // 如果 projectDir 不存在，创建之
   await fs.ensureDir(projectDir)
 
@@ -41,7 +46,7 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
 
   const execute = async () => {
     // [hooks] -- beforePluginInstall 在 plugin 安装前做些什么
-    coreHooks.onCreateStart.call(this)
+    coreHooks.onCreateStart.call({ projectDir: projectDir })
 
     // 初始化 ConstructionManager（构建管理）
     const constructionManager = new ConstructionManager(projectDir)
@@ -56,13 +61,17 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
     // 安装合并进来的依赖
     await constructionManager.installDependencies()
 
+    // 删除不必要的依赖
+    const pluginsToRemove = pm.getPluginNamesShouldRemove()
+    await constructionManager.removePlugin(...pluginsToRemove)
+
     // 初始化 git(如果用户选择的话)
     if (initGit) {
       await constructionManager.initGit(gitMessage)
     }
 
     // [hooks] -- onCreateSuccess 在 create 执行结束时做些什么
-    coreHooks.onCreateSuccess.call(this)
+    coreHooks.onCreateSuccess.call()
   }
 
   return {

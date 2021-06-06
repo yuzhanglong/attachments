@@ -9,15 +9,14 @@
 
 import { serendipityEnv } from '@attachments/serendipity-public'
 import { SyncHook } from 'tapable'
-import { Construction, Inquiry, Script, SerendipityPlugin } from '@attachments/serendipity-core'
-import { ConstructionOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
+import { Construction, ConstructionOptions, Inquiry, Script, SerendipityPlugin } from '@attachments/serendipity-core'
 import { ReactPluginInquireResult } from '../types/inquiry'
 import { ReactServiceHooks } from '../types/hooks'
 import { ReactPluginOptions } from '../types/common'
-import ReactService from './ReactService'
+import ReactService from './react-service'
 
 @SerendipityPlugin('serendipity-react-plugin')
-class SerendipityReactPlugin {
+export class SerendipityReactPlugin {
   private readonly options: ReactPluginOptions
   private baseDeps = {}
   private useTypeScript = false
@@ -96,5 +95,3 @@ class SerendipityReactPlugin {
     )
   }
 }
-
-export default SerendipityReactPlugin

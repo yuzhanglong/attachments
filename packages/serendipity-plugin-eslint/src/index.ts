@@ -7,6 +7,6 @@
  */
 
 
-import SerendipityEslintPlugin from './SerendipityEslintPlugin'
+import { EslintPlugin } from './eslint-plugin'
 
-module.exports = SerendipityEslintPlugin
+export default EslintPlugin
