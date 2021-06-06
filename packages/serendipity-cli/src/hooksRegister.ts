@@ -7,10 +7,8 @@
  */
 
 import { chalk, logger } from '@attachments/serendipity-public'
-import { CoreManager } from '@attachments/serendipity-core'
 
-export const registerCreateHook = (manager: CoreManager) => {
-  const coreManagerHooks = manager.getCoreManagerHooks()
+export const registerCreateHook = (coreManagerHooks: any) => {
   coreManagerHooks.onCreateStart.tap('beforePluginInstall', (instance) => {
     logger.info(`🚀 在 ${chalk.yellow(instance.getBasePath())} 创建项目中...\n`)
   })
