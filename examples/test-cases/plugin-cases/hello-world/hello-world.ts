@@ -7,9 +7,7 @@
  */
 
 
-import { SerendipityPlugin, Construction, Inquiry } from '@attachments/serendipity-core'
-import { ConstructionOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
-
+import { SerendipityPlugin, Construction, Inquiry, ConstructionOptions } from '@attachments/serendipity-core'
 
 interface HelloWorldOptions {
   name: string

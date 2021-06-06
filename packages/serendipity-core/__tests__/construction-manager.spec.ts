@@ -8,7 +8,7 @@
 
 import * as fs from 'fs'
 import { fsMock } from '@attachments/serendipity-public'
-import { ConstructionManager } from '../src/construction-manager'
+import { ConstructionManager } from '../src'
 
 const mockedExeca = require('../../../__mocks__/execa')
 
