@@ -1,9 +1,15 @@
-import { Construction, Inquiry, Runtime, Script, SerendipityPlugin } from '@attachments/serendipity-core'
-import { ConstructionOptions, RuntimeOptions } from '@attachments/serendipity-core/lib/types/pluginExecute'
+import {
+  Construction,
+  ConstructionOptions,
+  Inquiry,
+  Runtime, RuntimeOptions,
+  Script,
+  SerendipityPlugin
+} from '@attachments/serendipity-core'
 
 
 @SerendipityPlugin('my-plugin')
-class MyPlugin {
+export class MyPlugin {
   @Construction()
   myConstruction(options: ConstructionOptions) {
     // 在构建模式下做些什么
@@ -26,4 +32,3 @@ class MyPlugin {
   }
 }
 
-export default MyPlugin
