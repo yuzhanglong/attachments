@@ -34,9 +34,18 @@ const getTemplatesData = async (templateBasePath: string, targetBasePath: string
   )
 
   for (const file of totalFiles) {
+    let tmp = file
+
+    // 如果文件名以 __ 开头，我们将它换成点号
+    // 这样做的原因是 npm 在上传 package 时会忽略以点开头的文件名
+    if (file.startsWith('__')) {
+      tmp = '.' + file.slice(2)
+    }
+
     const base = path.resolve(templateBasePath, file)
     const content = await readFilePromise(base)
-    const target = path.resolve(targetBasePath, file)
+    const target = path.resolve(targetBasePath, tmp)
+
 
     // 将文件内容保存到一个对象中，最后一次性处理
     fsResults[target] = content.toString()
@@ -53,7 +62,6 @@ const getTemplatesData = async (templateBasePath: string, targetBasePath: string
  * @param options ejs 配置
  * @date 2021-1-29 12:35:22
  */
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const renderTemplateData = (data: TemplateFilesMapper, options: unknown): void => {
   // TODO: 基于 ejs 渲染数据

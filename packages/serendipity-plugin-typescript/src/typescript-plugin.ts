@@ -4,7 +4,7 @@ import { Construction, ConstructionOptions, SerendipityPlugin } from '@attachmen
 @SerendipityPlugin('my-plugin')
 export class SerendipityPluginTypeScript {
   @Construction()
-  myConstruction(options: ConstructionOptions) {
+  async myConstruction(options: ConstructionOptions) {
     options.appManager.packageManager.mergeIntoCurrent({
       main: 'lib/index.js',
       module: 'esm/index.js',
@@ -27,6 +27,6 @@ export class SerendipityPluginTypeScript {
       }
     })
 
-    options.renderTemplate('ts-template')
+    await options.renderTemplate('ts-template')
   }
 }
