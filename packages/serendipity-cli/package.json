@@ -1,6 +1,6 @@
 {
   "name": "@attachments/serendipity",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "main": "./lib/serendipity.js",
   "bin": {
     "serendipity": "./lib/serendipity.js"
@@ -13,8 +13,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@attachments/serendipity-core": "^0.1.14",
-    "@attachments/serendipity-public": "^0.1.14",
+    "@attachments/serendipity-core": "^0.1.15",
+    "@attachments/serendipity-public": "^0.1.15",
     "commander": "^7.0.0"
   },
   "files": [
