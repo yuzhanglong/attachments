@@ -49,3 +49,12 @@ export const getBasePackageJsonContent = (name?: string) => {
     'license': 'MIT'
   }
 }
+
+
+export function getPresetPathByName(name: string) {
+  // 如果没有后缀名，我们需要加上
+  if (!name.endsWith('.js')) {
+    name = name + '.js'
+  }
+  return path.resolve(__dirname, '../presets', name)
+}

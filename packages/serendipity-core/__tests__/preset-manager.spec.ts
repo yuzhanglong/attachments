@@ -68,7 +68,7 @@ describe('preset Manager 模块测试', () => {
       // @ts-ignore
       await PresetManager.createPresetManagerByRemotePath(666, 666)
     } catch (e) {
-      expect(e.message).toStrictEqual('url.startsWith is not a function')
+      expect(e.message).toStrictEqual('target.startsWith is not a function')
     }
 
     try {
@@ -168,7 +168,7 @@ describe('preset Manager 模块测试', () => {
     })
   })
 
-  test('当 preset 传入的不是一个本地路径，也不是一个 http URL 我们会从 GitHub 仓库的默认 preset 获取', async () => {
+  test('当 preset 传入的不是一个本地路径，我们要求用户传入回调函数来获取', async () => {
     const f = fsMock({})
     mock.onGet(`${PRESET_CDN_BASE_URL}/react.js`).reply(200, 'const path = require(\'path\')\n' +
       '\n' +
@@ -182,7 +182,11 @@ describe('preset Manager 模块测试', () => {
       '    }\n' +
       '  ]\n' +
       '}')
-    const pm = await PresetManager.createPresetManager('react', f.path)
+
+    const pm = await PresetManager.createPresetManager('react', f.path, async (target) => {
+      return await PresetManager.createPresetManagerByRemotePath(f.path, `${PRESET_CDN_BASE_URL}/${target}.js`)
+    })
+
     expect(pm.getPreset()).toStrictEqual({
       'initialDir': true,
       'initialDirDefaultName': 'my-project',
@@ -197,5 +201,14 @@ describe('preset Manager 模块测试', () => {
     })
     f.clear()
   })
-})
 
+  test('当 preset 传入的不是一个本地路径，且用户没有传入回调函数，我们会抛出一个异常', async () => {
+    const f = fsMock({})
+
+    try {
+      await PresetManager.createPresetManager('react', f.path)
+    } catch (e) {
+      expect(e.message).toStrictEqual('you should pass callback for not-remote-path and not-local-path preset!')
+    }
+  })
+})
