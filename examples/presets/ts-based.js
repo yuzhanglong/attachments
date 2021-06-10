@@ -3,7 +3,11 @@ module.exports = {
   plugins: [
     {
       name: '@attachments/serendipity-plugin-eslint',
-      removeAfterConstruction: true
+      removeAfterConstruction: true,
+      overrideInquiries: {
+        environment: '其他项目',
+        useTypeScript: true
+      }
     },
     {
       name: '@attachments/serendipity-plugin-typescript',
