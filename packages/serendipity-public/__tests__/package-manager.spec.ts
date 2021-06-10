@@ -395,4 +395,23 @@ describe('packageManager 测试模块', () => {
       expect(e.message.startsWith('Error: Cannot find module')).toBeTruthy()
     }
   })
+
+  test('在调用 getPackageConfig() 时，如果某个键的值为空对象，我们删除之', () => {
+    const m = PackageManager.createWithOptions({
+      basePath: '/',
+      managerName: 'yarn',
+      packageConfig: {
+        // 不会处理
+        name: undefined,
+        // 不会处理
+        age: null,
+        hobby: {}
+      }
+    })
+
+    expect(m.getPackageConfig()).toEqual({
+      'age': null,
+      'name': undefined
+    })
+  })
 })

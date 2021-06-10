@@ -152,7 +152,7 @@ export class PackageManager {
     await writeFilePromise(
       path.resolve(this.basePath, 'package.json'),
       // 默认 2 缩进
-      JSON.stringify(this.packageConfig, null, 2)
+      JSON.stringify(this.getPackageConfig(), null, 2)
     )
   }
 
@@ -178,7 +178,18 @@ export class PackageManager {
    * @date 2021-2-2 22:06:32
    */
   public getPackageConfig(): BaseObject {
-    return sortPackageJson(this.packageConfig)
+    const tmp = this.packageConfig
+    for (const tmpKey in tmp) {
+      if (Object.prototype.hasOwnProperty.call(tmp, tmpKey)) {
+        // 如果某个字段的值是 {} 我们删除之, 至于为什么不处理 null 和 undefined，
+        // 实践证明有些 bug 会以这种方式体现，方便 debug
+        const val = tmp[tmpKey]
+        if (val !== null && typeof val === 'object' && Object.keys(val).length === 0) {
+          delete tmp[tmpKey]
+        }
+      }
+    }
+    return sortPackageJson(tmp)
   }
 
 
