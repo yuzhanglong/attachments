@@ -60,6 +60,8 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
     // 接下来执行插件 @Construction 下的逻辑, 合并 package.json
     await constructionManager.runPluginConstruction(null, pm.getPreset())
 
+    logger.info('install final dependencies...')
+
     // 安装合并进来的依赖
     await constructionManager.installDependencies()
 
