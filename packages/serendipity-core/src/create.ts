@@ -7,11 +7,12 @@
  */
 import * as path from 'path'
 import * as fs from 'fs-extra'
-import { logger } from '@attachments/serendipity-public'
+import { isLocalPath, isRemotePath, logger } from '@attachments/serendipity-public'
 import { PresetManager } from './preset-manager'
 import createCoreManagerHooks from './hooks/core-manager-hooks'
 import { ConstructionManager } from './construction-manager'
 import { CreateOptions } from './types'
+import { getPresetPathByName } from './utils'
 
 
 /**
@@ -43,8 +44,14 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
   // 如果 projectDir 不存在，创建之
   await fs.ensureDir(projectDir)
 
+  let tmpPresetPath = presetPath
+
+  if (!isRemotePath(tmpPresetPath) && !isLocalPath(tmpPresetPath)) {
+    tmpPresetPath = getPresetPathByName(presetPath)
+  }
+
   // 初始化预设管理器
-  const pm = await PresetManager.createPresetManager(presetPath, projectDir)
+  const pm = await PresetManager.createPresetManager(tmpPresetPath, projectDir)
 
   const execute = async () => {
     // [hooks] -- beforePluginInstall 在 plugin 安装前做些什么

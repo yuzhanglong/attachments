@@ -6,6 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
+export { isRemotePath, isLocalPath } from './utils/paths'
 export { default as webpackMerge } from 'webpack-merge'
 export { serendipityEnv } from './utils/env'
 export { runCommand } from './utils/run-command'

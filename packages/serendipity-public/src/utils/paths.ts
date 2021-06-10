@@ -20,6 +20,16 @@ export const REACT_ENTRY_EXTENSIONS = [
   'tsx'
 ]
 
+// 判断是否为远程路径
+export const isRemotePath = (target: string) => {
+  return target.startsWith('http://') || target.startsWith('https://')
+}
+
+// 判断是否为本地路径
+export const isLocalPath = (target: string) => {
+  return target.startsWith('/') || (target.match(/[a-zA-Z]:(\\\\)|(\/\/)|(\\)/) !== null)
+}
+
 // app 基础路径，即执行路径
 const appBaseUrl = process.cwd()
 

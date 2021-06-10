@@ -21,7 +21,8 @@
   "files": [
     "esm",
     "lib",
-    "src"
+    "src",
+    "presets"
   ],
   "gitHead": "49d6e80c784169331de048713142cc8b19dac1ff"
 }

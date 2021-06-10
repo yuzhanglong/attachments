@@ -6,10 +6,10 @@ import { useSerendipityCreate } from '../src'
 jest.unmock('execa')
 
 
-describe('测试 create API', () => {
+describe.skip('测试 create API', () => {
   const helloPreset = path.resolve(process.cwd(), 'examples', 'test-cases', 'preset-cases', 'hello-world.js')
 
-  test.skip('create API 正常初始化，临时预设文件被创建到项目的根目录下', async () => {
+  test('create API 正常初始化，临时预设文件被创建到项目的根目录下', async () => {
     const f = fsMock({})
 
     const c = await useSerendipityCreate({
@@ -32,7 +32,7 @@ describe('测试 create API', () => {
     expect(fs.existsSync(f.resolve('foo', 'package.json'))).toBeTruthy()
   })
 
-  test.skip('如果目标路径已经存在，我们不会再其下创建一个项目，而是抛出异常', async () => {
+  test('如果目标路径已经存在，我们不会再其下创建一个项目，而是抛出异常', async () => {
     const f = fsMock({
       foo: {
         'a.out': 'aaa'
@@ -53,7 +53,7 @@ describe('测试 create API', () => {
     }
   })
 
-  test.skip('测试 construction 模式，质询、构建阶段应该被正常执行', async () => {
+  test('测试 construction 模式，质询、构建阶段应该被正常执行', async () => {
     const f = fsMock({})
 
     const c = await useSerendipityCreate({

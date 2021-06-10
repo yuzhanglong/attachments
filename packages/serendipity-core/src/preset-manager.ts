@@ -11,7 +11,7 @@ import axios from 'axios'
 import {
   logger, writeFilePromise,
   DEFAULT_PRESET_NAME,
-  BaseObject, PRESET_CDN_BASE_URL
+  BaseObject, isRemotePath, isLocalPath
 } from '@attachments/serendipity-public'
 import { DEFAULT_PRESET } from './common'
 import { SerendipityPreset } from './types'
@@ -45,8 +45,7 @@ export class PresetManager {
    */
   public static async createPresetManagerByRemotePath(basePath: string, url: string) {
     // 判断是否为远程路径
-    const isRemotePath = url.startsWith('http://') || url.startsWith('https://')
-    if (!isRemotePath) {
+    if (!isRemotePath(url)) {
       throw new Error('不合法的 preset 路径!')
     }
 
@@ -72,8 +71,7 @@ export class PresetManager {
    * @param localPath preset 本地路径
    */
   public static async createPresetManagerByLocalPath(localPath: string) {
-    const isLocalPath = localPath.startsWith('/') || (localPath.match(/[a-zA-Z]:(\\\\)|(\/\/)|(\\)/) !== null)
-    if (!isLocalPath) {
+    if (!isLocalPath(localPath)) {
       throw new Error('不合法的本地 preset 路径！')
     }
     const res = require(localPath)
@@ -82,37 +80,29 @@ export class PresetManager {
   }
 
   /**
-   * 根据本地路径获取 presetManager
+   * 路径获取 presetManager
+   * - 当目的路径为远程路径（http protocol） 或者本地路径（file protocol）时，分别调用相应工厂函数
+   * - 如果目的路径不是上面两种情况，我们要求用户传入一个回调函数来处理！
    *
    * @author yuzhanglong
    * @date 2021-6-3 00:32:34
    * @param target 目标 url
    * @param tmpPath preset 临时保存路径
+   * @param callback 回调函数，见上面的描述
    */
-  public static async createPresetManager(target: string, tmpPath?: string) {
-    // 判断是否为远程路径
-    const isRemotePath = target.startsWith('http://') || target.startsWith('https://')
-    const isLocalPath = target.startsWith('/') || (target.match(/[a-zA-Z]:(\\\\)|(\/\/)|(\\)/) !== null)
-    if (!isRemotePath && !isLocalPath) {
-      return await PresetManager.createPresetByName(tmpPath, target)
+  public static async createPresetManager(target: string, tmpPath?: string, callback?: (path: string) => any) {
+    if (!isRemotePath(target) && !isLocalPath(target)) {
+      if (!callback) {
+        throw new Error('you should pass callback for not-remote-path and not-local-path preset!')
+      }
+      return await callback(target)
     }
-    if (isRemotePath) {
+
+    if (isRemotePath(target)) {
       return await PresetManager.createPresetManagerByRemotePath(tmpPath, target)
     }
-    return await PresetManager.createPresetManagerByLocalPath(target)
-  }
 
-  /**
-   * 根据 preset 名称获取 presetManager，我们会从 GitHub 仓库的默认 preset 目录下获取
-   *
-   * @author yuzhanglong
-   * @date 2021-5-28 22:43:58
-   * @param basePath 基本路径
-   * @param name preset 名称
-   */
-  public static async createPresetByName(basePath: string, name: string) {
-    const remotePath = `${PRESET_CDN_BASE_URL}/${name}.js`
-    return PresetManager.createPresetManagerByRemotePath(basePath, remotePath)
+    return await PresetManager.createPresetManagerByLocalPath(target)
   }
 
   /**
