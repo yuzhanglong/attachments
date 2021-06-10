@@ -14,7 +14,7 @@
     "lerna:link": "lerna bootstrap",
     "lerna:clean": "lerna clean",
     "lerna:clean-build": "lerna run clean",
-    "lerna:publish": "yarn lerna:build && lerna publish --no-push",
+    "lerna:publish": "yarn lerna:clean&& yarn install && yarn lerna:build && lerna publish --no-push",
     "codecov": "codecov",
     "docs:serve": "docsify serve ./docs",
     "cnpm-sync": "./scripts/cnpm-sync.sh"
