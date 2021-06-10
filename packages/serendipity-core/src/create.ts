@@ -11,6 +11,7 @@ import { PresetManager } from './preset-manager'
 import createCoreManagerHooks from './hooks/core-manager-hooks'
 import { ConstructionManager } from './construction-manager'
 import { CreateOptions } from './types'
+import { logger } from '@attachments/serendipity-public'
 
 
 /**
@@ -35,6 +36,7 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
 
   // 如果 projectDir 不存在，抛出异常
   if (fs.existsSync(projectDir)) {
+    logger.error('The working directory already exists!')
     throw new Error('The working directory already exists!')
   }
 
