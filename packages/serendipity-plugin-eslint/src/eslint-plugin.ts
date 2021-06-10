@@ -67,13 +67,19 @@ export class EslintPlugin {
       const target = ESLINT_OPTION_TO_CONFIG[conf]
       if (conf) {
         packageManager.mergeIntoCurrent({
-          devDependencies: {
-            [ESLINT_OPTION_TO_CONFIG[conf].package]: ESLINT_OPTION_TO_CONFIG[conf].version
-          },
           eslintConfig: {
             rules: {
               ...target.defaultRules
             }
+          }
+        })
+      }
+
+      const pkg = ESLINT_OPTION_TO_CONFIG[conf].package
+      if (pkg) {
+        packageManager.mergeIntoCurrent({
+          devDependencies: {
+            pkg: ESLINT_OPTION_TO_CONFIG[conf].version
           }
         })
       }
