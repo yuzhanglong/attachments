@@ -23,7 +23,8 @@ export class SerendipityPluginTypeScript {
       devDependencies: {
         'typescript': '^4.2.3',
         'npm-run-all': '^4.1.5',
-        'rimraf': '^3.0.2'
+        'rimraf': '^3.0.2',
+        '@types/node': '^15.12.2'
       }
     })
 
