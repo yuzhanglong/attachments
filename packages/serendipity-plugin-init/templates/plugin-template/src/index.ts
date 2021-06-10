@@ -1,3 +1,3 @@
-import MyPlugin from './MyPlugin'
+import { MyPlugin } from './my-plugin'
 
-module.exports = MyPlugin
+export default MyPlugin

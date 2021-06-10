@@ -11,18 +11,28 @@ import { renderTemplate, fsMock } from '../src'
 
 
 describe('模板处理相关', () => {
-  const fsHelper = fsMock({})
-
-  afterAll(() => {
-    fsHelper.removeDir()
-  })
-
   test('渲染并写入模板', async () => {
-    fs.mkdirSync(fsHelper.resolve('hello'))
-    fs.mkdirSync(fsHelper.resolve('world'))
-    fs.writeFileSync(fsHelper.resolve('hello/foo'), '111')
+    const fsHelper = fsMock({
+      hello: {
+        foo: '111'
+      },
+      world: {}
+    })
+
     await renderTemplate(fsHelper.resolve('hello'), {}, fsHelper.resolve('world'))
     await renderTemplate(fsHelper.resolve('hello'), null, fsHelper.resolve('world'))
-    expect(fs.existsSync(fsHelper.resolve('hello/foo'))).toBeTruthy()
+    expect(fs.existsSync(fsHelper.resolve('world/foo'))).toBeTruthy()
+  })
+
+  test('当文件名以 __ 开头时，我们以一个点号替换之', async () => {
+    const fsHelper = fsMock({
+      foo: {
+        __hello: 'hello world!'
+      },
+      bar: {}
+    })
+
+    await renderTemplate(fsHelper.resolve('foo'), {}, fsHelper.resolve('bar'))
+    expect(fs.existsSync(fsHelper.resolve('bar/.hello'))).toBeTruthy()
   })
 })

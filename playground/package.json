@@ -5,8 +5,10 @@
   "scripts": {
     "create-init-plugin": "node ../packages/serendipity-cli/lib/serendipity.js create hello-init -p D:\\projects\\serendipity\\examples\\test-cases\\preset-cases\\init-local.js",
     "create-ts-plugin": "node ../packages/serendipity-cli/lib/serendipity.js create hello-ts -p D:\\projects\\serendipity\\examples\\test-cases\\preset-cases\\ts-local.js",
-    "add-ts-preset": "cd foo && node ../../packages/serendipity-cli/lib/serendipity.js create -p D:\\\\projects\\serendipity\\examples\\presets\\ts-local.js",
-    "add-react": "node ../packages/serendipity-cli/lib/serendipity.js create -p D:\\\\projects\\serendipity\\examples\\presets\\react-local.js"
+    "create-react": "rimraf hello-react && node serendipity create hello-react -p D:\\projects\\serendipity\\examples\\test-cases\\preset-cases\\react-local.js"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "rimraf": "^3.0.2"
+  }
 }

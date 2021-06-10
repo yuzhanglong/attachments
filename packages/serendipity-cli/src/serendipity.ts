@@ -43,21 +43,4 @@ program
     await instance.execute()
   })
 
-// // serendipity add 为serendipity 管理的项目或者某个一般项目添加插件
-// program
-//   .command('add [plugin-name]')
-//   .description('添加一个插件')
-//   .option('-v --version <version>', 'plugin 版本，默认为 latest')
-//   .option('-l --localPath <localPath>', 'plugin 本地路径，追加此选项时 -v 会被忽略')
-//   .option('-d --delete', '在安装完成之后移除 plugin (用于面向一些只负责构建功能的 plugin)')
-//   .action(async (name: string, opt: AddOption) => {
-//     // 初始化 manager
-//     const manager = new CoreManager()
-//
-//     // 注册钩子
-//     registerCreateHook(manager)
-//
-//     await manager.add(name, opt)
-//   })
-//
 program.parse(process.argv)

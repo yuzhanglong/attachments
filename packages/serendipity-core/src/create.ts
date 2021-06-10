@@ -7,6 +7,7 @@
  */
 import * as path from 'path'
 import * as fs from 'fs-extra'
+import { logger } from '@attachments/serendipity-public'
 import { PresetManager } from './preset-manager'
 import createCoreManagerHooks from './hooks/core-manager-hooks'
 import { ConstructionManager } from './construction-manager'
@@ -35,6 +36,7 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
 
   // 如果 projectDir 不存在，抛出异常
   if (fs.existsSync(projectDir)) {
+    logger.error('The working directory already exists!')
     throw new Error('The working directory already exists!')
   }
 
@@ -57,6 +59,8 @@ export async function useSerendipityCreate(createOptions: CreateOptions) {
     // 此时所有插件都已经安装完成
     // 接下来执行插件 @Construction 下的逻辑, 合并 package.json
     await constructionManager.runPluginConstruction(null, pm.getPreset())
+
+    logger.info('install final dependencies...')
 
     // 安装合并进来的依赖
     await constructionManager.installDependencies()
