@@ -13,7 +13,8 @@ export class SerendipityPluginTypeScript {
         'lib:cjs': 'tsc -p tsconfig.json --target ESNext --module commonjs --outDir lib',
         'lib:esm': 'tsc -p tsconfig.json --target ESNext --module ESNext --outDir esm',
         'build': 'run-p lib:*',
-        'clean': 'rimraf lib esm'
+        'clean': 'rimraf lib esm',
+        'start': 'tsc -w'
       },
       files: [
         'esm',
