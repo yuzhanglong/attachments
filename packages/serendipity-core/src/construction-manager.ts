@@ -100,7 +100,7 @@ export class ConstructionManager {
     logger.info('正在初始化 git 仓库...')
     try {
       // init git
-      await runCommand('git init', [], this.basePath)
+      await runCommand('git', ['init'], this.basePath)
 
       // init first commit
       await this.initFirstCommit(message || DEFAULT_COMMIT_MESSAGE)
@@ -117,7 +117,7 @@ export class ConstructionManager {
    * @date 2021-1-30 19:37:54
    */
   async initFirstCommit(message: string): Promise<void> {
-    await runCommand('git add -A', [], this.basePath)
+    await runCommand('git', ['add', '-A'], this.basePath)
     await runCommand('git', ['commit', '-m', message, '--no-verify'], this.basePath)
   }
 

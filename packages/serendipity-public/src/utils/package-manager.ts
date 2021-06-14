@@ -165,8 +165,8 @@ export class PackageManager {
    */
   public async installDependencies(): Promise<void> {
     await runCommand(
-      `${this.managerName} install`,
-      [],
+      `${this.managerName}`,
+      ['install'],
       this.basePath)
   }
 
@@ -205,8 +205,9 @@ export class PackageManager {
   public async addAndInstallModule(installOptions: ModuleInstallOptions): Promise<BaseObject> {
     if (installOptions) {
       try {
+        const { command, args } = this.getInstallCommand(installOptions)
         // 执行安装命令
-        await runCommand(this.getInstallCommand(installOptions), [], this.basePath)
+        await runCommand(command, args, this.basePath)
         return resolveModule(path.resolve(this.basePath, 'node_modules', installOptions.name))
       } catch (e) {
         if (installOptions.onError && typeof installOptions.onError === 'function') {
@@ -228,15 +229,21 @@ export class PackageManager {
    * @return 结果字符串
    * @date 2021-2-17 17:47:04
    */
-  private getInstallCommand(installOptions: ModuleInstallOptions): string {
+  private getInstallCommand(installOptions: ModuleInstallOptions): { args: any[]; command: string } {
     const command = `${this.managerName} ${this.managerName === 'yarn' ? 'add' : 'install'}`
+    const args = []
     // 如果传入了本地路径，我们从本地路径安装
     // yarn add file:/path/to/local/folder
     if (installOptions.localPath) {
-      return command + ` file:${installOptions.localPath}`
+      args.push(`file:${installOptions.localPath}`)
     } else {
       // 如果有版本号，需要加上 @版本号 ，例如 yarn add foo@1.0.0
-      return command + ` ${installOptions.name}` + (installOptions.version ? `@${installOptions.version}` : '')
+      const v = `${installOptions.name}` + (installOptions.version ? `@${installOptions.version}` : '')
+      args.push(v)
+    }
+    return {
+      command: command,
+      args: args
     }
   }
 
