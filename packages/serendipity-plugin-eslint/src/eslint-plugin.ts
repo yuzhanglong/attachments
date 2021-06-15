@@ -79,7 +79,7 @@ export class EslintPlugin {
       if (pkg) {
         packageManager.mergeIntoCurrent({
           devDependencies: {
-            pkg: ESLINT_OPTION_TO_CONFIG[conf].version
+            [pkg]: ESLINT_OPTION_TO_CONFIG[conf].version
           }
         })
       }
