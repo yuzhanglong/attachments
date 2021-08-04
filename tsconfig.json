@@ -1,24 +1,17 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
     "target": "ESNext",
-    "moduleResolution": "node",
-    "allowJs": true,
-    "noEmit": true,
-    "isolatedModules": false,
     "module": "CommonJS",
-    "sourceMap": true,
-    "lib": [
-      "ESNext",
-      "dom"
-    ],
+    "declaration": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
     "types": [
       "jest",
       "node"
     ],
-    "resolveJsonModule": true
-  },
-  "include": [
-    "src"
-  ]
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true
+  }
 }

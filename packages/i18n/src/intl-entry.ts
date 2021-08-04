@@ -6,7 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-import { createIntl } from '@/packages/intl/create-intl';
+import { createIntl } from './create-intl';
 
 // 暴露出 intl
 const i = createIntl();

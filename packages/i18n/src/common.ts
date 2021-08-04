@@ -6,7 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-import { IntlSources } from '@/packages/intl/types';
+import { IntlSources } from './types';
 
 export enum LANGUAGE_MAP {
   en = 'en-US',
@@ -14,8 +14,8 @@ export enum LANGUAGE_MAP {
 }
 
 export const I18nChunkMap: IntlSources = {
-  [LANGUAGE_MAP.zh]: () => import(/* webpackChunkName: "i18n.zh-cn" */ '@/packages/intl/data/zh-cn.json'),
-  [LANGUAGE_MAP.en]: () => import(/* webpackChunkName: "i18n.en-us" */ '@/packages/intl/data/en-us.json'),
+  [LANGUAGE_MAP.zh]: () => import(/* webpackChunkName: "i18n.zh-cn" */ './data/zh-cn.json'),
+  [LANGUAGE_MAP.en]: () => import(/* webpackChunkName: "i18n.en-us" */ './data/en-us.json'),
 };
 
 export const INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE = 'the message is empty...';

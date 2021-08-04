@@ -1,4 +1,4 @@
-import { GlobalIntl } from '@/packages/intl/types';
+import { GlobalIntl } from './types';
 
 declare global {
   const intl: GlobalIntl;

@@ -6,8 +6,8 @@
  * Email: yuzl1123@163.com
  */
 import { IntlMessageFormat } from 'intl-messageformat';
-import { IntlSources, MessageMap } from '@/packages/intl/types';
-import { INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE } from '@/packages/intl/common';
+import { IntlSources, MessageMap } from './types';
+import { INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE } from './common';
 
 
 interface IntlExecutorOptions {

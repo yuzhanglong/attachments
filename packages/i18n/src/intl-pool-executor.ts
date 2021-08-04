@@ -5,8 +5,8 @@
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
-import { INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE } from '@/packages/intl/common';
-import { IntlGroup } from '@/packages/intl/intl-group';
+import { INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE } from './common';
+import { IntlGroup } from './intl-group';
 import { IIntlGroupExecutor } from './types';
 
 interface IntlGroupWrapper {

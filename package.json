@@ -7,6 +7,15 @@
   ],
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint --ext .ts,.md --max-warnings 0 ./",
+    "test": "jest --no-cache",
+    "lerna:build-cjs": "lerna run build:cjs",
+    "lerna:build-esm": "lerna run build:esm",
+    "lerna:link": "lerna bootstrap",
+    "lerna:clean": "lerna clean",
+    "lerna:publish": "yarn lerna:clean && yarn install && yarn lerna:build-cjs && yarn lerna:build-esm && lerna publish --no-push"
+  },
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@types/node": "^16.4.6",
@@ -22,7 +31,6 @@
     "lerna": "^4.0.0",
     "ts-jest": "^27.0.4",
     "ts-node": "^10.1.0",
-    "typescript": "^4.3.5",
-    "webpack": "^5.48.0"
+    "typescript": "^4.3.5"
   }
 }

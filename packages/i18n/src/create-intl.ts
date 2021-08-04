@@ -5,7 +5,7 @@
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
-import { IntlPoolExecutor } from '@/packages/intl/intl-pool-executor';
+import { IntlPoolExecutor } from './intl-pool-executor';
 import { GlobalIntl } from './types';
 
 export function createIntl() {
