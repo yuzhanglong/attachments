@@ -1,0 +1,21 @@
+{
+  "name": "@attachments/i18n-webpack-plugin",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "yuzhanglong <yuzl1123@163.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "dev:start": "tsc -w",
+    "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
+    "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm"
+  },
+  "devDependencies": {
+    "webpack": "^5.48.0"
+  }
+}
