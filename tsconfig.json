@@ -16,12 +16,7 @@
       "jest",
       "node"
     ],
-    "resolveJsonModule": true,
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
+    "resolveJsonModule": true
   },
   "include": [
     "src"
