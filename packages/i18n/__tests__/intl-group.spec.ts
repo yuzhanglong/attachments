@@ -8,13 +8,20 @@
 
 
 import { IntlGroup } from '../src/intl-group';
-import { I18nChunkMap, INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE, LANGUAGE_MAP } from '../src/common';
+import { INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE, LANGUAGE_MAP } from '../src/common';
+import { IntlSources } from '../src';
+
+const I18nChunkMap: IntlSources = {
+  [LANGUAGE_MAP.zh]: () => import(/* webpackChunkName: "i18n.zh-cn" */ './data/zh-cn.json'),
+  [LANGUAGE_MAP.en]: () => import(/* webpackChunkName: "i18n.en-us" */ './data/zh-cn.json'),
+};
 
 describe('test intl packages', () => {
   let executor = null;
   beforeEach(() => {
+
     executor = new IntlGroup({
-      intlSources: I18nChunkMap
+      intlSources: I18nChunkMap,
     });
   });
 
@@ -38,10 +45,10 @@ describe('test intl packages', () => {
     await executor.updateCurrentLocal(LANGUAGE_MAP.zh);
 
     const msg1 = executor.getMessage('Yzl_test_Name', {
-      name: 'yuzhanglong'
+      name: 'yuzhanglong',
     });
     const msg2 = executor.getMessage('Yzl_test_Age', {
-      age: 20
+      age: 20,
     });
 
     expect(msg1).toStrictEqual('姓名: yuzhanglong');
@@ -56,7 +63,7 @@ describe('test intl packages', () => {
     expect(executor.currentCachedFormatters).toStrictEqual({});
 
     executor.getMessage('Yzl_test_Name', {
-      name: 'yuzhanglong'
+      name: 'yuzhanglong',
     });
     expect(executor.currentCachedFormatters.Yzl_test_Name).toBeTruthy();
   });
@@ -68,7 +75,7 @@ describe('test intl packages', () => {
     await executor.updateCurrentLocal(LANGUAGE_MAP.zh);
 
     const msg1 = executor.getMessage('Yzl_test_Name', {
-      name: 'yuzhanglong'
+      name: 'yuzhanglong',
     });
 
     expect(msg1).toStrictEqual('姓名: yuzhanglong');
@@ -76,7 +83,7 @@ describe('test intl packages', () => {
     await executor.updateCurrentLocal(LANGUAGE_MAP.en);
 
     const msg2 = executor.getMessage('Yzl_test_Name', {
-      name: 'yuzhanglong'
+      name: 'yuzhanglong',
     });
 
     expect(msg2).toStrictEqual('name: yuzhanglong');
@@ -88,7 +95,7 @@ describe('test intl packages', () => {
 
     try {
       executor.getMessage('App_Name', {
-        name: 'yuzhanglong'
+        name: 'yuzhanglong',
       });
     } catch (e) {
       expect(e.message).toStrictEqual('please set current local string by calling updateCurrentLocal()!');
@@ -102,7 +109,7 @@ describe('test intl packages', () => {
     await executor.updateCurrentLocal(LANGUAGE_MAP.zh);
 
     const msg = executor.getMessage('bad key', {
-      name: 'yuzhanglong'
+      name: 'yuzhanglong',
     });
 
     expect(msg).toStrictEqual(INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE);
@@ -124,8 +131,8 @@ describe('test intl packages', () => {
       intlSources: {
         foo: async () => {
           throw new Error('bad intl source!');
-        }
-      }
+        },
+      },
     });
 
     try {
@@ -146,13 +153,13 @@ describe('test intl packages', () => {
   test('test updateIntlSources()', async () => {
     // not override
     executor.updateIntlSources({
-      [LANGUAGE_MAP.zh]: () => import('../src/data/zh-cn.json')
+      [LANGUAGE_MAP.zh]: () => import('./data/zh-cn.json'),
     }, false);
     expect(Object.keys(executor.intlSources).length).toStrictEqual(2);
 
     // override
     executor.updateIntlSources({
-      [LANGUAGE_MAP.en]: () => import('../src/data/en-us.json')
+      [LANGUAGE_MAP.en]: () => import('./data/en-us.json'),
     }, true);
     expect(Object.keys(executor.intlSources).length).toStrictEqual(1);
   });

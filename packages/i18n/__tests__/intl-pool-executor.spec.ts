@@ -22,7 +22,7 @@ describe('test intl-pool-executor', () => {
     expect(executor.intlGroups.length).toStrictEqual(0);
 
     executor.register('group 1', {
-      [LANGUAGE_MAP.zh]: () => import('../src/data/zh-cn.json')
+      [LANGUAGE_MAP.zh]: () => import('./data/zh-cn.json')
     });
     expect(executor.intlGroups.length).toStrictEqual(1);
 
@@ -33,7 +33,7 @@ describe('test intl-pool-executor', () => {
   test('test unregister intl source', () => {
     const executor = new IntlPoolExecutor();
     executor.register('group 1', {
-      [LANGUAGE_MAP.zh]: () => import('../src/data/zh-cn.json')
+      [LANGUAGE_MAP.zh]: () => import('./data/zh-cn.json')
     });
     expect(executor.intlGroups.length).toStrictEqual(1);
 
@@ -48,8 +48,8 @@ describe('test intl-pool-executor', () => {
 
     await executor
       .register('group 1', {
-        [LANGUAGE_MAP.zh]: () => import('../src/data/zh-cn.json'),
-        [LANGUAGE_MAP.en]: () => import('../src/data/en-us.json')
+        [LANGUAGE_MAP.zh]: () => import('./data/zh-cn.json'),
+        [LANGUAGE_MAP.en]: () => import('./data/en-us.json')
 
       })
       .activate('group 1');
@@ -72,15 +72,15 @@ describe('test intl-pool-executor', () => {
 
     await executor
       .register('group 1', {
-        [LANGUAGE_MAP.zh]: () => import('../src/data/zh-cn.json'),
-        [LANGUAGE_MAP.en]: () => import('../src/data/en-us.json')
+        [LANGUAGE_MAP.zh]: () => import('./data/zh-cn.json'),
+        [LANGUAGE_MAP.en]: () => import('./data/en-us.json')
 
       })
       .activate('group 1');
 
     await executor.register('group 2', {
-      [LANGUAGE_MAP.zh]: () => import('../src/data/zh-cn-part-2.json'),
-      [LANGUAGE_MAP.en]: () => import('../src/data/en-us-part-2.json')
+      [LANGUAGE_MAP.zh]: () => import('./data/zh-cn-part-2.json'),
+      [LANGUAGE_MAP.en]: () => import('./data/en-us-part-2.json')
     }).activate('group 2');
 
     expect(executor.getMessage('Yzl_test_Name', {
@@ -109,13 +109,13 @@ describe('test intl-pool-executor', () => {
 
     await executor
       .register('group 1', {
-        [LANGUAGE_MAP.zh]: () => import('../src/data/zh-cn.json')
+        [LANGUAGE_MAP.zh]: () => import('./data/zh-cn.json')
 
       })
       .activate('group 1');
 
     await executor.register('group 2', {
-      [LANGUAGE_MAP.zh]: () => import('../src/data/zh-cn-part-2.json')
+      [LANGUAGE_MAP.zh]: () => import('./data/zh-cn-part-2.json')
     }).activate('group 2');
 
     expect(executor.getMessage('Yzl_test_Name', {
@@ -183,8 +183,8 @@ describe('test intl-pool-executor', () => {
 
     await executor
       .register('group 1', {
-        [LANGUAGE_MAP.zh]: () => import('../src/data/zh-cn.json'),
-        [LANGUAGE_MAP.en]: () => import('../src/data/en-us.json')
+        [LANGUAGE_MAP.zh]: () => import('./data/zh-cn.json'),
+        [LANGUAGE_MAP.en]: () => import('./data/en-us.json')
       })
       .activate('group 1');
 

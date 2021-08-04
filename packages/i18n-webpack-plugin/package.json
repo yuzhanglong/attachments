@@ -13,7 +13,8 @@
   "scripts": {
     "dev:start": "tsc -w",
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
-    "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm"
+    "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
+    "dev:link": "yarn link"
   },
   "devDependencies": {
     "webpack": "^5.48.0"
