@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noEmit": true,
+    "isolatedModules": false,
+    "module": "CommonJS",
+    "sourceMap": true,
+    "lib": [
+      "ESNext",
+      "dom"
+    ],
+    "types": [
+      "jest",
+      "node"
+    ],
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ]
+}
