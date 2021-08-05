@@ -18,21 +18,49 @@ export interface PluginOptions {
 type StringLiteralPath = NodePath<StringLiteral>
 
 function createIntlKeyCommentManager(compressPrefix: string = '$') {
+  console.log('init!');
+  const mapFromOldKeyToNewKey = new Map<string, string>();
+
   let count = 0;
 
-  const addComment = (path: StringLiteralPath, oldKey: string, compress = true) => {
-    const newKeyStr = `${compressPrefix}${(count + 1).toString()}`;
-    path.addComment('leading', `{ "oldKey": "${oldKey}", "newKey": "${compress ? newKeyStr : oldKey}" }`);
-
-    count += 1;
-    // 使用压缩过的新 key 替换节点
-    if (compress) {
-      path.replaceWithSourceString(`'${newKeyStr}'`);
+  const addCommentAndDoReplacement = (path: StringLiteralPath, oldKey: string, newKey: string) => {
+    path.addComment('leading', `{ "oldKey": "${oldKey}", "newKey": "${newKey}" }`);
+    // 防止爆栈
+    if (oldKey !== newKey) {
+      path.replaceWithSourceString(`'${newKey}'`);
     }
   };
 
+  // 生成一个新的 key
+  const getNewKey = (oldKey: string, compress: boolean) => {
+    // 不压缩 key
+    if (!compress) {
+      return oldKey;
+    }
+    // old key 已经在之前出现过，返回之前生成的 key 就可以
+    if (mapFromOldKeyToNewKey.has(oldKey)) {
+      return mapFromOldKeyToNewKey.get(oldKey);
+    }
+    count += 1;
+    const newKey = `${compressPrefix}${count.toString()}`;
+    mapFromOldKeyToNewKey.set(oldKey, newKey);
+    return newKey;
+  };
+
+  // 注入注释，为后续压缩做好准备
+  const addComment = (path: StringLiteralPath, oldKey: string, compress = true) => {
+    const newKey = getNewKey(oldKey, compress);
+    addCommentAndDoReplacement(path, oldKey, newKey);
+  };
+
+  const clear = () => {
+    count = 0;
+  };
+
+
   return {
     addComment,
+    clear,
   };
 }
 

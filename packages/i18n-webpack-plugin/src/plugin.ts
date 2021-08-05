@@ -16,9 +16,10 @@ export class I18nWebpackPlugin {
   apply(compiler: Compiler) {
     compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation, { normalModuleFactory }) => {
       const handler = (parser) => {
-        parser.hooks.program.tap('ChunkI18nPlugin', (ast, comments) => {
+        parser.hooks.program.tap(PLUGIN_NAME, (ast, comments) => {
           for (const { value: commentValue } of (comments)) {
             if ((commentValue as string).startsWith('{ "oldKey":')) {
+              console.log(commentValue);
               const { oldKey, newKey } = JSON.parse(commentValue);
               this.mapOldKeysToCurrentKey.set(oldKey, newKey);
             }
@@ -28,19 +29,19 @@ export class I18nWebpackPlugin {
 
       normalModuleFactory.hooks.parser
         .for('javascript/auto')
-        .tap('ChunkI18nPlugin', handler);
+        .tap(PLUGIN_NAME, handler);
       normalModuleFactory.hooks.parser
         .for('javascript/dynamic')
-        .tap('ChunkI18nPlugin', handler);
+        .tap(PLUGIN_NAME, handler);
       normalModuleFactory.hooks.parser
         .for('javascript/esm')
-        .tap('ChunkI18nPlugin', handler);
+        .tap(PLUGIN_NAME, handler);
     });
 
     // make hooks, 在 compilation 结束之前执行
     compiler.hooks.make.tap('make', (compilation) => {
       // 处理资源的 hook
-      compilation.hooks.processAssets.tap('ChunkI18nPlugin', (assets) => {
+      compilation.hooks.processAssets.tap(PLUGIN_NAME, (assets) => {
         for (const [k, v] of Object.entries(assets)) {
           if (k.startsWith('i18n')) {
             const { children } = (v as any).listMap();
