@@ -16,5 +16,11 @@
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "dev:link": "yarn link",
     "dev:run": "nodemon --exec ts-node src/index.ts"
+  },
+  "dependencies": {
+    "pem": "^1.14.4"
+  },
+  "devDependencies": {
+    "@types/pem": "^1.9.6"
   }
 }

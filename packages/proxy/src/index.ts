@@ -2,64 +2,94 @@ import { IncomingMessage, Server as HttpServer } from 'http';
 import { Server as HttpsServer } from 'https';
 import { Duplex } from 'stream';
 import * as Buffer from 'buffer';
-import { URL } from 'url';
 import * as net from 'net';
-import * as fs from 'fs';
-import * as path from 'path';
-
-const crt = fs.readFileSync(path.resolve(process.cwd(), 'certificate', 'localhost.pem')).toString();
-const key = fs.readFileSync(path.resolve(process.cwd(), 'certificate', 'localhost-key.pem')).toString();
+import { PROXY_PASS_SERVICE_PORT, LOCAL_HOST, PROXY_SERVER_PORT } from './const';
+import { createSecureContext } from 'tls';
+import { CertificationManager } from './certification-manager';
 
 export class ProxyServer {
-  private httpServer: HttpServer = new HttpServer();
-  private httpsServer: HttpsServer = new HttpsServer({
-    cert: crt,
-    key: key,
-  });
+  private proxyServer: HttpServer = new HttpServer();
+
+  private httpsServer: HttpsServer = new HttpsServer();
 
   private mapRules = new Map<string, string>();
 
-  listen() {
-    this.httpServer.on('request', (req, res) => {
-      console.log(req);
-      res.end('hello http!')
+  private certificationManager = new CertificationManager();
+
+  /**
+   * 初始化必要的服务
+   *
+   * @author yuzhanglong
+   * @date 2021-08-11 00:48:00
+   */
+  async initServers() {
+    const httpsServerCert = await this.certificationManager.createCertificationByDomain('127.0.0.1');
+
+    this.proxyServer = new HttpServer();
+    this.httpsServer = new HttpsServer({
+      cert: httpsServerCert.cert,
+      key: httpsServerCert.key,
+      SNICallback: async (servername, callback) => {
+        const { key, cert } = await this.certificationManager.createCertificationByDomain(servername);
+        callback(null, createSecureContext({
+          key: key,
+          cert: cert,
+        }));
+      },
     });
 
+
+    // 在收到 HTTP 的代理请求时做些什么
+    this.proxyServer.on('request', (req, res) => {
+      console.log(req);
+      res.end('hello http!');
+    });
+
+    // 在收到通过 CONNECT 方法建立而来的隧道传来的数据后做些什么
     this.httpsServer.on('request', (req, res) => {
       console.log(req);
-      res.end('hello https!')
+      res.end('hello https!');
     });
 
-    // 代理的核心是中间人攻击
-    this.httpServer.on('connect', (req: IncomingMessage, clientSocket: Duplex, head: Buffer) => {
-      const { port, hostname } = new URL(`http://${req.url}`);
-      const intPort = parseInt(port, 10) === 443 ? 8089 : 8088;
+    // 在收到 HTTP CONNECT 请求时做些什么
+    // 如果我们要代理的请求为 https 协议，如果将请求代理到本服务器，浏览器会发送一个 CONNECT 请求
+    // 在 nodejs 的官方文档中提供了这样一个 DEMO：http://nodejs.cn/api/http.html#http_event_connect
+    // 但是，这个 DEMO 中我们无法获取到相关的传输信息，并对信息作出定制化的修改，node 好像也没有给出相关的 API
+    // 于是我们可以将这个请求转发到一个新的服务器上，然后让这个新的服务器去请求实际资源
+    this.proxyServer.on('connect', (req: IncomingMessage, clientSocket: Duplex, head: Buffer) => {
 
-      clientSocket.on('error', (e) => {
-        console.log(e);
-      });
+      // 只有 https 请求走代理才会走到这一步，所以直接连接我们的 https 服务器就可以了
+      const proxyPassServiceSocket = net.connect(PROXY_PASS_SERVICE_PORT, LOCAL_HOST, () => {
 
-
-      const serverSocket = net.connect(intPort, '127.0.0.1', () => {
         clientSocket.write(`HTTP/${req.httpVersion} 200 OK\r\n\r\n`, 'utf-8', () => {
-          serverSocket.write(head);
-          serverSocket.pipe(clientSocket);
-          clientSocket.pipe(serverSocket);
+          proxyPassServiceSocket.write(head);
+          proxyPassServiceSocket.pipe(clientSocket);
+          clientSocket.pipe(proxyPassServiceSocket);
         });
 
-        serverSocket.on('error', (e) => {
+        proxyPassServiceSocket.on('error', (e) => {
           console.log('error!');
           console.log(e);
         });
       });
+
+      clientSocket.on('error', (e) => {
+        console.log(e);
+      });
+    });
+  }
+
+  async listen() {
+    if (this.httpsServer || this.proxyServer) {
+      throw new Error('please init server!');
+    }
+
+    this.proxyServer.listen(PROXY_SERVER_PORT, LOCAL_HOST, () => {
+      console.log('proxy server is running ...');
     });
 
-    this.httpServer.listen(8088, '0.0.0.0', () => {
-      console.log('http server is running on port 8088...');
-    });
-
-    this.httpsServer.listen(8089, '0.0.0.0', () => {
-      console.log('http server is running on port 8089...');
+    this.httpsServer.listen(PROXY_PASS_SERVICE_PORT, LOCAL_HOST, () => {
+      console.log('https server is running...');
     });
   }
 
@@ -78,6 +108,10 @@ export class ProxyServer {
   }
 }
 
-const server = new ProxyServer();
+async function runApp() {
+  const server = new ProxyServer();
+  await server.initServers();
+  await server.listen();
+}
 
-server.listen();
+runApp();
