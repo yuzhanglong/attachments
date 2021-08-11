@@ -4,6 +4,8 @@ import { Middleware } from 'koa-compose';
 export interface ProxyServerContext {
   req: IncomingMessage;
   res: ServerResponse;
+  protocol?: string;
+  urlInstance?: URL;
 }
 
 

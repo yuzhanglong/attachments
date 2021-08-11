@@ -1,13 +1,15 @@
-import { IncomingMessage, Server as HttpServer } from 'http';
+import { IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
 import { Server as HttpsServer } from 'https';
 import { createSecureContext } from 'tls';
 import * as compose from 'koa-compose';
 import { Duplex } from 'stream';
 import * as Buffer from 'buffer';
 import * as net from 'net';
-import { createHelloMiddleware } from './middlewares/hello-middleware';
+import { createProxyPassMiddleware } from './middlewares/proxy-pass-middleware';
 import { CertificationManager } from './certification-manager';
 import { LOCAL_HOST, PROXY_PASS_SERVICE_PORT, PROXY_SERVER_PORT } from './const';
+import { createUrlMiddleWare } from './middlewares/url-middleware';
+import { ProxyServerContext } from './types';
 
 export class ProxyServer {
   private proxyServer: HttpServer = new HttpServer();
@@ -40,27 +42,27 @@ export class ProxyServer {
       },
     });
 
-    const handlers = compose([
-      createHelloMiddleware(),
+    const handlers = compose<ProxyServerContext>([
+      createUrlMiddleWare(),
+      createProxyPassMiddleware(),
     ]);
 
-
     // 在收到 HTTP 的代理请求时做些什么
-    this.proxyServer.on('request', (req, res) => {
-      handlers({
+    this.proxyServer.on('request', async (req: IncomingMessage, res: ServerResponse) => {
+      await handlers({
         req: req,
         res: res,
+        protocol: 'http',
       });
-      res.end('hello http!');
     });
 
     // 在收到通过 CONNECT 方法建立而来的隧道传来的数据后做些什么
-    this.httpsServer.on('request', (req, res) => {
-      handlers({
+    this.httpsServer.on('request', async (req: IncomingMessage, res: ServerResponse) => {
+      await handlers({
         req: req,
         res: res,
+        protocol: 'https',
       });
-      res.end('hello https!');
     });
 
     // 在收到 HTTP CONNECT 请求时做些什么
