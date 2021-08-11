@@ -1,5 +1,6 @@
 import * as https from 'https';
 import * as http from 'http';
+import { RequestOptions } from 'https';
 import { ProxyServerContext, ProxyServerMiddleware } from '../types';
 
 export function createProxyPassMiddleware(): ProxyServerMiddleware {
@@ -8,15 +9,21 @@ export function createProxyPassMiddleware(): ProxyServerMiddleware {
 
     const client = urlInstance.protocol === 'https:' ? https : http;
     // 向真正的服务器发送消息
-    const requestToRealServer = client.request(urlInstance, {
+
+    const options: RequestOptions = {
       headers: req.headers,
       method: req.method,
       port: urlInstance.port,
       timeout: 3000,
       rejectUnauthorized: false,
-    }, (serverResponse) => {
+    };
+
+
+    const requestToRealServer = client.request(urlInstance, options, (serverResponse) => {
       // 覆写 res
       res.statusCode = serverResponse.statusCode;
+      res.statusMessage = serverResponse.statusMessage;
+
       res.setHeader('x-response-from', 'yzl-proxy');
 
       const headers = Object.entries(serverResponse.headers);
@@ -30,7 +37,7 @@ export function createProxyPassMiddleware(): ProxyServerMiddleware {
       });
     });
 
-    req.pipe(requestToRealServer);
+    requestToRealServer.end();
 
     requestToRealServer.on('error', (e) => {
       console.log(e);
