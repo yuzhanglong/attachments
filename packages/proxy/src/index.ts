@@ -23,7 +23,7 @@ export class ProxyServer {
    * @date 2021-08-11 00:48:00
    */
   async initServers() {
-    const httpsServerCert = await this.certificationManager.createCertificationByDomain('127.0.0.1');
+    const httpsServerCert = await this.certificationManager.createCertificationByDomain('localhost');
 
     this.proxyServer = new HttpServer();
     this.httpsServer = new HttpsServer({
@@ -57,7 +57,6 @@ export class ProxyServer {
     // 但是，这个 DEMO 中我们无法获取到相关的传输信息，并对信息作出定制化的修改，node 好像也没有给出相关的 API
     // 于是我们可以将这个请求转发到一个新的服务器上，然后让这个新的服务器去请求实际资源
     this.proxyServer.on('connect', (req: IncomingMessage, clientSocket: Duplex, head: Buffer) => {
-
       // 只有 https 请求走代理才会走到这一步，所以直接连接我们的 https 服务器就可以了
       const proxyPassServiceSocket = net.connect(PROXY_PASS_SERVICE_PORT, LOCAL_HOST, () => {
 
@@ -80,7 +79,7 @@ export class ProxyServer {
   }
 
   async listen() {
-    if (this.httpsServer || this.proxyServer) {
+    if (!this.httpsServer || !this.proxyServer) {
       throw new Error('please init server!');
     }
 

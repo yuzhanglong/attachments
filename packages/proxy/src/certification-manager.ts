@@ -52,8 +52,8 @@ export class CertificationManager {
       altNames: [domain],
       commonName: domain,
       days: 365,
-      serviceCertificate: this.rootCertification.key,
-      serviceKey: this.rootCertification.cert,
+      serviceCertificate: this.rootCertification.cert,
+      serviceKey: this.rootCertification.key,
     });
 
     return {

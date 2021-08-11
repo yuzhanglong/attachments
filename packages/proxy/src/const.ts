@@ -15,6 +15,6 @@ export const PROXY_SERVER_PORT = 8087;
 // 负责转发服务的端口
 export const PROXY_PASS_SERVICE_PORT = 8089;
 
-export const pathCert = path.resolve(__dirname, '../certificate', 'yuzhanglong.pem');
+export const pathCert = path.resolve(__dirname, '../certificate', 'rootCA.pem');
 
-export const pathCertKey = path.resolve(__dirname, '../certificate', 'yuzhanglong-key.pem');
+export const pathCertKey = path.resolve(__dirname, '../certificate', 'rootCA-key.pem');
