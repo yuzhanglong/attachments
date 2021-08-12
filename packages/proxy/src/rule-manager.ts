@@ -5,9 +5,9 @@
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
+import { URL } from 'url';
 import { RuleConfig } from './types';
-import { removeWWW } from './utils';
-import {URL} from 'url';
+import { comparePathAndGetDivision, getUrlPaths, removeWWW } from './utils';
 
 export class RuleManager {
   private mapDomainToRules = new Map<string, RuleConfig[]>();
@@ -51,30 +51,30 @@ export class RuleManager {
   }
 
   getProxyPassUrl(urlInstance: URL): URL | null {
-    const {host, pathname} = urlInstance;
-    // 统一去除前面的斜杠
-    const pathNameRes = pathname.startsWith('/') ? pathname.slice(1): pathname;
+    const { host, pathname } = urlInstance;
+
+    // 实际服务器地址的 paths
+    const urlPaths = getUrlPaths(pathname);
 
     const targetRules = this.matchRuleConfigurations(removeWWW(host));
+
     if (!targetRules) {
       return null;
     }
 
     for (const targetRule of targetRules) {
       const { location, proxyPass } = targetRule;
-      // 统一去除前面的斜杠
-      const locationRes = location.startsWith('/') ? location.slice(1) : location;
-      const locationPaths = locationRes.split('/');
 
-      const unchangeableUrl = proxyPass;
-      // 遍历 location 属性中配置的路径，逐一和传入的 url 的 paths 进行比对
-      // 如果比对成功，则往 unchangeableUrl 后追加内容，反之 break
-      for (let i = 0; i < locationPaths.length; i += 1) {
-        // if(locationPaths[i] === )
+      const locationPaths = getUrlPaths(location);
+
+      const { dividedPos, otherPaths } = comparePathAndGetDivision(urlPaths, locationPaths);
+
+      if (dividedPos >= 0) {
+        const proxyPassRes = proxyPass.endsWith('/') ? proxyPass : `${proxyPass}/`;
+        return new URL(`${proxyPassRes}${otherPaths.join('/')}`);
       }
     }
-
-    return new URL(``);
+    return null;
   }
 
   clear() {

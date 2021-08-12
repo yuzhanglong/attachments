@@ -58,7 +58,15 @@ describe('test rule manager', () => {
       location: '/',
     });
 
-    const str = ruleManager.getProxyPassUrl(new URL('http://www.baidu.com/hello')).toString();
-    expect(str).toStrictEqual('http://foo.com/hello');
+    ruleManager.addRule('www.google.com', {
+      proxyPass: 'https://hello.com',
+      location: '/foo/bar',
+    });
+
+    const str = ruleManager.getProxyPassUrl(new URL('http://www.baidu.com/hello'));
+    expect(str?.toString()).toStrictEqual('http://foo.com/hello');
+
+    const str2 = ruleManager.getProxyPassUrl(new URL('http://www.google.com/foo/bar/baz'));
+    expect(str2?.toString()).toStrictEqual('https://hello.com/baz');
   });
 });
