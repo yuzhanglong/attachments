@@ -8,7 +8,9 @@ export interface ProxyServerContext {
   urlInstance?: URL;
 }
 
-
-export type Next = () => Promise<any>
+export interface RuleConfig {
+  location: string;
+  proxyPass: string;
+}
 
 export type ProxyServerMiddleware = Middleware<ProxyServerContext>

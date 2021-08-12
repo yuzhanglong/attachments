@@ -1,0 +1,64 @@
+// noinspection DuplicatedCode
+
+import { RuleManager } from '../src/rule-manager';
+
+describe('test rule manager', () => {
+  const ruleManager = new RuleManager();
+
+  beforeEach(() => {
+    ruleManager.clear();
+  });
+
+  test('test rule configurations match', () => {
+    ruleManager.addRule('baidu.com', {
+      proxyPass: 'yzl.top',
+      location: '/',
+    });
+
+    expect(ruleManager.matchRuleConfigurations('www.baidu.com')).toBeTruthy();
+    expect(ruleManager.matchRuleConfigurations('baidu.com')).toBeTruthy();
+    // 二级域名
+    expect(ruleManager.matchRuleConfigurations('foo.baidu.com')).toBeFalsy();
+    expect(ruleManager.matchRuleConfigurations('google.com')).toBeFalsy();
+    expect(ruleManager.matchRuleConfigurations('www.baidu.com.cn')).toBeFalsy();
+  });
+
+  test('test rule match that domain start with www', () => {
+    ruleManager.addRule('www.baidu.com', {
+      proxyPass: 'foo.com',
+      location: '/',
+    });
+
+    expect(ruleManager.matchRuleConfigurations('www.baidu.com')).toBeTruthy();
+    expect(ruleManager.matchRuleConfigurations('baidu.com')).toBeTruthy();
+    // 二级域名
+    expect(ruleManager.matchRuleConfigurations('foo.baidu.com')).toBeFalsy();
+    expect(ruleManager.matchRuleConfigurations('google.com')).toBeFalsy();
+    expect(ruleManager.matchRuleConfigurations('www.baidu.com.cn')).toBeFalsy();
+  });
+
+  test('test mapDomainToRules match same domain, we only match the first one', () => {
+    ruleManager.addRule('www.baidu.com', {
+      proxyPass: 'foo.com',
+      location: '/',
+    });
+
+    ruleManager.addRule('baidu.com', {
+      proxyPass: 'bar.com',
+      location: '/',
+    });
+
+    const expectedProxyPass = ruleManager.matchRuleConfigurations('www.baidu.com')[0].proxyPass;
+    expect(expectedProxyPass).toStrictEqual('foo.com');
+  });
+
+  test('test getProxyPassUrl', () => {
+    ruleManager.addRule('www.baidu.com', {
+      proxyPass: 'http://foo.com',
+      location: '/',
+    });
+
+    const str = ruleManager.getProxyPassUrl(new URL('http://www.baidu.com/hello')).toString();
+    expect(str).toStrictEqual('http://foo.com/hello');
+  });
+});

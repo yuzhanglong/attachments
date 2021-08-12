@@ -11,6 +11,8 @@ interface Certification {
 export class CertificationManager {
   private rootCertification: Certification;
 
+  private certificationCachedMap = new Map<string, Certification>();
+
   /**
    * 创建 CA 证书
    *
@@ -56,10 +58,14 @@ export class CertificationManager {
       serviceKey: this.rootCertification.key,
     });
 
-    return {
+    const res = {
       key: certification.clientKey,
       cert: certification.certificate,
     };
+
+    this.certificationCachedMap.set(domain, res);
+
+    return res;
   }
 }
 

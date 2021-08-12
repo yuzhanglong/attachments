@@ -9,14 +9,18 @@ import { createProxyPassMiddleware } from './middlewares/proxy-pass-middleware';
 import { CertificationManager } from './certification-manager';
 import { LOCAL_HOST, PROXY_PASS_SERVICE_PORT, PROXY_SERVER_PORT } from './const';
 import { createUrlMiddleWare } from './middlewares/url-middleware';
-import { ProxyServerContext } from './types';
+import { ProxyServerContext, RuleConfig } from './types';
+import { createProxyRuleMiddleware } from './middlewares/proxy-rule-middleware';
+import { RuleManager } from './rule-manager';
 
 export class ProxyServer {
   private proxyServer: HttpServer = new HttpServer();
 
   private httpsServer: HttpsServer = new HttpsServer();
 
-  private mapRules = new Map<string, string>();
+  private ruleManager: RuleManager = new RuleManager();
+
+  private rules: RuleConfig[] = [];
 
   private certificationManager = new CertificationManager();
 
@@ -44,6 +48,7 @@ export class ProxyServer {
 
     const handlers = compose<ProxyServerContext>([
       createUrlMiddleWare(),
+      createProxyRuleMiddleware(this.rules),
       createProxyPassMiddleware(),
     ]);
 
@@ -117,12 +122,9 @@ export class ProxyServer {
    *
    * @author yuzhanglong
    * @date 2021-08-09 00:11:39
-   * @param from 源地址
-   * @param target 目标规则
+   * @param rules 描述规则的数组
    */
-  addRule(from: string, target: string) {
-    if (!this.mapRules.has(from)) {
-      this.mapRules.set(from, target);
-    }
+  addRule(...rules: RuleConfig[]) {
+    this.ruleManager.addRule(...rules);
   }
 }
