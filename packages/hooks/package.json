@@ -1,0 +1,10 @@
+{
+  "name": "hooks",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/react": "^17.0.17",
+    "react": "^17.0.2"
+  }
+}
