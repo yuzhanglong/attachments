@@ -48,7 +48,7 @@ export class ProxyServer {
 
     const handlers = compose<ProxyServerContext>([
       createUrlMiddleWare(),
-      createProxyRuleMiddleware(this.rules),
+      createProxyRuleMiddleware(this.ruleManager),
       createProxyPassMiddleware(),
     ]);
 
@@ -122,9 +122,10 @@ export class ProxyServer {
    *
    * @author yuzhanglong
    * @date 2021-08-09 00:11:39
-   * @param rules 描述规则的数组
+   * @param domain
+   * @param ruleConfig
    */
-  addRule(...rules: RuleConfig[]) {
-    this.ruleManager.addRule(...rules);
+  addRule(domain: string, ...ruleConfig: RuleConfig[]) {
+    this.ruleManager.addRule(domain, ...ruleConfig);
   }
 }

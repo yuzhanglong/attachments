@@ -24,17 +24,40 @@ export class RuleManager {
     // 去掉前面的 www（如果有的话）
     const domainWithoutWWW = removeWWW(domain);
 
+    let totConfig;
+
     if (this.mapDomainToRules.has(domainWithoutWWW)) {
-      const totConfig = this.mapDomainToRules.get(domainWithoutWWW);
+      totConfig = this.mapDomainToRules.get(domainWithoutWWW);
       totConfig.push(...ruleConfig);
     } else {
-      const totConfig = [...ruleConfig];
+      totConfig = [...ruleConfig];
       this.mapDomainToRules.set(domainWithoutWWW, totConfig);
     }
+
+    // 将所有的 rules 根据 location 的 path 进行排序，至于这样做的意义，来看下面的例子：
+    // server.addRule(
+    //   'baidu.com',
+    //   {
+    //     location: '/',
+    //     proxyPass: 'http://localhost:8001',
+    //   },
+    //   {
+    //     location: '/hello/world',
+    //     proxyPass: 'http://localhost:8001/hello_world',
+    //   },
+    // );
+    // 假如我们访问了 baidu.com，匹配了第一个，符合预期
+    // 假如我们访问了 baidu.com/hello/world，如果不加以排序，可能会匹配到第一个，但实际上我们期望的是第二个
+    // 总而言之，我们要匹配[更详细]的路径
+    totConfig.sort((a, b) => {
+      const pathA = getUrlPaths(a.location);
+      const pathB = getUrlPaths(b.location);
+      return pathB.length - pathA.length;
+    });
   }
 
   /**
-   * 尝试通过 domain 匹配规则
+   * 给定一个 domain，获取它手下的所有注册的规则
    *
    * @author yuzhanglong
    * @param domain 需要匹配的域名，注意，不要包含后面的内容

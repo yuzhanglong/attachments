@@ -15,14 +15,17 @@
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "dev:link": "yarn link",
-    "dev:run": "nodemon --exec ts-node src/index.ts"
+    "dev:run": "nodemon --exec ts-node example/proxy-server.ts"
   },
   "dependencies": {
     "koa-compose": "^4.1.0",
-    "pem": "^1.14.4"
+    "pem": "^1.14.4",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/koa-compose": "^3.2.5",
-    "@types/pem": "^1.9.6"
+    "@types/pem": "^1.9.6",
+    "koa": "^2.13.1",
+    "koa-router": "^10.0.0"
   }
 }

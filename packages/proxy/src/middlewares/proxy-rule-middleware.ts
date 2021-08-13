@@ -1,6 +1,5 @@
-import { URL } from 'url';
-import { ProxyServerMiddleware, RuleConfig } from '../types';
-import { removeWWW } from '../utils';
+import { ProxyServerMiddleware } from '../types';
+import { RuleManager } from '../rule-manager';
 
 /**
  * File: proxy-rule-middleware.ts
@@ -11,17 +10,16 @@ import { removeWWW } from '../utils';
  */
 
 
-export function createProxyRuleMiddleware(rules: RuleConfig[]): ProxyServerMiddleware {
+export function createProxyRuleMiddleware(ruleManager: RuleManager): ProxyServerMiddleware {
   return async (context, next) => {
-    const {
-      urlInstance: {
-        host,
-        protocol
-      },
-    } = context;
+    const { urlInstance } = context;
 
-    // 移除开头的 3w
-    const hostWithoutWWW = removeWWW(host);
+    const resUrl = ruleManager.getProxyPassUrl(urlInstance);
+
+    if (resUrl) {
+      console.log(`[proxy-make-effect] ${urlInstance.toString()} => ${resUrl.toString()}`);
+      context.urlInstance = resUrl;
+    }
     await next();
   };
 }
