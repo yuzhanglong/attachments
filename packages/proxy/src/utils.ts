@@ -42,11 +42,14 @@ export function comparePathAndGetDivision(basePath: string[], providedPath: stri
     return {
       samePaths: [],
       otherPaths: [],
-      dividedPos: 0,
+      dividedPos: -1,
     };
   }
 
-  if(providedPath.length === 0){
+  // provide 的长度为 0，必然可以匹配的到，例如：
+  // www.baidu.com/foo/bar => [foo, bar] => base path
+  // / => []
+  if (providedPath.length === 0) {
     return {
       samePaths: [],
       otherPaths: basePath.slice(),

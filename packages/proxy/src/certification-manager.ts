@@ -1,6 +1,6 @@
 import { CertificateCreationOptions, CertificateCreationResult, createCertificate } from 'pem';
 import * as fs from 'fs';
-import { pathCert, pathCertKey } from './const';
+import { MAX_DAYS, pathCert, pathCertKey } from './const';
 
 
 interface Certification {
@@ -53,7 +53,7 @@ export class CertificationManager {
     const certification = await CertificationManager.createCertification({
       altNames: [domain],
       commonName: domain,
-      days: 365,
+      days: MAX_DAYS,
       serviceCertificate: this.rootCertification.cert,
       serviceKey: this.rootCertification.key,
     });

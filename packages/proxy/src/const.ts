@@ -18,3 +18,5 @@ export const PROXY_PASS_SERVICE_PORT = 8089;
 export const pathCert = path.resolve(__dirname, '../certificate', 'rootCA.pem');
 
 export const pathCertKey = path.resolve(__dirname, '../certificate', 'rootCA-key.pem');
+
+export const MAX_DAYS = 365;

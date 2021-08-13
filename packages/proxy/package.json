@@ -15,7 +15,8 @@
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "dev:link": "yarn link",
-    "dev:run": "nodemon --exec ts-node example/proxy-server.ts"
+    "dev:example-proxy-server": "nodemon --exec ts-node example/proxy-server.ts",
+    "dev:example-web-server": "nodemon --exec ts-node example/dev-sever.ts"
   },
   "dependencies": {
     "koa-compose": "^4.1.0",

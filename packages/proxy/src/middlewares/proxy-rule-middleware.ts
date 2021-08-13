@@ -9,7 +9,6 @@ import { RuleManager } from '../rule-manager';
  * Email: yuzl1123@163.com
  */
 
-
 export function createProxyRuleMiddleware(ruleManager: RuleManager): ProxyServerMiddleware {
   return async (context, next) => {
     const { urlInstance } = context;

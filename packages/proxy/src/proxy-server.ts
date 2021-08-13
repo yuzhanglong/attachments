@@ -20,8 +20,6 @@ export class ProxyServer {
 
   private ruleManager: RuleManager = new RuleManager();
 
-  private rules: RuleConfig[] = [];
-
   private certificationManager = new CertificationManager();
 
   /**
