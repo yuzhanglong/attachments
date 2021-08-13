@@ -3,7 +3,7 @@ module.exports = {
   collectCoverage: false,
   testRegex: '(/__tests__/.*\\.(test|spec))\\.ts$',
   collectCoverageFrom: [
-    'src/**/*.ts',
+    'packages/**/*.ts',
   ],
   testEnvironment: 'node'
 };
