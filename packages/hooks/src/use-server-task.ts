@@ -151,7 +151,7 @@ export function useServerTask<P, R>(
     setCurrentStatus(ServerTaskStatus.RUNNING);
 
     // 更新状态
-    current.taskTimer = setInterval(() => {
+    current.taskTimer = window.setInterval(() => {
       refreshTaskStatus(params);
     }, options.timeGap || (DEFAULT_REQUEST_TIME_GAP as any));
   };

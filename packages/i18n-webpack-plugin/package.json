@@ -8,7 +8,9 @@
   "main": "lib/index.js",
   "module": "esm/index.js",
   "files": [
-    "src"
+    "src",
+    "esm",
+    "lib"
   ],
   "scripts": {
     "dev:start": "tsc -w",

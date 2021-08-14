@@ -1,10 +1,21 @@
 {
-  "name": "hooks",
-  "version": "1.0.0",
+  "name": "@attachments/hooks",
+  "version": "0.0.0",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
     "@types/react": "^17.0.17",
     "react": "^17.0.2"
+  },
+  "files": [
+    "src",
+    "esm",
+    "lib"
+  ],
+  "scripts": {
+    "dev:start": "tsc -w",
+    "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
+    "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
+    "dev:link": "yarn link"
   }
 }
