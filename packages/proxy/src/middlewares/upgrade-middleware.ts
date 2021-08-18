@@ -25,7 +25,7 @@ function createHttpHeader(
             return head;
           }
 
-          for (let i = 0; i < value.length; i++) {
+          for (let i = 0; i < value.length; i += 1) {
             head.push(`${key}: ${value[i]}`);
           }
           return head;
@@ -38,11 +38,13 @@ function createHttpHeader(
 
 export function createUpgradeMiddleware(): ProxyServerMiddleware {
   return async (ctx, next) => {
-    const { socket, protocol, req, head, urlInstance } = ctx;
+    const { socket, req, head, urlInstance } = ctx;
     // 不是 websocket 服务，进入下一个中间件
-    if (protocol !== 'wss' && protocol !== 'ws') {
+    if (urlInstance.protocol !== 'wss:' && urlInstance.protocol !== 'ws:') {
       return next();
     }
+
+    const isSSL = urlInstance.protocol === 'wss:';
 
     // 参考: https://github.com/http-party/node-http-proxy
     // ws 只支持 GET 方法，携带 upgrade 头
@@ -63,7 +65,7 @@ export function createUpgradeMiddleware(): ProxyServerMiddleware {
       socket.unshift(head);
     }
 
-    const defaultPort = protocol === 'wss' ? 443 : 80;
+    const defaultPort = isSSL ? 443 : 80;
 
     const reqOptions: RequestOptions = {
       method: req.method,
@@ -77,7 +79,7 @@ export function createUpgradeMiddleware(): ProxyServerMiddleware {
       rejectUnauthorized: false,
     };
 
-    const client = protocol === 'wss' ? https : http;
+    const client = isSSL ? https : http;
 
     const requestToRealServer = client.request(reqOptions);
 

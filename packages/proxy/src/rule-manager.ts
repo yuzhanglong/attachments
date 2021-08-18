@@ -101,7 +101,8 @@ export class RuleManager {
         const isWebSocketProtocol = urlInstance.protocol === 'wss:' || urlInstance.protocol === 'ws:';
         if (isWebSocketProtocol) {
           // 如果是 ws 或者 wss 服务，在匹配到结果之后我们会把匹配到的规则的 url 的协议进行强制转换
-          url.protocol = urlInstance.protocol;
+          // 我们会以 用户配置的 proxyPassUrl 是 http 还是 https 来决定是 ws 还是 wss
+          url.protocol = proxyPass.startsWith('https://') ? 'wss:' : 'ws:';
         }
 
         return url;
