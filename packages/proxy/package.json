@@ -20,7 +20,7 @@
     "dev:link": "yarn link",
     "dev:example-proxy-server": "nodemon --exec ts-node example/proxy-server.ts",
     "dev:example-http": "nodemon --exec ts-node example/dev-http.ts",
-    "dev:example-ws": "nodemon --exec ts-node example/dev-websocket.ts"
+    "dev:example-ws": "nodemon --exec ts-node example/websocket/server.ts"
   },
   "dependencies": {
     "koa-compose": "^4.1.0",

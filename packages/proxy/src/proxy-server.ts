@@ -5,6 +5,7 @@ import * as compose from 'koa-compose';
 import { Duplex } from 'stream';
 import * as Buffer from 'buffer';
 import * as net from 'net';
+import { Socket } from 'net';
 import { createProxyPassMiddleware } from './middlewares/proxy-pass-middleware';
 import { CertificationManager } from './certification-manager';
 import { LOCAL_HOST, PROXY_PASS_SERVICE_PORT, PROXY_SERVER_PORT } from './const';
@@ -12,6 +13,7 @@ import { createUrlMiddleWare } from './middlewares/url-middleware';
 import { ProxyServerContext, RuleConfig } from './types';
 import { createProxyRuleMiddleware } from './middlewares/proxy-rule-middleware';
 import { RuleManager } from './rule-manager';
+import { createUpgradeMiddleware } from './middlewares/upgrade-middleware';
 
 export class ProxyServer {
   private proxyServer: HttpServer = new HttpServer();
@@ -47,6 +49,7 @@ export class ProxyServer {
     const handlers = compose<ProxyServerContext>([
       createUrlMiddleWare(),
       createProxyRuleMiddleware(this.ruleManager),
+      createUpgradeMiddleware(),
       createProxyPassMiddleware(),
     ]);
 
@@ -91,6 +94,26 @@ export class ProxyServer {
 
       clientSocket.on('error', (e) => {
         console.log(e);
+      });
+    });
+
+    // 在收到 http 升级请求时做些什么
+    this.proxyServer.on('upgrade', async (req: IncomingMessage, socket: Socket, head: Buffer) => {
+      await handlers({
+        req: req,
+        socket: socket,
+        head: head,
+        protocol: 'ws',
+      });
+    });
+
+    // 在收到 https 升级请求时做些什么
+    this.httpsServer.on('upgrade', async (req: IncomingMessage, socket: Socket, head: Buffer) => {
+      await handlers({
+        req: req,
+        socket: socket,
+        head: head,
+        protocol: 'wss',
       });
     });
   }

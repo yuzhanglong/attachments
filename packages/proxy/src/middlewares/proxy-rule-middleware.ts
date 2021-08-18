@@ -1,6 +1,3 @@
-import { ProxyServerMiddleware } from '../types';
-import { RuleManager } from '../rule-manager';
-
 /**
  * File: proxy-rule-middleware.ts
  * Description: 代理规则中间件
@@ -8,6 +5,9 @@ import { RuleManager } from '../rule-manager';
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
+
+import { ProxyServerMiddleware } from '../types';
+import { RuleManager } from '../rule-manager';
 
 export function createProxyRuleMiddleware(ruleManager: RuleManager): ProxyServerMiddleware {
   return async (context, next) => {
@@ -19,6 +19,6 @@ export function createProxyRuleMiddleware(ruleManager: RuleManager): ProxyServer
       console.log(`[proxy-make-effect] ${urlInstance.toString()} => ${resUrl.toString()}`);
       context.urlInstance = resUrl;
     }
-    await next();
+    return next();
   };
 }

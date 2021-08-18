@@ -15,6 +15,12 @@ async function runApp() {
       proxyPass: 'http://localhost:8001/hello_world',
     },
   );
+
+  server.addRule('micro-fe.yuzzl.top',
+    {
+      location: '/',
+      proxyPass: 'https://localhost:10000',
+    });
   await server.initServers();
   await server.listen();
 }
