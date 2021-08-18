@@ -96,6 +96,8 @@ export class RuleManager {
         const proxyPassRes = proxyPass.endsWith('/') ? proxyPass : `${proxyPass}/`;
         const url = new URL(`${proxyPassRes}${otherPaths.join('/')}`);
 
+        url.search = urlInstance.search;
+
         const isWebSocketProtocol = urlInstance.protocol === 'wss:' || urlInstance.protocol === 'ws:';
         if (isWebSocketProtocol) {
           // 如果是 ws 或者 wss 服务，在匹配到结果之后我们会把匹配到的规则的 url 的协议进行强制转换
