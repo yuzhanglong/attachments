@@ -19,7 +19,7 @@
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "dev:link": "yarn link",
     "dev:example-proxy-server": "nodemon --exec ts-node example/proxy-server.ts",
-    "dev:example-http": "nodemon --exec ts-node example/dev-http.ts",
+    "dev:example-http": "nodemon --exec ts-node example/http/dev-http.ts",
     "dev:example-ws": "nodemon --exec ts-node example/websocket/server.ts"
   },
   "dependencies": {

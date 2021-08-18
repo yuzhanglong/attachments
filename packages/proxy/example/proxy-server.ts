@@ -16,11 +16,6 @@ async function runApp() {
     },
   );
 
-  server.addRule('micro-fe.yuzzl.top',
-    {
-      location: '/',
-      proxyPass: 'https://localhost:10000',
-    });
   await server.initServers();
   await server.listen();
 }
