@@ -14,9 +14,16 @@
     "dev:start": "tsc -w",
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
+    "build-umd:development": "webpack --node-env development",
+    "build-umd:production": "webpack --node-env production",
+    "build:umd": "rimraf ./dist && npm-run-all --parallel build-umd:*",
     "dev:link": "yarn link"
   },
   "dependencies": {
     "intl-messageformat": "^9.8.1"
+  },
+  "devDependencies": {
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0"
   }
 }
