@@ -3,11 +3,13 @@ import { Middleware } from 'koa-compose';
 import { Socket } from 'net';
 
 export interface ProxyServerContext {
+  // for http(s)
   req: IncomingMessage;
   res?: ServerResponse;
-  socket?: Socket;
   protocol?: string;
   urlInstance?: URL;
+  // for websocket
+  socket?: Socket;
   head?: Buffer
 }
 

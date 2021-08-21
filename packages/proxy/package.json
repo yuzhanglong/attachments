@@ -11,16 +11,20 @@
     "src",
     "esm",
     "lib",
-    "certificate"
+    "certificate",
+    "example"
   ],
   "scripts": {
     "dev:start": "tsc -w",
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "dev:link": "yarn link",
-    "dev:example-proxy-server": "nodemon --exec ts-node example/proxy-server.ts",
-    "dev:example-http": "nodemon --exec ts-node example/http/dev-http.ts",
-    "dev:example-ws": "nodemon --exec ts-node example/websocket/server.ts"
+    "example-http:proxy": "ts-node example/http/proxy.ts",
+    "example-http:server": "ts-node example/http/http.ts",
+    "example-ws:proxy": "ts-node example/websocket/proxy.ts",
+    "example-ws:server": "ts-node example/websocket/server.ts",
+    "dev:example-http": "npm-run-all --parallel example-http:*",
+    "dev:example-ws": "npm-run-all --parallel example-ws:*"
   },
   "dependencies": {
     "koa-compose": "^4.1.0",
@@ -32,6 +36,8 @@
     "@types/pem": "^1.9.6",
     "koa": "^2.13.1",
     "koa-router": "^10.0.0",
-    "ws": "^8.1.0"
+    "ws": "^8.1.0",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^10.1.0"
   }
 }

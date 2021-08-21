@@ -25,7 +25,7 @@ const run = async () => {
       '</head>\n' +
       '<body>\n' +
       '<script>\n' +
-      '  const ws = new WebSocket(\'wss://micro-fe.yuzzl.top\');\n' +
+      '  const ws = new WebSocket(\'wss://proxy.yuzzl.top\');\n' +
       '  ws.onopen = () => {\n' +
       '    console.log(\'open!\');\n' +
       '    ws.send(\'hello world!\')\n' +
