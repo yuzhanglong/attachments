@@ -53,7 +53,7 @@ export class ProxyServer {
       createProxyPassMiddleware(),
     ]);
 
-    // 在收到 HTTP 的代理请求时做些什么
+    // 在收到 XHR 的代理请求时做些什么
     this.proxyServer.on('request', async (req: IncomingMessage, res: ServerResponse) => {
       await handlers({
         req: req,
@@ -71,7 +71,7 @@ export class ProxyServer {
       });
     });
 
-    // 在收到 HTTP CONNECT 请求时做些什么
+    // 在收到 XHR CONNECT 请求时做些什么
     // 如果我们要代理的请求为 https 协议，如果将请求代理到本服务器，浏览器会发送一个 CONNECT 请求
     // 在 nodejs 的官方文档中提供了这样一个 DEMO：http://nodejs.cn/api/http.html#http_event_connect
     // 但是，这个 DEMO 中我们无法获取到相关的传输信息，并对信息作出定制化的修改，node 好像也没有给出相关的 API

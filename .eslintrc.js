@@ -30,6 +30,8 @@ module.exports = {
     'no-await-in-loop': 'off',
     'consistent-return': 'off',
     'no-restricted-syntax': 'off',
+    'prefer-destructuring': 'off',
+    'func-names': 'off',
   },
   settings: {
     'import/parsers': {
