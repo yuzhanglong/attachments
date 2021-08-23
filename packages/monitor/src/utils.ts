@@ -69,7 +69,7 @@ export const assignKeysBetweenObjects = (obj1: BaseObject, obj2: BaseObject, key
 };
 
 
-interface UrlData {
+export interface UrlData {
   hash: string,
   host: string,
   hostname: string,

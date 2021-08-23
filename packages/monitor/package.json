@@ -1,9 +1,17 @@
 {
   "name": "@attachments/monitor",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-
+    "dev:start": "webpack serve --node-env development",
+    "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
+    "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
+    "build:umd": "webpack --node-env production",
+    "dev:link": "yarn link"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^5.3.2",
+    "webpack-dev-server": "^4.0.0"
   }
 }
