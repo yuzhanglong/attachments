@@ -13,3 +13,7 @@ export type CommonKeys<O extends {}> = {
 export type CallBack<P> = (params: P) => void
 
 export type BaseObject<T = any> = Record<string, T>
+
+export enum EventType {
+  XHR = 'XHR'
+}

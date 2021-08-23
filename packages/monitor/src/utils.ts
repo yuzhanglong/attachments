@@ -1,4 +1,4 @@
-import { BaseObject, MethodKeys } from './types';
+import { BaseObject, MethodKeys } from './types/common';
 
 /**
  * 空函数

@@ -1,37 +1,6 @@
-import { formatPlainHeadersString, getPerformance, getUrlData, patchMethod, UrlData } from './utils';
-import { BaseObject, CallBack } from './types';
-import { EventType } from './common';
-
-interface XHRMonitorRecode {
-  url?: string;
-  method?: string;
-  startTime?: number;
-  requestHeaders?: BaseObject<string>;
-  data?: Parameters<XMLHttpRequest['send']>[0];
-}
-
-interface PatchedXMLHttpRequest extends XMLHttpRequest {
-  // 记录信息
-  monitorRecords: XHRMonitorRecode;
-}
-
-interface XhrMonitorOptions {
-  onXhrReport: CallBack<any>;
-}
-
-interface XhrReportData {
-  request: UrlData & {
-    method: string;
-    headers: Record<string, string>;
-  };
-  performance: Record<string, any>;
-  duration: number;
-  response: {
-    status: number;
-    timestamp: number;
-    headers: Record<string, string>;
-  };
-}
+import { formatPlainHeadersString, getPerformance, getUrlData, patchMethod } from './utils';
+import { PatchedXMLHttpRequest, XHRMonitorOptions, XHRReportData } from './types/xhr';
+import { EventType } from './types/common';
 
 /**
  * 初始化 xhr 监控
@@ -40,7 +9,7 @@ interface XhrReportData {
  * @date 2021-08-23 21:54:29
  * @param options 监控配置
  */
-export function createXhrMonitor(options: XhrMonitorOptions) {
+export function createXhrMonitor(options: XHRMonitorOptions) {
   const XMLHttpRequestPrototype = XMLHttpRequest.prototype;
   const performance = getPerformance();
 
@@ -52,7 +21,7 @@ export function createXhrMonitor(options: XhrMonitorOptions) {
   };
 
   // 生成请求报告
-  const getReportData = (patchedXhrInstance: PatchedXMLHttpRequest): XhrReportData => {
+  const getReportData = (patchedXhrInstance: PatchedXMLHttpRequest): XHRReportData => {
     const current = Date.now();
     const responseHeaders = patchedXhrInstance?.getAllResponseHeaders() || '';
     const {
