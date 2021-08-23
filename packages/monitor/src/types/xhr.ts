@@ -15,6 +15,7 @@ export interface XHRReportData {
     method: string;
     // 通过 setRequestHeaders 添加的请求头
     headers: Record<string, string>;
+    body: string
   };
   performance: Record<string, any>;
   duration: number;
@@ -22,6 +23,7 @@ export interface XHRReportData {
     status: number;
     timestamp: number;
     headers: Record<string, string>;
+    body: string
   };
 }
 
@@ -32,7 +34,7 @@ interface XHRMonitorRecode {
   method?: string;
   startTime?: number;
   requestHeaders?: BaseObject<string>;
-  data?: Parameters<XMLHttpRequest['send']>[0];
+  requestData?: Parameters<XMLHttpRequest['send']>[0];
 }
 
 

@@ -25,7 +25,7 @@ describe('test intl packages', () => {
     });
   });
 
-  test('test load source data', async () => {
+  test('test load source requestData', async () => {
     expect(executor.intlSources).toEqual(I18nChunkMap);
     expect(executor.cachedIntlMessageMaps).toStrictEqual({});
 
