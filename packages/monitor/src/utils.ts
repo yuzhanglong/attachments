@@ -1,4 +1,4 @@
-import { BaseObject, CommonKeys, MethodKeys } from './types';
+import { BaseObject, MethodKeys } from './types';
 
 /**
  * 空函数
@@ -66,6 +66,25 @@ export const assignKeysBetweenObjects = (obj1: BaseObject, obj2: BaseObject, key
     // eslint-disable-next-line no-param-reassign
     obj2[k] = obj1[k];
   }
+};
+
+/**
+ * 格式化 headers 字符串，返回一个对象
+ *
+ * @author yuzhanglong
+ * @date 2021-08-24 00:26:43
+ */
+export const formatPlainHeadersString = (headerStr: string) => {
+  const headers = headerStr.trim().split(/[\r\n]+/);
+
+  const headerMap = {};
+  for (let i = 0; i < headers.length; i += 1) {
+    const line = headers[i];
+    const parts = line.split(': ');
+    const header = parts.shift();
+    headerMap[header] = parts.join(': ');
+  }
+  return headerMap;
 };
 
 

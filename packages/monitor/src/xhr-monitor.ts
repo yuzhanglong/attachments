@@ -1,5 +1,4 @@
-// eslint-disable-next-line max-classes-per-file
-import { getPerformance, getUrlData, patchMethod, UrlData } from './utils';
+import { formatPlainHeadersString, getPerformance, getUrlData, patchMethod, UrlData } from './utils';
 import { BaseObject, CallBack } from './types';
 import { EventType } from './common';
 
@@ -30,6 +29,7 @@ interface XhrReportData {
   response: {
     status: number;
     timestamp: number;
+    headers: Record<string, string>;
   };
 }
 
@@ -54,6 +54,7 @@ export function createXhrMonitor(options: XhrMonitorOptions) {
   // 生成请求报告
   const getReportData = (patchedXhrInstance: PatchedXMLHttpRequest): XhrReportData => {
     const current = Date.now();
+    const responseHeaders = patchedXhrInstance?.getAllResponseHeaders() || '';
     const {
       monitorRecords: {
         url,
@@ -71,8 +72,10 @@ export function createXhrMonitor(options: XhrMonitorOptions) {
       response: {
         status: patchedXhrInstance.status || -1,
         timestamp: current,
+        headers: responseHeaders ? formatPlainHeadersString(responseHeaders) : {},
       },
-      performance: getEntryByName(url).pop(),
+      // 如果URL有重定向， responseURL 的值会是经过多次重定向后的最终 URL
+      performance: getEntryByName(patchedXhrInstance.responseURL).pop(),
       duration: current - startTime,
     };
   };
