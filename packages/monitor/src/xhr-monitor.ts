@@ -73,7 +73,7 @@ export function createXhrMonitor(options: XHRMonitorOptions) {
     return patchMethod(target, 'onreadystatechange', (origin) => {
       return function(this: PatchedXMLHttpRequest, ...event) {
         if (this.readyState === XMLHttpRequest.DONE) {
-          options.onXhrReport({
+          options.onReport({
             eventType: EventType.XHR,
             data: getReportData(this),
           });

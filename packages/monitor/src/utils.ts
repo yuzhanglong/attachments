@@ -15,7 +15,7 @@ export const isObject = (o: any) => {
   return typeof o === 'object' && o !== null;
 };
 
-export const getBrowser = () => {
+export const getBrowserWindow = () => {
   if (isObject(window)) {
     return window;
   }
@@ -23,7 +23,7 @@ export const getBrowser = () => {
 };
 
 export const getPerformance = () => {
-  if (getBrowser() && isObject(window.performance)) {
+  if (getBrowserWindow() && isObject(window.performance)) {
     return window.performance;
   }
   return null;
@@ -87,6 +87,39 @@ export const formatPlainHeadersString = (headerStr: string) => {
   return headerMap;
 };
 
+/**
+ * 格式化错误信息，将其转换为简单对象
+ *
+ * @author yuzhanglong
+ * @date 2021-08-24 22:59:27
+ * @see https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Error
+ * @param e 异常 ErrorEvent, 或者 PromiseRejectionEvent 实例
+ * 前者来自 window.addEventListener('error') 的回调
+ * 后者来自 window.addEventListener('unhandledrejection') 的回调
+ */
+export function formatError(e: ErrorEvent | PromiseRejectionEvent) {
+  let error: Error;
+
+  if (e instanceof PromiseRejectionEvent) {
+    error = e.reason;
+  } else if (e instanceof ErrorEvent) {
+    error = e.error;
+  } else {
+    error = {} as any;
+  }
+
+
+  return {
+    // 发生异常的时间戳
+    timeStamp: Date.now(),
+    // 核心内容，包括堆栈错误信息
+    error: {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    },
+  };
+}
 
 export interface UrlData {
   hash: string,
@@ -126,7 +159,7 @@ export const getUrlData = (url: string): UrlData => {
     search: '',
   };
 
-  const w = getBrowser();
+  const w = getBrowserWindow();
 
   if (w && w.URL) {
     const instance = new URL(url);

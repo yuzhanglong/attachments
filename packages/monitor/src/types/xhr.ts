@@ -1,11 +1,5 @@
 import { UrlData } from '../utils';
-import { BaseObject, CallBack } from './common';
-
-
-// xhr 监控选项
-export interface XHRMonitorOptions {
-  onXhrReport: CallBack<any>;
-}
+import { BaseObject, MonitorOptions } from './common';
 
 // xhr 监控结果记录数据
 export interface XHRReportData {
@@ -27,6 +21,8 @@ export interface XHRReportData {
   };
 }
 
+// xhr 监控选项
+export type XHRMonitorOptions = MonitorOptions<XHRReportData>
 
 // xhr 监控实例暂存数据记录，挂在在用户初始化的 XMLHttpRequest 上
 interface XHRMonitorRecode {

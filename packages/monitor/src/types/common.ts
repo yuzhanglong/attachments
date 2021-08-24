@@ -15,5 +15,14 @@ export type CallBack<P> = (params: P) => void
 export type BaseObject<T = any> = Record<string, T>
 
 export enum EventType {
-  XHR = 'XHR'
+  XHR = 'XHR',
+  JS_ERROR = 'JS_ERROR'
+}
+
+export interface MonitorOptions<Report> {
+  // 发送报告回调
+  onReport: CallBack<{
+    eventType: EventType
+    data: Report
+  }>;
 }

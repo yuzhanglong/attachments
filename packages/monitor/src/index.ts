@@ -7,3 +7,4 @@
  */
 
 export { createXhrMonitor } from './xhr-monitor';
+export { createJsErrorMonitor } from './js-error-monitor';
