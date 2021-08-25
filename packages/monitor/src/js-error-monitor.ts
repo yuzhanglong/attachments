@@ -16,17 +16,30 @@ export function createJsErrorMonitor(options: JsErrorMonitorOptions) {
     return;
   }
 
-  window.addEventListener('error', (e) => {
+  const handleError = (e: ErrorEvent) => {
     options.onReport({
       eventType: EventType.JS_ERROR,
       data: formatError(e),
     });
-  });
+  };
 
-  window.addEventListener('unhandledrejection', (e) => {
+  const handleRejection = (e: PromiseRejectionEvent) => {
     options.onReport({
       eventType: EventType.JS_ERROR,
       data: formatError(e),
     });
-  });
+  };
+
+  const destroyListeners = () => {
+    window.removeEventListener('error', handleError);
+    window.removeEventListener('unhandledrejection', handleRejection);
+  };
+
+  // 捕获异步 error
+  window.addEventListener('error', handleError);
+  window.addEventListener('unhandledrejection', handleRejection);
+
+  return {
+    destroy: destroyListeners,
+  };
 }

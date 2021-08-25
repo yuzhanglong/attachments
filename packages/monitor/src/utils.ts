@@ -1,4 +1,5 @@
 import { BaseObject, MethodKeys } from './types/common';
+import { JsErrorReportData } from './types/js-error';
 
 /**
  * 空函数
@@ -8,6 +9,14 @@ import { BaseObject, MethodKeys } from './types/common';
  */
 export const noop = () => {
   return undefined;
+};
+
+
+export const instanceOf = (a: any, b: any) => {
+  if (b) {
+    return a instanceof b;
+  }
+  return false;
 };
 
 
@@ -97,15 +106,16 @@ export const formatPlainHeadersString = (headerStr: string) => {
  * 前者来自 window.addEventListener('error') 的回调
  * 后者来自 window.addEventListener('unhandledrejection') 的回调
  */
-export function formatError(e: ErrorEvent | PromiseRejectionEvent) {
+export function formatError(e: ErrorEvent | PromiseRejectionEvent): JsErrorReportData {
   let error: Error;
 
-  if (e instanceof PromiseRejectionEvent) {
-    error = e.reason;
-  } else if (e instanceof ErrorEvent) {
-    error = e.error;
+  if (instanceOf(e, PromiseRejectionEvent)) {
+    error = (e as PromiseRejectionEvent).reason;
+  } else if (instanceOf(e, ErrorEvent)) {
+    error = (e as ErrorEvent).error;
   } else {
-    error = {} as any;
+    // @ts-ignore
+    error = e.reason || e.error || {};
   }
 
 
@@ -116,7 +126,7 @@ export function formatError(e: ErrorEvent | PromiseRejectionEvent) {
     error: {
       name: error.name,
       message: error.message,
-      stack: error.stack
+      stack: error.stack,
     },
   };
 }
