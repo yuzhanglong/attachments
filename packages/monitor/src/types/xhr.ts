@@ -1,5 +1,5 @@
-import { UrlData } from '../utils';
-import { BaseObject, MonitorOptions } from './common';
+
+import { BaseObject, MonitorOptions, UrlData } from './common';
 
 // xhr 监控结果记录数据
 export interface XHRReportData {

@@ -1,4 +1,10 @@
-import { formatPlainHeadersString, getPerformance, getUrlData, patchMethod } from './utils';
+import {
+  formatPlainHeadersString,
+  getPerformance,
+  getPerformanceEntriesByName,
+  getUrlData,
+  patchMethod,
+} from './utils';
 import { PatchedXMLHttpRequest, XHRMonitorOptions, XHRReportData } from './types/xhr';
 import { EventType } from './types/common';
 
@@ -11,14 +17,6 @@ import { EventType } from './types/common';
  */
 export function createXhrMonitor(options: XHRMonitorOptions) {
   const XMLHttpRequestPrototype = XMLHttpRequest.prototype;
-  const performance = getPerformance();
-
-  const getEntryByName = (name: string) => {
-    if (performance && typeof performance.getEntriesByName === 'function') {
-      return performance.getEntriesByName(name);
-    }
-    return [];
-  };
 
   // 生成请求报告
   const getReportData = (patchedXhrInstance: PatchedXMLHttpRequest): XHRReportData => {
@@ -49,7 +47,7 @@ export function createXhrMonitor(options: XHRMonitorOptions) {
         body: isError ? `${patchedXhrInstance.response}` : null,
       },
       // 如果URL有重定向， responseURL 的值会是经过多次重定向后的最终 URL
-      performance: getEntryByName(patchedXhrInstance.responseURL).pop(),
+      performance: getPerformanceEntriesByName(patchedXhrInstance.responseURL).pop(),
       duration: current - startTime,
     };
   };

@@ -1,7 +1,7 @@
 import { MonitorOptions } from './common';
 
 export interface JsErrorReportData {
-  timeStamp: number;
+  timestamp: number;
   error: {
     name: string;
     message: string;

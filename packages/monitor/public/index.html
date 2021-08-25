@@ -4,35 +4,7 @@
   <meta charset='UTF-8'>
   <title>Test</title>
   <script src='https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js'></script>
-
 </head>
 <body>
-<script>
-  // tip: webpack 插入的脚本有 defer 属性，我们将测试代码放到事件循环队列中执行
-  setTimeout(() => {
-    Monitor.createJsErrorMonitor({
-      onReport: (r) => {
-        console.log(r);
-      },
-    });
-
-   try {
-     throw new Error('I am an error!')
-   }catch (e) {
-
-   }
-
-    const foo = async () => {
-      throw new Error('I am async error!');
-    };
-
-    const bar = () => {
-      foo();
-    };
-
-    bar()
-  });
-</script>
-
 </body>
 </html>

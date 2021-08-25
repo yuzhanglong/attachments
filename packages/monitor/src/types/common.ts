@@ -16,7 +16,8 @@ export type BaseObject<T = any> = Record<string, T>
 
 export enum EventType {
   XHR = 'XHR',
-  JS_ERROR = 'JS_ERROR'
+  JS_ERROR = 'JS_ERROR',
+  ASSETS_ERROR = 'ASSETS_ERROR'
 }
 
 export interface MonitorOptions<Report> {
@@ -25,4 +26,17 @@ export interface MonitorOptions<Report> {
     eventType: EventType
     data: Report
   }>;
+}
+
+export interface UrlData {
+  url: string,
+  hash: string,
+  host: string,
+  hostname: string,
+  href: string,
+  origin: string,
+  pathname: string,
+  port: string,
+  protocol: string,
+  search: string,
 }

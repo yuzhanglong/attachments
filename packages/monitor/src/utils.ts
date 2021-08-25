@@ -1,4 +1,4 @@
-import { BaseObject, MethodKeys } from './types/common';
+import { BaseObject, MethodKeys, UrlData } from './types/common';
 import { JsErrorReportData } from './types/js-error';
 
 /**
@@ -121,7 +121,7 @@ export function formatError(e: ErrorEvent | PromiseRejectionEvent): JsErrorRepor
 
   return {
     // 发生异常的时间戳
-    timeStamp: Date.now(),
+    timestamp: Date.now(),
     // 核心内容，包括堆栈错误信息
     error: {
       name: error.name,
@@ -129,18 +129,6 @@ export function formatError(e: ErrorEvent | PromiseRejectionEvent): JsErrorRepor
       stack: error.stack,
     },
   };
-}
-
-export interface UrlData {
-  hash: string,
-  host: string,
-  hostname: string,
-  href: string,
-  origin: string,
-  pathname: string,
-  port: string,
-  protocol: string,
-  search: string,
 }
 
 export const getUrlData = (url: string): UrlData => {
@@ -158,6 +146,7 @@ export const getUrlData = (url: string): UrlData => {
   ];
 
   const res = {
+    url: url,
     hash: '',
     host: '',
     hostname: '',
@@ -171,14 +160,21 @@ export const getUrlData = (url: string): UrlData => {
 
   const w = getBrowserWindow();
 
-  if (w && w.URL) {
-    const instance = new URL(url);
-    assignKeysBetweenObjects(instance, res, keys);
-  } else if (w && w.document) {
+  // 这里不推荐用浏览器内置的 URL 实例，而是利用原生 a 标签的特性来实现
+  // 因为像下面 img 标签这样的错误，拿到的 url 是不规范的，使用 new URL() 会抛出异常
+  if (w && w.document) {
     const a = document.createElement('a');
     a.href = url;
     assignKeysBetweenObjects(a, res, keys);
   }
-  // TODO: 是否需要自定义 parser 兜底？
   return res;
+};
+
+export const getPerformanceEntriesByName = (name: string) => {
+  const performance = getPerformance();
+
+  if (performance && typeof performance.getEntriesByName === 'function') {
+    return performance.getEntriesByName(name);
+  }
+  return [];
 };
