@@ -3,9 +3,9 @@ import {
   getPerformanceEntriesByName,
   getUrlData,
   patchMethod,
-} from './utils';
-import { PatchedXMLHttpRequest, XHRMonitorOptions, XHRReportData } from './types/xhr';
-import { EventType } from './types/common';
+} from '../utils';
+import { PatchedXMLHttpRequest, XHRMonitorOptions, XHRReportData } from './types';
+import { EventType } from '../types';
 
 /**
  * 初始化 xhr 监控

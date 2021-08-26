@@ -3,7 +3,6 @@
 <head>
   <meta charset='UTF-8'>
   <title>Test</title>
-  <img src='https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/elqsdYqQEefWJbUM2qMO.svg' />
 </head>
 <body>
 <div id='test'>
@@ -15,17 +14,6 @@
       console.log(e);
     },
   });
-
-  setTimeout(() => {
-    const item = document.getElementById('test');
-    item.innerHTML = '<img src=\'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png\'/>';
-
-  }, 1000);
-
-  // setTimeout(() => {
-  //   const item = document.getElementById('test');
-  //   item.innerHTML = '<img src=\'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png\'/>';
-  // }, 2000);
 </script>
 
 </html>

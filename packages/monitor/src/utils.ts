@@ -1,5 +1,5 @@
-import { BaseObject, MethodKeys, UrlData } from './types/common';
-import { JsErrorReportData } from './types/js-error';
+import { BaseObject, MethodKeys, UrlData } from './types';
+import { JsErrorReportData } from './js-error/types';
 
 /**
  * 空函数

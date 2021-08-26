@@ -6,9 +6,9 @@
  * Email: yuzl1123@163.com
  */
 
-import { JsErrorMonitorOptions } from './types/js-error';
-import { formatError, getBrowserWindow } from './utils';
-import { EventType } from './types/common';
+import { JsErrorMonitorOptions } from './types';
+import { formatError, getBrowserWindow } from '../utils';
+import { EventType } from '../types';
 
 export function createJsErrorMonitor(options: JsErrorMonitorOptions) {
   const window = getBrowserWindow();

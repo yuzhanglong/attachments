@@ -5,7 +5,7 @@
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
-import { MonitorOptions } from './common';
+import { MonitorOptions } from '../types';
 
 export interface PaintReportData {
   // FP

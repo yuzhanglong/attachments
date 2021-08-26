@@ -1,4 +1,4 @@
-import { MonitorOptions } from './common';
+import { MonitorOptions } from '../types';
 
 export type AssetsReportData = {
   timeStamp: number

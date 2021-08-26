@@ -1,5 +1,5 @@
 
-import { BaseObject, MonitorOptions, UrlData } from './common';
+import { BaseObject, MonitorOptions, UrlData } from '../types';
 
 // xhr 监控结果记录数据
 export interface XHRReportData {

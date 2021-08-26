@@ -5,9 +5,9 @@
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
-import { getBrowserWindow, getPerformanceEntriesByName, getUrlData } from './utils';
-import { AssetsErrorMonitorOptions } from './types/assets-error';
-import { EventType } from './types/common';
+import { getBrowserWindow, getPerformanceEntriesByName, getUrlData } from '../utils';
+import { AssetsErrorMonitorOptions } from './types';
+import { EventType } from '../types';
 
 export const createAssetsErrorMonitor = (options: AssetsErrorMonitorOptions) => {
   const window = getBrowserWindow();

@@ -1,7 +1,7 @@
-import { PERFORMANCE_ENTRY_TYPES } from './common';
-import { PaintMonitorOptions } from './types/paint';
-import { getPerformance, isFunction, noop, observePerformance } from './utils';
-import { EventType } from './types/common';
+import { PERFORMANCE_ENTRY_TYPES } from '../constants';
+import { PaintMonitorOptions } from './types';
+import { getPerformance, isFunction, noop, observePerformance } from '../utils';
+import { EventType } from '../types';
 
 const FIRST_PAINT = 'first-paint';
 const FIRST_CONTENTFUL_PAINT = 'first-contentful-paint';

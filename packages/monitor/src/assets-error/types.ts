@@ -1,4 +1,4 @@
-import { MonitorOptions, UrlData } from './common';
+import { MonitorOptions, UrlData } from '../types';
 
 export type AssetsErrorReportData =  {
   tagName: string,

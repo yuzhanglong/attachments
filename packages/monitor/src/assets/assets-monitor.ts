@@ -6,10 +6,10 @@
  * Email: yuzl1123@163.com
  */
 
-import { observePerformance } from './utils';
-import { PERFORMANCE_ENTRY_TYPES } from './common';
-import { AssetsMonitorOptions } from './types/assets';
-import { EventType } from './types/common';
+import { observePerformance } from '../utils';
+import { PERFORMANCE_ENTRY_TYPES } from '../constants';
+import { AssetsMonitorOptions } from './types';
+import { EventType } from '../types';
 
 export function createAssetsMonitor(options: AssetsMonitorOptions) {
   const observerOptions: PerformanceObserverInit = {
