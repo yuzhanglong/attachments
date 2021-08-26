@@ -10,3 +10,4 @@ export { createXhrMonitor } from './xhr-monitor';
 export { createJsErrorMonitor } from './js-error-monitor';
 export { createAssetsMonitor } from './assets-monitor';
 export { createAssetsErrorMonitor } from './assets-error-monitor';
+export { createPaintMonitor } from './paint-monitor';

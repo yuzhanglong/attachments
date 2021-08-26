@@ -3,3 +3,4 @@
 TODO
 
 
+https://developer.mozilla.org/en-US/docs/Web/API/Largest_Contentful_Paint_API

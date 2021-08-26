@@ -3,22 +3,29 @@
 <head>
   <meta charset='UTF-8'>
   <title>Test</title>
-  <script src='https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js'></script>
+  <img src='https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/elqsdYqQEefWJbUM2qMO.svg' />
 </head>
 <body>
-<script>
-  window.onload = () => {
-    const observer = new PerformanceObserver(function(list, obj) {
-      console.log(list.getEntries());
-      console.log(obj);
-    });
-
-    observer.observe({
-      entryTypes: ['resource'],
-    });
-
-    axios.get('https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js')
-  };
-</script>
+<div id='test'>
+</div>
 </body>
+<script>
+  Monitor.createPaintMonitor({
+    onReport: (e) => {
+      console.log(e);
+    },
+  });
+
+  setTimeout(() => {
+    const item = document.getElementById('test');
+    item.innerHTML = '<img src=\'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png\'/>';
+
+  }, 1000);
+
+  // setTimeout(() => {
+  //   const item = document.getElementById('test');
+  //   item.innerHTML = '<img src=\'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png\'/>';
+  // }, 2000);
+</script>
+
 </html>

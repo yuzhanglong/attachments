@@ -38,6 +38,7 @@ const config: webpack.Configuration = {
   plugins: [
     isDev && new HtmlWebpackPlugin({
       template: './public/index.html',
+      scriptLoading: isDev ? 'blocking' : 'defer',
     }),
   ].filter(Boolean),
   resolve: {

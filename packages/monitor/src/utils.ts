@@ -199,6 +199,7 @@ export const getPerformanceEntriesByName = (name: string) => {
  * @date 2021-08-26 16:38:12
  * @param options 监听的选项，可以在这里配置监听目标
  * @param callback 监听回调
+ * @param once 仅监听一次
  * @return Function 一个销毁监听器的函数，如果 performance API 不存在，则返回 noop
  *
  * 其中：
@@ -210,6 +211,7 @@ export const getPerformanceEntriesByName = (name: string) => {
 export const observePerformance = (
   options: PerformanceObserverInit,
   callback: (entry: PerformanceEntry, entryList: PerformanceEntry[]) => void,
+  once: boolean = false,
 ) => {
   let destroy = noop;
 
@@ -223,6 +225,9 @@ export const observePerformance = (
       for (let i = 0; i < performanceEntries.length; i += 1) {
         const entry = performanceEntries[i];
         callback(entry, performanceEntries);
+        if (once) {
+          break;
+        }
       }
     });
 

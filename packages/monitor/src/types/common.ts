@@ -18,7 +18,9 @@ export enum EventType {
   XHR = 'XHR',
   JS_ERROR = 'JS_ERROR',
   ASSETS = 'ASSETS',
-  ASSETS_ERROR = 'ASSETS_ERROR'
+  ASSETS_ERROR = 'ASSETS_ERROR',
+  PAINT = 'PAINT',
+  LARGEST_CONTENTFUL_PAINT = 'LARGEST_CONTENTFUL_PAINT'
 }
 
 export interface MonitorOptions<Report> {
