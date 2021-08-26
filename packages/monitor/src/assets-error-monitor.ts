@@ -9,7 +9,7 @@ import { getBrowserWindow, getPerformanceEntriesByName, getUrlData } from './uti
 import { AssetsErrorMonitorOptions } from './types/assets-error';
 import { EventType } from './types/common';
 
-export const createAssetsMonitor = (options: AssetsErrorMonitorOptions) => {
+export const createAssetsErrorMonitor = (options: AssetsErrorMonitorOptions) => {
   const window = getBrowserWindow();
 
   if (!window) {

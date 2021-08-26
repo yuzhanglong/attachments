@@ -17,12 +17,14 @@ export type BaseObject<T = any> = Record<string, T>
 export enum EventType {
   XHR = 'XHR',
   JS_ERROR = 'JS_ERROR',
+  ASSETS = 'ASSETS',
   ASSETS_ERROR = 'ASSETS_ERROR'
 }
 
 export interface MonitorOptions<Report> {
   // 发送报告回调
   onReport: CallBack<{
+    // 上报事件的类型
     eventType: EventType
     data: Report
   }>;

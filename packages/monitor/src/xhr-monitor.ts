@@ -1,6 +1,5 @@
 import {
   formatPlainHeadersString,
-  getPerformance,
   getPerformanceEntriesByName,
   getUrlData,
   patchMethod,

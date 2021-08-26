@@ -20,8 +20,12 @@ export const instanceOf = (a: any, b: any) => {
 };
 
 
-export const isObject = (o: any) => {
-  return typeof o === 'object' && o !== null;
+export const isObject = (obj: any) => {
+  return typeof obj === 'object' && obj !== null;
+};
+
+export const isFunction = (obj: any) => {
+  return typeof obj === 'function';
 };
 
 export const getBrowserWindow = () => {
@@ -34,6 +38,13 @@ export const getBrowserWindow = () => {
 export const getPerformance = () => {
   if (getBrowserWindow() && isObject(window.performance)) {
     return window.performance;
+  }
+  return null;
+};
+
+export const getPerformanceObserver = () => {
+  if (getBrowserWindow() && isFunction(window.PerformanceObserver)) {
+    return window.PerformanceObserver;
   }
   return null;
 };
@@ -161,7 +172,8 @@ export const getUrlData = (url: string): UrlData => {
   const w = getBrowserWindow();
 
   // 这里不推荐用浏览器内置的 URL 实例，而是利用原生 a 标签的特性来实现
-  // 因为像下面 img 标签这样的错误，拿到的 url 是不规范的，使用 new URL() 会抛出异常
+  // 因为像下面 img 标签这样的错误，拿到的 "url" 是不规范的，使用 new URL() 会抛出异常
+  // <img src="i_am_not_a_url"/>
   if (w && w.document) {
     const a = document.createElement('a');
     a.href = url;
@@ -173,8 +185,56 @@ export const getUrlData = (url: string): UrlData => {
 export const getPerformanceEntriesByName = (name: string) => {
   const performance = getPerformance();
 
-  if (performance && typeof performance.getEntriesByName === 'function') {
+  if (performance && isFunction(performance.getEntriesByName)) {
     return performance.getEntriesByName(name);
   }
   return [];
+};
+
+
+/**
+ * 监听 performance 性能指标
+ *
+ * @author yuzhanglong
+ * @date 2021-08-26 16:38:12
+ * @param options 监听的选项，可以在这里配置监听目标
+ * @param callback 监听回调
+ * @return Function 一个销毁监听器的函数，如果 performance API 不存在，则返回 noop
+ *
+ * 其中：
+ * - callback 第一个参数是**某一个**性能指标
+ * - callback 第二个参数是**某一段时间**的性能指标
+ * - 当不支持 performance API 时，我们不进行任何动作
+ *
+ */
+export const observePerformance = (
+  options: PerformanceObserverInit,
+  callback: (entry: PerformanceEntry, entryList: PerformanceEntry[]) => void,
+) => {
+  let destroy = noop;
+
+  // 通过 observer 监听
+  const PerformanceObserver = getPerformanceObserver();
+  if (PerformanceObserver) {
+    const observerInstance = new PerformanceObserver((list) => {
+      // performanceEntries 是【某小一段时间】得到的性能结果
+      // 我们再遍历他们，并逐一调用 callback, 这样上层调用者无需再额外处理
+      const performanceEntries = list.getEntries();
+      for (let i = 0; i < performanceEntries.length; i += 1) {
+        const entry = performanceEntries[i];
+        callback(entry, performanceEntries);
+      }
+    });
+
+    observerInstance.observe(options);
+
+    // 覆写销毁函数
+    destroy = () => {
+      observerInstance.disconnect();
+    };
+  }
+
+  return {
+    destroy: destroy,
+  };
 };

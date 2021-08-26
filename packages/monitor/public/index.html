@@ -6,5 +6,19 @@
   <script src='https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js'></script>
 </head>
 <body>
+<script>
+  window.onload = () => {
+    const observer = new PerformanceObserver(function(list, obj) {
+      console.log(list.getEntries());
+      console.log(obj);
+    });
+
+    observer.observe({
+      entryTypes: ['resource'],
+    });
+
+    axios.get('https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js')
+  };
+</script>
 </body>
 </html>
