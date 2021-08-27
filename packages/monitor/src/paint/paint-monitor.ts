@@ -49,7 +49,7 @@ export function createPaintMonitor(options: PaintMonitorOptions) {
       entryTypes: [PERFORMANCE_ENTRY_TYPES.PAINT],
     };
 
-    const destroy = observePerformance(observerOptions, (entry, entryList) => {
+    const destroy = observePerformance(observerOptions, (entryList) => {
       const [firstPaintEntry, firstContentfulPaintEntry] = getDataFromPaintPreferenceArray(entryList);
       doReport(firstPaintEntry, firstContentfulPaintEntry, EventType.PAINT);
     }, true);
@@ -64,13 +64,15 @@ export function createPaintMonitor(options: PaintMonitorOptions) {
       entryTypes: [PERFORMANCE_ENTRY_TYPES.LARGEST_CONTENTFUL_PAINT],
     };
 
-    const destroy = observePerformance(observerOptions, (entry) => {
-      options.onReport({
-        data: {
-          timeStamp: Date.now(),
-          largestContentfulPaint: entry,
-        },
-        eventType: EventType.LARGEST_CONTENTFUL_PAINT,
+    const destroy = observePerformance(observerOptions, (entryList) => {
+      entryList.forEach(entry => {
+        options.onReport({
+          data: {
+            timeStamp: Date.now(),
+            largestContentfulPaint: entry,
+          },
+          eventType: EventType.LARGEST_CONTENTFUL_PAINT,
+        });
       });
     });
 

@@ -210,25 +210,26 @@ export const getPerformanceEntriesByName = (name: string) => {
  */
 export const observePerformance = (
   options: PerformanceObserverInit,
-  callback: (entry: PerformanceEntry, entryList: PerformanceEntry[]) => void,
+  callback: (entryList: PerformanceEntry[]) => void,
   once: boolean = false,
 ) => {
   let destroy = noop;
+
+  let isExecuted = false;
 
   // 通过 observer 监听
   const PerformanceObserver = getPerformanceObserver();
   if (PerformanceObserver) {
     const observerInstance = new PerformanceObserver((list) => {
+      // 用户配置了只回调一次，并且已经执行过，我们不再执行
+      if (once && isExecuted) {
+        return;
+      }
       // performanceEntries 是【某小一段时间】得到的性能结果
       // 我们再遍历他们，并逐一调用 callback, 这样上层调用者无需再额外处理
       const performanceEntries = list.getEntries();
-      for (let i = 0; i < performanceEntries.length; i += 1) {
-        const entry = performanceEntries[i];
-        callback(entry, performanceEntries);
-        if (once) {
-          break;
-        }
-      }
+      callback(performanceEntries);
+      isExecuted = true;
     });
 
     observerInstance.observe(options);
@@ -239,7 +240,5 @@ export const observePerformance = (
     };
   }
 
-  return {
-    destroy: destroy,
-  };
+  return destroy;
 };

@@ -6,6 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
+export { createClsMonitor } from './cls/cls-monitor';
 export { createXhrMonitor } from './xhr/xhr-monitor';
 export { createJsErrorMonitor } from './js-error/js-error-monitor';
 export { createAssetsMonitor } from './assets/assets-monitor';

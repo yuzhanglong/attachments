@@ -16,13 +16,15 @@ export function createAssetsMonitor(options: AssetsMonitorOptions) {
     entryTypes: [PERFORMANCE_ENTRY_TYPES.RESOURCE],
   };
 
-  const destroy = observePerformance(observerOptions, (entry) => {
-    options.onReport({
-      data: {
-        timeStamp: Date.now(),
-        performance: entry,
-      },
-      eventType: EventType.ASSETS,
+  const destroy = observePerformance(observerOptions, (entryList) => {
+    entryList.forEach(entry => {
+      options.onReport({
+        data: {
+          timeStamp: Date.now(),
+          performance: entry,
+        },
+        eventType: EventType.ASSETS,
+      });
     });
   });
 
