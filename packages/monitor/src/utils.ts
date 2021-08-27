@@ -42,6 +42,13 @@ export const getPerformance = () => {
   return null;
 };
 
+export const firstAndLast = <T>(arr: T[]) => {
+  if (Array.isArray(arr) && arr.length > 0) {
+    return [arr[0], arr[arr.length - 1]];
+  }
+  return [undefined, undefined];
+};
+
 export const getPerformanceObserver = () => {
   if (getBrowserWindow() && isFunction(window.PerformanceObserver)) {
     return window.PerformanceObserver;
