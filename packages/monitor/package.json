@@ -10,6 +10,12 @@
     "build:umd": "webpack --node-env production",
     "dev:link": "yarn link"
   },
+  "files": [
+    "src",
+    "esm",
+    "lib",
+    "dist"
+  ],
   "devDependencies": {
     "html-webpack-plugin": "^5.3.2",
     "webpack-dev-server": "^4.0.0"

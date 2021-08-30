@@ -4,6 +4,12 @@
   "license": "MIT",
   "main": "lib/index.js",
   "module": "esm/index.js",
+  "files": [
+    "src",
+    "esm",
+    "lib",
+    "dist"
+  ],
   "scripts": {
     "dev:start": "tsc -w",
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
