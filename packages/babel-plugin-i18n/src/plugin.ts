@@ -88,7 +88,7 @@ function isCallByConditionalExpression(path: StringLiteralPath) {
   return isCallByIntlMethodDirectly(parentPath);
 }
 
-export function I18nBabelPlugin(api: any, options: PluginOptions) {
+export function BabelPluginI18n(api: any, options: PluginOptions) {
   const { intlKeyPrefix, compressPrefix } = options;
 
   const addCommentManager = createIntlKeyCommentManager(compressPrefix);

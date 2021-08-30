@@ -5,11 +5,12 @@ module.exports = {
   collectCoverageFrom: [
     'packages/**/*.ts',
   ],
-  coverageDirectory: '<rootDir>/coverage/',  projects: [
+  coverageDirectory: '<rootDir>/coverage/',
+  projects: [
     '<rootDir>/packages/i18n',
-    '<rootDir>/packages/i18n-babel-plugin',
+    '<rootDir>/packages/babel-plugin-i18n',
     '<rootDir>/packages/proxy',
-    '<rootDir>/packages/monitor'
+    '<rootDir>/packages/monitor',
   ],
   testEnvironment: 'node',
 };

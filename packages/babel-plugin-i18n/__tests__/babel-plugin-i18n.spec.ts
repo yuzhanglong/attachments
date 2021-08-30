@@ -1,5 +1,5 @@
 /**
- * File: i18n-babel-plugin.spec.ts
+ * File: babel-plugin-i18n.spec.ts
  * Description: babel 插件单侧
  * Created: 2021-08-01 17:31:50
  * Author: yuzhanglong
@@ -27,7 +27,7 @@ const getParsedCode = (code: string) => {
   }).code;
 };
 
-describe('test i18n-babel-plugin', () => {
+describe('test babel-plugin-i18n', () => {
   test('intl 方法 + 字符串直接调用，在其中没有字符串拼接和模板字符串，形如 intl(\'my-str\', {})', () => {
     const example = `intl('Yzl_Test_Name', {})`;
     expect(getParsedCode(example)).toStrictEqual(`intl(
