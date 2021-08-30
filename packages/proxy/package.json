@@ -1,6 +1,6 @@
 {
   "name": "@attachments/proxy",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "> TODO: description",
   "author": "yuzhanglong <yuzl1123@163.com>",
   "homepage": "",
@@ -36,8 +36,8 @@
     "@types/pem": "^1.9.6",
     "koa": "^2.13.1",
     "koa-router": "^10.0.0",
-    "ws": "^8.1.0",
     "npm-run-all": "^4.1.5",
-    "ts-node": "^10.1.0"
+    "ts-node": "^10.1.0",
+    "ws": "^8.1.0"
   }
 }
