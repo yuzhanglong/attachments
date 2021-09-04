@@ -7,8 +7,9 @@
  */
 
 import { JsErrorMonitorOptions } from './types';
-import { formatError, getBrowserWindow } from '../utils';
 import { EventType } from '../types';
+import { getBrowserWindow } from '../utils/browser-interfaces';
+import { formatError } from '../utils/format-error';
 
 export function createJsErrorMonitor(options: JsErrorMonitorOptions) {
   const window = getBrowserWindow();

@@ -5,10 +5,11 @@
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
-import { firstAndLast, observePerformance } from '../utils';
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { ClsMonitorOptions, LayoutShift } from './types';
 import { EventType } from '../types';
+import { getFirstAndLast } from '../utils/get-first-and-last';
+import { observePerformance } from '../utils/observe-performance';
 
 
 // 每个 layout shift 间隔的最大值
@@ -37,7 +38,7 @@ export function createClsMonitor(clsMonitorOptions: ClsMonitorOptions) {
 
       // 只计算没有最近用户输入的布局变化
       if (!entry.hadRecentInput) {
-        const [firstSessionEntry, lastSessionEntry] = firstAndLast<LayoutShift>(sessionEntries);
+        const [firstSessionEntry, lastSessionEntry] = getFirstAndLast<LayoutShift>(sessionEntries);
 
         // session: 某一小段时间的变化
         // 距离上一次 layoutShift 不到 1s, 距离本次 session 的开始时 layoutShift 不到 5s，参考 Chrome 的开源库：

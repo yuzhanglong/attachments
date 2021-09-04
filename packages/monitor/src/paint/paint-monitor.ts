@@ -1,7 +1,10 @@
+import { isFunction } from 'lodash';
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { PaintMonitorOptions } from './types';
-import { getPerformance, isFunction, noop, observePerformance } from '../utils';
 import { EventType } from '../types';
+import { noop } from '../utils/noop';
+import { getPerformance } from '../utils/browser-interfaces';
+import { observePerformance } from '../utils/observe-performance';
 
 const FIRST_PAINT = 'first-paint';
 const FIRST_CONTENTFUL_PAINT = 'first-contentful-paint';
