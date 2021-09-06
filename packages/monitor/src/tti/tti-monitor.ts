@@ -32,10 +32,12 @@ const checkAndReportTTI = (
 
   const tti = calculateTTI({
     searchStart: searchStartTime,
-    currentTime: performance.now(),
+    checkTimeInQuiteWindow: performance.now(),
     longTasks: longTasks,
     lastKnownNetwork2Busy: computeLastKnownNetwork2Busy(incomingRequests, networkRequests),
   });
+
+  console.log('tti:', tti);
 
   options.onReport({
     eventType: EventType.TTI,
@@ -97,9 +99,24 @@ export const observeLongTaskAndResources = (
  */
 export const observeIncomingRequests = () => {
   const incomingRequests = [];
-  patchMethod(XMLHttpRequest.prototype, 'open', () => {
-    return () => {
+  patchMethod(XMLHttpRequest.prototype, 'open', (origin: XMLHttpRequest['open']) => {
+    return function(this: XMLHttpRequest & {
+      methodTagByTTIMonitor: string
+    }, ...args: Parameters<XMLHttpRequest['open']>) {
+      const [method] = args;
+      this.methodTagByTTIMonitor = method;
+      return origin.apply(this, args);
+    } as any;
+  });
 
+  patchMethod(XMLHttpRequest.prototype, 'send', (origin) => {
+    const uniqueId = 0;
+    return function(this: XMLHttpRequest & {
+      methodTagByTTIMonitor: string
+    }, ...args: Parameters<XMLHttpRequest['send']>) {
+      if (this.methodTagByTTIMonitor === 'GET') {
+        return origin.apply(this, args);
+      }
     };
   });
 
@@ -118,11 +135,17 @@ export const createTtiMonitor = (options: TTIMonitorOptions) => {
     return;
   }
 
-
   const ttiCalculatorScheduler = createScheduler();
 
-
-  const { longTasks, networkRequests } = observeLongTaskAndResources();
+  // 监听 long task 和 network resource
+  const { longTasks, networkRequests } = observeLongTaskAndResources(
+    (entry) => {
+      console.log(entry);
+    },
+    (resourceEntry) => {
+      console.log(resourceEntry);
+    },
+  );
   const { incomingRequests } = observeIncomingRequests();
 
   const networkRequestsTmp = networkRequests.map(res => {

@@ -6,8 +6,8 @@ interface TTICalculateOptions {
   searchStart: number;
   // 距离最近的，具有至少 2 个网络请求的时间点
   lastKnownNetwork2Busy: number;
-  // 当前时间，该时间位于静默窗口期内
-  currentTime: number;
+  // 检测时间点，该时间位于静默窗口期内
+  checkTimeInQuiteWindow: number;
   // 长任务集合
   longTasks: { startTime: number; endTime: number }[];
 }
@@ -38,15 +38,17 @@ const getDomContentLoadedEventEndTime = () => {
  * @param options 见 TTICalculateOptions
  */
 export const calculateTTI = (options: TTICalculateOptions) => {
-  const { searchStart, longTasks, currentTime, lastKnownNetwork2Busy } = options;
-  // 如果当前时间
-  if (currentTime - lastKnownNetwork2Busy < 5000) {
+  const { searchStart, longTasks, checkTimeInQuiteWindow, lastKnownNetwork2Busy } = options;
+  // 确保静默窗口期中没有请求数超过 2 的时刻
+  if (checkTimeInQuiteWindow - lastKnownNetwork2Busy < 5000) {
     return null;
   }
 
-  const maybeFCI = longTasks.length === 0 ? searchStart : last(longTasks).end;
+  // 如果没有 long task，那么 FCP 时间就是 TTI 时间
+  const maybeFCI = longTasks.length === 0 ? searchStart : last(longTasks).endTime;
 
-  if (currentTime - maybeFCI < 5000) {
+  // 确保窗口期没有 long task
+  if (checkTimeInQuiteWindow - maybeFCI < 5000) {
     return null;
   }
 
