@@ -3,24 +3,6 @@
 <head>
   <meta charset='UTF-8'>
   <title>Test</title>
-  <style>
-      #project {
-          animation-duration: 2s;
-          animation-name: foo;
-          background-color: #409eff;
-          height: 4000px;
-      }
-
-      @keyframes foo {
-          from {
-              height: 0;
-          }
-
-          to {
-              height: 400px;
-          }
-      }
-  </style>
 </head>
 <body>
 <div id='test'>
@@ -30,12 +12,11 @@
 </div>
 </body>
 <script>
-  const el = document.getElementById('project');
-  Monitor.createClsMonitor({
-    onReport:(e) => {
-      console.log(e);
-    }
-  });
+  Monitor.createTtiMonitor({});
+  for (let i = 0; i < 3000; i++) {
+    console.log('hello world!');
+  }
+
 </script>
 
 </html>

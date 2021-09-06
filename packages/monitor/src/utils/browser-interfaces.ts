@@ -6,15 +6,24 @@ export const getBrowserWindow = () => {
   }
   return null;
 };
+
 export const getPerformance = () => {
   if (getBrowserWindow() && isObject(window.performance)) {
     return window.performance;
   }
   return null;
 };
+
 export const getPerformanceObserver = () => {
   if (getBrowserWindow() && isFunction(window.PerformanceObserver)) {
     return window.PerformanceObserver;
+  }
+  return null;
+};
+
+export const getXMLHttpRequest = () => {
+  if (getBrowserWindow() && isFunction(window.XMLHttpRequest)) {
+    return window.XMLHttpRequest;
   }
   return null;
 };
