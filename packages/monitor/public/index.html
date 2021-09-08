@@ -13,10 +13,14 @@
 </body>
 <script src='https://cdn.jsdelivr.net/npm/axios@0.21.3/dist/axios.min.js'></script>
 <script>
-  Monitor.createTtiMonitor({});
-  for (let i = 0; i < 3000; i++) {
-    console.log('hello world!');
-  }
+  Monitor.createTtiMonitor({
+    onReport:(e) => {
+      console.log(e);
+    }
+  });
+  // for (let i = 0; i < 3000; i++) {
+  //   console.log('hello world!');
+  // }
   axios.post('http://localhost:8081');
 
   const request = new Request('http://localhost:8081');

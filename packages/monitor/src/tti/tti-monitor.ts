@@ -6,8 +6,10 @@ import { EventType } from '../types';
 import { createScheduler } from '../utils/create-scheduler';
 import { calculateTTI } from '../utils/calculate-tti';
 import { patchMethod } from '../utils/patch-method';
-import { TTIMonitorOptions } from './types';
+import { PatchedXMLHttpRequest, TTIMonitorOptions } from './types';
 import { computeLastKnownNetwork2Busy, ObservedResourceRequests } from '../utils/compute-last-known-network-2-busy';
+
+const TIME_GAP = 5000;
 
 /**
  * 上报 tti
@@ -98,32 +100,76 @@ export const observeLongTaskAndResources = (
  * @date 2021-09-06 17:59:14
  */
 export const observeIncomingRequests = () => {
-  const incomingRequests = [];
+  const incomingRequests: Record<number, number> = {};
+
+  // 监听 XMLHttpRequest open 方法
   patchMethod(XMLHttpRequest.prototype, 'open', (origin: XMLHttpRequest['open']) => {
-    return function(this: XMLHttpRequest & {
-      methodTagByTTIMonitor: string
-    }, ...args: Parameters<XMLHttpRequest['open']>) {
+    return function(this: PatchedXMLHttpRequest, ...args: Parameters<XMLHttpRequest['open']>) {
       const [method] = args;
-      this.methodTagByTTIMonitor = method;
+      this.taggedMethod = method;
       return origin.apply(this, args);
     } as any;
-  });
+  })();
 
+  // 监听 XMLHttpRequest send 方法
   patchMethod(XMLHttpRequest.prototype, 'send', (origin) => {
-    const uniqueId = 0;
-    return function(this: XMLHttpRequest & {
-      methodTagByTTIMonitor: string
-    }, ...args: Parameters<XMLHttpRequest['send']>) {
-      if (this.methodTagByTTIMonitor === 'GET') {
+    let uniqueId = 0;
+    return function(this: PatchedXMLHttpRequest, ...args: Parameters<XMLHttpRequest['send']>) {
+      if (this.taggedMethod !== 'GET') {
         return origin.apply(this, args);
       }
+      // uniqueId 为偶数
+      uniqueId += 2;
+      const reqId = uniqueId;
+
+      incomingRequests[reqId] = Date.now();
+
+      patchMethod(this, 'onreadystatechange', (origin) => {
+        return function(e) {
+          origin.call(this, e);
+          if (this.readyState === XMLHttpRequest.DONE) {
+            // 从【进行中】表中移除
+            delete incomingRequests[reqId];
+          }
+        };
+      })();
+
+      return origin.apply(this, args);
     };
-  });
+  })();
+
+  // 监听 window.fetch 方法
+  patchMethod(window, 'fetch', (origin: typeof window['fetch']) => {
+    let uniqueId = 0;
+    console.log('feeeee!');
+    return function(...args: Parameters<typeof window['fetch']>) {
+      const [request, init] = args;
+      const method = (request as Request)?.method || init.method;
+      if (method !== 'GET') {
+        return origin(...args);
+      }
+
+      return new Promise<Response>((resolve, reject) => {
+        uniqueId += 2;
+        const reqId = uniqueId;
+        incomingRequests[reqId] = Date.now();
+
+        origin(...args)
+          .then((value) => {
+            delete incomingRequests[reqId];
+            resolve(value);
+          })
+          .catch((e) => {
+            delete incomingRequests[reqId];
+            reject(e);
+          });
+      });
+    };
+  })();
 
   return {
     incomingRequests,
   };
-
 };
 
 export const createTtiMonitor = (options: TTIMonitorOptions) => {
@@ -139,30 +185,41 @@ export const createTtiMonitor = (options: TTIMonitorOptions) => {
 
   // 监听 long task 和 network resource
   const { longTasks, networkRequests } = observeLongTaskAndResources(
-    (entry) => {
-      console.log(entry);
+    ({ startTime, duration }) => {
+      // ttiCalculatorScheduler.resetScheduler(startTime + duration + TIME_GAP);
     },
     (resourceEntry) => {
-      console.log(resourceEntry);
+
     },
   );
   const { incomingRequests } = observeIncomingRequests();
 
-  const networkRequestsTmp = networkRequests.map(res => {
-    return {
-      start: res.startTime,
-      end: res.endTime,
-    };
-  });
-
   const checkAndReport = () => {
+    const getFormattedRequest = () => {
+      return networkRequests.map(res => {
+        return {
+          start: res.startTime,
+          end: res.endTime,
+        };
+      });
+    };
+
+    const getIncomingRequestsTimes = () => {
+      const entries = Object.entries(incomingRequests);
+      return entries.map(res => {
+        return res[1];
+      });
+    };
+
+    console.log(getIncomingRequestsTimes());
+
     checkAndReportTTI(
       options,
-      networkRequestsTmp,
-      incomingRequests,
+      getFormattedRequest(),
+      getIncomingRequestsTimes(),
       longTasks,
     );
   };
 
-  ttiCalculatorScheduler.startSchedule(checkAndReport, 0);
+  ttiCalculatorScheduler.startSchedule(checkAndReport, performance.now() + 1000);
 };

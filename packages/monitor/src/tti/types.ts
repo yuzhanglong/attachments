@@ -5,3 +5,7 @@ export interface TTIReportData {
 }
 
 export type TTIMonitorOptions = MonitorOptions<TTIReportData>
+
+export interface PatchedXMLHttpRequest extends XMLHttpRequest{
+  taggedMethod: string;
+}

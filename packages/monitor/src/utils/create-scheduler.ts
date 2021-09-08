@@ -17,7 +17,7 @@ export const createScheduler = () => {
   let scheduleTime = -Infinity;
 
   const getCurrentTime = () => {
-    return Date.now();
+    return performance.now();
   };
 
   const clearCurrentScheduleTimer = () => {
@@ -50,6 +50,7 @@ export const createScheduler = () => {
 
   const stopSchedule = () => {
     clearCurrentScheduleTimer();
+    callback = undefined;
   };
 
   return {
