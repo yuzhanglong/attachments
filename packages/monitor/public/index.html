@@ -18,30 +18,30 @@
       console.log(e);
     }
   });
-  // for (let i = 0; i < 3000; i++) {
-  //   console.log('hello world!');
-  // }
-  axios.post('http://localhost:8081');
-
-  const request = new Request('http://localhost:8081');
-  fetch(request).then(res => {
-    console.log('fetch end:', res);
-  });
-
-  setTimeout(() => {
-    const el = document.getElementById('test');
-    const img = document.createElement('img');
-    img.src = 'https://web.dev/images/lockup.svg';
-    el.appendChild(img);
-  }, 2000);
-
-  setTimeout(() => {
-    const el = document.getElementById('test');
-    const link = document.createElement('link');
-    link.href = 'https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css';
-    link.rel = 'stylesheet'
-    el.appendChild(link);
-  }, 4000);
+  for (let i = 0; i < 5000; i++) {
+    console.log('hello world!');
+  }
+  // axios.post('http://localhost:8081');
+  //
+  // const request = new Request('http://localhost:8081');
+  // fetch(request).then(res => {
+  //   console.log('fetch end:', res);
+  // });
+  //
+  // setTimeout(() => {
+  //   const el = document.getElementById('test');
+  //   const img = document.createElement('img');
+  //   img.src = 'https://web.dev/images/lockup.svg';
+  //   el.appendChild(img);
+  // }, 2000);
+  //
+  // setTimeout(() => {
+  //   const el = document.getElementById('test');
+  //   const link = document.createElement('link');
+  //   link.href = 'https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css';
+  //   link.rel = 'stylesheet'
+  //   el.appendChild(link);
+  // }, 4000);
 </script>
 
 </html>

@@ -1,3 +1,4 @@
+import { last } from 'lodash';
 import { getPerformance, getPerformanceObserver, getXMLHttpRequest } from '../utils/browser-interfaces';
 import { getPerformanceEntriesByName } from '../utils/get-performance-entries-by-name';
 import { EventType } from '../types';
@@ -22,7 +23,7 @@ const TIME_GAP = 5000;
 const checkAndReportTTI = (
   options: TTIMonitorOptions,
   lastKnownNetwork2Busy: number,
-  longTasks: { startTime: number; endTime: number }[],
+  longTasks: TaskTimeInfo[],
 ) => {
   const fcp = getPerformanceEntriesByName('first-contentful-paint')[0];
   const searchStartTime = fcp ? fcp.startTime : 0;
@@ -69,15 +70,19 @@ export const createTtiMonitor = (options: TTIMonitorOptions) => {
   observeLongTaskAndResources(
     (timeInfo) => {
       longTasks.push(timeInfo);
+      // 在 long task 5 秒 后尝试获取 tti
       ttiCalculatorScheduler.resetScheduler(timeInfo.endTime + TIME_GAP);
     },
     (timeInfo) => {
       networkRequests.push(timeInfo);
+      // 遇到资源请求，在最后一次请求数大于 2 的时刻五秒后尝试获取 tti
       ttiCalculatorScheduler.resetScheduler(getLastKnownNetworkBusy() + TIME_GAP);
     },
   );
 
   const checkAndReport = () => {
+    console.log('getLastKnownNetworkBusy:', getLastKnownNetworkBusy());
+    console.log('longTasks:', longTasks);
     checkAndReportTTI(
       options,
       getLastKnownNetworkBusy(),
@@ -85,5 +90,10 @@ export const createTtiMonitor = (options: TTIMonitorOptions) => {
     );
   };
 
-  ttiCalculatorScheduler.startSchedule(checkAndReport, performance.now() + TIME_GAP);
+  const lastLongTask = last(longTasks)?.endTime || 0;
+
+  ttiCalculatorScheduler.startSchedule(
+    checkAndReport,
+    Math.max(getLastKnownNetworkBusy() + TIME_GAP, lastLongTask),
+  );
 };
