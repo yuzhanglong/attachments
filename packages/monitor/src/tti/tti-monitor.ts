@@ -1,13 +1,12 @@
-import { observePerformance } from '../utils/observe-performance';
 import { getPerformance, getPerformanceObserver, getXMLHttpRequest } from '../utils/browser-interfaces';
 import { getPerformanceEntriesByName } from '../utils/get-performance-entries-by-name';
-import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { EventType } from '../types';
 import { createScheduler } from '../utils/create-scheduler';
 import { calculateTTI } from '../utils/calculate-tti';
-import { patchMethod } from '../utils/patch-method';
-import { PatchedXMLHttpRequest, TTIMonitorOptions } from './types';
-import { computeLastKnownNetwork2Busy, ObservedResourceRequests } from '../utils/compute-last-known-network-2-busy';
+import { TaskTimeInfo, TTIMonitorOptions } from './types';
+import { computeLastKnownNetwork2Busy } from '../utils/compute-last-known-network-2-busy';
+import { observeIncomingRequests } from '../utils/observe-incoming-requests';
+import { observeLongTaskAndResources } from '../utils/observe-long-task-and-resources';
 
 const TIME_GAP = 5000;
 
@@ -17,15 +16,12 @@ const TIME_GAP = 5000;
  * @author yuzhanglong
  * @date 2021-09-06 17:56:44
  * @param options 选项
- * @param networkRequests
- * @param incomingRequests
+ * @param lastKnownNetwork2Busy
  * @param longTasks
  */
-
 const checkAndReportTTI = (
   options: TTIMonitorOptions,
-  networkRequests: ObservedResourceRequests[],
-  incomingRequests: number[],
+  lastKnownNetwork2Busy: number,
   longTasks: { startTime: number; endTime: number }[],
 ) => {
   const fcp = getPerformanceEntriesByName('first-contentful-paint')[0];
@@ -36,7 +32,7 @@ const checkAndReportTTI = (
     searchStart: searchStartTime,
     checkTimeInQuiteWindow: performance.now(),
     longTasks: longTasks,
-    lastKnownNetwork2Busy: computeLastKnownNetwork2Busy(incomingRequests, networkRequests),
+    lastKnownNetwork2Busy: lastKnownNetwork2Busy,
   });
 
   console.log('tti:', tti);
@@ -49,129 +45,6 @@ const checkAndReportTTI = (
   });
 };
 
-/**
- * 监听长任务和资源请求
- *
- * @author yuzhanglong
- * @date 2021-09-06 17:37:20
- * @param onLongTask 在监听到长任务时做些什么
- * @param onNetworkRequest 在监听到网络请求后做些什么
- * @return object 返回一个对象，第一个参数是收集到的所有 long tasks 第二个参数是收集到的所有 requests
- */
-export const observeLongTaskAndResources = (
-  onLongTask: (entry: PerformanceEntry) => void,
-  onNetworkRequest: (resourceEntry: PerformanceResourceTiming) => void,
-) => {
-  const longTasks: { startTime: number, endTime: number }[] = [];
-  const networkRequests: { startTime: number, endTime: number }[] = [];
-
-  observePerformance({
-    entryTypes: [PERFORMANCE_ENTRY_TYPES.LONG_TASK, PERFORMANCE_ENTRY_TYPES.RESOURCE],
-  }, (entryList) => {
-    for (const entry of entryList) {
-      if (entry.entryType === PERFORMANCE_ENTRY_TYPES.LONG_TASK) {
-        const endTime = entry.startTime + entry.duration;
-        longTasks.push({
-          startTime: entry.startTime,
-          endTime: endTime,
-        });
-        onLongTask(entry);
-      } else if (entry.entryType === PERFORMANCE_ENTRY_TYPES.RESOURCE) {
-        const { fetchStart, responseEnd } = entry as PerformanceResourceTiming;
-        networkRequests.push({
-          startTime: fetchStart,
-          endTime: responseEnd,
-        });
-        onNetworkRequest(entry as PerformanceResourceTiming);
-      }
-    }
-  });
-
-  return {
-    longTasks,
-    networkRequests,
-  };
-};
-
-/**
- * 使用劫持方式监听正在进行中的请求
- *
- * @author yuzhanglong
- * @date 2021-09-06 17:59:14
- */
-export const observeIncomingRequests = () => {
-  const incomingRequests: Record<number, number> = {};
-
-  // 监听 XMLHttpRequest open 方法
-  patchMethod(XMLHttpRequest.prototype, 'open', (origin: XMLHttpRequest['open']) => {
-    return function(this: PatchedXMLHttpRequest, ...args: Parameters<XMLHttpRequest['open']>) {
-      const [method] = args;
-      this.taggedMethod = method;
-      return origin.apply(this, args);
-    } as any;
-  })();
-
-  // 监听 XMLHttpRequest send 方法
-  patchMethod(XMLHttpRequest.prototype, 'send', (origin) => {
-    let uniqueId = 0;
-    return function(this: PatchedXMLHttpRequest, ...args: Parameters<XMLHttpRequest['send']>) {
-      if (this.taggedMethod !== 'GET') {
-        return origin.apply(this, args);
-      }
-      // uniqueId 为偶数
-      uniqueId += 2;
-      const reqId = uniqueId;
-
-      incomingRequests[reqId] = Date.now();
-
-      patchMethod(this, 'onreadystatechange', (origin) => {
-        return function(e) {
-          origin.call(this, e);
-          if (this.readyState === XMLHttpRequest.DONE) {
-            // 从【进行中】表中移除
-            delete incomingRequests[reqId];
-          }
-        };
-      })();
-
-      return origin.apply(this, args);
-    };
-  })();
-
-  // 监听 window.fetch 方法
-  patchMethod(window, 'fetch', (origin: typeof window['fetch']) => {
-    let uniqueId = 0;
-    console.log('feeeee!');
-    return function(...args: Parameters<typeof window['fetch']>) {
-      const [request, init] = args;
-      const method = (request as Request)?.method || init.method;
-      if (method !== 'GET') {
-        return origin(...args);
-      }
-
-      return new Promise<Response>((resolve, reject) => {
-        uniqueId += 2;
-        const reqId = uniqueId;
-        incomingRequests[reqId] = Date.now();
-
-        origin(...args)
-          .then((value) => {
-            delete incomingRequests[reqId];
-            resolve(value);
-          })
-          .catch((e) => {
-            delete incomingRequests[reqId];
-            reject(e);
-          });
-      });
-    };
-  })();
-
-  return {
-    incomingRequests,
-  };
-};
-
 export const createTtiMonitor = (options: TTIMonitorOptions) => {
   const XMLHttpRequest = getXMLHttpRequest();
   const performanceObserver = getPerformanceObserver();
@@ -181,45 +54,36 @@ export const createTtiMonitor = (options: TTIMonitorOptions) => {
     return;
   }
 
+  const longTasks: TaskTimeInfo[] = [];
+  const networkRequests: TaskTimeInfo[] = [];
+
   const ttiCalculatorScheduler = createScheduler();
+  const { getIncomingRequestsTimes } = observeIncomingRequests();
+
+  const getLastKnownNetworkBusy = () => {
+    return computeLastKnownNetwork2Busy(getIncomingRequestsTimes(), networkRequests);
+  };
+
 
   // 监听 long task 和 network resource
-  const { longTasks, networkRequests } = observeLongTaskAndResources(
-    ({ startTime, duration }) => {
-      // ttiCalculatorScheduler.resetScheduler(startTime + duration + TIME_GAP);
+  observeLongTaskAndResources(
+    (timeInfo) => {
+      longTasks.push(timeInfo);
+      ttiCalculatorScheduler.resetScheduler(timeInfo.endTime + TIME_GAP);
     },
-    (resourceEntry) => {
-
+    (timeInfo) => {
+      networkRequests.push(timeInfo);
+      ttiCalculatorScheduler.resetScheduler(getLastKnownNetworkBusy() + TIME_GAP);
     },
   );
-  const { incomingRequests } = observeIncomingRequests();
 
   const checkAndReport = () => {
-    const getFormattedRequest = () => {
-      return networkRequests.map(res => {
-        return {
-          start: res.startTime,
-          end: res.endTime,
-        };
-      });
-    };
-
-    const getIncomingRequestsTimes = () => {
-      const entries = Object.entries(incomingRequests);
-      return entries.map(res => {
-        return res[1];
-      });
-    };
-
-    console.log(getIncomingRequestsTimes());
-
     checkAndReportTTI(
       options,
-      getFormattedRequest(),
-      getIncomingRequestsTimes(),
+      getLastKnownNetworkBusy(),
       longTasks,
     );
   };
 
-  ttiCalculatorScheduler.startSchedule(checkAndReport, performance.now() + 1000);
+  ttiCalculatorScheduler.startSchedule(checkAndReport, performance.now() + TIME_GAP);
 };
