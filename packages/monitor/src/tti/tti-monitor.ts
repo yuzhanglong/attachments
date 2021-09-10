@@ -69,8 +69,8 @@ export const createTtiMonitor = (options: TTIMonitorOptions) => {
   // 监听 long task 和 network resource
   observeLongTaskAndResources(
     (timeInfo) => {
-      longTasks.push(timeInfo);
       // 在 long task 5 秒 后尝试获取 tti
+      longTasks.push(timeInfo);
       ttiCalculatorScheduler.resetScheduler(timeInfo.endTime + TIME_GAP);
     },
     (timeInfo) => {
@@ -81,8 +81,6 @@ export const createTtiMonitor = (options: TTIMonitorOptions) => {
   );
 
   const checkAndReport = () => {
-    console.log('getLastKnownNetworkBusy:', getLastKnownNetworkBusy());
-    console.log('longTasks:', longTasks);
     checkAndReportTTI(
       options,
       getLastKnownNetworkBusy(),

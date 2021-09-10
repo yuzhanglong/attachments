@@ -14,19 +14,32 @@
 <script src='https://cdn.jsdelivr.net/npm/axios@0.21.3/dist/axios.min.js'></script>
 <script>
   Monitor.createTtiMonitor({
-    onReport:(e) => {
+    onReport: (e) => {
       console.log(e);
-    }
+    },
   });
-  for (let i = 0; i < 5000; i++) {
-    console.log('hello world!');
+
+  function fib(count) {
+    if (isNaN(count) || count <= 0) {
+      return 0;
+    }
+
+    function f(count) {
+      if (count <= 2) {
+        return 1;
+      }
+      return f(count - 1) + f(count - 2);
+    }
+
+    return f(count);
   }
-  // axios.post('http://localhost:8081');
-  //
-  // const request = new Request('http://localhost:8081');
-  // fetch(request).then(res => {
-  //   console.log('fetch end:', res);
-  // });
+
+  console.log(fib(42));
+
+  setTimeout(() => {
+    console.log(fib(42));
+  }, 4000);
+
   //
   // setTimeout(() => {
   //   const el = document.getElementById('test');
