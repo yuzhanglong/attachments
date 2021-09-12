@@ -3,7 +3,7 @@ import { EventType } from '../types';
 import { patchMethod } from '../utils/patch-method';
 import { formatPlainHeadersString } from '../utils/format-plain-headers-string';
 import { getUrlData } from '../utils/get-url-data';
-import { getPerformanceEntriesByName } from '../utils/get-performance-entries-by-name';
+import { getPerformanceEntriesByName } from '../utils/performance-entry';
 
 /**
  * 初始化 xhr 监控

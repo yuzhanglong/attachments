@@ -24,7 +24,8 @@ export enum EventType {
   LARGEST_CONTENTFUL_PAINT = 'LARGEST_CONTENTFUL_PAINT',
   CUMULATIVE_LAYOUT_SHIFT = 'CUMULATIVE_LAYOUT_SHIFT',
   TTI = 'TTI',
-  MPFID = 'MPFID'
+  MPFID = 'MPFID',
+  FID = 'FID'
 }
 
 export interface MonitorOptions<Report> {

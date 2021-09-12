@@ -4,7 +4,7 @@ import { getPerformance, getPerformanceObserver } from '../utils/browser-interfa
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { MPFIDMonitorOptions } from './types';
 import { onPageLoad } from '../utils/on-page-load';
-import { getPerformanceEntriesByName } from '../utils/get-performance-entries-by-name';
+import { getPerformanceEntriesByName } from '../utils/performance-entry';
 import { EventType } from '../types';
 
 export const createMPFIDMonitor = (options: MPFIDMonitorOptions) => {

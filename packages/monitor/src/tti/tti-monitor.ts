@@ -1,6 +1,6 @@
 import { last } from 'lodash';
 import { getPerformance, getPerformanceObserver, getXMLHttpRequest } from '../utils/browser-interfaces';
-import { getPerformanceEntriesByName } from '../utils/get-performance-entries-by-name';
+import { getPerformanceEntriesByName } from '../utils/performance-entry';
 import { EventType } from '../types';
 import { createScheduler } from '../utils/create-scheduler';
 import { calculateTTI } from '../utils/calculate-tti';
