@@ -25,7 +25,8 @@ export enum EventType {
   CUMULATIVE_LAYOUT_SHIFT = 'CUMULATIVE_LAYOUT_SHIFT',
   TTI = 'TTI',
   MPFID = 'MPFID',
-  FID = 'FID'
+  FID = 'FID',
+  COMMON_PERFORMANCE_TIMING = 'COMMON_PERFORMANCE_TIMING'
 }
 
 export interface MonitorOptions<Report> {
