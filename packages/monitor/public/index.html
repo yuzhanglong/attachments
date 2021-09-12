@@ -13,11 +13,14 @@
 </body>
 <script src='https://cdn.jsdelivr.net/npm/axios@0.21.3/dist/axios.min.js'></script>
 <script>
-  Monitor.createTtiMonitor({
-    onReport: (e) => {
+  Monitor.createMPFIDMonitor({
+    onReport:(e) => {
       console.log(e);
-    },
+    }
   });
+
+  console.log(fib(40));
+  console.log(fib(40));
 
   function fib(count) {
     if (isNaN(count) || count <= 0) {
@@ -33,28 +36,6 @@
 
     return f(count);
   }
-
-  console.log(fib(42));
-
-  setTimeout(() => {
-    console.log(fib(42));
-  }, 4000);
-
-  //
-  // setTimeout(() => {
-  //   const el = document.getElementById('test');
-  //   const img = document.createElement('img');
-  //   img.src = 'https://web.dev/images/lockup.svg';
-  //   el.appendChild(img);
-  // }, 2000);
-  //
-  // setTimeout(() => {
-  //   const el = document.getElementById('test');
-  //   const link = document.createElement('link');
-  //   link.href = 'https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css';
-  //   link.rel = 'stylesheet'
-  //   el.appendChild(link);
-  // }, 4000);
 </script>
 
 </html>

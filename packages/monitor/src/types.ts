@@ -15,6 +15,7 @@ export type CallBack<P> = (params: P) => void
 export type BaseObject<T = any> = Record<string, T>
 
 export enum EventType {
+  // noinspection SpellCheckingInspection
   XHR = 'XHR',
   JS_ERROR = 'JS_ERROR',
   ASSETS = 'ASSETS',
@@ -23,6 +24,7 @@ export enum EventType {
   LARGEST_CONTENTFUL_PAINT = 'LARGEST_CONTENTFUL_PAINT',
   CUMULATIVE_LAYOUT_SHIFT = 'CUMULATIVE_LAYOUT_SHIFT',
   TTI = 'TTI',
+  MPFID = 'MPFID'
 }
 
 export interface MonitorOptions<Report> {

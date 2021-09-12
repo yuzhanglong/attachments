@@ -27,3 +27,12 @@ export const getXMLHttpRequest = () => {
   }
   return null;
 };
+
+
+export const getDocument = () => {
+  const window = getBrowserWindow();
+  if (!window || !window.document) {
+    return null;
+  }
+  return window.document;
+};

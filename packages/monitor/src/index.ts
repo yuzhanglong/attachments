@@ -13,3 +13,4 @@ export { createAssetsMonitor } from './assets/assets-monitor';
 export { createAssetsErrorMonitor } from './assets-error/assets-error-monitor';
 export { createPaintMonitor } from './paint/paint-monitor';
 export { createTtiMonitor } from './tti/tti-monitor';
+export { createMPFIDMonitor } from './mpfid/mpfid-monitor';
