@@ -1,6 +1,5 @@
 import * as path from 'path';
 import * as execa from 'execa';
-import { Plop, run } from 'plop';
 
 export const getBasePath = () => path.resolve(__dirname, '..');
 
@@ -16,7 +15,7 @@ export const createAddConfigAction = (name: string, p: string) => {
   return {
     type: 'add',
     path: p,
-    templateFile: path.resolve(getTemplatePath(), name),
+    templateFile: path.resolve(getTemplatePath(), 'common', name),
   };
 };
 
@@ -54,6 +53,5 @@ export const runCommand = async (command: string, args?: string[], path?: string
 };
 export const launchPlopByConfig = async (generator: string) => {
   const configPath = path.resolve(getLibPath(), 'configurations', 'node-plop', `${generator}.js`);
-  console.log('111');
   await runCommand('plop', ['--plopfile', configPath]);
 };
