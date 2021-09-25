@@ -3,7 +3,9 @@
   "version": "0.0.6",
   "license": "MIT",
   "files": [
-    "src"
+    "src",
+    "lib",
+    "esm"
   ],
   "bin": {
     "attachments": "./lib/attachments.js"
