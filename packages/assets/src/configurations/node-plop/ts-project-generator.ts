@@ -1,4 +1,4 @@
-import * as plop from 'plop';
+import * as plop from 'node-plop';
 import * as path from 'path';
 import {
   createAddConfigAction,

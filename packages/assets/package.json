@@ -5,7 +5,11 @@
   "files": [
     "src"
   ],
+  "bin": {
+    "attachments": "./lib/attachments.js"
+  },
   "scripts": {
+    "test": "attachments generate ts",
     "dev:start": "tsc -w",
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
@@ -13,6 +17,9 @@
     "typescript-template": "cd playground && plop --plopfile ../lib/configurations/node-plop/ts-project-generator.js"
   },
   "dependencies": {
+    "commander": "^8.2.0",
+    "execa": "^5.1.1",
+    "minimist": "^1.2.5",
     "plop": "^2.7.4"
   }
 }
