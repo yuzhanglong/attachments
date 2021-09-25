@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev:start": "webpack serve --node-env development",
+    "build": "npm-run-all --parallel build:*",
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "build:umd": "webpack --node-env production",

@@ -16,6 +16,7 @@
     "dev:start": "tsc -w",
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
+    "build": "npm-run-all --parallel build:*",
     "dev:link": "yarn link"
   },
   "devDependencies": {

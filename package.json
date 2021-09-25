@@ -10,12 +10,11 @@
   "scripts": {
     "lint": "eslint --ext .ts --max-warnings 0 ./",
     "test": "jest --no-cache",
-    "lerna:build-cjs": "lerna run build:cjs",
-    "lerna:build-esm": "lerna run build:esm",
+    "lerna:build": "lerna run build",
     "lerna:bootstrap": "lerna bootstrap",
     "lerna:link": "lerna run dev:link",
     "lerna:clean": "lerna clean",
-    "lerna:publish": "yarn lerna:clean && yarn install && yarn lerna:build-cjs && yarn lerna:build-esm && lerna publish --no-push"
+    "lerna:publish": "yarn lerna:clean && yarn install && yarn lerna:build && lerna publish --no-push"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
