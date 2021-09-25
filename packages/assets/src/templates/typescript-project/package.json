@@ -1,5 +1,5 @@
 {
-  "name": "{{package name}}",
+  "name": "{{package project-name}}",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "yuzhanglong <yuzl1123@163.com>",
@@ -16,11 +16,13 @@
     "dev:start": "tsc -w",
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
-    "lint": "eslint --ext .ts --max-warnings 0 ./src"
+    "lint": "eslint --ext .ts --max-warnings 0 ./src",
+    "test": "jest"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
+    "@types/jest": "^26.0.24",
     "@types/node": "^16.4.6",
     "eslint": "^7.31.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -28,6 +30,10 @@
     "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
-    "rimraf": "^3.0.2"
+    "jest": "^27.0.6",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.4",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
   }
 }

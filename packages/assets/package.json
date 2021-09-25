@@ -10,7 +10,7 @@
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "dev:link": "yarn link",
-    "debug1": "cd playground && plop --plopfile ../lib/configurations/node-plop/ts-project-generator.js"
+    "typescript-template": "cd playground && plop --plopfile ../lib/configurations/node-plop/ts-project-generator.js"
   },
   "dependencies": {
     "plop": "^2.7.4"

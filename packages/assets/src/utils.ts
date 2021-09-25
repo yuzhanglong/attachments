@@ -6,4 +6,4 @@ export const getSourcePath = () => path.resolve(getBasePath(), 'src');
 
 export const getTemplatePath = () => path.resolve(getSourcePath(), 'templates');
 
-export const getConfigurationsPath = () => path.resolve(getSourcePath(), 'configurations');
+export const getTemplatePathByName = (name: string) => path.resolve(getTemplatePath(), name);
