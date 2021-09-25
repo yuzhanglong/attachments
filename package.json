@@ -8,7 +8,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint --ext .ts,.md --max-warnings 0 ./",
+    "lint": "eslint --ext .ts --max-warnings 0 ./",
     "test": "jest --no-cache",
     "lerna:build-cjs": "lerna run build:cjs",
     "lerna:build-esm": "lerna run build:esm",
@@ -38,6 +38,7 @@
     "lerna": "^4.0.0",
     "nodemon": "^2.0.12",
     "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
     "ts-jest": "^27.0.4",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5",
