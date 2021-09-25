@@ -1,0 +1,39 @@
+{
+  "name": "@attachments/mf-provider",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "yuzhanglong <yuzl1123@163.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "files": [
+    "src",
+    "esm",
+    "lib"
+  ],
+  "scripts": {
+    "dev:start": "tsc -w",
+    "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
+    "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
+    "build": "npm-run-all --parallel build:*",
+    "dev:serve": "webpack serve --config scripts/webpack.config.ts --node-env development --port 9000",
+    "dev:serve-example": "webpack serve --config example/webpack.config.ts --node-env development --port 9001"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^5.3.2",
+    "webpack": "^5.54.0",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "4.0.0"
+  },
+  "dependencies": {
+    "antd": "^4.16.13",
+    "mobx": "^6.3.3",
+    "mobx-react-lite": "^3.2.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router": "5.2.1",
+    "react-router-dom": "5.2.1"
+  }
+}
