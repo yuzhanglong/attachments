@@ -1,10 +1,11 @@
 import * as plop from 'plop';
 import * as path from 'path';
-import { getTemplatePath, getTemplatePathByName } from '../../utils';
+import {
+  createAddConfigAction,
+  createAddManyTemplatesAction,
+} from '../../utils';
 
 const project = function(plop: plop.NodePlopAPI) {
-  const tsTemplatePath = getTemplatePathByName('typescript-project');
-
   plop.setGenerator('typescript package', {
     description: 'generate a typescript package',
     prompts: [
@@ -15,22 +16,12 @@ const project = function(plop: plop.NodePlopAPI) {
       },
     ],
     actions: [
-      {
-        type: 'addMany',
-        destination: path.resolve(process.cwd(), '{{project-name}}'),
-        templateFiles: `${tsTemplatePath}/**/*`,
-        base: tsTemplatePath,
-      },
-      {
-        type: 'add',
-        path: path.resolve(process.cwd(), '{{project-name}}', '.eslintrc.js'),
-        templateFile: path.resolve(getTemplatePath(), 'eslintrc.js'),
-      },
-      {
-        type: 'add',
-        path: path.resolve(process.cwd(), '{{project-name}}', 'jest.config.js'),
-        templateFile: path.resolve(getTemplatePath(), 'eslintrc.js'),
-      },
+      // ts basic template
+      createAddManyTemplatesAction('typescript-project', path.resolve(process.cwd(), '{{project-name}}')),
+      // eslint config
+      createAddConfigAction('eslintrc.js', path.resolve(process.cwd(), '{{project-name}}', '.eslintrc.js')),
+      // jest config
+      createAddConfigAction('jest.config.js', path.resolve(process.cwd(), '{{project-name}}', 'jest.config.js')),
     ],
   });
 
