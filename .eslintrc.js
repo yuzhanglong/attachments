@@ -33,6 +33,7 @@ module.exports = {
     'prefer-destructuring': 'off',
     'func-names': 'off',
     'global-require': 'off',
+    'no-underscore-dangle': 'off',
   },
   settings: {
     'import/parsers': {

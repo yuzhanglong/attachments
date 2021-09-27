@@ -1,0 +1,49 @@
+.g-flexbox {
+  display: flex;
+}
+
+.g-flexbox-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.g-full {
+  width: 100%;
+  height: 100%;
+}
+
+.g-flex {
+  flex: 1;
+}
+
+.g-flex-none {
+  flex: none;
+}
+
+.g-justify-center {
+  justify-content: center;
+}
+
+.g-justify-space-between {
+  justify-content: space-between;
+}
+
+.g-align-center {
+  align-items: center;
+}
+
+.g-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.g-flex-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.g-scroll {
+  overflow: auto;
+}
