@@ -1,41 +1,26 @@
-export interface RemotesEntity {
+type SharedLibrary = string | {
   name: string;
-  url: string;
-  sharedLibraries: (string)[];
-}
+  path: string;
+  type?: 'package' | 'module'
+};
 
 export interface MicroAppConfig {
   name: string;
-  deployUrl: string;
-  remotes: (RemotesEntity)[];
+  url: string;
+  remotes: {
+    name: string;
+    url: string;
+    sharedLibraries?: SharedLibrary[]
+  }[];
+  exposes: SharedLibrary[];
 }
-
-// example
-// {
-//   "name": "react-demo-app",
-//   "deployUrl": "https://react-demo-app-yzl.vercel.app/",
-//   "remotes": [
-//   {
-//     "name": "base_app",
-//     "url": "https://base-yzl.vercel.app/base_app_entry.js",
-//     "sharedLibraries": [
-//       "react",
-//       "react-dom",
-//       "mobx",
-//       "mobx-react-lite",
-//       "react-router",
-//       "react-router-dom",
-//       "antd"
-//     ]
-//   }
-// ]
-// }
 
 /**
  * 基于 micro app config 生成目录
  *
  * @author yuzhanglong
  * @date 2021-09-28 00:40:39
+ * @return object 一个对象, key 表示远程应用的名称，value 表示其入口 url
  */
 export const getModuleFederationRemotes = (microAppConfig: MicroAppConfig) => {
   const remotes: Record<string, string> = {};
@@ -57,7 +42,23 @@ export const getModuleFederationRemotes = (microAppConfig: MicroAppConfig) => {
  */
 export const getNormalModuleReplacementPluginCallBack = (microAppConfig: MicroAppConfig) => {
   return (v: { request: string }) => {
-    const externalRemoteApp = microAppConfig.remotes.find(res => res.sharedLibraries.includes(v.request));
+    // 寻找相应的 request，例如我们要重定向 react，那么我们要从所有的 remotes 中找到第一个其 shareLibrary 中有 react 的远程模块
+    const externalRemoteApp = microAppConfig.remotes
+      .find(res => {
+        if (!res.sharedLibraries) {
+          return false;
+        }
+
+        return res.sharedLibraries
+          .some(i => {
+            // 如果直接是 string 类型表示是一个 package
+            if (typeof i === 'string') {
+              return i === v.request;
+            }
+
+            return i.type === 'package' && i.name === v.request;
+          });
+      });
     if (externalRemoteApp) {
       // eslint-disable-next-line no-param-reassign
       v.request = `${externalRemoteApp.name}/${v.request}`;
@@ -74,7 +75,6 @@ export const getNormalModuleReplacementPluginCallBack = (microAppConfig: MicroAp
 export const getMicroAppConfigManager = (microAppConfig: MicroAppConfig) => {
   return {
     getNormalModuleReplacementPluginCallBack: () => getNormalModuleReplacementPluginCallBack(microAppConfig),
-    getName: () => microAppConfig.deployUrl,
     getModuleFederationRemotes: () => getModuleFederationRemotes(microAppConfig),
     config: microAppConfig,
   };

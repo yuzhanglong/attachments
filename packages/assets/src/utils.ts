@@ -1,5 +1,5 @@
 import * as path from 'path';
-import * as execa from 'execa';
+import { runCommand } from '@attachments/utils/lib/node';
 
 export const getBasePath = () => path.resolve(__dirname, '..');
 
@@ -31,26 +31,6 @@ export const createAddManyTemplatesAction = (name: string, destination: string) 
 };
 
 
-export const runCommand = async (command: string, args?: string[], path?: string): Promise<execa.ExecaChildProcess> => {
-  let p = path;
-  if (!p) {
-    p = process.cwd();
-  }
-  if (!args) {
-    // \s 匹配任何空白字符，包括空格、制表符、换页符
-    // eslint-disable-next-line no-param-reassign
-    [command, ...args] = command.split(/\s+/);
-  }
-
-  return execa(
-    command,
-    args,
-    {
-      cwd: p,
-      stdio: 'inherit',
-    },
-  );
-};
 export const launchPlopByConfig = async (generator: string) => {
   const configPath = path.resolve(getLibPath(), 'configurations', 'node-plop', `${generator}.js`);
   await runCommand('plop', ['--plopfile', configPath]);

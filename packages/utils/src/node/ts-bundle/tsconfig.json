@@ -6,7 +6,6 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "types": [
-      "jest",
       "node"
     ],
     "allowJs": true,

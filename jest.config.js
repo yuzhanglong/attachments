@@ -6,11 +6,5 @@ module.exports = {
     'packages/**/*.ts',
   ],
   coverageDirectory: '<rootDir>/coverage/',
-  projects: [
-    '<rootDir>/packages/i18n',
-    '<rootDir>/packages/babel-plugin-i18n',
-    '<rootDir>/packages/proxy',
-    '<rootDir>/packages/monitor',
-  ],
   testEnvironment: 'node',
 };
