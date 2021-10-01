@@ -10,6 +10,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { bundleTsDeclaration } from '../src/node/ts-bundle/dts-bundle-generator-wrapper';
+import { bundleModuleDeclare } from '../src/node/ts-bundle/bundle-module-declare';
 
 describe('test ts-bundle utils', () => {
   const p = path.resolve(__dirname, 'assets');
@@ -29,4 +30,18 @@ describe('test ts-bundle utils', () => {
     expect(fs.readFileSync(path.resolve(p, 'bar-tmp.d.ts')).toString()).toMatchSnapshot();
     expect(fs.readFileSync(path.resolve(p, 'foo-tmp.d.ts')).toString()).toMatchSnapshot();
   }, 20000);
+
+  test('test bundleModuleDeclare', () => {
+    const content = bundleModuleDeclare([
+      {
+        moduleName: 'app1/foo',
+        path: path.resolve(p, 'foo-tmp.d.ts'),
+      },
+      {
+        moduleName: 'app1/bar',
+        path: path.resolve(p, 'bar-tmp.d.ts'),
+      },
+    ]);
+    expect(content).toMatchSnapshot();
+  });
 });
