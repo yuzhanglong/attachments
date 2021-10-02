@@ -7,9 +7,11 @@ type SharedLibrary = string | {
 export interface MicroAppConfig {
   name: string;
   url: string;
+  sharedEntryName?: string;
   remotes: {
     name: string;
     url: string;
+    sharedEntryPath?: string;
     sharedLibraries?: SharedLibrary[]
   }[];
   exposes: SharedLibrary[];

@@ -2,7 +2,7 @@ import * as os from 'os';
 import * as path from 'path';
 import { runCommand } from '../common/run-command';
 
-interface BundleFileConfig {
+export interface BundleFileConfig {
   // 入口文件路径
   entryPath: string;
 
@@ -37,7 +37,8 @@ export const bundleTsDeclaration = async (
           '--out-file',
           outputPath,
           '--project',
-          path.resolve(__dirname, 'tsconfig.json'),
+          path.resolve(process.cwd(), 'tsconfig.json'),
+          '--no-banner',
         ]);
     }));
   }

@@ -20,6 +20,7 @@
     "typescript-template": "cd playground && plop --plopfile ../lib/configurations/node-plop/ts-project-generator.js"
   },
   "dependencies": {
+    "@attachments/utils": "^0.0.9",
     "commander": "^8.2.0",
     "execa": "^5.1.1",
     "minimist": "^1.2.5",

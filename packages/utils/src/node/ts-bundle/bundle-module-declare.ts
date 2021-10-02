@@ -17,8 +17,8 @@ export const bundleModuleDeclare = (fileOptions: FileOptions[]) => {
     const source = project.addSourceFileAtPath(file.path);
     source.forEachDescendant(item => {
       if (item.getKind() === SyntaxKind.DeclareKeyword) {
-        // 删除即可
-        item.replaceWithText('');
+        // 删除即可, 需要判断是不是第一个节点，否则会报异常
+        item.replaceWithText(item.isFirstNodeOnLine() ? 'export' : '');
       }
     });
 

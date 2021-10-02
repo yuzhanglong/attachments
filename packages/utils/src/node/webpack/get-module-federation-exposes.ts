@@ -10,8 +10,8 @@ import { CachedInputFileSystem, ResolverFactory } from 'enhanced-resolve';
 import * as fs from 'fs';
 
 type MfExposesModule = string | {
-  path: string
-  resolve: string
+  name: string;
+  path: string;
 }
 
 const myResolver = ResolverFactory.createResolver({
@@ -28,7 +28,7 @@ export function getModuleFederationExposes(modules: MfExposesModule[]) {
     if (typeof module === 'string') {
       const key = `./${module}`;
 
-      const resolveResult = myResolver.resolveSync({}, __dirname, module);
+      const resolveResult = myResolver.resolveSync({}, process.cwd(), module);
 
       if (typeof resolveResult !== 'string') {
         throw new Error(`resolve error: ${module}`);
@@ -36,7 +36,7 @@ export function getModuleFederationExposes(modules: MfExposesModule[]) {
 
       exposes[key] = resolveResult;
     } else if (typeof module === 'object') {
-      exposes[module.path] = module.resolve;
+      exposes[`./${module.name}`] = module.path;
     }
   }
   return exposes;
