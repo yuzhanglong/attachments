@@ -1,6 +1,11 @@
-type SharedLibrary = string | {
+type SharedLibraryExpose = string | {
   name: string;
   path: string;
+  type?: 'package' | 'module'
+};
+
+type SharedLibrary = string | {
+  name: string;
   type?: 'package' | 'module'
 };
 
@@ -14,7 +19,7 @@ export interface MicroAppConfig {
     sharedEntryPath?: string;
     sharedLibraries?: SharedLibrary[]
   }[];
-  exposes: SharedLibrary[];
+  exposes: SharedLibraryExpose[];
 }
 
 /**

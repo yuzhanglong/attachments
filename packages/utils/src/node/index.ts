@@ -1,4 +1,6 @@
+export { EmitMfExposeWebpackPlugin } from './webpack/emit-mf-expose-webpack-plugin';
 export { generateMfExposeDeclaration } from './webpack/generate-mf-expose-declaration';
+export { emitMfExposeDeclaration } from './webpack/emit-mf-expose-declaration';
 export {
   getModuleFederationRemotes,
   getNormalModuleReplacementPluginCallBack,
