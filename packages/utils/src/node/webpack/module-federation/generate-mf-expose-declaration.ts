@@ -9,7 +9,7 @@ import * as url from 'url';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { MicroAppConfig } from './micro-fe-app-config';
-import { sourcePath } from '../common/paths';
+import { sourcePath } from '../../common/paths';
 
 export const generateMfExposeDeclaration = async (appConfig: MicroAppConfig) => {
   const typeRoot = path.resolve(sourcePath, 'types');

@@ -14,10 +14,8 @@ export class EmitMfExposeWebpackPlugin {
     // @ts-ignore
     const config = this.config;
     compiler.hooks.afterEmit.tap('MyPlugin', async (compilation) => {
-      // 判断是否是 serve 模式
-      // TODO: 这样做不一定优雅，但是 ROI 不大，后期有机会再改
-      const isServe = process.argv.some(res => res === 'serve');
-      if (!isServe && config) {
+      // 注意，这个插件最好只在 build 模式下跑，否则性能会很差
+      if (config) {
         const { outputPath } = compilation.compiler;
         const target = path.resolve(outputPath, 'types');
         await emitMfExposeDeclaration(config, target);

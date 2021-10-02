@@ -9,10 +9,15 @@
       "jest",
       "node"
     ],
-    "allowJs": true,
-    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true
+    "isolatedModules": false,
+    "experimentalDecorators": true,
+    "jsx": "preserve",
+    "downlevelIteration": true
   }
 }

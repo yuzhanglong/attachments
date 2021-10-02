@@ -6,7 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-import * as execa from 'execa';
+import execa from 'execa';
 
 export const runCommand = async (command: string, args?: string[], path?: string): Promise<execa.ExecaChildProcess> => {
   let p = path;

@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs-extra';
-import { BundleFileConfig, bundleTsDeclaration } from '../ts-bundle/dts-bundle-generator-wrapper';
-import { bundleModuleDeclare } from '../ts-bundle/bundle-module-declare';
+import { BundleFileConfig, bundleTsDeclaration } from '../../ts-bundle/dts-bundle-generator-wrapper';
+import { bundleModuleDeclare } from '../../ts-bundle/bundle-module-declare';
 import { MicroAppConfig } from './micro-fe-app-config';
 
 /**

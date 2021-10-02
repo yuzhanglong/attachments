@@ -34,7 +34,7 @@ export const getModuleFederationRemotes = (microAppConfig: MicroAppConfig) => {
 
   // example: 'base_app': `base_app@https://base-yzl.vercel.app/base_app_entry.js`,
   for (const remote of microAppConfig.remotes) {
-    remotes[remote.name] = `${remote.name}@${remote.url}`;
+    remotes[remote.name] = `${remote.name}@${remote.sharedEntryPath}`;
   }
   return remotes;
 };
