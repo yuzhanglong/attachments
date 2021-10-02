@@ -1,14 +1,11 @@
 import * as path from 'path';
 import * as fs from 'fs-extra';
-import { sourcePath } from '../common/paths';
 import { BundleFileConfig, bundleTsDeclaration } from '../ts-bundle/dts-bundle-generator-wrapper';
 import { bundleModuleDeclare } from '../ts-bundle/bundle-module-declare';
 import { MicroAppConfig } from './micro-fe-app-config';
 
-export const generateMfExposeDeclaration = async (appConfig: MicroAppConfig) => {
-  const typesRoot = path.resolve(sourcePath, 'types');
-
-  await fs.ensureDir(path.resolve(typesRoot, '.cache'));
+export const generateMfExposeDeclaration = async (appConfig: MicroAppConfig, baseUrl: string) => {
+  await fs.ensureDir(path.resolve(baseUrl, '.cache'));
 
   const entries: (BundleFileConfig & { name: string })[] = [];
 
@@ -19,7 +16,7 @@ export const generateMfExposeDeclaration = async (appConfig: MicroAppConfig) => 
       entries.push({
         name: expose.name,
         entryPath: expose.path,
-        outputPath: path.resolve(typesRoot, '.cache', `${expose.name}.d.ts`),
+        outputPath: path.resolve(baseUrl, '.cache', `${expose.name}.d.ts`),
       });
     }
   }
@@ -33,6 +30,6 @@ export const generateMfExposeDeclaration = async (appConfig: MicroAppConfig) => 
     };
   }));
 
-  await fs.writeFile(path.resolve(typesRoot, 'exposes.d.ts'), content);
-  await fs.remove(path.resolve(typesRoot, '.cache'));
+  await fs.writeFile(path.resolve(baseUrl, 'exposes.d.ts'), content);
+  await fs.remove(path.resolve(baseUrl, '.cache'));
 };
