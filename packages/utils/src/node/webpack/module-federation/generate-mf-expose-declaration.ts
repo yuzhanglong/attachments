@@ -12,13 +12,13 @@ import { MicroAppConfig } from './micro-fe-app-config';
 import { sourcePath } from '../../common/paths';
 
 export const generateMfExposeDeclaration = async (appConfig: MicroAppConfig) => {
-  const typeRoot = path.resolve(sourcePath, 'types');
-  await fs.ensureDir(typeRoot);
+  const declareTypeRoot = path.resolve(sourcePath, 'types', 'remotes');
+  await fs.ensureDir(declareTypeRoot);
 
   for (const { name, url: remoteUrl } of appConfig.remotes) {
     const targetFileName = `${name}-exposes.d.ts`;
     // example: https://base-40kkvlqeq-yzl.vercel.app/types/exposes.d.ts
     const declarations = await axios.get(url.resolve(remoteUrl, 'types/exposes.d.ts'));
-    await fs.writeFile(path.resolve(typeRoot, targetFileName), declarations.data);
+    await fs.writeFile(path.resolve(declareTypeRoot, targetFileName), declarations.data);
   }
 };
