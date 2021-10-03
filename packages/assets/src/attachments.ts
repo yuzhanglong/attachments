@@ -9,7 +9,7 @@ program
 
 // serendipity create，创建一个由 serendipity 管理的项目
 program
-  .command('generate [app-name]')
+  .command('generate [template-name]')
   .description('初始化一个项目模板')
   .action(async (name: string) => {
     if (name === 'ts') {

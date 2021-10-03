@@ -17,7 +17,8 @@
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "build": "npm-run-all --parallel build:*",
     "dev:link": "yarn link",
-    "typescript-template": "cd playground && plop --plopfile ../lib/configurations/node-plop/ts-project-generator.js"
+    "typescript-template": "cd playground && plop --plopfile ../lib/configurations/node-plop/ts-project-generator.js",
+    "micro-app-template": "cd playground && plop --plopfile ../lib/configurations/node-plop/micro-fe-generator.js"
   },
   "dependencies": {
     "@attachments/utils": "^0.0.16",
