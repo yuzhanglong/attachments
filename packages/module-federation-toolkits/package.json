@@ -1,6 +1,6 @@
 {
   "name": "@attachments/module-federation-toolkits",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "> TODO: description",
   "author": "yuzhanglong <yuzl1123@163.com>",
   "homepage": "",
@@ -29,7 +29,7 @@
     "@types/webpack-dev-server": "^4.1.0"
   },
   "dependencies": {
-    "@attachments/utils": "^0.0.14",
+    "@attachments/utils": "^0.0.15",
     "@babel/core": "^7.15.5",
     "@babel/plugin-proposal-decorators": "^7.15.4",
     "@babel/plugin-transform-runtime": "^7.15.0",

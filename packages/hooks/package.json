@@ -1,6 +1,6 @@
 {
   "name": "@attachments/hooks",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
