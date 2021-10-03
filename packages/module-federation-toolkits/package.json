@@ -38,6 +38,7 @@
     "@babel/preset-typescript": "^7.15.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
     "@types/mini-css-extract-plugin": "^2.3.0",
+    "autoprefixer": "^10.3.6",
     "axios": "^0.22.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^6.3.0",
