@@ -35,6 +35,7 @@ module.exports = {
     'global-require': 'off',
     'no-underscore-dangle': 'off',
     'import/named': 'off',
+    'no-use-before-define': 'off',
   },
   settings: {
     'import/parsers': {
