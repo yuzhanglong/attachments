@@ -1,7 +1,7 @@
 import { IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
 import { Server as HttpsServer } from 'https';
 import { createSecureContext } from 'tls';
-import * as compose from 'koa-compose';
+import compose from 'koa-compose';
 import { Duplex } from 'stream';
 import * as Buffer from 'buffer';
 import * as net from 'net';
