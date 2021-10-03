@@ -165,10 +165,6 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
       // webpack module federation 的插件，其配置基于 app-config 封装，一般无需改动
       new ModuleFederationPlugin({
         name: microAppConfigManager.config.name,
-        library: type === 'base' ? {
-          type: 'var',
-          name: microAppConfigManager.config.name,
-        } : undefined,
         filename: microAppConfigManager.config.sharedEntryName,
         remotes: microAppConfigManager.getModuleFederationRemotes(),
         exposes: getModuleFederationExposes(microAppConfigManager.config.exposes),
