@@ -1,6 +1,6 @@
 import { ModuleDeclarationKind, Project, SyntaxKind } from 'ts-morph';
 
-interface FileOptions {
+export interface FileOptions {
   // 声明文件路径
   path: string;
 
@@ -8,6 +8,13 @@ interface FileOptions {
   moduleName: string;
 }
 
+/**
+ * 打包类型定义文件
+ *
+ * @author yuzhanglong
+ * @date 2021-10-03 19:28:19
+ * @param fileOptions 文件相关选项，可参考上面的类型定义
+ */
 export const bundleModuleDeclare = (fileOptions: FileOptions[]) => {
   const project = new Project();
 

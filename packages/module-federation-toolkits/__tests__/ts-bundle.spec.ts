@@ -9,8 +9,8 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { bundleTsDeclaration } from '../src/node/ts-bundle/dts-bundle-generator-wrapper';
-import { bundleModuleDeclare } from '../src/node/ts-bundle/bundle-module-declare';
+import { bundleTsDeclaration } from '@attachments/utils/src/node/ts-bundle/dts-bundle-generator-wrapper';
+import { bundleModuleDeclare } from '@attachments/utils/src/node/ts-bundle/bundle-module-declare';
 
 describe('test ts-bundle utils', () => {
   const p = path.resolve(__dirname, 'assets');

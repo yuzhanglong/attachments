@@ -1,4 +1,4 @@
-import { getMicroAppConfigManager } from '../src/node';
+import { getMicroAppConfigManager } from '../src';
 
 describe('test the micro application Config configuration library', () => {
   test('test getModuleFederationRemotes()', () => {
@@ -45,13 +45,11 @@ describe('test the micro application Config configuration library', () => {
             'mobx',
             {
               name: 'global-store',
-              type: 'module',
-              path: 'src/global-store.ts',
+              type: 'module'
             },
             {
               name: 'foo',
-              type: 'package',
-              path: 'node_modules/foo',
+              type: 'package'
             },
           ],
         },

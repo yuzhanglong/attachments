@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { runCommand } from '@attachments/utils/lib/node';
+import { runCommand } from '@attachments/utils/lib/node/run-command';
 
 export const getBasePath = () => path.resolve(__dirname, '..');
 

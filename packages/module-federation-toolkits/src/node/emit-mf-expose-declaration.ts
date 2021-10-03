@@ -1,8 +1,8 @@
 import * as path from 'path';
 import * as fs from 'fs-extra';
-import { BundleFileConfig, bundleTsDeclaration } from '../../ts-bundle/dts-bundle-generator-wrapper';
-import { bundleModuleDeclare } from '../../ts-bundle/bundle-module-declare';
 import { MicroAppConfig } from './micro-fe-app-config';
+import { BundleFileConfig, bundleTsDeclaration } from './bundle-ts-declaration';
+import { bundleModuleDeclare } from './bundle-module-declare';
 
 /**
  * 供公共组件的提供者使用，用来将相应的类型定义写入某个文件目录下

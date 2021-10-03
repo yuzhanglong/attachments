@@ -1,6 +1,6 @@
 import * as os from 'os';
 import * as path from 'path';
-import { runCommand } from '../common/run-command';
+import { runCommand } from '@attachments/utils/lib/node/run-command';
 
 export interface BundleFileConfig {
   // 入口文件路径

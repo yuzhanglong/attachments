@@ -1,4 +1,3 @@
-// @ts-ignore
 import { injectIntoGlobalHook } from 'react-refresh/cjs/react-refresh-runtime.development';
 import ReactDOM from 'react-dom';
 

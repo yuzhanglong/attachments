@@ -6,8 +6,8 @@ import moment from 'moment';
 import * as path from 'path';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import { publicPath as assetPublicPath, sourcePath } from '../../common/paths';
-import { CSS_PREFIX, FILE_PREFIX, JS_PREFIX } from '../../common/constants';
+import { publicPath as assetPublicPath, sourcePath } from '../common/paths';
+import { CSS_PREFIX, FILE_PREFIX, JS_PREFIX } from '../common/constants';
 import { getMicroAppConfigManager, MicroAppConfig } from './micro-fe-app-config';
 import { getModuleFederationExposes } from './get-module-federation-exposes';
 import { EmitMfExposeWebpackPlugin } from './emit-mf-expose-webpack-plugin';
@@ -31,8 +31,16 @@ export interface MicroAppWebpackConfigOptions {
   isAnalyzeMode?: boolean;
 }
 
+/**
+ * 基座或者微应用的 webpack 配置封装
+ *
+ * @author yuzhanglong
+ * @date 2021-10-03 19:32:18
+ * @param options 相关配置选项，可参考上面的类型定义
+ * @see MicroAppWebpackConfigOptions
+ */
 export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) => {
-  const { port, appConfig, isBuildMode, isAnalyzeMode, type } = options;
+  const { port, appConfig, isBuildMode, isAnalyzeMode } = options;
 
   const websocketPath = `ws://localhost:${port.toString()}/ws`;
 
