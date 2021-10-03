@@ -1,6 +1,6 @@
 {
   "name": "@attachments/assets",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "license": "MIT",
   "files": [
     "src",
@@ -20,7 +20,7 @@
     "typescript-template": "cd playground && plop --plopfile ../lib/configurations/node-plop/ts-project-generator.js"
   },
   "dependencies": {
-    "@attachments/utils": "^0.0.13",
+    "@attachments/utils": "^0.0.14",
     "commander": "^8.2.0",
     "execa": "^5.1.1",
     "minimist": "^1.2.5",
