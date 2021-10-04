@@ -1,6 +1,6 @@
 {
   "name": "@attachments/utils",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "esm/index.js",
