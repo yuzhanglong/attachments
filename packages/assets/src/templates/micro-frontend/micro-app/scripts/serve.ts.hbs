@@ -7,7 +7,7 @@ const serve = async () => {
     port: 10000,
     type: 'micro-app',
     isBuildMode: false,
-    isAnalyzeMode: true,
+    isAnalyzeMode: false,
   });
 
   await webpackServe(config);

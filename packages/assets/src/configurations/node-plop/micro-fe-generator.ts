@@ -14,6 +14,9 @@ enum MICRO_FE_TYPE {
 
 const project = function(plop: plop.NodePlopAPI) {
   const basePath = path.resolve(process.cwd(), '{{projectName}}');
+  const templatePath = path.resolve(getTemplatePath(), 'micro-frontend');
+
+  const CORE_VERSION = require('../../../package.json').version;
 
   plop.setGenerator('micro frontend generator', {
     description: 'generate a micro app or base app by micro frontend generator',
@@ -51,7 +54,7 @@ const project = function(plop: plop.NodePlopAPI) {
       return [
         // 基本代码模板
         createAddManyTemplatesAction(
-          `micro-frontend/${isBaseApp ? 'base-app' : ' micro-app'}`,
+          `micro-frontend/${isBaseApp ? 'base-app' : 'micro-app'}`,
           basePath,
         ),
 
@@ -60,16 +63,29 @@ const project = function(plop: plop.NodePlopAPI) {
 
         // prettier config
         createAddConfigAction('prettierrc.json.hbs', path.resolve(basePath, '.prettierrc.json')),
+
+        // shared
+        {
+          type: 'add',
+          path: path.resolve(basePath, '.gitignore'),
+          templateFile: path.resolve(templatePath, 'shared', 'gitignore.hbs'),
+        },
+        {
+          type: 'add',
+          path: path.resolve(basePath, 'package.json'),
+          templateFile: path.resolve(templatePath, 'shared', 'package.json.hbs'),
+        },
+        {
+          type: 'add',
+          path: path.resolve(basePath, 'tsconfig.json'),
+          templateFile: path.resolve(templatePath, 'shared', 'tsconfig.json.hbs'),
+        },
       ];
     },
   });
 
-  plop.setHelper('webpack-dev-server-port', (type) => {
-    return type === MICRO_FE_TYPE.BASE_APP ? 8080 : 10000;
-  });
-
-  plop.setHelper('config-type', (type) => {
-    return type === MICRO_FE_TYPE.BASE_APP ? 'base' : 'micro-app';
+  plop.setHelper('coreVersion', () => {
+    return CORE_VERSION;
   });
 };
 

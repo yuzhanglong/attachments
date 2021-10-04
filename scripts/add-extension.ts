@@ -13,7 +13,7 @@ export const addExtension = (baseDir: string, extension: string) => {
     const fileOrDir = path.resolve(baseDir, re);
     if (fs.lstatSync(fileOrDir).isDirectory()) {
       addExtension(fileOrDir, extension);
-    } else {
+    } else if (!re.endsWith('.hbs')) {
       fs.renameSync(fileOrDir, path.resolve(baseDir, `${re}.${extension}`));
     }
   }

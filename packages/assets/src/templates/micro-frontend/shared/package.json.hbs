@@ -1,11 +1,11 @@
 {
-  "name": "micro-app-react",
+  "name": "base",
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "@attachments/i18n": "^0.0.16",
-    "@attachments/proxy": "^0.0.16",
+    "@attachments/proxy": "^{{coreVersion}}",
+    "@types/fs-extra": "^9.0.12",
     "@types/node": "^16.4.6",
     "@types/react": "^17.0.18",
     "@types/react-dom": "^17.0.9",
@@ -14,7 +14,7 @@
     "@types/react-router-dom": "^5.1.8",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
-    "concurrently": "^6.2.1",
+    "autoprefixer": "^10.3.6",
     "cross-env": "^7.0.3",
     "eslint": "^7.31.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -22,6 +22,7 @@
     "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
+    "react-router-config": "^5.1.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.2.1",
     "typescript": "^4.3.5"
@@ -29,17 +30,17 @@
   "scripts": {
     "dev:proxy": "ts-node scripts/proxy.ts",
     "dev:serve": "cross-env NODE_ENV=development ts-node scripts/serve.ts",
-    "dev": "concurrently yarn:dev:* --prefix-colors dim",
     "build:dev": "rimraf dist && cross-env NODE_ENV=development ts-node scripts/build.ts",
     "build:prod": "rimraf dist && cross-env NODE_ENV=production ts-node scripts/build.ts",
-    "lint": "eslint --ext js,jsx,ts,tsx src"
+    "lint": "eslint --ext js,jsx,ts,tsx src",
+    "generate": "ts-node scripts/generate.ts"
   },
   "dependencies": {
-    "@attachments/module-federation-toolkits": "^0.0.16",
-    "@attachments/utils": "^0.0.16",
-    "classnames": "^2.3.1",
+    "@attachments/module-federation-toolkits": "^{{coreVersion}}",
+    "@attachments/utils": "^^{{coreVersion}}",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-router-config": "^5.1.1"
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.2.1"
   }
 }

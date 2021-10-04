@@ -1,13 +1,12 @@
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import React, { Suspense } from 'react';
-import { observer } from 'mobx-react-lite';
 import { renderRoutes } from 'react-router-config';
 import { routes } from '~src/routes';
 import './utils/init-common';
 import '@attachments/utils/src/browser/css/common.css';
 
-const App = observer(() => {
+const App = () => {
   return (
     <Suspense fallback={null}>
       <BrowserRouter>
@@ -15,7 +14,7 @@ const App = observer(() => {
       </BrowserRouter>
     </Suspense>
   );
-});
+};
 
 
 const reactRenderer = () => {

@@ -1,24 +1,22 @@
 import { MicroAppConfig } from '@attachments/module-federation-toolkits/lib/node/micro-fe-app-config';
 
 const config: MicroAppConfig = {
-  name: 'react-demo-app',
-  url: 'https://react-demo-app-yzl.vercel.app/',
+  name: 'micro_app_react',
+  url: 'https://micro-app-react.vercel.app/',
   exposes: [],
   remotes: [
-    // 在这里配置基座，下面是一个案例，
-    // {
-    //   name: 'base_app',
-    //   url: 'https://base-yzl.vercel.app/',
-    //   sharedEntryPath: 'https://base-yzl.vercel.app/base_app_entry.js',
-    //   sharedLibraries: [
-    //     'react',
-    //     'react-dom',
-    //     'react/jsx-dev-runtime',
-    //     'react-router',
-    //     'react-router-dom',
-    //     'react-router-config'
-    //   ]
-    // }
+    {
+      name: 'base_app',
+      url: 'https://base-app.vercel.app/',
+      sharedLibraries: [
+        'react',
+        'react-dom',
+        'react/jsx-dev-runtime',
+        'react-router',
+        'react-router-dom',
+        'react-router-config'
+      ]
+    }
   ]
 };
 

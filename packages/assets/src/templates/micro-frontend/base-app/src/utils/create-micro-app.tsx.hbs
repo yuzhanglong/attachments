@@ -1,4 +1,3 @@
-{{{{raw}}}}
 import React, { useEffect, useRef } from 'react';
 import { MicroApp, MicroAppRef } from '@attachments/module-federation-toolkits/esm/browser/micro-app';
 import { MICRO_APPS, MicroAppConfig } from '~src/common/const';
@@ -17,6 +16,11 @@ export const createMicroApp = (name: string) => {
   return () => {
     const ref = useRef<MicroAppRef>(null);
 
+    const microAppConfig = {
+      name: name,
+      entry: getMicroApp(name).url,
+    }
+
     useEffect(() => {
       if (ref.current?.appStore) {
         ref.current?.appStore.microApp?.loadPromise
@@ -29,11 +33,7 @@ export const createMicroApp = (name: string) => {
     return (
       <MicroApp
         ref={ref}
-        microAppConfig={{
-          name: name,
-          entry: getMicroApp(name).url,
-        }} />
+        microAppConfig={microAppConfig} />
     );
   };
 };
-{{{{/raw}}}}

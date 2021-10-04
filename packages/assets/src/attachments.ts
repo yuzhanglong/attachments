@@ -14,6 +14,8 @@ program
   .action(async (name: string) => {
     if (name === 'ts') {
       await launchPlopByConfig('ts-project-generator');
+    } else if (name === 'micro-fe') {
+      await launchPlopByConfig('micro-fe-generator');
     } else {
       console.log('没有这个模板呜呜呜~');
     }

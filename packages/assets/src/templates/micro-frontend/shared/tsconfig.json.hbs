@@ -1,12 +1,20 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "target": "ES5",
+    "module": "CommonJS",
     "baseUrl": "src",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
+    ],
+    "paths": {
+      "~src/*": [
+        "./*"
+      ]
+    },
+    "types": [
+      "node"
     ],
     "noImplicitAny": true,
     "allowJs": true,

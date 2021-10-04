@@ -14,7 +14,8 @@
     "lerna:bootstrap": "lerna bootstrap",
     "lerna:link": "lerna run dev:link",
     "lerna:clean": "lerna clean",
-    "lerna:publish": "yarn lerna:clean && yarn install && yarn lerna:build && lerna publish --no-push"
+    "lerna:publish": "yarn lerna:clean && yarn install && yarn lerna:build && lerna publish --no-push",
+    "rename-template": "ts-node scripts/add-extension.ts"
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
