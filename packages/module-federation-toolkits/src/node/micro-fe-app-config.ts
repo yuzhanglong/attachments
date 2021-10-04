@@ -12,11 +12,9 @@ type SharedLibrary = string | {
 export interface MicroAppConfig {
   name: string;
   url: string;
-  sharedEntryName?: string;
   remotes: {
     name: string;
     url: string;
-    sharedEntryPath?: string;
     sharedLibraries?: SharedLibrary[]
   }[];
   exposes: SharedLibraryExpose[];
@@ -34,7 +32,7 @@ export const getModuleFederationRemotes = (microAppConfig: MicroAppConfig) => {
 
   // example: 'base_app': `base_app@https://base-yzl.vercel.app/base_app_entry.js`,
   for (const remote of microAppConfig.remotes) {
-    remotes[remote.name] = `${remote.name}@${remote.sharedEntryPath}`;
+    remotes[remote.name] = `${remote.name}@${remote.url}module-federation-entry.js`;
   }
   return remotes;
 };

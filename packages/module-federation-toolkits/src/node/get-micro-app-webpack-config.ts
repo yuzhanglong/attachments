@@ -41,7 +41,6 @@ export interface MicroAppWebpackConfigOptions {
  */
 export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) => {
   const { port, appConfig, isBuildMode, isAnalyzeMode } = options;
-
   const websocketPath = `ws://localhost:${port.toString()}/ws`;
 
   // 是否为生产环境
@@ -173,7 +172,7 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
       // webpack module federation 的插件，其配置基于 app-config 封装，一般无需改动
       new ModuleFederationPlugin({
         name: microAppConfigManager.config.name,
-        filename: microAppConfigManager.config.sharedEntryName,
+        filename: 'module-federation-entry.js',
         remotes: microAppConfigManager.getModuleFederationRemotes(),
         exposes: getModuleFederationExposes(microAppConfigManager.config.exposes),
       }),
