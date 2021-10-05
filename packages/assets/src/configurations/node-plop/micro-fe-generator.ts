@@ -16,7 +16,7 @@ const project = function(plop: plop.NodePlopAPI) {
   const basePath = path.resolve(process.cwd(), '{{projectName}}');
   const templatePath = path.resolve(getTemplatePath(), 'micro-frontend');
 
-  const CORE_VERSION = require('../../../package.json').version;
+  const CORE_VERSION = '0.1.0';
 
   plop.setGenerator('micro frontend generator', {
     description: 'generate a micro app or base app by micro frontend generator',
