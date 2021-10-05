@@ -60,7 +60,8 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
     devtool: isProductionEnvironment ? false : 'source-map',
 
     // 开启打包文件缓存，第二次打开可以节约大量的时间
-    cache: {
+    // 在 build 模式下不要打开，否则会报错
+    cache: isBuildMode ? false : {
       type: 'filesystem',
     },
 
