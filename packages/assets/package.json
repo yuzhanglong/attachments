@@ -1,6 +1,6 @@
 {
   "name": "@attachments/assets",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "license": "MIT",
   "files": [
     "src",
