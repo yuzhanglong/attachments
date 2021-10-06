@@ -14,6 +14,7 @@ import { bundleModuleDeclare } from './bundle-module-declare';
  * @param baseUrl 写入的根路径
  */
 export const emitMfExposeDeclaration = async (appConfig: MicroAppConfig, baseUrl: string) => {
+  // 增加临时缓存文件，用来打包每个小 bundle
   await fs.ensureDir(path.resolve(baseUrl, '.cache'));
 
   const entries: (BundleFileConfig & { name: string })[] = [];
@@ -30,14 +31,18 @@ export const emitMfExposeDeclaration = async (appConfig: MicroAppConfig, baseUrl
     }
   }
 
+  // 并行打包
   await bundleTsDeclaration(entries.slice());
 
-  const content = bundleModuleDeclare(entries.map(res => {
-    return {
-      path: res.outputPath,
-      moduleName: `${appConfig.name}/${res.name}`,
-    };
-  }));
+  // 合并上面的所有小 bundle
+  const content = bundleModuleDeclare(
+    entries.map(res => {
+      return {
+        path: res.outputPath,
+        moduleName: `${appConfig.name}/${res.name}`,
+      };
+    }),
+  );
 
   await fs.writeFile(path.resolve(baseUrl, 'exposes.d.ts'), content);
   await fs.remove(path.resolve(baseUrl, '.cache'));

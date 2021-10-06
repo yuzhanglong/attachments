@@ -211,7 +211,10 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
       }),
 
       // 在 build 模式下写入共享模块（非 package）的类型定义
-      isBuildMode && new EmitMfExposeWebpackPlugin(microAppConfigManager.config),
+      new EmitMfExposeWebpackPlugin({
+        appConfig: microAppConfigManager.config,
+        outputBasePath: isBuildMode ? undefined : assetPublicPath,
+      }),
 
       isAnalyzeMode && new BundleAnalyzerPlugin(),
     ].filter(Boolean),
@@ -246,7 +249,9 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
                     runtime: 'automatic',
                   },
                 ],
-                [require.resolve('@babel/preset-typescript')],
+                [
+                  require.resolve('@babel/preset-typescript'),
+                ],
               ],
               plugins: [
                 [
