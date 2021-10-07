@@ -123,7 +123,15 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
       client: {
         webSocketURL: websocketPath,
       },
-      static: assetPublicPath,
+      static: {
+        directory: assetPublicPath,
+        watch: {
+          ignored: (f: string) => {
+            // 生成的类型定义不要监听，否则会引发全局的 reload 使 HMR 失去意义
+            return f.endsWith('.d.ts');
+          },
+        },
+      },
       allowedHosts: 'all',
       hot: true,
       port: port,
