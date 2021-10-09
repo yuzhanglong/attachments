@@ -147,8 +147,9 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
       library: `${microAppConfigManager.config.name}`,
 
       // 输出的文件名称
+      // 如果你要修改此内容，请看一下下面调用 html-webpack-plugin 代码的相关注释
       filename: isProductionEnvironment
-        ? `${JS_PREFIX}/[name].[contenthash:8].js`
+        ? `${JS_PREFIX}/[name].[contenthash:8].bundle.js`
         : `${JS_PREFIX}/[name].bundle.js`,
 
       // 输出文件名称，和 fileName 不同，这里的输出文件为非初始（non-initial）文件，例如我们熟悉的路由懒加载
@@ -171,11 +172,25 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
       // NormalModuleReplacementPlugin 需要我们传入一个回调
       // 我们可以在这里将默认的公共的 package 级别依赖重定向到 remote(即共享模块)
       // 这个回调已被封装成公共方法，它会从你的 app-config 目录下读取 remote 字段，从中找到匹配的 sharedLibraries
-      new NormalModuleReplacementPlugin(/(.*)/, microAppConfigManager.getNormalModuleReplacementPluginCallBack()),
+      new NormalModuleReplacementPlugin(
+        /(.*)/,
+        microAppConfigManager.getNormalModuleReplacementPluginCallBack(),
+      ),
 
       // 输出 html 入口文件
       new HtmlWebpackPlugin({
         template: path.resolve(assetPublicPath, 'index.html'),
+        // 将注入 HTML 页面的 chunk 进行排序
+        // 这样做的原因是：
+        // qiankun 底层依赖的 import-html-entry 会取所有 scripts 里面排在最后的 script 作为 entry。
+        // 具体代码可查看：https://github.com/kuitos/import-html-entry/blob/master/src/index.js#L321
+        // 但是我们通过 html-webpack-plugin 导出的 HTML，一般情况下是 main 在最后，但是在 webpack module federation 中，会生成一个额外的 entry 排在 main 的后面。
+        // 从而导致拿不到 main 入口的生命周期函数
+        chunksSortMode: (a) => {
+          // 如果你要自定义 entry name，那么就得考虑同步修改下面的内容了...
+          const isMainEntry = a.match(/^main\.(.*)\.bundle.js$/) || a.match('main.bundle.js');
+          return isMainEntry ? 1 : -1;
+        },
       }),
 
       // webpack module federation 的插件，其配置基于 app-config 封装，一般无需改动
