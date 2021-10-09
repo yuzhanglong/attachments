@@ -11,6 +11,7 @@ import { CSS_PREFIX, FILE_PREFIX, JS_PREFIX } from '../common/constants';
 import { getMicroAppConfigManager, MicroAppConfig } from './micro-fe-app-config';
 import { getModuleFederationExposes } from './get-module-federation-exposes';
 import { EmitMfExposeWebpackPlugin } from './emit-mf-expose-webpack-plugin';
+import { AddEntryAttributeWebpackPlugin } from './add-entry-attribute-webpack-plugin';
 
 const { ModuleFederationPlugin } = require('webpack').container;
 
@@ -67,7 +68,6 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
 
     // 代码优化配置
     optimization: {
-      runtimeChunk: 'single',
       minimize: isProductionEnvironment,
       minimizer: [
         new TerserWebpackPlugin({
@@ -180,18 +180,15 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
       // 输出 html 入口文件
       new HtmlWebpackPlugin({
         template: path.resolve(assetPublicPath, 'index.html'),
-        // 将注入 HTML 页面的 chunk 进行排序
-        // 这样做的原因是：
-        // qiankun 底层依赖的 import-html-entry 会取所有 scripts 里面排在最后的 script 作为 entry。
-        // 具体代码可查看：https://github.com/kuitos/import-html-entry/blob/master/src/index.js#L321
-        // 但是我们通过 html-webpack-plugin 导出的 HTML，一般情况下是 main 在最后，但是在 webpack module federation 中，会生成一个额外的 entry 排在 main 的后面。
-        // 从而导致拿不到 main 入口的生命周期函数
-        chunksSortMode: (a) => {
-          // 如果你要自定义 entry name，那么就得考虑同步修改下面的内容了...
-          const isMainEntry = a.match(/^main\.(.*)\.bundle.js$/) || a.match('main.bundle.js');
-          return isMainEntry ? 1 : -1;
-        },
       }),
+
+      // qiankun 底层依赖的 import-html-entry 会取所有 scripts 里面排在最后的 script 作为 entry。
+      // 具体代码可查看：https://github.com/kuitos/import-html-entry/blob/master/src/index.js#L321
+      // 但是我们通过 html-webpack-plugin 导出的 HTML，一般情况下是 main 在最后，但是在 webpack module federation 中，会生成一个额外的 entry 排在 main 的后面。
+      // 从而导致拿不到 main 入口的生命周期函数, 我们可以向 script 标签加入 entry 属性解决这个问题
+      new AddEntryAttributeWebpackPlugin((src => {
+        return !!(src.match(/^main\.(.*)\.bundle.js$/) || src.match('main.bundle.js'));
+      })),
 
       // webpack module federation 的插件，其配置基于 app-config 封装，一般无需改动
       new ModuleFederationPlugin({
@@ -256,6 +253,7 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
     // 模块解析
     module: {
       rules: [
+        // babel 相关
         {
           test: [/\.[jt]sx?$/],
           include: [sourcePath],
@@ -288,6 +286,7 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
             },
           },
         },
+        // css 预处理相关
         {
           test: [/\.(le|c)ss$/],
           use: [
