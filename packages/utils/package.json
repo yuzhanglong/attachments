@@ -16,5 +16,8 @@
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "dev:link": "yarn link"
+  },
+  "dependencies": {
+    "ts-node": "^10.2.1"
   }
 }

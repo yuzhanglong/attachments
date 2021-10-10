@@ -1,3 +1,5 @@
+import webpack from 'webpack';
+
 type SharedLibraryExpose = string | {
   name: string;
   path: string;
@@ -18,6 +20,7 @@ export interface MicroAppConfig {
     sharedLibraries?: SharedLibrary[]
   }[];
   exposes: SharedLibraryExpose[];
+  webpackConfig?: Partial<webpack.Configuration>;
 }
 
 /**

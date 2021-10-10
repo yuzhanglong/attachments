@@ -6,6 +6,7 @@ import moment from 'moment';
 import * as path from 'path';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import merge from 'webpack-merge';
 import { publicPath as assetPublicPath, sourcePath } from '../common/paths';
 import { CSS_PREFIX, FILE_PREFIX, JS_PREFIX } from '../common/constants';
 import { getMicroAppConfigManager, MicroAppConfig } from './micro-fe-app-config';
@@ -17,7 +18,7 @@ const { ModuleFederationPlugin } = require('webpack').container;
 
 export interface MicroAppWebpackConfigOptions {
   // 项目类型，base: 基座， micro-app 微应用
-  type: 'base' | 'micro-app';
+  type: 'base-app' | 'micro-app';
 
   // 项目运行的端口
   port: number;
@@ -316,5 +317,9 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
     },
   };
 
-  return config;
+  // 合并用户自定义的 webpack 配置
+  // @ts-ignore
+  const finalConfig = merge(config, microAppConfigManager.config.webpackConfig || {});
+
+  return finalConfig;
 };
