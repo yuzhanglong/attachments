@@ -33,6 +33,7 @@ const parseMicroAppBaseOptions = async (opt: any, isBuildMode: boolean) => {
 program
   .version(`attachments ${require('../../package.json').version}`);
 
+// server 服务
 program
   .command('serve')
   .description('serve project by webpack-dev-server in development mode')
@@ -48,6 +49,7 @@ program
     },
   );
 
+// 构建服务
 program
   .command('build')
   .description('build your app')
@@ -64,6 +66,7 @@ program
     },
   );
 
+// 类型定义生成器
 program
   .command('generate')
   .description('generate remote ts declarations for your app')
