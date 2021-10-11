@@ -1,6 +1,6 @@
 {
   "name": "@attachments/assets",
-  "version": "0.1.7-alpha.0",
+  "version": "0.1.7-alpha.1",
   "license": "MIT",
   "files": [
     "src",
@@ -21,7 +21,7 @@
     "micro-app-template": "cd playground && plop --plopfile ../lib/configurations/node-plop/micro-fe-generator.js"
   },
   "dependencies": {
-    "@attachments/utils": "^0.1.0",
+    "@attachments/utils": "^0.1.7-alpha.1",
     "commander": "^8.2.0",
     "execa": "^5.1.1",
     "minimist": "^1.2.5",
