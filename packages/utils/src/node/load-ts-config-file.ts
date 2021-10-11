@@ -20,7 +20,7 @@ export const loadTsConfigFile = async <T>(configPath: string): Promise<T> => {
   } catch (e) {
     if (e.code === 'MODULE_NOT_FOUND') {
       throw new Error(
-        `Jest: 'ts-node' is required for the TypeScript configuration files. Make sure it is installed\nError: ${e.message}`,
+        `'ts-node' is required for the TypeScript configuration files. Make sure it is installed\nError: ${e.message}`,
       );
     }
 
