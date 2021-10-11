@@ -188,7 +188,7 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
       // 但是我们通过 html-webpack-plugin 导出的 HTML，一般情况下是 main 在最后，但是在 webpack module federation 中，会生成一个额外的 entry 排在 main 的后面。
       // 从而导致拿不到 main 入口的生命周期函数, 我们可以向 script 标签加入 entry 属性解决这个问题
       new AddEntryAttributeWebpackPlugin((src => {
-        return !!(src.match(/^main\.(.*)\.bundle.js$/) || src.match('main.bundle.js'));
+        return !!(src.match(/main\.(.*)\.bundle.js$/) || src.match('main.bundle.js'));
       })),
 
       // webpack module federation 的插件，其配置基于 app-config 封装，一般无需改动
