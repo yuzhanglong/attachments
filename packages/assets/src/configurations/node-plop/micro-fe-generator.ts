@@ -88,6 +88,19 @@ const project = function(plop: plop.NodePlopAPI) {
   plop.setHelper('coreVersion', () => {
     return CORE_VERSION;
   });
+
+  plop.setHelper('cmdAppType', (type) => {
+    return type === MICRO_FE_TYPE.BASE_APP ? 'base-app' : 'micro-app';
+  });
+
+  plop.setHelper('devServerPort', (type) => {
+    return type === MICRO_FE_TYPE.BASE_APP ? '8080' : '10000';
+  });
+
+  plop.setHelper('underlinedProjectName', (name: string) => {
+    console.log(name);
+    return name.replace(/-/g, '_');
+  });
 };
 
 export default project;
