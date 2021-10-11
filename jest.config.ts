@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   preset: 'ts-jest',
   collectCoverage: false,
   testRegex: '(/__tests__/.*\\.(test|spec))\\.ts$',
@@ -8,3 +8,5 @@ module.exports = {
   coverageDirectory: '<rootDir>/coverage/',
   testEnvironment: 'node',
 };
+
+export default config;

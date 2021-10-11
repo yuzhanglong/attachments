@@ -21,8 +21,8 @@ describe('test the micro application Config configuration library', () => {
 
     expect(manager.getModuleFederationRemotes())
       .toStrictEqual({
-        'app1': 'app1@www.app1.com',
-        'app2': 'app2@www.app2.com',
+        'app1': 'app1@www.app1.com/module-federation-entry.js',
+        'app2': 'app2@www.app2.com/module-federation-entry.js',
       });
   });
 
@@ -45,11 +45,11 @@ describe('test the micro application Config configuration library', () => {
             'mobx',
             {
               name: 'global-store',
-              type: 'module'
+              type: 'module',
             },
             {
               name: 'foo',
-              type: 'package'
+              type: 'package',
             },
           ],
         },
