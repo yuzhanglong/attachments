@@ -69,6 +69,7 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
 
     // 代码优化配置
     optimization: {
+      runtimeChunk: 'single',
       minimize: isProductionEnvironment,
       minimizer: [
         new TerserWebpackPlugin({
