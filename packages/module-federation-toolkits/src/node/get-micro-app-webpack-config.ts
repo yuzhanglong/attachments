@@ -69,6 +69,7 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
 
     // 代码优化配置
     optimization: {
+      // 这里保证了基座热更新的实现
       runtimeChunk: 'single',
       minimize: isProductionEnvironment,
       minimizer: [
@@ -232,7 +233,7 @@ export const getMicroAppWebpackConfig = (options: MicroAppWebpackConfigOptions) 
         contextRegExp: /moment$/,
       }),
 
-      // 在 build 模式下写入共享模块（非 package）的类型定义
+      // 写入共享模块（非 package）的类型定义
       new EmitMfExposeWebpackPlugin({
         appConfig: microAppConfigManager.config,
         outputBasePath: isBuildMode ? undefined : assetPublicPath,

@@ -18,7 +18,6 @@ export interface PluginOptions {
 type StringLiteralPath = NodePath<StringLiteral>
 
 function createIntlKeyCommentManager(compressPrefix: string = '$') {
-  console.log('init!');
   const mapFromOldKeyToNewKey = new Map<string, string>();
 
   let count = 0;
