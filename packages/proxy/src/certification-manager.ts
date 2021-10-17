@@ -1,6 +1,7 @@
 import { CertificateCreationOptions, CertificateCreationResult, createCertificate } from 'pem';
-import * as fs from 'fs';
 import { MAX_DAYS, pathCert, pathCertKey } from './const';
+import * as fs from 'fs';
+import * as path from 'path';
 
 
 interface Certification {
