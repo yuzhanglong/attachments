@@ -14,6 +14,7 @@ import { ProxyServerContext, RuleConfig } from './types';
 import { createProxyRuleMiddleware } from './middlewares/proxy-rule-middleware';
 import { RuleManager } from './rule-manager';
 import { createUpgradeMiddleware } from './middlewares/upgrade-middleware';
+import { divideConnectMethodReqUrl } from './utils';
 
 export class ProxyServer {
   private proxyServer: HttpServer = new HttpServer();
@@ -78,19 +79,30 @@ export class ProxyServer {
     // 于是我们可以将这个请求转发到一个新的服务器上，然后让这个新的服务器去请求实际资源
     this.proxyServer.on('connect', (req: IncomingMessage, clientSocket: Duplex, head: Buffer) => {
       // 只有 https 请求走代理才会走到这一步，所以直接连接我们的 https 服务器就可以了
-      const proxyPassServiceSocket = net.connect(PROXY_PASS_SERVICE_PORT, LOCAL_HOST, () => {
+      const { domain, port } = divideConnectMethodReqUrl(req.url);
 
-        clientSocket.write(`HTTP/${req.httpVersion} 200 OK\r\n\r\n`, 'utf-8', () => {
-          proxyPassServiceSocket.write(head);
-          proxyPassServiceSocket.pipe(clientSocket);
-          clientSocket.pipe(proxyPassServiceSocket);
-        });
+      // 是否匹配用户配置的域名
+      const isProxyMatched = this.ruleManager.matchDomain(domain);
 
-        proxyPassServiceSocket.on('error', (e) => {
-          console.log('error!');
-          console.log(e);
+      const resDomain = isProxyMatched ? LOCAL_HOST : domain;
+      const resPort = isProxyMatched ? PROXY_PASS_SERVICE_PORT : port;
+
+
+      const proxyPassServiceSocket = net.connect(
+        resPort,
+        resDomain,
+        () => {
+          clientSocket.write(`HTTP/${req.httpVersion} 200 OK\r\n\r\n`, 'utf-8', () => {
+            proxyPassServiceSocket.write(head);
+            proxyPassServiceSocket.pipe(clientSocket);
+            clientSocket.pipe(proxyPassServiceSocket);
+          });
+
+          proxyPassServiceSocket.on('error', (e) => {
+            console.log('error!');
+            console.log(e);
+          });
         });
-      });
 
       clientSocket.on('error', (e) => {
         console.log(e);

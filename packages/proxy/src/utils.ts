@@ -70,3 +70,18 @@ export function comparePathAndGetDivision(basePath: string[], providedPath: stri
     dividedPos: dividedPos,
   };
 }
+
+
+/**
+ * 分离 connect 方法的 url
+ *
+ * @author yuzhanglong
+ * @date 2021-10-18 00:16:10
+ */
+export const divideConnectMethodReqUrl = (url: string) => {
+  const [domain, port] = url.split(':');
+  return {
+    domain: domain,
+    port: port ? parseInt(port, 10) : 443,
+  };
+};

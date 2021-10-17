@@ -86,7 +86,5 @@ describe('test rule manager', () => {
 
     expect(ruleManager.matchDomain('www.baidu.com')).toBeTruthy();
     expect(ruleManager.matchDomain('https://www.baidu.com')).toBeTruthy();
-
-
   });
 });
