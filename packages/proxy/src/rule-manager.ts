@@ -7,7 +7,7 @@
  */
 import { URL } from 'url';
 import { RuleConfig } from './types';
-import { comparePathAndGetDivision, getUrlPaths, removeWWW } from './utils';
+import { comparePathAndGetDivision, getUrlPaths, removeWWWAndProtocol } from './utils';
 
 export class RuleManager {
   private mapDomainToRules = new Map<string, RuleConfig[]>();
@@ -21,8 +21,8 @@ export class RuleManager {
    * @param ruleConfig 规则配置
    */
   addRule(domain: string, ...ruleConfig: RuleConfig[]) {
-    // 去掉前面的 www（如果有的话）
-    const domainWithoutWWW = removeWWW(domain);
+    // 去掉前面的 www 和协议头（如果有的话）
+    const domainWithoutWWW = removeWWWAndProtocol(domain);
 
     let totConfig;
 
@@ -65,7 +65,7 @@ export class RuleManager {
    */
   matchRuleConfigurations(domain: string) {
     // 去掉前面的 www（如果有的话）
-    const domainWithoutWWW = removeWWW(domain);
+    const domainWithoutWWW = removeWWWAndProtocol(domain);
     const targetRules = this.mapDomainToRules.get(domainWithoutWWW);
     if (!targetRules) {
       return null;
@@ -73,13 +73,19 @@ export class RuleManager {
     return targetRules;
   }
 
+  /**
+   * 获取最终代理的 URL 地址
+   *
+   * @author yuzhanglong
+   * @date 2021-10-17 22:36:49
+   */
   getProxyPassUrl(urlInstance: URL): URL | null {
     const { host, pathname } = urlInstance;
 
     // 实际服务器地址的 paths
     const urlPaths = getUrlPaths(pathname);
 
-    const targetRules = this.matchRuleConfigurations(removeWWW(host));
+    const targetRules = this.matchRuleConfigurations(removeWWWAndProtocol(host));
 
     if (!targetRules) {
       return null;
@@ -113,5 +119,16 @@ export class RuleManager {
 
   clear() {
     this.mapDomainToRules.clear();
+  }
+
+
+  /**
+   * 匹配一个域名
+   *
+   * @author yuzhanglong
+   * @date 2021-10-17 22:37:28
+   */
+  matchDomain(domain: string) {
+    return this.mapDomainToRules.has(removeWWWAndProtocol(domain));
   }
 }

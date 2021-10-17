@@ -6,7 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
-import { comparePathAndGetDivision, getUrlPaths } from '../src/utils';
+import { comparePathAndGetDivision, getUrlPaths, removeWWWAndProtocol } from '../src/utils';
 
 describe('test utils', () => {
   test('test getUrlPaths()', () => {
@@ -14,6 +14,13 @@ describe('test utils', () => {
     expect(getUrlPaths('www.baidu.com/foo/bar/baz')).toStrictEqual(['foo', 'bar', 'baz']);
     expect(getUrlPaths('www.baidu.com/foo/bar/baz/')).toStrictEqual(['foo', 'bar', 'baz']);
     expect(getUrlPaths('www.baidu.com/')).toStrictEqual([]);
+  });
+
+  test('test removeWWWAndProtocol()', () => {
+    expect(removeWWWAndProtocol('www.baidu.com')).toStrictEqual('baidu.com');
+    expect(removeWWWAndProtocol('google.com')).toStrictEqual('google.com');
+    expect(removeWWWAndProtocol('https://www.google.com')).toStrictEqual('google.com');
+    expect(removeWWWAndProtocol('http://www.google.com')).toStrictEqual('google.com');
   });
 
   test('test comparePathAndGetDivision()', () => {

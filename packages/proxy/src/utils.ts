@@ -6,11 +6,9 @@
  * Email: yuzl1123@163.com
  */
 
-export function removeWWW(url: string) {
-  if (!url.startsWith('www.')) {
-    return url;
-  }
-  return url.slice(4);
+export function removeWWWAndProtocol(url: string) {
+  const data = url.split(/^https?:\/\/www\.|^www\.|^https?:\/\//);
+  return data.pop();
 }
 
 

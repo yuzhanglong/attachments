@@ -69,4 +69,24 @@ describe('test rule manager', () => {
     const str2 = ruleManager.getProxyPassUrl(new URL('http://www.google.com/foo/bar/baz'));
     expect(str2?.toString()).toStrictEqual('https://hello.com/baz');
   });
+
+  test('test match domain', () => {
+    ruleManager.addRule('www.baidu.com', {
+      proxyPass: 'http://foo.com',
+      location: '/',
+    });
+
+    ruleManager.addRule('www.google.com', {
+      proxyPass: 'https://hello.com',
+      location: '/foo/bar',
+    });
+
+    expect(ruleManager.matchDomain('baidu.com')).toBeTruthy();
+    expect(ruleManager.matchDomain('google.com')).toBeTruthy();
+
+    expect(ruleManager.matchDomain('www.baidu.com')).toBeTruthy();
+    expect(ruleManager.matchDomain('https://www.baidu.com')).toBeTruthy();
+
+
+  });
 });
