@@ -81,7 +81,8 @@ export class ProxyServer {
       // 只有 https 请求走代理才会走到这一步，所以直接连接我们的 https 服务器就可以了
       const { domain, port } = divideConnectMethodReqUrl(req.url);
 
-      // 是否匹配用户配置的域名
+      // 是否匹配用户配置的域名, 如果不匹配我们不用走 proxy 服务器，这样一是可以优化性能
+      // 二是防止某些请求由于使用自签名证书而错误返回
       const isProxyMatched = this.ruleManager.matchDomain(domain);
 
       const resDomain = isProxyMatched ? LOCAL_HOST : domain;
@@ -138,15 +139,15 @@ export class ProxyServer {
    */
   async listen() {
     if (!this.httpsServer || !this.proxyServer) {
-      throw new Error('please init server!');
+      throw new Error('[@attachments/proxy] please init server!');
     }
 
     this.proxyServer.listen(PROXY_SERVER_PORT, LOCAL_HOST, () => {
-      console.log('proxy server is running ...');
+      console.log('[@attachments/proxy] proxy server is running...');
     });
 
     this.httpsServer.listen(PROXY_PASS_SERVICE_PORT, LOCAL_HOST, () => {
-      console.log('https server is running...');
+      console.log('[@attachments/proxy] https server is running...');
     });
   }
 

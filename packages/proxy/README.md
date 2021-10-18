@@ -1,10 +1,20 @@
 # @attachments/proxy
 
-用于开发的代理服务器
+为前端开发者准备的代理服务器
 
 ## 快速开始
 
-安装依赖
+**安装并配置浏览器插件**
+
+SwitchyOmega 是一个知名的浏览器代理工具，它可以将浏览器的 http 请求全部重定向到你本地的代理工具上（只负责请求重定向，其本身没有代理功能）。
+
+[下载地址](https://github.com/FelisCatus/SwitchyOmega/releases/tag/v2.5.20) （GitHub Release）
+
+插件安装完成之后，打开设置页面，新建情景模式，按照如下的方法配置，确认无误后保存，不代理的地址列表保持默认即可：
+
+![插件使用](https://user-images.githubusercontent.com/56540811/137702382-1ec43265-4b35-4d48-8154-09bb0b65bef4.png)
+
+**安装依赖**
 
 ```bash
 yarn add @attachments/proxy
@@ -12,7 +22,7 @@ yarn add @attachments/proxy
 # or npm install @attachments/proxy
 ```
 
-编写规则
+**编写规则**
 
 在工作目录下新建一个 `proxy.js` 文件（名称随意），使用下面的代码：
 
@@ -50,21 +60,12 @@ runApp().catch(e => {
 node proxy.js
 ```
 
-当你访问 `proxy.yuzzl.top`，会将请求代理到 `http://localhost:8001`
+接下来：
 
-当你访问 `当访问 proxy.yuzzl.top/hello/world/xxx`，会将请求代理到 `http://localhost:8001/hello_world/xxx`
+- 当你访问 `proxy.yuzzl.top`，会将请求代理到 `http://localhost:8001`
 
-### 启动 proxy 服务器
+- 当你访问 `proxy.yuzzl.top/hello/world/xxx`，会将请求代理到 `http://localhost:8001/hello_world/xxx`
 
-```bash
-yarn dev:example-proxy-server
-```
-
-### 启动 web 服务器
-
-```bash
-yarn dev:example-web-server
-```
 
 ## 常见问题
 
@@ -93,8 +94,10 @@ proxy 内置了一个根证书，位于 package 的 `certificate` 目录下，�
 
 ### 它是如何工作的？
 
-请参考《XHR 权威指南》的如下内容：
+请参考《HTTP 权威指南》的如下内容：
 
 - 第十四章第九节：通过代理以隧道形式传输安全流量
 - 中间人攻击
 - 第六章：代理
+
+具体实现原理不久我会写一篇文章来讲解

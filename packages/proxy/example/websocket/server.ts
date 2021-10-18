@@ -1,6 +1,6 @@
 import { Server } from 'ws';
-import * as  Koa from 'koa';
-import * as https from 'https';
+import Koa from 'koa';
+import https from 'https';
 import { CertificationManager } from '../../src';
 
 

@@ -24,7 +24,7 @@ export function createProxyPassMiddleware(): ProxyServerMiddleware {
       res.statusCode = serverResponse.statusCode;
       res.statusMessage = serverResponse.statusMessage;
 
-      res.setHeader('x-response-from', 'yzl-proxy');
+      res.setHeader('x-response-from', '@attachments/proxy');
 
       const headers = Object.entries(serverResponse.headers);
       for (const [k, v] of headers) {

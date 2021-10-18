@@ -16,7 +16,7 @@ export function createProxyRuleMiddleware(ruleManager: RuleManager): ProxyServer
     const resUrl = ruleManager.getProxyPassUrl(urlInstance);
 
     if (resUrl) {
-      console.log(`[proxy-make-effect] ${urlInstance.toString()} => ${resUrl.toString()}`);
+      console.log(`[@attachments/proxy] proxy-make-effect: ${urlInstance.toString()} => ${resUrl.toString()}`);
       context.urlInstance = resUrl;
     }
     return next();

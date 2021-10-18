@@ -12,7 +12,7 @@ export function createUrlMiddleWare(): ProxyServerMiddleware {
     const { req, protocol } = ctx;
 
     if (!protocol) {
-      throw new Error('please give us a protocol!');
+      throw new Error('[@attachments/proxy] please give us a protocol!');
     }
 
     const host = req.headers.host || '';
