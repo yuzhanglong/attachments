@@ -17,7 +17,7 @@ const project = function(plop: plop.NodePlopAPI) {
   const templatePath = path.resolve(getTemplatePath(), 'micro-frontend');
 
   // eg: ^0.3.6	匹配：0.3.6 <= v < 0.4.0
-  const CORE_VERSION = '0.1.0';
+  const MF_LITE_CORE_VERSION = '0.1.0';
 
   plop.setGenerator('micro frontend generator', {
     description: 'generate a micro app or base app by micro frontend generator',
@@ -86,7 +86,7 @@ const project = function(plop: plop.NodePlopAPI) {
   });
 
   plop.setHelper('coreVersion', () => {
-    return CORE_VERSION;
+    return MF_LITE_CORE_VERSION;
   });
 
   plop.setHelper('cmdAppType', (type) => {
