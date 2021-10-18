@@ -2,6 +2,9 @@
   "name": "@attachments/assets",
   "version": "0.1.14",
   "license": "MIT",
+  "description": "common resource tool packages, such as the CSS and project templates",
+  "author": "yuzhanglong <loveyzl1123@gmail.com>",
+  "homepage": "https://github.com/yuzhanglong/attachments",
   "files": [
     "src",
     "lib",

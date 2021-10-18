@@ -2,6 +2,9 @@
   "name": "@attachments/utils",
   "version": "0.1.8",
   "license": "MIT",
+  "description": "useful front-end development tool library",
+  "author": "yuzhanglong <loveyzl1123@gmail.com>",
+  "homepage": "https://github.com/yuzhanglong/attachments",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "files": [
