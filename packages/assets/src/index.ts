@@ -1,2 +1,6 @@
-console.log('hello world!');
+export {
+  createAddConfigAction,
+  createAddManyTemplatesAction,
+  launchPlopByConfig,
+} from './utils';
 
