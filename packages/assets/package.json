@@ -1,6 +1,6 @@
 {
   "name": "@attachments/assets",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "license": "MIT",
   "description": "common resource tool packages, such as the CSS and project templates",
   "author": "yuzhanglong <loveyzl1123@gmail.com>",
