@@ -35,8 +35,8 @@
     "build:dev": "rimraf dist && cross-env NODE_ENV=development mf-lite build --app-type={{cmdAppType appType}}",
     "build:prod": "rimraf dist && cross-env NODE_ENV=production mf-lite build --app-type={{cmdAppType appType}}",
     "lint": "eslint --ext js,jsx,ts,tsx src",
-    "generate": "mf-scripts generate",
-    "upgrade": "mf-scripts upgrade"
+    "generate": "mf-lite generate",
+    "upgrade": "mf-lite upgrade"
   },
   "dependencies": {
     "@mf-lite/core": "^{{coreVersion}}",
