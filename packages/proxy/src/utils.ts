@@ -11,7 +11,6 @@ export function removeWWWAndProtocol(url: string) {
   return data.pop();
 }
 
-
 export function getUrlPaths(url: string) {
   let u = url;
   if (u.endsWith('/')) {
@@ -24,7 +23,6 @@ export function getUrlPaths(url: string) {
   tmp.splice(0, 1);
   return tmp;
 }
-
 
 /**
  * 给定一个 basePath 和一个 providedPath, 判断 providePath 的全段是否为 base 的子集（起始 position 要相同）
@@ -70,7 +68,6 @@ export function comparePathAndGetDivision(basePath: string[], providedPath: stri
     dividedPos: dividedPos,
   };
 }
-
 
 /**
  * 分离 connect 方法的 url

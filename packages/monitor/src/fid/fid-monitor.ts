@@ -24,12 +24,16 @@ export const createFIDMonitor = (options: FIDMonitorOptions) => {
   };
 
   const observeFID = () => {
-    observePerformance({
-      entryTypes: [PERFORMANCE_ENTRY_TYPES.FIRST_INPUT],
-    }, (entryList) => {
-      const entry = first(entryList);
-      reportData(entry as FIDEntry);
-    }, true);
+    observePerformance(
+      {
+        entryTypes: [PERFORMANCE_ENTRY_TYPES.FIRST_INPUT],
+      },
+      (entryList) => {
+        const entry = first(entryList);
+        reportData(entry as FIDEntry);
+      },
+      true
+    );
   };
 
   const getFIDDirectly = () => {

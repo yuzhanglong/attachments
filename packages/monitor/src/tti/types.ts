@@ -4,9 +4,9 @@ export interface TTIReportData {
   tti: number;
 }
 
-export type TTIMonitorOptions = MonitorOptions<TTIReportData>
+export type TTIMonitorOptions = MonitorOptions<TTIReportData>;
 
-export interface PatchedXMLHttpRequest extends XMLHttpRequest{
+export interface PatchedXMLHttpRequest extends XMLHttpRequest {
   taggedMethod: string;
 }
 

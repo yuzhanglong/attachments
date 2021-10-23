@@ -10,9 +10,8 @@ export interface LayoutShift {
   name: string;
 }
 
-
 interface ClsReportData {
   clsValue: number;
 }
 
-export type ClsMonitorOptions = MonitorOptions<ClsReportData>
+export type ClsMonitorOptions = MonitorOptions<ClsReportData>;

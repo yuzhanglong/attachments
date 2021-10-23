@@ -23,7 +23,6 @@ export function formatError(e: ErrorEvent | PromiseRejectionEvent): JsErrorRepor
     error = e.reason || e.error || {};
   }
 
-
   return {
     // 发生异常的时间戳
     timestamp: Date.now(),

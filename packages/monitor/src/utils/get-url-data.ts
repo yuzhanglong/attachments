@@ -4,17 +4,7 @@ import { assignKeysBetweenObjects } from './assign-keys-between-objects';
 
 export const getUrlData = (url: string): UrlData => {
   // 支持 url
-  const keys: string[] = [
-    'hash',
-    'host',
-    'hostname',
-    'href',
-    'origin',
-    'pathname',
-    'port',
-    'protocol',
-    'search',
-  ];
+  const keys: string[] = ['hash', 'host', 'hostname', 'href', 'origin', 'pathname', 'port', 'protocol', 'search'];
 
   const res = {
     url: url,

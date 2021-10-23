@@ -15,7 +15,7 @@ export interface PluginOptions {
   compressPrefix?: string;
 }
 
-type StringLiteralPath = NodePath<StringLiteral>
+type StringLiteralPath = NodePath<StringLiteral>;
 
 function createIntlKeyCommentManager(compressPrefix: string = '$') {
   const mapFromOldKeyToNewKey = new Map<string, string>();
@@ -56,7 +56,6 @@ function createIntlKeyCommentManager(compressPrefix: string = '$') {
     count = 0;
   };
 
-
   return {
     addComment,
     clear,
@@ -96,9 +95,7 @@ export function BabelPluginI18n(api: any, options: PluginOptions) {
     visitor: {
       StringLiteral(path: StringLiteralPath) {
         const {
-          node: {
-            value: stringValue,
-          },
+          node: { value: stringValue },
         } = path;
 
         // 该字符串匹配了 options 中给予的 prefix

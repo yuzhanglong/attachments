@@ -2,7 +2,6 @@ import { CertificateCreationOptions, CertificateCreationResult, createCertificat
 import * as fs from 'fs';
 import { MAX_DAYS, pathCert, pathCertKey } from './const';
 
-
 interface Certification {
   key: string;
   cert: string;
@@ -30,7 +29,6 @@ export class CertificationManager {
       });
     });
   }
-
 
   /**
    * 基于域名创建一个 CA 证书
@@ -68,6 +66,3 @@ export class CertificationManager {
     return res;
   }
 }
-
-
-

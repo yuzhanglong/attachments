@@ -1,11 +1,8 @@
 import * as plop from 'node-plop';
 import * as path from 'path';
-import {
-  createAddConfigAction,
-  createAddManyTemplatesAction,
-} from '../../utils';
+import { createAddConfigAction, createAddManyTemplatesAction } from '../../utils';
 
-const project = function(plop: plop.NodePlopAPI) {
+const project = function (plop: plop.NodePlopAPI) {
   plop.setGenerator('typescript package', {
     description: 'generate a typescript package',
     prompts: [
@@ -31,4 +28,3 @@ const project = function(plop: plop.NodePlopAPI) {
 };
 
 export default project;
-

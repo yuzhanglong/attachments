@@ -64,7 +64,6 @@ export const createAssetsErrorMonitor = (options: AssetsErrorMonitorOptions) => 
     });
   };
 
-
   // 静态资源的异常加载不会冒泡到 window, 要在捕获阶段处理
   window.addEventListener('error', errorListener, true);
 

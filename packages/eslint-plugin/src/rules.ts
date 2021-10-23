@@ -7,4 +7,6 @@ export const rules: Record<string, string> = {
   'import/no-unresolved': 'off',
   'global-require': 'off',
   'no-underscore-dangle': 'off',
+  'no-unused-vars': 'off',
+  'prettier/prettier': 'error',
 };

@@ -1,18 +1,13 @@
 import * as plop from 'node-plop';
 import * as path from 'path';
-import {
-  createAddConfigAction,
-  createAddManyTemplatesAction, getTemplatePath,
-} from '../../utils';
+import { createAddConfigAction, createAddManyTemplatesAction, getTemplatePath } from '../../utils';
 
-
-enum MICRO_FE_TYPE {
+export enum MICRO_FE_TYPE {
   BASE_APP = 'Base App',
-  MICRO_APP = 'Micro App'
+  MICRO_APP = 'Micro App',
 }
 
-
-const project = function(plop: plop.NodePlopAPI) {
+const project = function (plop: plop.NodePlopAPI) {
   const basePath = path.resolve(process.cwd(), '{{projectName}}');
   const templatePath = path.resolve(getTemplatePath(), 'micro-frontend');
 
@@ -50,14 +45,11 @@ const project = function(plop: plop.NodePlopAPI) {
         ],
       },
     ],
-    actions: function(data) {
+    actions: function (data) {
       const isBaseApp = data.appType === MICRO_FE_TYPE.BASE_APP;
       return [
         // 基本代码模板
-        createAddManyTemplatesAction(
-          `micro-frontend/${isBaseApp ? 'base-app' : 'micro-app'}`,
-          basePath,
-        ),
+        createAddManyTemplatesAction(`micro-frontend/${isBaseApp ? 'base-app' : 'micro-app'}`, basePath),
 
         // eslint config
         createAddConfigAction('eslintrc.js.hbs', path.resolve(basePath, '.eslintrc.js')),
@@ -104,4 +96,3 @@ const project = function(plop: plop.NodePlopAPI) {
 };
 
 export default project;
-

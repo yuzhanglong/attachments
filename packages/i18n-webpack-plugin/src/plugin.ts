@@ -17,7 +17,7 @@ export class I18nWebpackPlugin {
     compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation, { normalModuleFactory }) => {
       const handler = (parser) => {
         parser.hooks.program.tap(PLUGIN_NAME, (ast, comments) => {
-          for (const { value: commentValue } of (comments)) {
+          for (const { value: commentValue } of comments) {
             if ((commentValue as string).startsWith('{ "oldKey":')) {
               console.log(commentValue);
               const { oldKey, newKey } = JSON.parse(commentValue);
@@ -27,15 +27,9 @@ export class I18nWebpackPlugin {
         });
       };
 
-      normalModuleFactory.hooks.parser
-        .for('javascript/auto')
-        .tap(PLUGIN_NAME, handler);
-      normalModuleFactory.hooks.parser
-        .for('javascript/dynamic')
-        .tap(PLUGIN_NAME, handler);
-      normalModuleFactory.hooks.parser
-        .for('javascript/esm')
-        .tap(PLUGIN_NAME, handler);
+      normalModuleFactory.hooks.parser.for('javascript/auto').tap(PLUGIN_NAME, handler);
+      normalModuleFactory.hooks.parser.for('javascript/dynamic').tap(PLUGIN_NAME, handler);
+      normalModuleFactory.hooks.parser.for('javascript/esm').tap(PLUGIN_NAME, handler);
     });
 
     // make hooks, 在 compilation 结束之前执行

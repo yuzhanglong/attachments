@@ -20,7 +20,7 @@ import { getPerformanceObserver } from './browser-interfaces';
 export const observePerformance = (
   options: PerformanceObserverInit,
   callback: (entryList: PerformanceEntry[]) => void,
-  once: boolean = false,
+  once: boolean = false
 ) => {
   let destroy = noop;
 

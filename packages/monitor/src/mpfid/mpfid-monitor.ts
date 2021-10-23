@@ -18,14 +18,11 @@ export const createMPFIDMonitor = (options: MPFIDMonitorOptions) => {
     entryTypes: [PERFORMANCE_ENTRY_TYPES.LONG_TASK],
   };
 
-  const destroy = observePerformance(
-    performanceOptions,
-    (entryList) => {
-      entryList.forEach((entry) => {
-        longTaskEntries.push(entry);
-      });
-    },
-  );
+  const destroy = observePerformance(performanceOptions, (entryList) => {
+    entryList.forEach((entry) => {
+      longTaskEntries.push(entry);
+    });
+  });
 
   // MPFID 衡量从用户首次与您的网站交互（例如单击按钮）到浏览器实际能够响应该交互的时间。
   // 通过查找 First Contentful Paint 之后最长任务的持续时间来计算 Max Potential FID。
@@ -49,7 +46,6 @@ export const createMPFIDMonitor = (options: MPFIDMonitorOptions) => {
         mpfid: result,
       },
     });
-
   };
 
   onPageLoad(() => getMPFID());

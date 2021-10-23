@@ -10,30 +10,25 @@ import * as https from 'https';
 import * as http from 'http';
 import { ProxyServerMiddleware } from '../types';
 
-function createHttpHeader(
-  line: string,
-  headers: Record<string, any>,
-) {
-  return (
-    `${Object.keys(headers)
-      .reduce(
-        (head, key) => {
-          const value = headers[key];
+function createHttpHeader(line: string, headers: Record<string, any>) {
+  return `${Object.keys(headers)
+    .reduce(
+      (head, key) => {
+        const value = headers[key];
 
-          if (!Array.isArray(value)) {
-            head.push(`${key}: ${value}`);
-            return head;
-          }
-
-          for (let i = 0; i < value.length; i += 1) {
-            head.push(`${key}: ${value[i]}`);
-          }
+        if (!Array.isArray(value)) {
+          head.push(`${key}: ${value}`);
           return head;
-        },
-        [line],
-      )
-      .join('\r\n')}\r\n\r\n`
-  );
+        }
+
+        for (let i = 0; i < value.length; i += 1) {
+          head.push(`${key}: ${value[i]}`);
+        }
+        return head;
+      },
+      [line]
+    )
+    .join('\r\n')}\r\n\r\n`;
 }
 
 export function createUpgradeMiddleware(): ProxyServerMiddleware {
@@ -93,12 +88,7 @@ export function createUpgradeMiddleware(): ProxyServerMiddleware {
     requestToRealServer.on('response', (res) => {
       // @ts-ignore
       if (!res.upgrade) {
-        socket.write(
-          createHttpHeader(
-            `HTTP/${res.httpVersion} ${res.statusCode} ${res.statusMessage}`,
-            res.headers,
-          ),
-        );
+        socket.write(createHttpHeader(`HTTP/${res.httpVersion} ${res.statusCode} ${res.statusMessage}`, res.headers));
         res.pipe(socket);
       }
     });
@@ -118,9 +108,7 @@ export function createUpgradeMiddleware(): ProxyServerMiddleware {
         proxySocket.unshift(proxyHead);
       }
 
-      socket.write(
-        createHttpHeader(`HTTP/1.1 101 Switching Protocols`, proxyRes.headers),
-      );
+      socket.write(createHttpHeader(`HTTP/1.1 101 Switching Protocols`, proxyRes.headers));
       proxySocket.pipe(socket).pipe(proxySocket);
     });
 

@@ -3,32 +3,34 @@ import Koa from 'koa';
 import https from 'https';
 import { CertificationManager } from '../../src';
 
-
 const app = new Koa();
 const cm = new CertificationManager();
 
 const run = async () => {
   const cfg = await cm.createCertificationByDomain('localhost');
-  const server = https.createServer({
-    cert: cfg.cert,
-    key: cfg.key,
-  }, app.callback());
+  const server = https.createServer(
+    {
+      cert: cfg.cert,
+      key: cfg.key,
+    },
+    app.callback()
+  );
 
-
-// 指定一个url匹配
+  // 指定一个url匹配
   app.use(async (ctx) => {
-    ctx.body = '<!DOCTYPE html>\n' +
-      '<html lang=\'en\'>\n' +
+    ctx.body =
+      '<!DOCTYPE html>\n' +
+      "<html lang='en'>\n" +
       '<head>\n' +
-      '  <meta charset=\'UTF-8\'>\n' +
+      "  <meta charset='UTF-8'>\n" +
       '  <title>Use Proxy For WebSocket</title>\n' +
       '</head>\n' +
       '<body>\n' +
       '<script>\n' +
-      '  const ws = new WebSocket(\'wss://proxy.yuzzl.top\');\n' +
+      "  const ws = new WebSocket('wss://proxy.yuzzl.top');\n" +
       '  ws.onopen = () => {\n' +
-      '    console.log(\'open!\');\n' +
-      '    ws.send(\'hello world!\')\n' +
+      "    console.log('open!');\n" +
+      "    ws.send('hello world!')\n" +
       '  }\n' +
       '\n' +
       '</script>\n' +
@@ -53,4 +55,3 @@ const run = async () => {
 };
 
 run();
-

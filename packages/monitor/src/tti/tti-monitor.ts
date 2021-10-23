@@ -20,14 +20,9 @@ const TIME_GAP = 5000;
  * @param lastKnownNetwork2Busy
  * @param longTasks
  */
-const checkAndReportTTI = (
-  options: TTIMonitorOptions,
-  lastKnownNetwork2Busy: number,
-  longTasks: TaskTimeInfo[],
-) => {
+const checkAndReportTTI = (options: TTIMonitorOptions, lastKnownNetwork2Busy: number, longTasks: TaskTimeInfo[]) => {
   const fcp = getPerformanceEntriesByName('first-contentful-paint')[0];
   const searchStartTime = fcp ? fcp.startTime : 0;
-
 
   const tti = calculateTTI({
     searchStart: searchStartTime,
@@ -65,7 +60,6 @@ export const createTtiMonitor = (options: TTIMonitorOptions) => {
     return computeLastKnownNetwork2Busy(getIncomingRequestsTimes(), networkRequests);
   };
 
-
   // 监听 long task 和 network resource
   observeLongTaskAndResources(
     (timeInfo) => {
@@ -77,21 +71,14 @@ export const createTtiMonitor = (options: TTIMonitorOptions) => {
       networkRequests.push(timeInfo);
       // 遇到资源请求，在最后一次请求数大于 2 的时刻五秒后尝试获取 tti
       ttiCalculatorScheduler.resetScheduler(getLastKnownNetworkBusy() + TIME_GAP);
-    },
+    }
   );
 
   const checkAndReport = () => {
-    checkAndReportTTI(
-      options,
-      getLastKnownNetworkBusy(),
-      longTasks,
-    );
+    checkAndReportTTI(options, getLastKnownNetworkBusy(), longTasks);
   };
 
   const lastLongTask = last(longTasks)?.endTime || 0;
 
-  ttiCalculatorScheduler.startSchedule(
-    checkAndReport,
-    Math.max(getLastKnownNetworkBusy() + TIME_GAP, lastLongTask),
-  );
+  ttiCalculatorScheduler.startSchedule(checkAndReport, Math.max(getLastKnownNetworkBusy() + TIME_GAP, lastLongTask));
 };

@@ -12,27 +12,36 @@ import { TaskTimeInfo } from '../tti/types';
  */
 export const observeLongTaskAndResources = (
   onLongTask: (timeInfo: TaskTimeInfo, entry: PerformanceEntry) => void,
-  onNetworkRequest: (timeInfo: TaskTimeInfo, resourceEntry: PerformanceResourceTiming) => void,
+  onNetworkRequest: (timeInfo: TaskTimeInfo, resourceEntry: PerformanceResourceTiming) => void
 ) => {
-  observePerformance({
-    entryTypes: [PERFORMANCE_ENTRY_TYPES.LONG_TASK, PERFORMANCE_ENTRY_TYPES.RESOURCE],
-  }, (entryList) => {
-    for (const entry of entryList) {
-      const { startTime, duration, entryType } = entry;
+  observePerformance(
+    {
+      entryTypes: [PERFORMANCE_ENTRY_TYPES.LONG_TASK, PERFORMANCE_ENTRY_TYPES.RESOURCE],
+    },
+    (entryList) => {
+      for (const entry of entryList) {
+        const { startTime, duration, entryType } = entry;
 
-      if (entryType === PERFORMANCE_ENTRY_TYPES.LONG_TASK) {
-        onLongTask({
-          startTime: startTime,
-          endTime: startTime + duration,
-        }, entry);
-      } else if (entry.entryType === PERFORMANCE_ENTRY_TYPES.RESOURCE) {
-        const { fetchStart, responseEnd } = entry as PerformanceResourceTiming;
+        if (entryType === PERFORMANCE_ENTRY_TYPES.LONG_TASK) {
+          onLongTask(
+            {
+              startTime: startTime,
+              endTime: startTime + duration,
+            },
+            entry
+          );
+        } else if (entry.entryType === PERFORMANCE_ENTRY_TYPES.RESOURCE) {
+          const { fetchStart, responseEnd } = entry as PerformanceResourceTiming;
 
-        onNetworkRequest({
-          startTime: fetchStart,
-          endTime: responseEnd,
-        }, entry as PerformanceResourceTiming);
+          onNetworkRequest(
+            {
+              startTime: fetchStart,
+              endTime: responseEnd,
+            },
+            entry as PerformanceResourceTiming
+          );
+        }
       }
     }
-  });
+  );
 };

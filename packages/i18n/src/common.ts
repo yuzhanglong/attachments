@@ -8,7 +8,7 @@
 
 export enum LANGUAGE_MAP {
   en = 'en-US',
-  zh = 'zh-CN'
+  zh = 'zh-CN',
 }
 
 export const INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE = 'the message is empty...';

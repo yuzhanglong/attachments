@@ -6,9 +6,9 @@
  * Email: yuzl1123@163.com
  */
 
-export type MessageMap = Record<string, string>
+export type MessageMap = Record<string, string>;
 
-export type IntlSources = Record<string, (() => MessageMap) | (() => Promise<MessageMap>)>
+export type IntlSources = Record<string, (() => MessageMap) | (() => Promise<MessageMap>)>;
 
 export interface IIntlGroupExecutor {
   // 修改当前语言
@@ -29,4 +29,4 @@ export interface IIntlGroupExecutor {
 
 export type GlobalIntl = IIntlGroupExecutor & {
   (key: string, args: any): string;
-}
+};

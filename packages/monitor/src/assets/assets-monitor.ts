@@ -17,7 +17,7 @@ export function createAssetsMonitor(options: AssetsMonitorOptions) {
   };
 
   const destroy = observePerformance(observerOptions, (entryList) => {
-    entryList.forEach(entry => {
+    entryList.forEach((entry) => {
       options.onReport({
         data: {
           timeStamp: Date.now(),
@@ -32,4 +32,3 @@ export function createAssetsMonitor(options: AssetsMonitorOptions) {
     destroy: destroy,
   };
 }
-

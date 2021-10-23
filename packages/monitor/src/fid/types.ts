@@ -9,4 +9,4 @@ interface FIDReportData {
   fid: FIDEntry;
 }
 
-export type FIDMonitorOptions = MonitorOptions<FIDReportData>
+export type FIDMonitorOptions = MonitorOptions<FIDReportData>;

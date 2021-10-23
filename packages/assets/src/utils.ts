@@ -26,10 +26,9 @@ export const createAddManyTemplatesAction = (name: string, destination: string) 
     type: 'addMany',
     destination: destination,
     templateFiles: `${tsTemplatePath}/**/*`,
-    base: tsTemplatePath
+    base: tsTemplatePath,
   };
 };
-
 
 export const launchPlopByConfig = async (generator: string) => {
   const configPath = path.resolve(getLibPath(), 'configurations', 'node-plop', `${generator}.js`);

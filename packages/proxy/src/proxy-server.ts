@@ -40,10 +40,13 @@ export class ProxyServer {
       key: httpsServerCert.key,
       SNICallback: async (servername, callback) => {
         const { key, cert } = await this.certificationManager.createCertificationByDomain(servername);
-        callback(null, createSecureContext({
-          key: key,
-          cert: cert,
-        }));
+        callback(
+          null,
+          createSecureContext({
+            key: key,
+            cert: cert,
+          })
+        );
       },
     });
 
@@ -88,22 +91,18 @@ export class ProxyServer {
       const resDomain = isProxyMatched ? LOCAL_HOST : domain;
       const resPort = isProxyMatched ? PROXY_PASS_SERVICE_PORT : port;
 
-
-      const proxyPassServiceSocket = net.connect(
-        resPort,
-        resDomain,
-        () => {
-          clientSocket.write(`HTTP/${req.httpVersion} 200 OK\r\n\r\n`, 'utf-8', () => {
-            proxyPassServiceSocket.write(head);
-            proxyPassServiceSocket.pipe(clientSocket);
-            clientSocket.pipe(proxyPassServiceSocket);
-          });
-
-          proxyPassServiceSocket.on('error', (e) => {
-            console.log('error!');
-            console.log(e);
-          });
+      const proxyPassServiceSocket = net.connect(resPort, resDomain, () => {
+        clientSocket.write(`HTTP/${req.httpVersion} 200 OK\r\n\r\n`, 'utf-8', () => {
+          proxyPassServiceSocket.write(head);
+          proxyPassServiceSocket.pipe(clientSocket);
+          clientSocket.pipe(proxyPassServiceSocket);
         });
+
+        proxyPassServiceSocket.on('error', (e) => {
+          console.log('error!');
+          console.log(e);
+        });
+      });
 
       clientSocket.on('error', (e) => {
         console.log(e);

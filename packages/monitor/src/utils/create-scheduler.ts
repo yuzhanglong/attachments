@@ -37,12 +37,9 @@ export const createScheduler = () => {
     clearCurrentScheduleTimer();
 
     const newTime = newScheduleTime - getCurrentTime();
-    taskId = window.setTimeout(
-      () => {
-        callback();
-      },
-      newTime,
-    );
+    taskId = window.setTimeout(() => {
+      callback();
+    }, newTime);
     scheduleTime = newScheduleTime;
   };
 

@@ -15,7 +15,6 @@ interface IntlGroupWrapper {
   intlGroup: IntlGroup;
 }
 
-
 export class IntlPoolExecutor implements IIntlGroupExecutor {
   // 维护多个文案组
   intlGroups: IntlGroupWrapper[] = [];
@@ -26,7 +25,6 @@ export class IntlPoolExecutor implements IIntlGroupExecutor {
   // 于是也没必要 setLocal 去拉取它的的文案 js 文件
   currentLocal: string = '';
 
-
   /**
    * 通过名称，匹配相应的文案组，如果没有，则返回一个 undefined
    *
@@ -35,7 +33,7 @@ export class IntlPoolExecutor implements IIntlGroupExecutor {
    * @param name 文案组名称
    */
   getIntlGroupWrapperByName(name: string) {
-    return this.intlGroups.find(item => item.name === name);
+    return this.intlGroups.find((item) => item.name === name);
   }
 
   /**
@@ -100,7 +98,7 @@ export class IntlPoolExecutor implements IIntlGroupExecutor {
 
     this.intlGroups.unshift(wrapperItem);
     return this;
-  };
+  }
 
   /**
    * 卸载某个文案组
@@ -110,14 +108,14 @@ export class IntlPoolExecutor implements IIntlGroupExecutor {
    * @param name 需要卸载的文案组名称
    */
   unregister(name: string) {
-    const targetGroup = this.intlGroups.findIndex(item => item.name === name);
+    const targetGroup = this.intlGroups.findIndex((item) => item.name === name);
     if (targetGroup < 0) {
       console.warn(`intl group '${name}' not found!`);
       return;
     }
     this.intlGroups.splice(targetGroup, 1);
     return this;
-  };
+  }
 
   /**
    * 激活某个文案组

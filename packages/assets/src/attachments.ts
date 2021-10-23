@@ -4,8 +4,7 @@ import { program } from 'commander';
 import { launchPlopByConfig } from './utils';
 
 // 版本信息
-program
-  .version(`attachments ${require('../package').version}`);
+program.version(`attachments ${require('../package').version}`);
 
 // serendipity create，创建一个由 serendipity 管理的项目
 program

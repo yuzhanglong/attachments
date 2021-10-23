@@ -10,7 +10,7 @@ export interface ProxyServerContext {
   urlInstance?: URL;
   // for websocket
   socket?: Socket;
-  head?: Buffer
+  head?: Buffer;
 }
 
 export interface RuleConfig {
@@ -18,4 +18,4 @@ export interface RuleConfig {
   proxyPass: string;
 }
 
-export type ProxyServerMiddleware = Middleware<ProxyServerContext>
+export type ProxyServerMiddleware = Middleware<ProxyServerContext>;

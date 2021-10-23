@@ -121,7 +121,6 @@ export class RuleManager {
     this.mapDomainToRules.clear();
   }
 
-
   /**
    * 匹配一个域名
    *

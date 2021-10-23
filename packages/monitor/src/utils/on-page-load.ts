@@ -12,9 +12,13 @@ export const onPageLoad = (callback: () => void) => {
     return;
   }
 
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      callback();
-    }, 0);
-  }, false);
+  window.addEventListener(
+    'load',
+    () => {
+      setTimeout(() => {
+        callback();
+      }, 0);
+    },
+    false
+  );
 };

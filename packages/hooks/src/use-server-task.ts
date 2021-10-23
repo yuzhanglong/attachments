@@ -19,7 +19,7 @@ export enum ServerTaskStatus {
   // 完成态
   SUCCESS,
   // 错误态
-  FAILED
+  FAILED,
 }
 
 interface ServerTaskReturnWithFormat {
@@ -51,24 +51,14 @@ interface ServerTaskOptions<P = any, R = any> {
   requestParams?: P;
 }
 
-export function useServerTask<P, R>(
-  service: (params: P) => Promise<R>,
-  options: ServerTaskOptions<P, R>,
-) {
+export function useServerTask<P, R>(service: (params: P) => Promise<R>, options: ServerTaskOptions<P, R>) {
   // 当前状态
-  const [currentStatus, setCurrentStatus] = useState<ServerTaskStatus>(
-    ServerTaskStatus.WAITING,
-  );
+  const [currentStatus, setCurrentStatus] = useState<ServerTaskStatus>(ServerTaskStatus.WAITING);
 
   // 百分比
   const [percentage, setPercentage] = useState<number>(0);
 
-  const {
-    formatResult,
-    successCallback,
-    errorCallback,
-    requestParams,
-  } = options;
+  const { formatResult, successCallback, errorCallback, requestParams } = options;
 
   const { current } = useRef<{
     taskTimer: number | null;
@@ -91,7 +81,6 @@ export function useServerTask<P, R>(
     };
   }, []);
 
-
   // 重置任务状态，我们会做两件事：清空定时器，将状态设置为等待态
   const resetTaskStatus = () => {
     clearTaskTimer();
@@ -108,9 +97,7 @@ export function useServerTask<P, R>(
       });
 
       // 对返回的数据进行 format(如果有的话)
-      const formattedResponse = (formatResult
-        ? formatResult(response)
-        : response) as ServerTaskReturnWithFormat;
+      const formattedResponse = (formatResult ? formatResult(response) : response) as ServerTaskReturnWithFormat;
 
       const { status, percent } = formattedResponse;
 
@@ -155,8 +142,6 @@ export function useServerTask<P, R>(
       refreshTaskStatus(params);
     }, options.timeGap || (DEFAULT_REQUEST_TIME_GAP as any));
   };
-
-
 
   return {
     executeTask,

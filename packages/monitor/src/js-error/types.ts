@@ -9,4 +9,4 @@ export interface JsErrorReportData {
   };
 }
 
-export type JsErrorMonitorOptions = MonitorOptions<JsErrorReportData>
+export type JsErrorMonitorOptions = MonitorOptions<JsErrorReportData>;

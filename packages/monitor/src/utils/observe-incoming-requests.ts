@@ -15,7 +15,7 @@ export const observeIncomingRequests = () => {
 
   // 监听 XMLHttpRequest open 方法
   patchMethod(XMLHttpRequest.prototype, 'open', (origin: XMLHttpRequest['open']) => {
-    return function(this: PatchedXMLHttpRequest, ...args: Parameters<XMLHttpRequest['open']>) {
+    return function (this: PatchedXMLHttpRequest, ...args: Parameters<XMLHttpRequest['open']>) {
       const [method] = args;
       this.taggedMethod = method;
       return origin.apply(this, args);
@@ -25,7 +25,7 @@ export const observeIncomingRequests = () => {
   // 监听 XMLHttpRequest send 方法
   patchMethod(XMLHttpRequest.prototype, 'send', (origin) => {
     let uniqueId = 0;
-    return function(this: PatchedXMLHttpRequest, ...args: Parameters<XMLHttpRequest['send']>) {
+    return function (this: PatchedXMLHttpRequest, ...args: Parameters<XMLHttpRequest['send']>) {
       if (this.taggedMethod !== 'GET') {
         return origin.apply(this, args);
       }
@@ -36,7 +36,7 @@ export const observeIncomingRequests = () => {
       incomingRequests[reqId] = Date.now();
 
       patchMethod(this, 'onreadystatechange', (origin) => {
-        return function(e) {
+        return function (e) {
           origin.call(this, e);
           if (this.readyState === XMLHttpRequest.DONE) {
             // 从【进行中】表中移除
@@ -52,7 +52,7 @@ export const observeIncomingRequests = () => {
   // 监听 window.fetch 方法
   patchMethod(window, 'fetch', (origin: typeof window['fetch']) => {
     let uniqueId = 0;
-    return function(...args: Parameters<typeof window['fetch']>) {
+    return function (...args: Parameters<typeof window['fetch']>) {
       const [request, init] = args;
       const method = (request as Request)?.method || init.method;
       if (method !== 'GET') {
@@ -79,7 +79,7 @@ export const observeIncomingRequests = () => {
 
   const getIncomingRequestsTimes = (): number[] => {
     const entries = Object.entries(incomingRequests);
-    return entries.map(res => {
+    return entries.map((res) => {
       return res[1];
     });
   };

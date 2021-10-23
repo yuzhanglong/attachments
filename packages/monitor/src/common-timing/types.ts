@@ -4,4 +4,4 @@ interface CommonTimingReportData {
   timing: PerformanceTiming;
 }
 
-export type CommonTimingMonitorOptions = MonitorOptions<CommonTimingReportData>
+export type CommonTimingMonitorOptions = MonitorOptions<CommonTimingReportData>;

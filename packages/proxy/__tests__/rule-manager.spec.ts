@@ -9,7 +9,7 @@ describe('test rule manager', () => {
     ruleManager.clear();
   });
 
-  test('test rule configurations match', () => {
+  test('rule configurations match', () => {
     ruleManager.addRule('baidu.com', {
       proxyPass: 'yzl.top',
       location: '/',
@@ -23,7 +23,7 @@ describe('test rule manager', () => {
     expect(ruleManager.matchRuleConfigurations('www.baidu.com.cn')).toBeFalsy();
   });
 
-  test('test rule match that domain start with www', () => {
+  test('rule match that domain start with www', () => {
     ruleManager.addRule('www.baidu.com', {
       proxyPass: 'foo.com',
       location: '/',
@@ -37,7 +37,7 @@ describe('test rule manager', () => {
     expect(ruleManager.matchRuleConfigurations('www.baidu.com.cn')).toBeFalsy();
   });
 
-  test('test mapDomainToRules match same domain, we only match the first one', () => {
+  test('mapDomainToRules match same domain, we only match the first one', () => {
     ruleManager.addRule('www.baidu.com', {
       proxyPass: 'foo.com',
       location: '/',
@@ -52,7 +52,7 @@ describe('test rule manager', () => {
     expect(expectedProxyPass).toStrictEqual('foo.com');
   });
 
-  test('test getProxyPassUrl', () => {
+  test('getProxyPassUrl', () => {
     ruleManager.addRule('www.baidu.com', {
       proxyPass: 'http://foo.com',
       location: '/',
@@ -70,7 +70,7 @@ describe('test rule manager', () => {
     expect(str2?.toString()).toStrictEqual('https://hello.com/baz');
   });
 
-  test('test match domain', () => {
+  test('match domain', () => {
     ruleManager.addRule('www.baidu.com', {
       proxyPass: 'http://foo.com',
       location: '/',

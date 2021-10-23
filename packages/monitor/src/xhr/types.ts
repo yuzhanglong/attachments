@@ -1,4 +1,3 @@
-
 import { BaseObject, MonitorOptions, UrlData } from '../types';
 
 // xhr 监控结果记录数据
@@ -9,7 +8,7 @@ export interface XHRReportData {
     method: string;
     // 通过 setRequestHeaders 添加的请求头
     headers: Record<string, string>;
-    body: string
+    body: string;
   };
   performance: Record<string, any>;
   duration: number;
@@ -17,12 +16,12 @@ export interface XHRReportData {
     status: number;
     timestamp: number;
     headers: Record<string, string>;
-    body: string
+    body: string;
   };
 }
 
 // xhr 监控选项
-export type XHRMonitorOptions = MonitorOptions<XHRReportData>
+export type XHRMonitorOptions = MonitorOptions<XHRReportData>;
 
 // xhr 监控实例暂存数据记录，挂在在用户初始化的 XMLHttpRequest 上
 interface XHRMonitorRecode {
@@ -32,7 +31,6 @@ interface XHRMonitorRecode {
   requestHeaders?: BaseObject<string>;
   requestData?: Parameters<XMLHttpRequest['send']>[0];
 }
-
 
 export interface PatchedXMLHttpRequest extends XMLHttpRequest {
   // 记录信息

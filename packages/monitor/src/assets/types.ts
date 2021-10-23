@@ -1,8 +1,8 @@
 import { MonitorOptions } from '../types';
 
 export type AssetsReportData = {
-  timeStamp: number
-  performance: Record<string, any>
-}
+  timeStamp: number;
+  performance: Record<string, any>;
+};
 
-export type AssetsMonitorOptions = MonitorOptions<AssetsReportData>
+export type AssetsMonitorOptions = MonitorOptions<AssetsReportData>;

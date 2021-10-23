@@ -5,4 +5,4 @@ export interface MPFIDReportData {
   mpfid: number;
 }
 
-export type MPFIDMonitorOptions = MonitorOptions<MPFIDReportData>
+export type MPFIDMonitorOptions = MonitorOptions<MPFIDReportData>;

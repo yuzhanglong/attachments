@@ -14,9 +14,7 @@ const getParsedCode = (code: string) => {
   return transformSync(code, {
     filename: 'index.js',
     plugins: [
-      [
-        '@babel/plugin-transform-typescript',
-      ],
+      ['@babel/plugin-transform-typescript'],
       [
         I18nBabelPlugin,
         {
@@ -28,7 +26,7 @@ const getParsedCode = (code: string) => {
 };
 
 describe('test babel-plugin-i18n', () => {
-  test('intl 方法 + 字符串直接调用，在其中没有字符串拼接和模板字符串，形如 intl(\'my-str\', {})', () => {
+  test("intl 方法 + 字符串直接调用，在其中没有字符串拼接和模板字符串，形如 intl('my-str', {})", () => {
     const example = `intl('Yzl_Test_Name', {})`;
     expect(getParsedCode(example)).toStrictEqual(`intl(
 /*{ "oldKey": "Yzl_Test_Name", "newKey": "$1" }*/
@@ -45,7 +43,6 @@ describe('test babel-plugin-i18n', () => {
 
 intl('Yzl_Test_Ok', {});`);
   });
-
 
   test('兼容输出的 var 声明提升, 不应该进行处理', () => {
     const example = `

@@ -1,6 +1,1 @@
-export {
-  createAddConfigAction,
-  createAddManyTemplatesAction,
-  launchPlopByConfig,
-} from './utils';
-
+export { createAddConfigAction, createAddManyTemplatesAction, launchPlopByConfig } from './utils';

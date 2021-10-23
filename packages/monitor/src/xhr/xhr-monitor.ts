@@ -22,13 +22,7 @@ export function createXhrMonitor(options: XHRMonitorOptions) {
     const isError = patchedXhrInstance.status >= 400;
 
     const {
-      monitorRecords: {
-        url,
-        method,
-        startTime,
-        requestHeaders,
-        requestData,
-      },
+      monitorRecords: { url, method, startTime, requestHeaders, requestData },
     } = patchedXhrInstance;
     return {
       request: {
@@ -51,7 +45,7 @@ export function createXhrMonitor(options: XHRMonitorOptions) {
 
   // XMLHttpRequest.prototype.open
   const patchOpen = patchMethod(XMLHttpRequestPrototype, 'open', (open) => {
-    return function(this: PatchedXMLHttpRequest, ...openOptions) {
+    return function (this: PatchedXMLHttpRequest, ...openOptions) {
       const [method, url] = openOptions;
 
       this.monitorRecords = this.monitorRecords || {};
@@ -66,7 +60,7 @@ export function createXhrMonitor(options: XHRMonitorOptions) {
   // XMLHttpRequest.prototype.onReadyStateChange
   const patchOnReadyStateChange = (target: PatchedXMLHttpRequest) => {
     return patchMethod(target, 'onreadystatechange', (origin) => {
-      return function(this: PatchedXMLHttpRequest, ...event) {
+      return function (this: PatchedXMLHttpRequest, ...event) {
         if (this.readyState === XMLHttpRequest.DONE) {
           options.onReport({
             eventType: EventType.XHR,
@@ -80,7 +74,7 @@ export function createXhrMonitor(options: XHRMonitorOptions) {
 
   // XMLHttpRequest.prototype.send
   const patchSend = patchMethod(XMLHttpRequestPrototype, 'send', (send) => {
-    return function(this: PatchedXMLHttpRequest, ...sendOptions) {
+    return function (this: PatchedXMLHttpRequest, ...sendOptions) {
       // 不可以直接修改原型上的 onReadyStateChange
       patchOnReadyStateChange(this)();
       this.monitorRecords = this.monitorRecords || {};
@@ -91,9 +85,8 @@ export function createXhrMonitor(options: XHRMonitorOptions) {
     };
   });
 
-
   const patchSetRequestHeader = patchMethod(XMLHttpRequestPrototype, 'setRequestHeader', (origin) => {
-    return function(this: PatchedXMLHttpRequest, ...options: [name: string, value: string]) {
+    return function (this: PatchedXMLHttpRequest, ...options: [name: string, value: string]) {
       const [name, value] = options;
 
       this.monitorRecords = this.monitorRecords || {};
@@ -103,7 +96,6 @@ export function createXhrMonitor(options: XHRMonitorOptions) {
       return origin.apply(this, options);
     };
   });
-
 
   // patch 需要覆盖的 methods
   patchOpen();

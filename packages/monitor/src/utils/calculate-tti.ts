@@ -12,7 +12,6 @@ interface TTICalculateOptions {
   longTasks: { startTime: number; endTime: number }[];
 }
 
-
 const getDomContentLoadedEventEndTime = () => {
   const { timing } = getPerformance();
 

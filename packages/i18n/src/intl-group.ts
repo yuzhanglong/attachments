@@ -9,7 +9,6 @@ import { IntlMessageFormat } from 'intl-messageformat';
 import { IntlSources, MessageMap } from './types';
 import { INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE } from './common';
 
-
 interface IntlExecutorOptions {
   intlSources: IntlSources;
 }
@@ -35,7 +34,6 @@ export class IntlGroup {
     this.intlSources = intlSources;
   }
 
-
   /**
    * 获取文案内容
    *
@@ -58,7 +56,6 @@ export class IntlGroup {
       }
       targetFormatter = new IntlMessageFormat(messageTemplate, this.currentLocal);
       this.currentCachedFormatters[key] = targetFormatter;
-
     }
 
     return targetFormatter.format(params) as string;

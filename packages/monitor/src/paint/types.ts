@@ -23,5 +23,4 @@ export interface LargestContentfulPaintReportData {
   timeStamp: number;
 }
 
-
-export type PaintMonitorOptions = MonitorOptions<PaintReportData | LargestContentfulPaintReportData>
+export type PaintMonitorOptions = MonitorOptions<PaintReportData | LargestContentfulPaintReportData>;
