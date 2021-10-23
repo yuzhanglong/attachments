@@ -19,12 +19,8 @@ export const runCommand = async (command: string, args?: string[], path?: string
     [command, ...args] = command.split(/\s+/);
   }
 
-  return execa(
-    command,
-    args,
-    {
-      cwd: p,
-      stdio: 'inherit',
-    },
-  );
+  return execa(command, args, {
+    cwd: p,
+    stdio: 'inherit',
+  });
 };
