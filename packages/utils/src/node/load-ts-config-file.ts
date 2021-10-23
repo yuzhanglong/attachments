@@ -29,7 +29,6 @@ export const loadTsConfigFile = async <T>(configPath: string): Promise<T> => {
 
   tsNodeService.enabled(true);
 
-  // eslint-disable-next-line import/no-dynamic-require
   let configObject = interopRequireDefault(require(configPath)).default;
 
   // 配置文件是一个函数，调用之

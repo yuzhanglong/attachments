@@ -8,7 +8,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint --ext .ts --max-warnings 0 ./ --fix",
+    "lint": "eslint --ext .ts,.tsx ./ --fix",
     "test": "jest --no-cache",
     "lerna:build": "lerna run build",
     "lerna:bootstrap": "lerna bootstrap",

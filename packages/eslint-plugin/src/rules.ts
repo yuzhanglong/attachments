@@ -9,4 +9,7 @@ export const rules: Record<string, string> = {
   'no-underscore-dangle': 'off',
   'no-unused-vars': 'off',
   'prettier/prettier': 'error',
+  'no-undef': 'off',
+  'jest/no-conditional-expect': 'warn',
+  'jest/no-standalone-expect': 'off',
 };
