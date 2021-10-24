@@ -13,6 +13,7 @@ import { formatError } from '../utils/format-error';
 
 export function createJsErrorMonitor(options: JsErrorMonitorOptions) {
   const window = getBrowserWindow();
+
   if (!window) {
     return;
   }

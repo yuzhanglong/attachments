@@ -6,13 +6,12 @@
  * Email: yuzl1123@163.com
  */
 
-import { IntlGroup } from '../src/intl-group';
+import { IntlGroup, IntlSources } from '../src';
 import { INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE, LANGUAGE_MAP } from '../src/common';
-import { IntlSources } from '../src';
 
 const I18nChunkMap: IntlSources = {
-  [LANGUAGE_MAP.zh]: () => import(/* webpackChunkName: "i18n.zh-cn" */ './data/zh-cn.json'),
-  [LANGUAGE_MAP.en]: () => import(/* webpackChunkName: "i18n.en-us" */ './data/zh-cn.json'),
+  [LANGUAGE_MAP.zh]: () => import(/* webpackChunkName: "i18n.zh-cn" */ './data/zh-cn.json') as any,
+  [LANGUAGE_MAP.en]: () => import(/* webpackChunkName: "i18n.en-us" */ './data/zh-cn.json') as any,
 };
 
 describe('test intl packages', () => {
