@@ -8,7 +8,7 @@
     "types": [
       "jest",
       "node",
-      "jest-environment-puppeteer"
+      "cypress"
     ],
     "emitDecoratorMetadata": true,
     "sourceMap": true,

@@ -1,5 +1,5 @@
 {
-  "name": "@attachments/monitor",
+  "name": "@attachments/monitor-sdk-browser",
   "version": "0.1.19",
   "main": "index.js",
   "license": "MIT",
@@ -9,7 +9,8 @@
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "build:umd": "webpack --node-env production",
-    "dev:link": "yarn link"
+    "dev:link": "yarn link",
+    "cypress": "cypress open"
   },
   "files": [
     "src",
