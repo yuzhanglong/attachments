@@ -1,16 +1,14 @@
-/**
- * File: js-error-monitor.ts
- * Description: javascript 错误监控
- * Created: 2021-08-24 17:08:10
- * Author: yuzhanglong
- * Email: yuzl1123@163.com
- */
-
 import { JsErrorMonitorOptions } from './types';
 import { EventType } from '../types';
 import { getBrowserWindow } from '../utils/browser-interfaces';
 import { formatError } from '../utils/format-error';
 
+/**
+ * javaScript 异常监控能力
+ *
+ * @author yuzhanglong
+ * @date 2021-08-24 17:08:10
+ */
 export function createJsErrorMonitor(options: JsErrorMonitorOptions) {
   const window = getBrowserWindow();
 
