@@ -13,7 +13,7 @@ const config: webpack.Configuration = {
       name: 'Monitor',
       type: 'umd',
     },
-    filename: `monitor.min.js`,
+    filename: isDev ? `monitor.js` : `monitor.min.js`,
   },
   module: {
     rules: [
@@ -24,7 +24,7 @@ const config: webpack.Configuration = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env', '@babel/preset-typescript'],
-            plugins: [['@babel/plugin-transform-runtime']],
+            plugins: ['@babel/plugin-transform-runtime', 'istanbul'],
           },
         },
       },

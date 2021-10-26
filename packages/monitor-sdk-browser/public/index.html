@@ -1,24 +1,31 @@
 <!DOCTYPE html>
-<html lang='en'>
-<head>
-  <meta charset='UTF-8'>
-  <title>Test</title>
-</head>
-<body>
-<div id='test'>
-  <div>hello world~</div>
-  <div id='project'></div>
-  <div>hello~</div>
-  <button>hello world</button>
-</div>
-</body>
-<script src='https://cdn.jsdelivr.net/npm/axios@0.21.3/dist/axios.min.js'></script>
-<script>
-  Monitor.createCommonTimingMonitor({
-    onReport: (e) => {
-      console.log(e);
-    },
-  });
-</script>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+  </head>
+  <body>
+    <div id="test">
+      <div>hello world~</div>
+      <div id="project"></div>
+      <div>hello~</div>
+      <button>hello world</button>
+    </div>
+  </body>
+  <script src="../dist/monitor.js"></script>
+  <script>
 
+
+    try {
+      Monitor.createAssetsErrorMonitor({
+        onReport: (e) => {
+          console.log("error", e);
+        }
+      });
+      throw new Error('213213')
+    } catch (e) {
+      console.log("errr");
+    }
+
+  </script>
 </html>

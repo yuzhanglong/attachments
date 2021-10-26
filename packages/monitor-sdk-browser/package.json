@@ -9,8 +9,9 @@
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "build:umd": "webpack --node-env production",
+    "build:dev-umd": "webpack --node-env development",
     "dev:link": "yarn link",
-    "cypress": "cypress open"
+    "test:cypress": "cypress open"
   },
   "files": [
     "src",

@@ -18,12 +18,17 @@
     "rename-template": "ts-node scripts/add-extension.ts"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.9.11",
+    "@cypress/webpack-preprocessor": "^5.9.1",
+    "@types/faker": "^5.5.9",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.4.6",
     "add": "^2.0.6",
+    "babel-plugin-istanbul": "^6.1.1",
     "chai": "^4.3.4",
     "cypress": "^8.6.0",
     "eslint": "^7.31.0",
+    "faker": "^5.5.3",
     "fs-extra": "^10.0.0",
     "html-webpack-plugin": "^5.3.2",
     "jest": "^27.3.1",
