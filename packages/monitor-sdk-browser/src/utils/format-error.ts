@@ -20,7 +20,13 @@ export function formatError(e: ErrorEvent | PromiseRejectionEvent): JsErrorRepor
     error = (e as ErrorEvent).error;
   } else {
     // @ts-ignore
-    error = e.reason || e.error || {};
+    error = e.reason || e.error;
+  }
+
+  if (!error) {
+    // 这是为了处理跨域脚本内部异常详细信息无法获取的边界情况
+    // 此类错误我们忽略之
+    return;
   }
 
   return {

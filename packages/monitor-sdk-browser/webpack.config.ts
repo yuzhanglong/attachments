@@ -1,5 +1,6 @@
-import * as webpack from 'webpack';
-import HtmlWebpackPlugin = require('html-webpack-plugin');
+import webpack from 'webpack';
+import TerserWebpackPlugin from 'terser-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
@@ -7,14 +8,15 @@ const isDev = env === 'development';
 const config: webpack.Configuration = {
   entry: './src/index.ts',
   mode: isDev ? 'development' : 'production',
-  devtool: isDev ? 'source-map' : false,
+  devtool: false,
   output: {
     library: {
       name: 'Monitor',
       type: 'umd',
     },
-    filename: isDev ? `monitor.js` : `monitor.min.js`,
+    filename: isDev ? 'monitor.js' : 'monitor.min.js',
   },
+  // plugins: [new BundleAnalyzerPlugin()],
   module: {
     rules: [
       {
@@ -24,21 +26,26 @@ const config: webpack.Configuration = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env', '@babel/preset-typescript'],
-            plugins: ['@babel/plugin-transform-runtime', 'istanbul'],
+            plugins: ['@babel/plugin-transform-runtime', 'lodash'],
           },
         },
       },
     ],
   },
-  plugins: [
-    isDev &&
-      new HtmlWebpackPlugin({
-        template: './public/index.html',
-        scriptLoading: isDev ? 'blocking' : 'defer',
-      }),
-  ].filter(Boolean),
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+  },
+  optimization: {
+    minimizer: [
+      new TerserWebpackPlugin({
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
   },
 };
 

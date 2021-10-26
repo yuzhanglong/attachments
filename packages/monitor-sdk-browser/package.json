@@ -1,10 +1,11 @@
 {
   "name": "@attachments/monitor-sdk-browser",
   "version": "0.1.19",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
   "license": "MIT",
   "scripts": {
-    "dev:start": "webpack serve --node-env development",
+    "dev:start": "webpack --node-env development -w",
     "build": "npm-run-all --parallel build:*",
     "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
@@ -21,7 +22,10 @@
   ],
   "devDependencies": {
     "@types/lodash": "^4.14.172",
+    "babel-plugin-lodash": "^3.3.4",
     "html-webpack-plugin": "^5.3.2",
+    "terser-webpack-plugin": "^5.2.4",
+    "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.0.0"
   },

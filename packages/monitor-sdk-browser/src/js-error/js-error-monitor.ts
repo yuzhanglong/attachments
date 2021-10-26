@@ -17,10 +17,13 @@ export function createJsErrorMonitor(options: JsErrorMonitorOptions) {
   }
 
   const handleError = (e: ErrorEvent) => {
-    options.onReport({
-      eventType: EventType.JS_ERROR,
-      data: formatError(e),
-    });
+    const data = formatError(e);
+    if (data) {
+      options.onReport({
+        eventType: EventType.JS_ERROR,
+        data: data,
+      });
+    }
   };
 
   const handleRejection = (e: PromiseRejectionEvent) => {

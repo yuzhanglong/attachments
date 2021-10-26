@@ -4,8 +4,19 @@
     <meta charset="UTF-8">
     <title>js-error-cross-origin</title>
     <script src="../dist/monitor.js"></script>
+    <script>
+      Monitor.createJsErrorMonitor({
+        onReport: (e) => {
+          console.log(e);
+        }
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/gh/yuzhanglong/attachments@main/packages/monitor-sdk-browser/examples/cross-origin-script-error.js"
+      crossorigin="anonymous"></script>
   </head>
   <body>
+
 
   </body>
 </html>
