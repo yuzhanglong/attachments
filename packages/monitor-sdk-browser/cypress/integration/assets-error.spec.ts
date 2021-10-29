@@ -1,25 +1,21 @@
 import { createAssetsErrorMonitor } from '../../src';
-import { ReportBase } from '../../src/types';
+import { CallBack } from '../../src/types';
 import { AssetsErrorReportData } from '../../src/assets-error/types';
 import faker from 'faker';
+import { promisifyMonitorReport } from './test-utils';
 
-const runMonitor = async (callback: (resolve: any) => void): Promise<ReportBase<AssetsErrorReportData>> => {
-  return new Promise((resolve) => {
-    createAssetsErrorMonitor({
-      onReport: (e) => {
-        resolve(e);
-      },
-    });
-    callback(resolve);
+const runMonitor = async (cb: CallBack<any>) =>
+  promisifyMonitorReport<AssetsErrorReportData>({
+    afterCreateMonitorCallback: cb,
+    monitorFactory: createAssetsErrorMonitor,
   });
-};
 
 // 故意加一个 https 保证资源不存在
 const fakeSrc = `https://${faker.image.imageUrl()}`;
 
 describe('test asset error monitor', () => {
   it('test <img> tag that the source is not accessible', async () => {
-    const res = await runMonitor(() => {
+    const [res] = await runMonitor(() => {
       const el = document.createElement('img');
       el.src = fakeSrc;
       document.body.appendChild(el);
@@ -31,7 +27,7 @@ describe('test asset error monitor', () => {
   });
 
   it('test <link> tag that the source is not accessible', async () => {
-    const res = await runMonitor(() => {
+    const [res] = await runMonitor(() => {
       const el = document.createElement('link');
       el.href = fakeSrc;
       el.rel = 'stylesheet';
@@ -45,7 +41,7 @@ describe('test asset error monitor', () => {
   });
 
   it('test <script/> tag that the source is not accessible', async () => {
-    const res = await runMonitor(() => {
+    const [res] = await runMonitor(() => {
       const el = document.createElement('script');
       el.src = fakeSrc;
       document.body.appendChild(el);
@@ -57,7 +53,7 @@ describe('test asset error monitor', () => {
   });
 
   it('test <video/> tag that the source is not accessible', async () => {
-    const res = await runMonitor(() => {
+    const [res] = await runMonitor(() => {
       const el = document.createElement('video');
       el.src = fakeSrc;
       document.body.appendChild(el);
@@ -69,7 +65,7 @@ describe('test asset error monitor', () => {
   });
 
   it('test <audio/> tag that the source is not accessible', async () => {
-    const res = await runMonitor(() => {
+    const [res] = await runMonitor(() => {
       const el = document.createElement('audio');
       el.src = fakeSrc;
       document.body.appendChild(el);
@@ -81,7 +77,7 @@ describe('test asset error monitor', () => {
   });
 
   it('test new Image() instance', async () => {
-    const res = await runMonitor(() => {
+    const [res] = await runMonitor(() => {
       // Image() 函数将会创建一个新的 HTMLImageElement 实例。
       // 它的功能等价于 document.createElement('img')
       const img = new Image();
@@ -95,7 +91,7 @@ describe('test asset error monitor', () => {
   });
 
   it('test new Audio() instance', async () => {
-    const res = await runMonitor(() => {
+    const [res] = await runMonitor(() => {
       const audio = new Audio();
       audio.src = fakeSrc;
       document.body.appendChild(audio);

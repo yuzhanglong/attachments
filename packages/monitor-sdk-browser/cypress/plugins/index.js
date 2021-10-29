@@ -6,7 +6,7 @@ import task from '@cypress/code-coverage/task';
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
-  task(on, config);
+  // task(on, config);
 
   on(
     'file:preprocessor',

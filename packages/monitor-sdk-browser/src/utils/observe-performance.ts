@@ -2,7 +2,7 @@ import { noop } from './noop';
 import { getPerformanceObserver } from './browser-interfaces';
 
 /**
- * 监听 performance 性能指标
+ * 监听 performance 性能指标， 当不支持 performance API 时，我们不进行任何动作
  *
  * @author yuzhanglong
  * @date 2021-08-26 16:38:12
@@ -10,11 +10,6 @@ import { getPerformanceObserver } from './browser-interfaces';
  * @param callback 监听回调
  * @param once 仅监听一次
  * @return Function 一个销毁监听器的函数，如果 performance API 不存在，则返回 noop
- *
- * 其中：
- * - callback 第一个参数是**某一个**性能指标
- * - callback 第二个参数是**某一段时间**的性能指标
- * - 当不支持 performance API 时，我们不进行任何动作
  *
  */
 export const observePerformance = (
