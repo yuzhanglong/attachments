@@ -2,7 +2,7 @@ import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { AssetsMonitorOptions } from './types';
 import { EventType } from '../types';
 import { observePerformance } from '../utils/observe-performance';
-import { noop } from 'src/utils/noop';
+import { noop } from 'lodash';
 import { onPageLoad } from '../utils/on-page-load';
 import { getPerformanceEntriesByType } from '../utils/performance-entry';
 

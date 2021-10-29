@@ -40,7 +40,8 @@ describe('test assets monitor', () => {
       createAndInsertImageTag();
       createAndInsertImageTag();
     }, 5);
-    expect(res.length).to.equal(5);
+    // 监听收到五次 + 开始的两次
+    expect(res.length).to.equal(7);
     res.forEach((item) => {
       expect(item.eventType).to.equal('ASSETS');
     });
