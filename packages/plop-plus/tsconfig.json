@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "ESNext",
+    "outDir": "lib",
+    "rootDir": "./src",
+    "module": "CommonJS",
+    "declaration": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "types": [
+      "jest",
+      "node"
+    ],
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
