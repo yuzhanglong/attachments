@@ -57,9 +57,12 @@ export function createPaintMonitor(options: PaintMonitorOptions) {
       observerOptions,
       (entryList) => {
         const [firstPaintEntry, firstContentfulPaintEntry] = getDataFromPaintPreferenceArray(entryList);
-        doReport(firstPaintEntry, firstContentfulPaintEntry, EventType.PAINT);
+        if (firstPaintEntry && firstContentfulPaintEntry) {
+          doReport(firstPaintEntry, firstContentfulPaintEntry, EventType.PAINT);
+          destroy();
+        }
       },
-      true
+      false
     );
 
     destroyCallback.push(destroy);
