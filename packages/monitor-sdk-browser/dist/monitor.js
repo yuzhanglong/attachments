@@ -236,32 +236,58 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "createAssetsMonitor": () => (/* binding */ createAssetsMonitor)
 /* harmony export */ });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types */ "./src/types.ts");
-/* harmony import */ var _utils_observe_performance__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/observe-performance */ "./src/utils/observe-performance.ts");
+/* harmony import */ var lodash_noop__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/noop */ "../../node_modules/lodash/noop.js");
+/* harmony import */ var lodash_noop__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_noop__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../types */ "./src/types.ts");
+/* harmony import */ var _utils_observe_performance__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/observe-performance */ "./src/utils/observe-performance.ts");
+/* harmony import */ var _utils_on_page_load__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/on-page-load */ "./src/utils/on-page-load.ts");
+/* harmony import */ var _utils_performance_entry__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/performance-entry */ "./src/utils/performance-entry.ts");
+
+
+
+
+
+
 /**
- * File: assets-monitor.ts
- * Description: 资源性能相关监控
- * Created: 2021-08-26 11:20:23
- * Author: yuzhanglong
- * Email: yuzl1123@163.com
+ * 资源性能相关监控
+ *
+ * @author yuzhanglong
+ * @date 2021-10-29 23:19:38
  */
-
-
 
 function createAssetsMonitor(options) {
   var observerOptions = {
-    entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_0__.PERFORMANCE_ENTRY_TYPES.RESOURCE]
+    entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_1__.PERFORMANCE_ENTRY_TYPES.RESOURCE]
   };
-  var destroy = (0,_utils_observe_performance__WEBPACK_IMPORTED_MODULE_2__.observePerformance)(observerOptions, function (entryList) {
+
+  var reportAll = function reportAll(entryList) {
     entryList.forEach(function (entry) {
       options.onReport({
         data: {
           timeStamp: Date.now(),
           performance: entry
         },
-        eventType: _types__WEBPACK_IMPORTED_MODULE_1__.EventType.ASSETS
+        eventType: _types__WEBPACK_IMPORTED_MODULE_2__.EventType.ASSETS
       });
+    });
+  };
+
+  var destroy = (lodash_noop__WEBPACK_IMPORTED_MODULE_0___default());
+
+  var reportResourceInfoInitiative = function reportResourceInfoInitiative() {
+    var res = (0,_utils_performance_entry__WEBPACK_IMPORTED_MODULE_5__.getPerformanceEntriesByType)(_constants__WEBPACK_IMPORTED_MODULE_1__.PERFORMANCE_ENTRY_TYPES.RESOURCE);
+    reportAll(res);
+  }; // 为什么要基于 onload 后的资源监听 + onload 之前的资源主动获取的模式，而不是直接监听？
+  // 第一：大量资源加载的发生时机一般都是网页的首屏加载
+  // 第二：onload 事件会在 DOM 和所有的资源加载完成后触发，如果直接开启监听器必然会影响首屏性能
+  // 对于 onload 之前的内容，在 onload 回调开始时直接使用 performance.getEntriesByType 获取
+
+
+  (0,_utils_on_page_load__WEBPACK_IMPORTED_MODULE_4__.onPageLoad)(function () {
+    reportResourceInfoInitiative();
+    destroy = (0,_utils_observe_performance__WEBPACK_IMPORTED_MODULE_3__.observePerformance)(observerOptions, function (entryList) {
+      reportAll(entryList);
     });
   });
   return {
@@ -662,12 +688,18 @@ function createPaintMonitor(options) {
 
   var getDataFromPaintPreferenceArray = function getDataFromPaintPreferenceArray(entries) {
     // 无法确定由于浏览器的差异造成的可能的先后顺序问题，我们使用 filter name 来拿到相关指标
-    var firstPaintEntry = entries.filter(function (entry) {
+    var _entries$filter = entries.filter(function (entry) {
       return entry.name === FIRST_PAINT;
-    }).pop();
-    var firstContentfulPaintEntry = entries.filter(function (entry) {
+    }),
+        _entries$filter2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_entries$filter, 1),
+        firstPaintEntry = _entries$filter2[0];
+
+    var _entries$filter3 = entries.filter(function (entry) {
       return entry.name === FIRST_CONTENTFUL_PAINT;
-    }).pop();
+    }),
+        _entries$filter4 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_entries$filter3, 1),
+        firstContentfulPaintEntry = _entries$filter4[0];
+
     return [firstPaintEntry, firstContentfulPaintEntry];
   };
 
@@ -714,7 +746,6 @@ function createPaintMonitor(options) {
 
 
   var reportLargestContentfulPaintByObserver = function reportLargestContentfulPaintByObserver() {
-    // Largest Contentful Paint考虑的元素类型是：<img> / <img> 内的 <svg> / <video>
     var observerOptions = {
       entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_2__.PERFORMANCE_ENTRY_TYPES.LARGEST_CONTENTFUL_PAINT]
     };
@@ -2251,6 +2282,33 @@ function last(array) {
 }
 
 module.exports = last;
+
+
+/***/ }),
+
+/***/ "../../node_modules/lodash/noop.js":
+/*!*****************************************!*\
+  !*** ../../node_modules/lodash/noop.js ***!
+  \*****************************************/
+/***/ ((module) => {
+
+/**
+ * This method returns `undefined`.
+ *
+ * @static
+ * @memberOf _
+ * @since 2.3.0
+ * @category Util
+ * @example
+ *
+ * _.times(2, _.noop);
+ * // => [undefined, undefined]
+ */
+function noop() {
+  // No operation performed.
+}
+
+module.exports = noop;
 
 
 /***/ })

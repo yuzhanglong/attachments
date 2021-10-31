@@ -1,5 +1,5 @@
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
-import { PaintMonitorOptions } from './types';
+import { LargestContentfulPaint, PaintMonitorOptions } from './types';
 import { EventType } from '../types';
 import { noop } from '../utils/noop';
 import { getPerformance } from '../utils/browser-interfaces';
@@ -76,7 +76,7 @@ export function createPaintMonitor(options: PaintMonitorOptions) {
         options.onReport({
           data: {
             timeStamp: Date.now(),
-            largestContentfulPaint: entry,
+            largestContentfulPaint: entry as unknown as LargestContentfulPaint,
           },
           eventType: EventType.LARGEST_CONTENTFUL_PAINT,
         });
