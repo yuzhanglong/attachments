@@ -21,8 +21,8 @@ export function createPaintMonitor(options: PaintMonitorOptions) {
 
   const getDataFromPaintPreferenceArray = (entries: PerformanceEntry[]) => {
     // 无法确定由于浏览器的差异造成的可能的先后顺序问题，我们使用 filter name 来拿到相关指标
-    const firstPaintEntry = entries.filter((entry) => entry.name === FIRST_PAINT).pop();
-    const firstContentfulPaintEntry = entries.filter((entry) => entry.name === FIRST_CONTENTFUL_PAINT).pop();
+    const [firstPaintEntry] = entries.filter((entry) => entry.name === FIRST_PAINT);
+    const [firstContentfulPaintEntry] = entries.filter((entry) => entry.name === FIRST_CONTENTFUL_PAINT);
     return [firstPaintEntry, firstContentfulPaintEntry];
   };
 
@@ -42,6 +42,7 @@ export function createPaintMonitor(options: PaintMonitorOptions) {
     // 先尝试主动上报 FP && FCP
     const entries = performance.getEntriesByType(PERFORMANCE_ENTRY_TYPES.PAINT);
     const [firstPaintEntry, firstContentfulPaintEntry] = getDataFromPaintPreferenceArray(entries);
+
     if (firstPaintEntry && firstContentfulPaintEntry) {
       doReport(firstPaintEntry, firstContentfulPaintEntry, EventType.PAINT);
       return;
@@ -66,7 +67,6 @@ export function createPaintMonitor(options: PaintMonitorOptions) {
 
   // 监听最大内容绘制时间
   const reportLargestContentfulPaintByObserver = () => {
-    // Largest Contentful Paint考虑的元素类型是：<img> / <img> 内的 <svg> / <video>
     const observerOptions: PerformanceObserverInit = {
       entryTypes: [PERFORMANCE_ENTRY_TYPES.LARGEST_CONTENTFUL_PAINT],
     };

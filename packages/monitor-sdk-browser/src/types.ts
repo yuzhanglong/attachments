@@ -37,6 +37,8 @@ export enum EventType {
 export interface MonitorOptions<Report> {
   // 发送报告回调
   onReport: CallBack<ReportBase<Report>>;
+  // window 实例
+  window?: Window;
 }
 
 export interface UrlData {

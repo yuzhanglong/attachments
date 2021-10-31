@@ -16,9 +16,22 @@ export interface PaintReportData {
   timeStamp: number;
 }
 
+export interface LargestContentfulPaint {
+  duration: number;
+  element: Element;
+  entryType: string;
+  id: string;
+  loadTime: number;
+  name: string;
+  renderTime: number;
+  size: number;
+  startTime: number;
+  url: string;
+}
+
 export interface LargestContentfulPaintReportData {
   // LCP
-  largestContentfulPaint: Record<string, any>;
+  largestContentfulPaint: LargestContentfulPaint;
   // 汇报时间戳
   timeStamp: number;
 }
