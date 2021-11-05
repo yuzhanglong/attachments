@@ -1,20 +1,11 @@
-import webpackPreprocessor from '@cypress/webpack-preprocessor';
+const { startDevServer } = require('@cypress/webpack-dev-server');
 import webpackConfig from '../../webpack.config';
-import task from '@cypress/code-coverage/task';
 
 /**
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
-  // task(on, config);
-
-  on(
-    'file:preprocessor',
-    webpackPreprocessor({
-      webpackOptions: webpackConfig,
-      watchOptions: {},
-    })
-  );
+  on('dev-server:start', (options) => startDevServer({ options, webpackConfig }));
 
   return config;
 };

@@ -32,6 +32,7 @@ export enum EventType {
   MPFID = 'MPFID',
   FID = 'FID',
   COMMON_PERFORMANCE_TIMING = 'COMMON_PERFORMANCE_TIMING',
+  FMP = 'FMP',
 }
 
 export interface MonitorOptions<Report> {

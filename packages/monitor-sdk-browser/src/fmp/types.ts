@@ -5,5 +5,5 @@ interface FMPReportData {
 }
 
 export type FMPMonitorOptions = MonitorOptions<FMPReportData> & {
-  algorithm?: 'dom-score' | 'layout-significant';
+  algorithm: 'dom-score' | 'layout-significant';
 };

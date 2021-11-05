@@ -12,7 +12,7 @@
     "build:umd": "rimraf ./dist && webpack --node-env production",
     "build:dev-umd": "rimraf ./dist && webpack --node-env development",
     "dev:link": "yarn link",
-    "test:cypress": "cypress open"
+    "test:cypress": "cypress open-ct"
   },
   "files": [
     "src",
@@ -21,13 +21,21 @@
     "dist"
   ],
   "devDependencies": {
+    "@babel/preset-react": "^7.16.0",
+    "@cypress/react": "^5.10.3",
+    "@cypress/webpack-dev-server": "^1.7.0",
     "@types/lodash": "^4.14.172",
     "babel-plugin-lodash": "^3.3.4",
+    "cypress": "^8.7.0",
     "html-webpack-plugin": "^5.3.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
     "terser-webpack-plugin": "^5.2.4",
+    "webpack": "^5.61.0",
     "webpack-bundle-analyzer": "^4.5.0",
-    "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.0.0"
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.4.0"
   },
   "dependencies": {
     "lodash": "^4.17.21"

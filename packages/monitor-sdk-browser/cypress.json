@@ -1,8 +1,4 @@
 {
   "defaultCommandTimeout": 30000,
-  "component": {
-    "viewportHeight": 500,
-    "viewportWidth": 700,
-    "testFiles": "**/*spec.{js,jsx,ts,tsx}"
-  }
+  "componentFolder": "cypress/integration"
 }

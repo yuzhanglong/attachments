@@ -1,6 +1,5 @@
 import webpack from 'webpack';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
@@ -16,16 +15,14 @@ const config: webpack.Configuration = {
     },
     filename: isDev ? 'monitor.js' : 'monitor.min.js',
   },
-  // plugins: [new BundleAnalyzerPlugin()],
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        exclude: /node_modules/,
+        test: /\.(ts|tsx)$/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-typescript'],
+            presets: ['@babel/preset-env', '@babel/preset-typescript', '@babel/preset-react'],
             plugins: ['@babel/plugin-transform-runtime', 'lodash'],
           },
         },
