@@ -11,8 +11,8 @@
     "lint": "eslint --ext .ts,.tsx ./ --fix",
     "test": "jest --no-cache",
     "build-all": "pnpm -r build",
-    "clean-all": "",
-    "lerna:publish": "pnpm clean-all && pnpm i && pnpm build-all && lerna publish --no-push",
+    "clear-all": "lerna clean",
+    "publish-all": "pnpm clean-all && pnpm i && pnpm build-all && lerna publish --no-push",
     "rename-template": "ts-node scripts/add-extension.ts"
   },
   "devDependencies": {
