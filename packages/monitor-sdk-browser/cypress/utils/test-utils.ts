@@ -19,7 +19,7 @@ interface PromisifyMonitorReportOptions<T> {
  * @date 2021-10-30 20:57:11
  * @param options 相关选项，见上面代码
  */
-export const promisifyMonitorReport = <MonitorReportData>(
+export const promisifyCounterMonitorReport = <MonitorReportData>(
   options: PromisifyMonitorReportOptions<MonitorReportData>
 ) => {
   const { monitorFactory, afterCreateMonitorCallback = noop, reportTimesBeforeResolve = 1 } = options;
@@ -50,6 +50,7 @@ export const promisifyMonitorReport = <MonitorReportData>(
  *
  * @author yuzhanglong
  * @date 2021-10-31 21:02:48
+ * @deprecated 由于使用了 component 模式，废弃之
  */
 export const initSpecWindow = () => {
   // 由于不是跨域的，可以直接通过 parent 拿到父亲节点 window

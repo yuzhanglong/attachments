@@ -1,31 +1,32 @@
 import { createPaintMonitor } from '../../src';
-import { initSpecWindow, promisifyMonitorReport } from './test-utils';
+import { promisifyCounterMonitorReport } from '../utils/test-utils';
 import { LargestContentfulPaintReportData, PaintReportData } from '../../src/paint/types';
 import { CallBack } from '../../src/types';
 
 const createMonitor = (cb: CallBack<any>, times: number) =>
-  promisifyMonitorReport<PaintReportData & LargestContentfulPaintReportData>({
+  promisifyCounterMonitorReport<PaintReportData & LargestContentfulPaintReportData>({
     monitorFactory: createPaintMonitor,
     afterCreateMonitorCallback: cb,
     reportTimesBeforeResolve: times,
   });
 
+createPaintMonitor({
+  onReport: (e) => {
+    console.log(e);
+  },
+});
 describe('test assets monitor', () => {
-  const specWindow = initSpecWindow();
-  beforeEach(() => {
-    specWindow.resetContainer();
-  });
-
   it('test FP、FCP and LCP', async () => {
-    const el = specWindow.getContainer();
+    const el = document.createElement('div');
+    document.body.appendChild(el);
 
     let smallElement = null;
     let largestElement = null;
 
     const insertSmallElement = () => {
       smallElement = document.createElement('div');
-      smallElement.style.width = String(100);
-      smallElement.style.height = String(100);
+      smallElement.style.width = '100px';
+      smallElement.style.height = '100px';
       smallElement.style.backgroundColor = '#9375de';
       smallElement.innerHTML = `I'm the small element`;
       el.appendChild(smallElement);
@@ -33,10 +34,10 @@ describe('test assets monitor', () => {
 
     const insertLargestElement = () => {
       largestElement = document.createElement('div');
-      largestElement.style.width = String(200);
-      largestElement.style.height = String(200);
+      largestElement.style.width = '100px';
+      largestElement.style.height = '100px';
       largestElement.style.backgroundColor = '#409eff';
-      largestElement.innerHTML = `I'm the largest element`;
+      largestElement.innerHTML = `I'm the largest element!I'm the largest element!I'm the largest element!I'm the largest element!`;
       el.appendChild(largestElement);
     };
 

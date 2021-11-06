@@ -2,10 +2,10 @@ import { createAssetsErrorMonitor } from '../../src';
 import { CallBack } from '../../src/types';
 import { AssetsErrorReportData } from '../../src/assets-error/types';
 import faker from 'faker';
-import { promisifyMonitorReport } from './test-utils';
+import { promisifyCounterMonitorReport } from '../utils/test-utils';
 
 const runMonitor = async (cb: CallBack<any>) =>
-  promisifyMonitorReport<AssetsErrorReportData>({
+  promisifyCounterMonitorReport<AssetsErrorReportData>({
     afterCreateMonitorCallback: cb,
     monitorFactory: createAssetsErrorMonitor,
   });
