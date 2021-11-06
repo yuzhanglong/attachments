@@ -19,7 +19,6 @@ export class I18nWebpackPlugin {
         parser.hooks.program.tap(PLUGIN_NAME, (ast, comments) => {
           for (const { value: commentValue } of comments) {
             if ((commentValue as string).startsWith('{ "oldKey":')) {
-              console.log(commentValue);
               const { oldKey, newKey } = JSON.parse(commentValue);
               this.mapOldKeysToCurrentKey.set(oldKey, newKey);
             }

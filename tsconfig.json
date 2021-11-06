@@ -18,6 +18,7 @@
     "isolatedModules": false,
     "experimentalDecorators": true,
     "jsx": "preserve",
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "noEmit": true
   }
 }

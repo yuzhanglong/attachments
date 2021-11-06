@@ -1,8 +1,8 @@
 {
   "name": "@attachments/eslint-plugin",
   "version": "0.1.19",
-  "description": "> TODO: add description",
-  "author": "> TODO: add author",
+  "description": "useful eslint-plugin",
+  "author": "yuzhanglong <loveyzl1123@gmail.com>",
   "homepage": "",
   "license": "MIT",
   "main": "lib/index.js",
@@ -19,10 +19,6 @@
     "build": "npm-run-all --parallel build:*",
     "lint": "eslint --ext .ts --max-warnings 0 ./src",
     "test": "jest"
-  },
-  "devDependencies": {
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.2"
   },
   "peerDependencies": {
     "eslint": "^7 || ^8"
