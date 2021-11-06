@@ -58,7 +58,7 @@ importers:
 
   packages/assets:
     specifiers:
-      '@attachments/utils': ^0.1.19
+      '@attachments/utils': ^0.1.21
       commander: ^8.2.0
       execa: ^5.1.1
       minimist: ^1.2.5

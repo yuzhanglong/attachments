@@ -25,3 +25,6 @@ package.lock.json
 coverage
 
 playground
+
+
+.pnpm-debug.log
