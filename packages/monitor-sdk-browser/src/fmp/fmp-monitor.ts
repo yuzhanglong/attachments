@@ -3,21 +3,21 @@ import { FMPMonitorOptions } from './types';
 import { useRequestAnimationFrame } from '../utils/use-request-animation-frame';
 import { getDomLayoutScore } from '../utils/get-dom-layout-score';
 import { getMutationObserver } from '../utils/browser-interfaces';
-import { onPageLoad } from 'src/utils/on-page-load';
+import { onPageLoad } from '../utils/on-page-load';
 
 interface FMPRecodeData {
   time: number;
   domScore: number;
 }
 
-const calculateFMP = (scoredData: FMPRecodeData[]) => {
+export const calculateFMP = (scoredData: FMPRecodeData[]) => {
   // 首先将打分结果基于时间排序(时间戳从小到大)
   scoredData.sort((a, b) => a.time - b.time);
 
   // 计算每两个时间戳之间的得分差值，变动最大的即为最终结果
   const initInfoValue = {
-    maxDelta: 0,
-    time: 0,
+    maxDelta: -1,
+    time: -1,
     prev: {
       time: 0,
       domScore: 0,

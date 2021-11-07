@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from '@cypress/react';
 import { getDomLayoutScore } from '../../src/utils/get-dom-layout-score';
+import { calculateFMP } from '../../src/fmp/fmp-monitor';
 
 describe('test fmp monitor dom-score algorithm', function () {
   const getScore = () => {
@@ -24,6 +25,45 @@ describe('test fmp monitor dom-score algorithm', function () {
       });
     });
   };
+
+  it('test fmp calculator', () => {
+    const res = calculateFMP([
+      {
+        time: 0,
+        domScore: 10,
+      },
+      {
+        time: 110,
+        domScore: 20,
+      },
+      {
+        time: 220,
+        domScore: 1200,
+      },
+      {
+        time: 1220,
+        domScore: 1000,
+      },
+    ]);
+
+    expect(res.time).to.equals(220);
+    expect(res.maxDelta).to.equals(1180);
+
+    const res2 = calculateFMP([
+      {
+        time: 0,
+        domScore: 10,
+      },
+    ]);
+
+    expect(res2.time).to.equals(0);
+    expect(res2.maxDelta).to.equals(10);
+
+    const res3 = calculateFMP([]);
+
+    expect(res3.time).to.equals(-1);
+    expect(res3.maxDelta).to.equals(-1);
+  });
 
   it('test visibility = hidden, the score should be zero', async () => {
     const Cmp = () => {
