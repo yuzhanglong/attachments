@@ -35,3 +35,11 @@ export const getDocument = () => {
   }
   return window.document;
 };
+
+export const getAnimationFrame = () => {
+  const window = getBrowserWindow();
+  return {
+    raf: window.requestAnimationFrame,
+    caf: window.cancelAnimationFrame,
+  };
+};

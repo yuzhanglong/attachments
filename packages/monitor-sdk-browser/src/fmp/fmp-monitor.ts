@@ -1,7 +1,8 @@
 import { EventType } from '../types';
 import { FMPMonitorOptions } from './types';
 import { isNumber } from 'lodash';
-import { onPageLoad } from '../utils/on-page-load';
+import { useRequestAnimationFrame } from '../utils/use-request-animation-frame';
+import { getDomLayoutScore } from '../utils/get-dom-layout-score';
 
 export const createFMPMonitor = (options: FMPMonitorOptions) => {
   if (!MutationObserver) {
@@ -20,30 +21,13 @@ export const createFMPMonitor = (options: FMPMonitorOptions) => {
     });
   };
 
-  const probablyFMPDataToReport: {
-    layoutSignificant: number;
-    fmp: number;
-  }[] = [];
-
-  const observer = new MutationObserver((elements) => {
-    // 当前回调 DOM 变动的数目
-    const changedDOMAmount = elements.length;
-    // 当前回调时间
-    const current = Date.now();
-    // 可视区域高度
-    const visibleHeight = window.innerHeight;
-    // 文档总高度
-    const totalHeight = document.body.scrollHeight;
-    const layoutSignificant = changedDOMAmount / Math.max(1, totalHeight / visibleHeight);
-    probablyFMPDataToReport.push({
-      fmp: current,
-      layoutSignificant: layoutSignificant,
-    });
-    console.log(probablyFMPDataToReport);
+  const callback = useRequestAnimationFrame(() => {
+    const bodyScore = getDomLayoutScore(document.body, 1, true);
+    console.log(bodyScore);
   });
-  console.log(document.readyState);
-  onPageLoad(() => {
-    console.log(111);
+
+  const observer = new MutationObserver(() => {
+    callback.runCallback();
   });
 
   observer.observe(document.body, {
