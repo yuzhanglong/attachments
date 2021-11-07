@@ -38,8 +38,23 @@ export const getDocument = () => {
 
 export const getAnimationFrame = () => {
   const window = getBrowserWindow();
+
+  if (!window) {
+    return null;
+  }
+
   return {
     raf: window.requestAnimationFrame,
     caf: window.cancelAnimationFrame,
   };
+};
+
+export const getMutationObserver = () => {
+  const window = getBrowserWindow();
+
+  if (!window) {
+    return undefined;
+  }
+
+  return window.MutationObserver;
 };

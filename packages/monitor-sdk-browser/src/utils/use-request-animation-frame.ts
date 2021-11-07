@@ -8,7 +8,13 @@ import { getAnimationFrame } from './browser-interfaces';
 import { isFunction } from 'lodash';
 
 export const useRequestAnimationFrame = (callback: FrameRequestCallback) => {
-  const { raf, caf } = getAnimationFrame();
+  const apis = getAnimationFrame();
+
+  if (!apis) {
+    return;
+  }
+
+  const { raf, caf } = apis;
 
   if (!isFunction(raf) || !isFunction(caf)) {
     return;
