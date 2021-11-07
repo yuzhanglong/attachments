@@ -34,8 +34,8 @@ describe('test assets monitor', () => {
 
     const insertLargestElement = () => {
       largestElement = document.createElement('div');
-      largestElement.style.width = '100px';
-      largestElement.style.height = '100px';
+      largestElement.style.width = '300px';
+      largestElement.style.height = '300px';
       largestElement.style.backgroundColor = '#409eff';
       largestElement.innerHTML = `I'm the largest element!I'm the largest element!I'm the largest element!I'm the largest element!`;
       el.appendChild(largestElement);

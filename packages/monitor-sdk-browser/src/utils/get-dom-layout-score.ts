@@ -1,6 +1,10 @@
 // 需要忽略的功能性标签
 import { isFunction } from 'lodash';
 
+type HTMLElementWithCss = HTMLElement & {
+  readonly style?: CSSStyleDeclaration;
+};
+
 export const IGNORE_TAGS = ['SCRIPT', 'STYLE', 'META', 'HEAD'];
 
 /**
@@ -14,10 +18,10 @@ export const IGNORE_TAGS = ['SCRIPT', 'STYLE', 'META', 'HEAD'];
  * @param onGetScore 在获取得分之后做些什么（使用者可忽略此 API，主要用于单测方便查看效果）
  */
 export const getDomLayoutScore = (
-  element: Element,
+  element: HTMLElementWithCss,
   depth: number,
   isPositionCheckNeeded: boolean,
-  onGetScore?: (element: Element, score: number, depth: number, isPositionCheckNeeded: boolean) => void
+  onGetScore?: (element: HTMLElementWithCss, score: number, depth: number, isPositionCheckNeeded: boolean) => void
 ) => {
   const { tagName, children } = element;
 
@@ -25,7 +29,7 @@ export const getDomLayoutScore = (
     return 0;
   }
 
-  const childNodes = Array.from(children || []);
+  const childNodes = Array.from(children || []) as HTMLElementWithCss[];
 
   // TODO: 为什么要 reduceRight?
   const childrenScore = childNodes.reduceRight((siblingScore, currentNode) => {
@@ -44,8 +48,11 @@ export const getDomLayoutScore = (
     const { top, height, width } = element.getBoundingClientRect();
 
     // 这个 dom 元素是否可见，如果不可见那么这个元素对我们的 fmp 没有影响
-    // https://docs.google.com/document/d/1BR94tJdZLsin5poeet0XoTW60M0SjvOJQttKT-JK8HI/view#
-    const isElementOutOfView = top > window.innerHeight || height <= 0 || width <= 0;
+    // 主要包括：元素顶部位置是否在视口之下、高度宽度是否小于 0，visibility 是否为 hidden
+    // 可参阅 https://docs.google.com/document/d/1BR94tJdZLsin5poeet0XoTW60M0SjvOJQttKT-JK8HI/view#
+    const isUnderView = top > window.innerHeight;
+    const isNotVisible = height <= 0 || width <= 0 || element.style.visibility === 'hidden';
+    const isElementOutOfView = isUnderView || isNotVisible;
     if (isElementOutOfView) {
       return 0;
     }

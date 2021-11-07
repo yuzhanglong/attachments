@@ -3,33 +3,111 @@ import { mount } from '@cypress/react';
 import { getDomLayoutScore } from '../../src/utils/get-dom-layout-score';
 
 describe('test fmp monitor dom-score algorithm', function () {
-  it('test dom-score algorithm', async () => {
-    const getScore = () =>
-      new Promise((resolve) => {
-        const getScore = () =>
-          getDomLayoutScore(
-            document.getElementById('base'),
-            1,
-            true,
-            (element, score, depth, isPositionCheckNeeded) => {
-              const el = document.createElement('div');
-              el.innerHTML = `isPositionCheckNeeded:${String(isPositionCheckNeeded)}, depth:${depth}, score: ${score}`;
-              element.appendChild(el);
-            }
-          );
-
-        let isCalled = false;
-        new MutationObserver(() => {
-          if (!isCalled) {
-            isCalled = true;
-            resolve(getScore());
-          }
-        }).observe(document.body, {
-          childList: true,
-          subtree: true,
+  const getScore = () => {
+    return new Promise((resolve) => {
+      const getScore = () =>
+        getDomLayoutScore(document.getElementById('base'), 1, true, (element, score, depth, isPositionCheckNeeded) => {
+          const el = document.createElement('div');
+          el.innerHTML = `isPositionCheckNeeded:${String(isPositionCheckNeeded)}, depth:${depth}, score: ${score}`;
+          element.appendChild(el);
         });
-      });
 
+      let isCalled = false;
+      new MutationObserver(() => {
+        if (!isCalled) {
+          isCalled = true;
+          resolve(getScore());
+        }
+      }).observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+    });
+  };
+
+  it('test visibility = hidden, the score should be zero', async () => {
+    const Cmp = () => {
+      // 元素不可见但是有宽高
+      return (
+        <div
+          id={'base'}
+          style={{
+            border: '1px solid',
+            visibility: 'hidden',
+          }}
+        >
+          base
+        </div>
+      );
+    };
+
+    mount(<Cmp />);
+    const score = await getScore();
+    expect(score).to.equals(0);
+  });
+
+  it('test height = 0, the score should be zero', async () => {
+    const Cmp = () => {
+      // 元素不可见但是有宽高
+      return (
+        <div
+          id={'base'}
+          style={{
+            height: 0,
+          }}
+        >
+          hello
+        </div>
+      );
+    };
+
+    mount(<Cmp />);
+    const score = await getScore();
+    expect(score).to.equals(0);
+  });
+
+  it('test width = 0, the score should be zero', async () => {
+    const Cmp = () => {
+      // 元素不可见但是有宽高
+      return (
+        <div
+          id={'base'}
+          style={{
+            width: 0,
+          }}
+        >
+          hello
+        </div>
+      );
+    };
+
+    mount(<Cmp />);
+    const score = await getScore();
+    expect(score).to.equals(0);
+  });
+
+  it('test display = none, the score should be zero', async () => {
+    const Cmp = () => {
+      // 元素不可见
+      return (
+        <div
+          id={'base'}
+          style={{
+            border: '1px solid',
+            display: 'none',
+          }}
+        >
+          base
+        </div>
+      );
+    };
+
+    mount(<Cmp />);
+    const score = await getScore();
+    expect(score).to.equals(0);
+  });
+
+  it('test dom-score algorithm', async () => {
     const css = document.createElement('style');
     css.innerHTML = `#base {
         border: 1px solid;
