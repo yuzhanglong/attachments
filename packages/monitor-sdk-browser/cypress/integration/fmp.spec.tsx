@@ -7,11 +7,16 @@ describe('test fmp monitor dom-score algorithm', function () {
     const getScore = () =>
       new Promise((resolve) => {
         const getScore = () =>
-          getDomLayoutScore(document.body, 1, true, (element, score, depth, isPositionCheckNeeded) => {
-            const el = document.createElement('div');
-            el.innerHTML = `isPositionCheckNeeded:${String(isPositionCheckNeeded)}, depth:${depth}, score: ${score}`;
-            element.appendChild(el);
-          });
+          getDomLayoutScore(
+            document.getElementById('base'),
+            1,
+            true,
+            (element, score, depth, isPositionCheckNeeded) => {
+              const el = document.createElement('div');
+              el.innerHTML = `isPositionCheckNeeded:${String(isPositionCheckNeeded)}, depth:${depth}, score: ${score}`;
+              element.appendChild(el);
+            }
+          );
 
         let isCalled = false;
         new MutationObserver(() => {
@@ -26,8 +31,7 @@ describe('test fmp monitor dom-score algorithm', function () {
       });
 
     const css = document.createElement('style');
-    css.innerHTML = `<style>
-      #base {
+    css.innerHTML = `#base {
         border: 1px solid;
         padding: 5px;
       }
@@ -40,8 +44,7 @@ describe('test fmp monitor dom-score algorithm', function () {
         border: 1px solid;
         padding: 5px;
         margin: 5px;
-      }
-    </style>`;
+      }`;
     document.head.appendChild(css);
     const Cmp = () => {
       return (
@@ -91,6 +94,6 @@ describe('test fmp monitor dom-score algorithm', function () {
     mount(<Cmp />);
 
     const score = await getScore();
-    expect(score).to.equals(1);
+    expect(score).to.equals(110.5);
   });
 });
