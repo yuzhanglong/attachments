@@ -1,10 +1,9 @@
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { LargestContentfulPaint, PaintMonitorOptions } from './types';
 import { EventType } from '../types';
-import { noop } from '../utils/noop';
 import { getPerformance } from '../utils/browser-interfaces';
 import { observePerformance } from '../utils/observe-performance';
-import { isFunction } from 'lodash';
+import { isFunction, noop } from 'lodash';
 
 const FIRST_PAINT = 'first-paint';
 const FIRST_CONTENTFUL_PAINT = 'first-contentful-paint';

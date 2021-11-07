@@ -1,10 +1,10 @@
-// 需要忽略的功能性标签
 import { isFunction } from 'lodash';
 
 type HTMLElementWithCss = HTMLElement & {
   readonly style?: CSSStyleDeclaration;
 };
 
+// 需要忽略的功能性标签
 export const IGNORE_TAGS = ['SCRIPT', 'STYLE', 'META', 'HEAD'];
 
 /**
@@ -31,7 +31,6 @@ export const getDomLayoutScore = (
 
   const childNodes = Array.from(children || []) as HTMLElementWithCss[];
 
-  // TODO: 为什么要 reduceRight?
   const childrenScore = childNodes.reduceRight((siblingScore, currentNode) => {
     // 如果它的右子树兄弟分数存在，则无需计算 dom 位置
     const score = getDomLayoutScore(currentNode, depth + 1, siblingScore <= 0, onGetScore);

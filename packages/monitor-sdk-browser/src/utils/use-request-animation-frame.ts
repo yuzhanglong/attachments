@@ -14,7 +14,8 @@ export const useRequestAnimationFrame = (callback: FrameRequestCallback) => {
     return;
   }
 
-  let rafTimer: number | undefined = undefined;
+  // raf 的返回值为非 0 数字
+  let rafTimer: number = 0;
 
   const runCallback = () => {
     if (rafTimer) {

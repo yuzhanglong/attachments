@@ -1,4 +1,4 @@
-import { noop } from './noop';
+import { noop } from 'lodash';
 import { getPerformanceObserver } from './browser-interfaces';
 
 /**
