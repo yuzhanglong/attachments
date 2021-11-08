@@ -1,6 +1,6 @@
 {
   "name": "@attachments/monitor-sdk-browser",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "license": "MIT",
