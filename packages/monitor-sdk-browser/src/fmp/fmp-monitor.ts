@@ -50,7 +50,7 @@ export const createFMPMonitor = (options: FMPMonitorOptions) => {
 
   const observeFMP = () => {
     const callback = useRequestAnimationFrame(() => {
-      const bodyScore = getDomLayoutScore(document.body, 1, false);
+      const bodyScore = getDomLayoutScore(document.body, 1, false, options.exact);
       scoredData.push({
         domScore: bodyScore,
         time: Date.now() - startTime,

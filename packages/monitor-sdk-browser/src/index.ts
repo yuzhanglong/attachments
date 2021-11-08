@@ -6,6 +6,7 @@
  * Email: yuzl1123@163.com
  */
 
+export { getDomLayoutScore } from './utils/get-dom-layout-score';
 export { createFMPMonitor } from './fmp/fmp-monitor';
 export { createClsMonitor } from './cls/cls-monitor';
 export { createXhrMonitor } from './xhr/xhr-monitor';

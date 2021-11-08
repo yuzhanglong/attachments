@@ -412,57 +412,91 @@ var createFIDMonitor = function createFIDMonitor(options) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "calculateFMP": () => (/* binding */ calculateFMP),
 /* harmony export */   "createFMPMonitor": () => (/* binding */ createFMPMonitor)
 /* harmony export */ });
-/* harmony import */ var lodash_isNumber__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/isNumber */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isNumber.js");
-/* harmony import */ var lodash_isNumber__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_isNumber__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types */ "./src/types.ts");
-/* harmony import */ var _utils_on_page_load__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/on-page-load */ "./src/utils/on-page-load.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types */ "./src/types.ts");
+/* harmony import */ var _utils_use_request_animation_frame__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/use-request-animation-frame */ "./src/utils/use-request-animation-frame.ts");
+/* harmony import */ var _utils_get_dom_layout_score__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/get-dom-layout-score */ "./src/utils/get-dom-layout-score.ts");
+/* harmony import */ var _utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/browser-interfaces */ "./src/utils/browser-interfaces.ts");
+/* harmony import */ var _utils_on_page_load__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/on-page-load */ "./src/utils/on-page-load.ts");
 
 
 
+
+
+var calculateFMP = function calculateFMP(scoredData) {
+  // 首先将打分结果基于时间排序(时间戳从小到大)
+  scoredData.sort(function (a, b) {
+    return a.time - b.time;
+  }); // 计算每两个时间戳之间的得分差值，变动最大的即为最终结果
+
+  var initInfoValue = {
+    maxDelta: -1,
+    time: -1,
+    prev: {
+      time: 0,
+      domScore: 0
+    }
+  };
+  var res = scoredData.reduce(function (info, curr) {
+    var delta = curr.domScore - info.prev.domScore;
+
+    if (delta > info.maxDelta) {
+      info.maxDelta = delta;
+      info.time = curr.time;
+    }
+
+    info.prev = curr;
+    return info;
+  }, initInfoValue);
+  return res;
+};
 var createFMPMonitor = function createFMPMonitor(options) {
+  var MutationObserver = (0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_3__.getMutationObserver)();
+
   if (!MutationObserver) {
     return;
   }
 
-  var reportData = function reportData(fmp) {
-    if (!lodash_isNumber__WEBPACK_IMPORTED_MODULE_0___default()(fmp)) {
-      return;
-    }
+  var startTime = Date.now();
+  var scoredData = [];
 
-    options.onReport({
-      data: {
-        fmp: fmp
-      },
-      eventType: _types__WEBPACK_IMPORTED_MODULE_1__.EventType.FMP
+  var observeFMP = function observeFMP() {
+    var callback = (0,_utils_use_request_animation_frame__WEBPACK_IMPORTED_MODULE_1__.useRequestAnimationFrame)(function () {
+      var bodyScore = (0,_utils_get_dom_layout_score__WEBPACK_IMPORTED_MODULE_2__.getDomLayoutScore)(document.body, 1, false, options.exact);
+      scoredData.push({
+        domScore: bodyScore,
+        time: Date.now() - startTime
+      });
     });
+    var observer = new MutationObserver(function () {
+      callback.runCallback();
+    });
+    observer.observe(document.body, {
+      subtree: true,
+      childList: true
+    });
+    return observer;
   };
 
-  var probablyFMPDataToReport = [];
-  var observer = new MutationObserver(function (elements) {
-    // 当前回调 DOM 变动的数目
-    var changedDOMAmount = elements.length; // 当前回调时间
+  var observer = observeFMP();
 
-    var current = Date.now(); // 可视区域高度
-
-    var visibleHeight = window.innerHeight; // 文档总高度
-
-    var totalHeight = document.body.scrollHeight;
-    var layoutSignificant = changedDOMAmount / Math.max(1, totalHeight / visibleHeight);
-    probablyFMPDataToReport.push({
-      fmp: current,
-      layoutSignificant: layoutSignificant
+  var reportData = function reportData() {
+    options.onReport({
+      data: {
+        fmp: calculateFMP(scoredData).time
+      },
+      eventType: _types__WEBPACK_IMPORTED_MODULE_0__.EventType.FMP
     });
-    console.log(probablyFMPDataToReport);
-  });
-  console.log(document.readyState);
-  (0,_utils_on_page_load__WEBPACK_IMPORTED_MODULE_2__.onPageLoad)(function () {
-    console.log(111);
-  });
-  observer.observe(document.body, {
-    subtree: true,
-    childList: true
+    observer.disconnect();
+  }; // FMP 和 onload 事件并不密切相关，但它很可能在 onload 事件附近，所以我们延时一小段时间再报告
+
+
+  (0,_utils_on_page_load__WEBPACK_IMPORTED_MODULE_4__.onPageLoad)(function () {
+    setTimeout(function () {
+      reportData();
+    }, 1000);
   });
 };
 
@@ -613,11 +647,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "createPaintMonitor": () => (/* binding */ createPaintMonitor)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../node_modules/.pnpm/@babel+runtime@7.16.0/node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
-/* harmony import */ var lodash_isFunction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/isFunction */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isFunction.js");
-/* harmony import */ var lodash_isFunction__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_isFunction__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../types */ "./src/types.ts");
-/* harmony import */ var _utils_noop__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/noop */ "./src/utils/noop.ts");
+/* harmony import */ var lodash_noop__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/noop */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/noop.js");
+/* harmony import */ var lodash_noop__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_noop__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash_isFunction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/isFunction */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isFunction.js");
+/* harmony import */ var lodash_isFunction__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_isFunction__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../types */ "./src/types.ts");
 /* harmony import */ var _utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/browser-interfaces */ "./src/utils/browser-interfaces.ts");
 /* harmony import */ var _utils_observe_performance__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/observe-performance */ "./src/utils/observe-performance.ts");
 
@@ -670,7 +705,7 @@ function createPaintMonitor(options) {
 
   var reportFirstPaintAndFirstContentfulPaintByObserver = function reportFirstPaintAndFirstContentfulPaintByObserver() {
     // 先尝试主动上报 FP && FCP
-    var entries = performance.getEntriesByType(_constants__WEBPACK_IMPORTED_MODULE_2__.PERFORMANCE_ENTRY_TYPES.PAINT);
+    var entries = performance.getEntriesByType(_constants__WEBPACK_IMPORTED_MODULE_3__.PERFORMANCE_ENTRY_TYPES.PAINT);
 
     var _getDataFromPaintPref = getDataFromPaintPreferenceArray(entries),
         _getDataFromPaintPref2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_getDataFromPaintPref, 2),
@@ -678,13 +713,13 @@ function createPaintMonitor(options) {
         firstContentfulPaintEntry = _getDataFromPaintPref2[1];
 
     if (firstPaintEntry && firstContentfulPaintEntry) {
-      doReport(firstPaintEntry, firstContentfulPaintEntry, _types__WEBPACK_IMPORTED_MODULE_3__.EventType.PAINT);
+      doReport(firstPaintEntry, firstContentfulPaintEntry, _types__WEBPACK_IMPORTED_MODULE_4__.EventType.PAINT);
       return;
     } // 如果主动获取失败（脚本执行，但还没绘制完成），再添加监听器
 
 
     var observerOptions = {
-      entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_2__.PERFORMANCE_ENTRY_TYPES.PAINT]
+      entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_3__.PERFORMANCE_ENTRY_TYPES.PAINT]
     };
     var destroy = (0,_utils_observe_performance__WEBPACK_IMPORTED_MODULE_6__.observePerformance)(observerOptions, function (entryList) {
       var _getDataFromPaintPref3 = getDataFromPaintPreferenceArray(entryList),
@@ -693,7 +728,7 @@ function createPaintMonitor(options) {
           firstContentfulPaintEntry = _getDataFromPaintPref4[1];
 
       if (firstPaintEntry && firstContentfulPaintEntry) {
-        doReport(firstPaintEntry, firstContentfulPaintEntry, _types__WEBPACK_IMPORTED_MODULE_3__.EventType.PAINT);
+        doReport(firstPaintEntry, firstContentfulPaintEntry, _types__WEBPACK_IMPORTED_MODULE_4__.EventType.PAINT);
         destroy();
       }
     }, false);
@@ -703,7 +738,7 @@ function createPaintMonitor(options) {
 
   var reportLargestContentfulPaintByObserver = function reportLargestContentfulPaintByObserver() {
     var observerOptions = {
-      entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_2__.PERFORMANCE_ENTRY_TYPES.LARGEST_CONTENTFUL_PAINT]
+      entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_3__.PERFORMANCE_ENTRY_TYPES.LARGEST_CONTENTFUL_PAINT]
     };
     var destroy = (0,_utils_observe_performance__WEBPACK_IMPORTED_MODULE_6__.observePerformance)(observerOptions, function (entryList) {
       entryList.forEach(function (entry) {
@@ -712,7 +747,7 @@ function createPaintMonitor(options) {
             timeStamp: Date.now(),
             largestContentfulPaint: entry
           },
-          eventType: _types__WEBPACK_IMPORTED_MODULE_3__.EventType.LARGEST_CONTENTFUL_PAINT
+          eventType: _types__WEBPACK_IMPORTED_MODULE_4__.EventType.LARGEST_CONTENTFUL_PAINT
         });
       });
     });
@@ -724,7 +759,7 @@ function createPaintMonitor(options) {
   return {
     destroy: function destroy() {
       destroyCallback.forEach(function (fn) {
-        return lodash_isFunction__WEBPACK_IMPORTED_MODULE_1___default()(fn) ? fn() : (0,_utils_noop__WEBPACK_IMPORTED_MODULE_4__.noop)();
+        return lodash_isFunction__WEBPACK_IMPORTED_MODULE_2___default()(fn) ? fn() : lodash_noop__WEBPACK_IMPORTED_MODULE_1___default()();
       });
     }
   };
@@ -907,7 +942,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getPerformance": () => (/* binding */ getPerformance),
 /* harmony export */   "getPerformanceObserver": () => (/* binding */ getPerformanceObserver),
 /* harmony export */   "getXMLHttpRequest": () => (/* binding */ getXMLHttpRequest),
-/* harmony export */   "getDocument": () => (/* binding */ getDocument)
+/* harmony export */   "getDocument": () => (/* binding */ getDocument),
+/* harmony export */   "getAnimationFrame": () => (/* binding */ getAnimationFrame),
+/* harmony export */   "getMutationObserver": () => (/* binding */ getMutationObserver)
 /* harmony export */ });
 /* harmony import */ var lodash_isObject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/isObject */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObject.js");
 /* harmony import */ var lodash_isObject__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_isObject__WEBPACK_IMPORTED_MODULE_0__);
@@ -951,6 +988,27 @@ var getDocument = function getDocument() {
   }
 
   return window.document;
+};
+var getAnimationFrame = function getAnimationFrame() {
+  var window = getBrowserWindow();
+
+  if (!window) {
+    return null;
+  }
+
+  return {
+    raf: window.requestAnimationFrame,
+    caf: window.cancelAnimationFrame
+  };
+};
+var getMutationObserver = function getMutationObserver() {
+  var window = getBrowserWindow();
+
+  if (!window) {
+    return undefined;
+  }
+
+  return window.MutationObserver;
 };
 
 /***/ }),
@@ -1290,6 +1348,96 @@ var formatPlainHeadersString = function formatPlainHeadersString(headerStr) {
 
 /***/ }),
 
+/***/ "./src/utils/get-dom-layout-score.ts":
+/*!*******************************************!*\
+  !*** ./src/utils/get-dom-layout-score.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "IGNORE_TAGS": () => (/* binding */ IGNORE_TAGS),
+/* harmony export */   "getDomLayoutScore": () => (/* binding */ getDomLayoutScore)
+/* harmony export */ });
+/* harmony import */ var lodash_isFunction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/isFunction */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isFunction.js");
+/* harmony import */ var lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_isFunction__WEBPACK_IMPORTED_MODULE_0__);
+
+// 需要忽略的功能性标签
+var IGNORE_TAGS = ['SCRIPT', 'STYLE', 'META', 'HEAD'];
+/**
+ * 递归地获取 DOM 布局分数, 该分数体现了某个节点的复杂程度
+ * 注：不在视口中的子元素不会被考虑
+ *
+ * @author yuzhanglong
+ * @date 2021-11-07 11:58:16
+ * @param element 根 dom 元素
+ * @param depth 当前元素的深度
+ * @param isSiblingExists 符合标准的（在视口中）的兄弟节点是否存在
+ * @param exact 是否开启精确模式，如果开启，则还会验证元素的宽度和 css 样式属性，确保不在视口内，这可能会影响性能，默认为 false
+ * @param onGetScore 在获取得分之后做些什么（使用者可忽略此 API，主要用于单测方便查看效果）
+ */
+
+var getDomLayoutScore = function getDomLayoutScore(element, depth, isSiblingExists, exact, onGetScore) {
+  var tagName = element.tagName,
+      children = element.children;
+
+  if (!element || IGNORE_TAGS.includes(tagName)) {
+    return 0;
+  }
+
+  var childNodes = Array.from(children || []);
+  var childrenScore = childNodes.reduceRight(function (siblingScore, currentNode) {
+    // 如果它的右子树兄弟分数存在，则无需计算 dom 位置
+    var score = getDomLayoutScore(currentNode, depth + 1, siblingScore > 0, exact, onGetScore);
+    return siblingScore + score;
+  }, 0); // 如果有必要的话，会对该元素的位置进行 check
+  // 需要满足的条件：1. 它的相邻兄弟节点没有分数 2. 它不是叶子节点
+
+  var isPositionCheckNeeded = childrenScore <= 0 && !isSiblingExists;
+
+  if (isPositionCheckNeeded) {
+    if (!lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(element.getBoundingClientRect)) {
+      return 0;
+    }
+
+    var _element$getBoundingC = element.getBoundingClientRect(),
+        top = _element$getBoundingC.top,
+        height = _element$getBoundingC.height,
+        width = _element$getBoundingC.width; // 这个 dom 元素是否可见，如果不可见那么这个元素对我们的 fmp 没有影响
+    // https://docs.google.com/document/d/1BR94tJdZLsin5poeet0XoTW60M0SjvOJQttKT-JK8HI/view#
+    // 主要包括：元素顶部位置是否在视口之下
+    // 宽度是否小于 0，visibility 是否为 hidden 按理说也应该被考虑进去
+    // 但是基于性能考虑默认尽可能忽略它们（在实际应用中这样的 DOM 元素应该也很少碰到，但也提供了 exact 选项进行判断）
+
+
+    var isUnderView = top > window.innerHeight;
+    var isNotVisible;
+
+    if (!exact) {
+      isNotVisible = height <= 0;
+    } else {
+      isNotVisible = height <= 0 || width <= 0 || element.style.visibility === 'hidden';
+    }
+
+    var isElementOutOfView = isUnderView || isNotVisible;
+
+    if (isElementOutOfView) {
+      return 0;
+    }
+  }
+
+  var score = childrenScore + 1 + 0.5 * depth;
+
+  if (lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(onGetScore)) {
+    onGetScore(element, score, depth, isPositionCheckNeeded);
+  }
+
+  return score;
+};
+
+/***/ }),
+
 /***/ "./src/utils/get-first-and-last.ts":
 /*!*****************************************!*\
   !*** ./src/utils/get-first-and-last.ts ***!
@@ -1373,29 +1521,6 @@ var instanceOf = function instanceOf(a, b) {
   }
 
   return false;
-};
-
-/***/ }),
-
-/***/ "./src/utils/noop.ts":
-/*!***************************!*\
-  !*** ./src/utils/noop.ts ***!
-  \***************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "noop": () => (/* binding */ noop)
-/* harmony export */ });
-/**
- * 空函数
- *
- * @author yuzhanglong
- * @date 2021-08-22 20:46:34
- */
-var noop = function noop() {
-  return undefined;
 };
 
 /***/ }),
@@ -1592,7 +1717,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "observePerformance": () => (/* binding */ observePerformance)
 /* harmony export */ });
-/* harmony import */ var _noop__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./noop */ "./src/utils/noop.ts");
+/* harmony import */ var lodash_noop__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/noop */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/noop.js");
+/* harmony import */ var lodash_noop__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_noop__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _browser_interfaces__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./browser-interfaces */ "./src/utils/browser-interfaces.ts");
 
 
@@ -1610,7 +1736,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var observePerformance = function observePerformance(options, callback) {
   var once = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-  var destroy = _noop__WEBPACK_IMPORTED_MODULE_0__.noop;
+  var destroy = (lodash_noop__WEBPACK_IMPORTED_MODULE_0___default());
   var isExecuted = false; // 通过 observer 监听
 
   var PerformanceObserver = (0,_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getPerformanceObserver)();
@@ -1761,6 +1887,73 @@ var getPerformanceEntriesByType = function getPerformanceEntriesByType(type) {
   }
 
   return [];
+};
+
+/***/ }),
+
+/***/ "./src/utils/use-request-animation-frame.ts":
+/*!**************************************************!*\
+  !*** ./src/utils/use-request-animation-frame.ts ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "useRequestAnimationFrame": () => (/* binding */ useRequestAnimationFrame)
+/* harmony export */ });
+/* harmony import */ var lodash_isFunction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/isFunction */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isFunction.js");
+/* harmony import */ var lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_isFunction__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _browser_interfaces__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./browser-interfaces */ "./src/utils/browser-interfaces.ts");
+
+
+/**
+ * 使用 request animation frame 调度某个回调函数
+ *
+ * @author yuzhanglong
+ * @date 2021-11-06 23:18:15
+ */
+
+var useRequestAnimationFrame = function useRequestAnimationFrame(callback) {
+  var apis = (0,_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getAnimationFrame)();
+
+  if (!apis) {
+    return;
+  }
+
+  var raf = apis.raf,
+      caf = apis.caf;
+
+  if (!lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(raf) || !lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(caf)) {
+    return;
+  } // raf 的返回值为非 0 数字
+
+
+  var rafTimer = 0;
+
+  var runCallback = function runCallback() {
+    if (rafTimer) {
+      // requestAnimationFrame 不管理回调函数
+      // 在回调被执行前，多次调用带有同一回调函数的 requestAnimationFrame，会导致回调在同一帧中执行多次
+      // 常见的情况是一些事件机制导致多次触发
+      // 设定一个 timer，如果接下来回调再次被调度，那么撤销上一个
+      // https://www.w3.org/TR/animation-timing/#dom-windowanimationtiming-requestanimationframe
+      caf(rafTimer);
+    } else {
+      rafTimer = raf(callback);
+    }
+  };
+
+  var cancelCallback = function cancelCallback() {
+    if (rafTimer) {
+      caf(rafTimer);
+    }
+  };
+
+  return {
+    runCallback: runCallback,
+    cancelCallback: cancelCallback
+  };
 };
 
 /***/ }),
@@ -2171,54 +2364,6 @@ module.exports = isFunction;
 
 /***/ }),
 
-/***/ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isNumber.js":
-/*!*******************************************************************************!*\
-  !*** ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isNumber.js ***!
-  \*******************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseGetTag.js"),
-    isObjectLike = __webpack_require__(/*! ./isObjectLike */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObjectLike.js");
-
-/** `Object#toString` result references. */
-var numberTag = '[object Number]';
-
-/**
- * Checks if `value` is classified as a `Number` primitive or object.
- *
- * **Note:** To exclude `Infinity`, `-Infinity`, and `NaN`, which are
- * classified as numbers, use the `_.isFinite` method.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a number, else `false`.
- * @example
- *
- * _.isNumber(3);
- * // => true
- *
- * _.isNumber(Number.MIN_VALUE);
- * // => true
- *
- * _.isNumber(Infinity);
- * // => true
- *
- * _.isNumber('3');
- * // => false
- */
-function isNumber(value) {
-  return typeof value == 'number' ||
-    (isObjectLike(value) && baseGetTag(value) == numberTag);
-}
-
-module.exports = isNumber;
-
-
-/***/ }),
-
 /***/ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObject.js":
 /*!*******************************************************************************!*\
   !*** ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObject.js ***!
@@ -2256,45 +2401,6 @@ function isObject(value) {
 }
 
 module.exports = isObject;
-
-
-/***/ }),
-
-/***/ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObjectLike.js":
-/*!***********************************************************************************!*\
-  !*** ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObjectLike.js ***!
-  \***********************************************************************************/
-/***/ ((module) => {
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-
-module.exports = isObjectLike;
 
 
 /***/ }),
@@ -2622,29 +2728,31 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createFMPMonitor": () => (/* reexport safe */ _fmp_fmp_monitor__WEBPACK_IMPORTED_MODULE_0__.createFMPMonitor),
-/* harmony export */   "createClsMonitor": () => (/* reexport safe */ _cls_cls_monitor__WEBPACK_IMPORTED_MODULE_1__.createClsMonitor),
-/* harmony export */   "createXhrMonitor": () => (/* reexport safe */ _xhr_xhr_monitor__WEBPACK_IMPORTED_MODULE_2__.createXhrMonitor),
-/* harmony export */   "createJsErrorMonitor": () => (/* reexport safe */ _js_error_js_error_monitor__WEBPACK_IMPORTED_MODULE_3__.createJsErrorMonitor),
-/* harmony export */   "createAssetsMonitor": () => (/* reexport safe */ _assets_assets_monitor__WEBPACK_IMPORTED_MODULE_4__.createAssetsMonitor),
-/* harmony export */   "createAssetsErrorMonitor": () => (/* reexport safe */ _assets_error_assets_error_monitor__WEBPACK_IMPORTED_MODULE_5__.createAssetsErrorMonitor),
-/* harmony export */   "createPaintMonitor": () => (/* reexport safe */ _paint_paint_monitor__WEBPACK_IMPORTED_MODULE_6__.createPaintMonitor),
-/* harmony export */   "createTtiMonitor": () => (/* reexport safe */ _tti_tti_monitor__WEBPACK_IMPORTED_MODULE_7__.createTtiMonitor),
-/* harmony export */   "createMPFIDMonitor": () => (/* reexport safe */ _mpfid_mpfid_monitor__WEBPACK_IMPORTED_MODULE_8__.createMPFIDMonitor),
-/* harmony export */   "createFIDMonitor": () => (/* reexport safe */ _fid_fid_monitor__WEBPACK_IMPORTED_MODULE_9__.createFIDMonitor),
-/* harmony export */   "createCommonTimingMonitor": () => (/* reexport safe */ _common_timing_common_timing_monitor__WEBPACK_IMPORTED_MODULE_10__.createCommonTimingMonitor)
+/* harmony export */   "getDomLayoutScore": () => (/* reexport safe */ _utils_get_dom_layout_score__WEBPACK_IMPORTED_MODULE_0__.getDomLayoutScore),
+/* harmony export */   "createFMPMonitor": () => (/* reexport safe */ _fmp_fmp_monitor__WEBPACK_IMPORTED_MODULE_1__.createFMPMonitor),
+/* harmony export */   "createClsMonitor": () => (/* reexport safe */ _cls_cls_monitor__WEBPACK_IMPORTED_MODULE_2__.createClsMonitor),
+/* harmony export */   "createXhrMonitor": () => (/* reexport safe */ _xhr_xhr_monitor__WEBPACK_IMPORTED_MODULE_3__.createXhrMonitor),
+/* harmony export */   "createJsErrorMonitor": () => (/* reexport safe */ _js_error_js_error_monitor__WEBPACK_IMPORTED_MODULE_4__.createJsErrorMonitor),
+/* harmony export */   "createAssetsMonitor": () => (/* reexport safe */ _assets_assets_monitor__WEBPACK_IMPORTED_MODULE_5__.createAssetsMonitor),
+/* harmony export */   "createAssetsErrorMonitor": () => (/* reexport safe */ _assets_error_assets_error_monitor__WEBPACK_IMPORTED_MODULE_6__.createAssetsErrorMonitor),
+/* harmony export */   "createPaintMonitor": () => (/* reexport safe */ _paint_paint_monitor__WEBPACK_IMPORTED_MODULE_7__.createPaintMonitor),
+/* harmony export */   "createTtiMonitor": () => (/* reexport safe */ _tti_tti_monitor__WEBPACK_IMPORTED_MODULE_8__.createTtiMonitor),
+/* harmony export */   "createMPFIDMonitor": () => (/* reexport safe */ _mpfid_mpfid_monitor__WEBPACK_IMPORTED_MODULE_9__.createMPFIDMonitor),
+/* harmony export */   "createFIDMonitor": () => (/* reexport safe */ _fid_fid_monitor__WEBPACK_IMPORTED_MODULE_10__.createFIDMonitor),
+/* harmony export */   "createCommonTimingMonitor": () => (/* reexport safe */ _common_timing_common_timing_monitor__WEBPACK_IMPORTED_MODULE_11__.createCommonTimingMonitor)
 /* harmony export */ });
-/* harmony import */ var _fmp_fmp_monitor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fmp/fmp-monitor */ "./src/fmp/fmp-monitor.ts");
-/* harmony import */ var _cls_cls_monitor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cls/cls-monitor */ "./src/cls/cls-monitor.ts");
-/* harmony import */ var _xhr_xhr_monitor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./xhr/xhr-monitor */ "./src/xhr/xhr-monitor.ts");
-/* harmony import */ var _js_error_js_error_monitor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js-error/js-error-monitor */ "./src/js-error/js-error-monitor.ts");
-/* harmony import */ var _assets_assets_monitor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./assets/assets-monitor */ "./src/assets/assets-monitor.ts");
-/* harmony import */ var _assets_error_assets_error_monitor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./assets-error/assets-error-monitor */ "./src/assets-error/assets-error-monitor.ts");
-/* harmony import */ var _paint_paint_monitor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./paint/paint-monitor */ "./src/paint/paint-monitor.ts");
-/* harmony import */ var _tti_tti_monitor__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./tti/tti-monitor */ "./src/tti/tti-monitor.ts");
-/* harmony import */ var _mpfid_mpfid_monitor__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./mpfid/mpfid-monitor */ "./src/mpfid/mpfid-monitor.ts");
-/* harmony import */ var _fid_fid_monitor__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./fid/fid-monitor */ "./src/fid/fid-monitor.ts");
-/* harmony import */ var _common_timing_common_timing_monitor__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./common-timing/common-timing-monitor */ "./src/common-timing/common-timing-monitor.ts");
+/* harmony import */ var _utils_get_dom_layout_score__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/get-dom-layout-score */ "./src/utils/get-dom-layout-score.ts");
+/* harmony import */ var _fmp_fmp_monitor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fmp/fmp-monitor */ "./src/fmp/fmp-monitor.ts");
+/* harmony import */ var _cls_cls_monitor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./cls/cls-monitor */ "./src/cls/cls-monitor.ts");
+/* harmony import */ var _xhr_xhr_monitor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./xhr/xhr-monitor */ "./src/xhr/xhr-monitor.ts");
+/* harmony import */ var _js_error_js_error_monitor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./js-error/js-error-monitor */ "./src/js-error/js-error-monitor.ts");
+/* harmony import */ var _assets_assets_monitor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./assets/assets-monitor */ "./src/assets/assets-monitor.ts");
+/* harmony import */ var _assets_error_assets_error_monitor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./assets-error/assets-error-monitor */ "./src/assets-error/assets-error-monitor.ts");
+/* harmony import */ var _paint_paint_monitor__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./paint/paint-monitor */ "./src/paint/paint-monitor.ts");
+/* harmony import */ var _tti_tti_monitor__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./tti/tti-monitor */ "./src/tti/tti-monitor.ts");
+/* harmony import */ var _mpfid_mpfid_monitor__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./mpfid/mpfid-monitor */ "./src/mpfid/mpfid-monitor.ts");
+/* harmony import */ var _fid_fid_monitor__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./fid/fid-monitor */ "./src/fid/fid-monitor.ts");
+/* harmony import */ var _common_timing_common_timing_monitor__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./common-timing/common-timing-monitor */ "./src/common-timing/common-timing-monitor.ts");
 /**
  * File: index.ts
  * Description: entry
@@ -2652,6 +2760,7 @@ __webpack_require__.r(__webpack_exports__);
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
+
 
 
 

@@ -4,4 +4,6 @@ interface FMPReportData {
   fmp: number;
 }
 
-export type FMPMonitorOptions = MonitorOptions<FMPReportData>;
+export type FMPMonitorOptions = MonitorOptions<FMPReportData> & {
+  exact?: boolean;
+};

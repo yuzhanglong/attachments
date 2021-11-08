@@ -4,14 +4,20 @@ import { getDomLayoutScore } from '../../src/utils/get-dom-layout-score';
 import { calculateFMP } from '../../src/fmp/fmp-monitor';
 
 describe('test fmp monitor dom-score algorithm', function () {
-  const getScore = () => {
+  const getScore = (isNotExact?: boolean) => {
     return new Promise((resolve) => {
       const getScore = () =>
-        getDomLayoutScore(document.getElementById('base'), 1, false, (element, score, depth, isPositionCheckNeeded) => {
-          const el = document.createElement('div');
-          el.innerHTML = `isPositionCheckNeeded:${String(isPositionCheckNeeded)}, depth:${depth}, score: ${score}`;
-          element.appendChild(el);
-        });
+        getDomLayoutScore(
+          document.getElementById('base'),
+          1,
+          false,
+          !isNotExact,
+          (element, score, depth, isPositionCheckNeeded) => {
+            const el = document.createElement('div');
+            el.innerHTML = `isPositionCheckNeeded:${String(isPositionCheckNeeded)}, depth:${depth}, score: ${score}`;
+            element.appendChild(el);
+          }
+        );
 
       let isCalled = false;
       new MutationObserver(() => {
@@ -66,6 +72,27 @@ describe('test fmp monitor dom-score algorithm', function () {
   });
 
   it('test visibility = hidden, the score should be zero', async () => {
+    const Cmp = () => {
+      // 元素不可见但是有宽高
+      return (
+        <div
+          id={'base'}
+          style={{
+            border: '1px solid',
+            visibility: 'hidden',
+          }}
+        >
+          base
+        </div>
+      );
+    };
+
+    mount(<Cmp />);
+    const score = await getScore(true);
+    expect(score).to.equals(1.5);
+  });
+
+  it('test not exact check', async () => {
     const Cmp = () => {
       // 元素不可见但是有宽高
       return (
