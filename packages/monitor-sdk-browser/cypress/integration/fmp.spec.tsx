@@ -7,7 +7,7 @@ describe('test fmp monitor dom-score algorithm', function () {
   const getScore = () => {
     return new Promise((resolve) => {
       const getScore = () =>
-        getDomLayoutScore(document.getElementById('base'), 1, true, (element, score, depth, isPositionCheckNeeded) => {
+        getDomLayoutScore(document.getElementById('base'), 1, false, (element, score, depth, isPositionCheckNeeded) => {
           const el = document.createElement('div');
           el.innerHTML = `isPositionCheckNeeded:${String(isPositionCheckNeeded)}, depth:${depth}, score: ${score}`;
           element.appendChild(el);
