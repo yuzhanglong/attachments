@@ -1,16 +1,16 @@
-/**
- * File: cls-monitor.ts
- * Description: 累积布局偏移监控
- * Created: 2021-08-27 23:17:43
- * Author: yuzhanglong
- * Email: yuzl1123@163.com
- */
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { ClsMonitorOptions, LayoutShift } from './types';
 import { EventType } from '../types';
 import { observePerformance } from '../utils/observe-performance';
 import { onPageUnload } from '../utils/on-page-unload';
 
+/**
+ * 累计布局偏移监控
+ *
+ * @author yuzhanglong
+ * @date 2021-08-27 23:17:43
+ * @param clsMonitorOptions 相关选项
+ */
 export function createClsMonitor(clsMonitorOptions: ClsMonitorOptions) {
   // CLS 是衡量偏移频率的一个指标，它代表整个页面生命周期内发生的所有意外布局偏移中最大连续布局偏移分数。
   // 可以参考：

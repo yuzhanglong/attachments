@@ -6,6 +6,12 @@ import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { getPerformanceEntriesByType } from '../utils/performance-entry';
 import { EventType } from '../types';
 
+/**
+ * 创建 fid 监听器
+ *
+ * @author yuzhanglong
+ * @date 2021-11-10 23:39:55
+ */
 export const createFIDMonitor = (options: FIDMonitorOptions) => {
   if (!getPerformanceObserver()) {
     return;
