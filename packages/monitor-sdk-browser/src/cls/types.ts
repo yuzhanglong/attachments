@@ -10,7 +10,7 @@ export interface LayoutShift extends PerformanceEntry {
   name: string;
 }
 
-interface ClsReportData {
+export interface ClsReportData {
   clsValue: number;
   entries: LayoutShift[];
 }
