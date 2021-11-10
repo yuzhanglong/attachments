@@ -3,11 +3,16 @@ import { observePerformance } from '../utils/observe-performance';
 import { getPerformance, getPerformanceObserver } from '../utils/browser-interfaces';
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { MPFIDMonitorOptions } from './types';
-import { onPageLoad } from '../utils/on-page-load';
 import { getPerformanceEntriesByName } from '../utils/performance-entry';
 import { EventType } from '../types';
 import { onPageUnload } from '../utils/on-page-unload';
 
+/**
+ * 初始化 MPFID 监听器
+ *
+ * @author yuzhanglong
+ * @date 2021-11-11 00:55:37
+ */
 export const createMPFIDMonitor = (options: MPFIDMonitorOptions) => {
   if (!getPerformance() || !getPerformanceObserver()) {
     return;
@@ -35,19 +40,27 @@ export const createMPFIDMonitor = (options: MPFIDMonitorOptions) => {
 
     const fcp = first(getPerformanceEntriesByName(PERFORMANCE_ENTRY_TYPES.PAINT)) || 0;
 
-    const result = longTaskEntries.reduce((res, entry) => {
+    return longTaskEntries.reduce((res, entry) => {
       const { duration, startTime } = entry;
       const isBeforeFCP = startTime < fcp;
       return res < duration && !isBeforeFCP ? duration : res;
     }, 0);
+  };
 
+  onPageUnload(() => {
     options.onReport({
       eventType: EventType.MPFID,
       data: {
-        mpfid: result,
+        mpfid: getMPFID(),
       },
     });
+  });
+
+  const getReportData = () => {
+    return getMPFID();
   };
 
-  onPageUnload(() => getMPFID());
+  return {
+    getReportData: getReportData,
+  };
 };
