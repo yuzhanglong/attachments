@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from '@cypress/react';
-import { getDomLayoutScore } from '../../src/utils/get-dom-layout-score';
+import { getDomLayoutScore } from '../../src';
 import { calculateFMP } from '../../src/fmp/fmp-monitor';
 
 describe('test fmp monitor dom-score algorithm', function () {

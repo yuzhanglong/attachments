@@ -1,6 +1,6 @@
 import { MonitorOptions } from '../types';
 
-export interface LayoutShift {
+export interface LayoutShift extends PerformanceEntry {
   duration: number;
   entryType: 'layout-shift';
   hadRecentInput: boolean;
@@ -12,6 +12,7 @@ export interface LayoutShift {
 
 interface ClsReportData {
   clsValue: number;
+  entries: LayoutShift[];
 }
 
 export type ClsMonitorOptions = MonitorOptions<ClsReportData>;
