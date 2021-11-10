@@ -6,6 +6,7 @@ import { MPFIDMonitorOptions } from './types';
 import { onPageLoad } from '../utils/on-page-load';
 import { getPerformanceEntriesByName } from '../utils/performance-entry';
 import { EventType } from '../types';
+import { onPageUnload } from '../utils/on-page-unload';
 
 export const createMPFIDMonitor = (options: MPFIDMonitorOptions) => {
   if (!getPerformance() || !getPerformanceObserver()) {
@@ -48,5 +49,5 @@ export const createMPFIDMonitor = (options: MPFIDMonitorOptions) => {
     });
   };
 
-  onPageLoad(() => getMPFID());
+  onPageUnload(() => getMPFID());
 };
