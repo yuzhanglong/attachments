@@ -32,5 +32,6 @@ export const createAddManyTemplatesAction = (name: string, destination: string) 
 
 export const launchPlopByConfig = async (generator: string) => {
   const configPath = path.resolve(getLibPath(), 'configurations', 'node-plop', `${generator}.js`);
-  await runCommand('plop', ['--plopfile', configPath]);
+  const plopPath = path.resolve(require.resolve('plop'), '../../bin/plop.js');
+  await runCommand('node', [plopPath, '--plopfile', configPath]);
 };
