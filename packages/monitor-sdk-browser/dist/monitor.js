@@ -196,81 +196,84 @@ function createAssetsMonitor(options) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "LAYOUT_SHIFT_GAP": () => (/* binding */ LAYOUT_SHIFT_GAP),
-/* harmony export */   "LAYOUT_SHIFT_SESSION_MAX_SIZE": () => (/* binding */ LAYOUT_SHIFT_SESSION_MAX_SIZE),
 /* harmony export */   "createClsMonitor": () => (/* binding */ createClsMonitor)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../node_modules/.pnpm/@babel+runtime@7.16.0/node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../types */ "./src/types.ts");
-/* harmony import */ var _utils_get_first_and_last__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/get-first-and-last */ "./src/utils/get-first-and-last.ts");
-/* harmony import */ var _utils_observe_performance__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/observe-performance */ "./src/utils/observe-performance.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types */ "./src/types.ts");
+/* harmony import */ var _utils_observe_performance__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/observe-performance */ "./src/utils/observe-performance.ts");
+/* harmony import */ var _utils_on_page_unload__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/on-page-unload */ "./src/utils/on-page-unload.ts");
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
 
 
 /**
- * File: cls-monitor.ts
- * Description: 累积布局偏移监控
- * Created: 2021-08-27 23:17:43
- * Author: yuzhanglong
- * Email: yuzl1123@163.com
+ * 累计布局偏移监控
+ *
+ * @author yuzhanglong
+ * @date 2021-08-27 23:17:43
+ * @param clsMonitorOptions 相关选项
  */
 
-
-
- // 每个 layout shift 间隔的最大值
-
-var LAYOUT_SHIFT_GAP = 1000; // 一次 layout session 的间隔
-
-var LAYOUT_SHIFT_SESSION_MAX_SIZE = 5000;
 function createClsMonitor(clsMonitorOptions) {
-  // CLS 是衡量页面整个生命周期内发生的每个意外布局偏移的最大布局偏移分数的度量
+  // CLS 是衡量偏移频率的一个指标，它代表整个页面生命周期内发生的所有意外布局偏移中最大连续布局偏移分数。
   // 可以参考：
   // https://web.dev/cls/#what-is-cls
-  // https://github.com/GoogleChrome/web-vitals/blob/main/src/getCLS.ts
+  // https://github.com/mmocny/web-vitals/blob/master/src/getCLS.ts
+  // https://wicg.github.io/layout-instability/#sec-layout-shift
   var observerOptions = {
-    type: _constants__WEBPACK_IMPORTED_MODULE_1__.PERFORMANCE_ENTRY_TYPES.LAYOUT_SHIFT
+    type: _constants__WEBPACK_IMPORTED_MODULE_0__.PERFORMANCE_ENTRY_TYPES.LAYOUT_SHIFT
   };
   var clsValue = 0;
-  var sessionValue = 0;
-  var sessionEntries = [];
-  var destroy = (0,_utils_observe_performance__WEBPACK_IMPORTED_MODULE_4__.observePerformance)(observerOptions, function (entryList) {
-    var len = entryList.length;
+  var entries = [];
+  var destroy = (0,_utils_observe_performance__WEBPACK_IMPORTED_MODULE_2__.observePerformance)(observerOptions, function (entryList) {
+    var _iterator = _createForOfIteratorHelper(entryList),
+        _step;
 
-    for (var i = 0; i < len; i += 1) {
-      var entry = entryList[i]; // 只计算没有最近用户输入的布局变化
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var entry = _step.value;
 
-      if (!entry.hadRecentInput) {
-        var _getFirstAndLast = (0,_utils_get_first_and_last__WEBPACK_IMPORTED_MODULE_3__.getFirstAndLast)(sessionEntries),
-            _getFirstAndLast2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_getFirstAndLast, 2),
-            firstSessionEntry = _getFirstAndLast2[0],
-            lastSessionEntry = _getFirstAndLast2[1]; // session: 某一小段时间的变化
-        // 距离上一次 layoutShift 不到 1s, 距离本次 session 的开始时 layoutShift 不到 5s，参考 Chrome 的开源库：
-        // https://github.com/GoogleChrome/web-vitals/blob/main/src/getCLS.ts
-
-
-        if (sessionValue && entry.startTime - lastSessionEntry.startTime < LAYOUT_SHIFT_GAP && entry.startTime - firstSessionEntry.startTime < LAYOUT_SHIFT_SESSION_MAX_SIZE) {
-          sessionValue += entry.value;
-          sessionEntries.push(entry);
-        } else {
-          sessionValue = entry.value;
-          sessionEntries = [entry];
-        } // 如果当前会话值大于当前 CLS 值，更新 CLS
-
-
-        if (sessionValue > clsValue) {
-          clsValue = sessionValue;
-          clsMonitorOptions.onReport({
-            data: {
-              clsValue: clsValue
-            },
-            eventType: _types__WEBPACK_IMPORTED_MODULE_2__.EventType.CUMULATIVE_LAYOUT_SHIFT
-          });
+        // 在用户输入 500 毫秒内发生的布局偏移会带有 hadRecentInput 标志，便于在计算中排除这些偏移。
+        // 适用于不连续输入事件，如轻触、点击或按键操作。滚动、拖动或捏拉缩放手势等连续性交互操作不算作"最近输入"
+        // 相关介绍：https://wicg.github.io/layout-instability/#dom-layoutshift-hadrecentinput
+        if (!entry.hadRecentInput) {
+          clsValue += entry.value;
+          entries.push(entry);
         }
       }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
     }
   });
+
+  var getReportData = function getReportData() {
+    return {
+      data: {
+        clsValue: clsValue,
+        entries: entries
+      },
+      eventType: _types__WEBPACK_IMPORTED_MODULE_1__.EventType.CUMULATIVE_LAYOUT_SHIFT
+    };
+  };
+
+  var reportData = function reportData() {
+    clsMonitorOptions.onReport(getReportData());
+  };
+
+  (0,_utils_on_page_unload__WEBPACK_IMPORTED_MODULE_3__.onPageUnload)(function () {
+    reportData();
+  });
   return {
-    destroy: destroy
+    destroy: destroy,
+    getReportData: getReportData
   };
 }
 
@@ -358,6 +361,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+/**
+ * 创建 fid 监听器
+ *
+ * @author yuzhanglong
+ * @date 2021-11-10 23:39:55
+ */
 
 var createFIDMonitor = function createFIDMonitor(options) {
   if (!(0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getPerformanceObserver)()) {
@@ -582,15 +592,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_observe_performance__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/observe-performance */ "./src/utils/observe-performance.ts");
 /* harmony import */ var _utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/browser-interfaces */ "./src/utils/browser-interfaces.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
-/* harmony import */ var _utils_on_page_load__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/on-page-load */ "./src/utils/on-page-load.ts");
-/* harmony import */ var _utils_performance_entry__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/performance-entry */ "./src/utils/performance-entry.ts");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../types */ "./src/types.ts");
+/* harmony import */ var _utils_performance_entry__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/performance-entry */ "./src/utils/performance-entry.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../types */ "./src/types.ts");
+/* harmony import */ var _utils_on_page_unload__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/on-page-unload */ "./src/utils/on-page-unload.ts");
 
 
 
 
 
 
+
+/**
+ * 初始化 MPFID 监听器
+ *
+ * @author yuzhanglong
+ * @date 2021-11-11 00:55:37
+ */
 
 var createMPFIDMonitor = function createMPFIDMonitor(options) {
   if (!(0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_2__.getPerformance)() || !(0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_2__.getPerformanceObserver)()) {
@@ -613,24 +630,31 @@ var createMPFIDMonitor = function createMPFIDMonitor(options) {
 
   var getMPFID = function getMPFID() {
     destroy();
-    var fcp = lodash_first__WEBPACK_IMPORTED_MODULE_0___default()((0,_utils_performance_entry__WEBPACK_IMPORTED_MODULE_5__.getPerformanceEntriesByName)(_constants__WEBPACK_IMPORTED_MODULE_3__.PERFORMANCE_ENTRY_TYPES.PAINT)) || 0;
-    var result = longTaskEntries.reduce(function (res, entry) {
+    var fcp = lodash_first__WEBPACK_IMPORTED_MODULE_0___default()((0,_utils_performance_entry__WEBPACK_IMPORTED_MODULE_4__.getPerformanceEntriesByName)(_constants__WEBPACK_IMPORTED_MODULE_3__.PERFORMANCE_ENTRY_TYPES.PAINT)) || 0;
+    return longTaskEntries.reduce(function (res, entry) {
       var duration = entry.duration,
           startTime = entry.startTime;
       var isBeforeFCP = startTime < fcp;
       return res < duration && !isBeforeFCP ? duration : res;
     }, 0);
-    options.onReport({
-      eventType: _types__WEBPACK_IMPORTED_MODULE_6__.EventType.MPFID,
-      data: {
-        mpfid: result
-      }
-    });
   };
 
-  (0,_utils_on_page_load__WEBPACK_IMPORTED_MODULE_4__.onPageLoad)(function () {
-    return getMPFID();
+  (0,_utils_on_page_unload__WEBPACK_IMPORTED_MODULE_6__.onPageUnload)(function () {
+    options.onReport({
+      eventType: _types__WEBPACK_IMPORTED_MODULE_5__.EventType.MPFID,
+      data: {
+        mpfid: getMPFID()
+      }
+    });
   });
+
+  var getReportData = function getReportData() {
+    return getMPFID();
+  };
+
+  return {
+    getReportData: getReportData
+  };
 };
 
 /***/ }),
@@ -1438,27 +1462,6 @@ var getDomLayoutScore = function getDomLayoutScore(element, depth, isSiblingExis
 
 /***/ }),
 
-/***/ "./src/utils/get-first-and-last.ts":
-/*!*****************************************!*\
-  !*** ./src/utils/get-first-and-last.ts ***!
-  \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getFirstAndLast": () => (/* binding */ getFirstAndLast)
-/* harmony export */ });
-var getFirstAndLast = function getFirstAndLast(arr) {
-  if (Array.isArray(arr) && arr.length > 0) {
-    return [arr[0], arr[arr.length - 1]];
-  }
-
-  return [undefined, undefined];
-};
-
-/***/ }),
-
 /***/ "./src/utils/get-url-data.ts":
 /*!***********************************!*\
   !*** ./src/utils/get-url-data.ts ***!
@@ -1797,6 +1800,38 @@ var onPageLoad = function onPageLoad(callback) {
       callback();
     }, 0);
   }, false);
+};
+
+/***/ }),
+
+/***/ "./src/utils/on-page-unload.ts":
+/*!*************************************!*\
+  !*** ./src/utils/on-page-unload.ts ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "onPageUnload": () => (/* binding */ onPageUnload)
+/* harmony export */ });
+/* harmony import */ var lodash_isFunction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/isFunction */ "../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isFunction.js");
+/* harmony import */ var lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_isFunction__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _browser_interfaces__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./browser-interfaces */ "./src/utils/browser-interfaces.ts");
+
+
+var onPageUnload = function onPageUnload(callback) {
+  var window = (0,_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getBrowserWindow)();
+
+  if (!window || !lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(window.addEventListener)) {
+    return;
+  }
+
+  ['beforeunload', 'pagehide', 'unload'].forEach(function (event) {
+    window.addEventListener(event, function (e) {
+      callback(e);
+    });
+  });
 };
 
 /***/ }),

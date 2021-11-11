@@ -28,6 +28,7 @@
     "commander": "^8.2.0",
     "execa": "^5.1.1",
     "minimist": "^1.2.5",
-    "node-plop": "^0.26.3"
+    "node-plop": "^0.26.3",
+    "plop": "^2.7.6"
   }
 }
