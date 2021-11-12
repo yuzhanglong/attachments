@@ -1,5 +1,6 @@
-import { CallBack, ReportBase } from '../../src/types';
+import { CallBack, MonitorOptions, ReportBase } from '../../src/types';
 import { noop } from 'lodash';
+import { MPFIDMonitorOptions } from '../../src/mpfid/types';
 
 interface PromisifyMonitorReportOptions<T> {
   // monitor 的工厂函数
@@ -18,9 +19,11 @@ interface PromisifyMonitorReportOptions<T> {
  * @author yuzhanglong
  * @date 2021-10-30 20:57:11
  * @param options 相关选项，见上面代码
+ * @param monitorOptions 监控程序配置
  */
 export const promisifyCounterMonitorReport = <MonitorReportData>(
-  options: PromisifyMonitorReportOptions<MonitorReportData>
+  options: PromisifyMonitorReportOptions<MonitorReportData>,
+  monitorOptions?: Record<any, any>
 ) => {
   const { monitorFactory, afterCreateMonitorCallback = noop, reportTimesBeforeResolve = 1 } = options;
   return new Promise<ReportBase<MonitorReportData>[]>((resolve) => {
@@ -37,6 +40,7 @@ export const promisifyCounterMonitorReport = <MonitorReportData>(
           resolve(reportData.slice());
         }
       },
+      ...(monitorOptions || {}),
     });
     afterCreateMonitorCallback();
   });

@@ -5,7 +5,9 @@ import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { MPFIDMonitorOptions } from './types';
 import { getPerformanceEntriesByName } from '../utils/performance-entry';
 import { EventType } from '../types';
-import { onPageUnload } from '../utils/on-page-unload';
+import { onPageLoad } from '../utils/on-page-load';
+
+export const MPFID_REPORT_TIMEOUT_AFTER_ONLOAD = 200;
 
 /**
  * 初始化 MPFID 监听器
@@ -47,7 +49,18 @@ export const createMPFIDMonitor = (options: MPFIDMonitorOptions) => {
     }, 0);
   };
 
-  onPageUnload(() => {
+  onPageLoad(async () => {
+    await new Promise((resolve) => {
+      // 为提高性能，如果 onload 事件后 0.2s 还没有 FID，
+      // 终止监听, 并将此时作为一个粗略的 FID
+      // 因为在绝大部分情况下 onload 事件结束之前用户应该已经开始和页面交互
+      onPageLoad(() => {
+        setTimeout(() => {
+          resolve(true);
+        }, options.timeout || MPFID_REPORT_TIMEOUT_AFTER_ONLOAD);
+      });
+    });
+
     options.onReport({
       eventType: EventType.MPFID,
       data: {

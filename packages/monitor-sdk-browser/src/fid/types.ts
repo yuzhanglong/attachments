@@ -5,7 +5,7 @@ export interface FIDEntry extends PerformanceEntry {
   processingEnd: number;
 }
 
-interface FIDReportData {
+export interface FIDReportData {
   fid: FIDEntry;
 }
 
