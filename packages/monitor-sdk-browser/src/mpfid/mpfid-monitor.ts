@@ -68,12 +68,4 @@ export const createMPFIDMonitor = (options: MPFIDMonitorOptions) => {
       },
     });
   });
-
-  const getReportData = () => {
-    return getMPFID();
-  };
-
-  return {
-    getReportData: getReportData,
-  };
 };

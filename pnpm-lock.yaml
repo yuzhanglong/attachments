@@ -2632,7 +2632,7 @@ packages:
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
       glob: 7.2.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       istanbul-lib-coverage: 3.2.0
       istanbul-lib-instrument: 4.0.3
       istanbul-lib-report: 3.0.0
@@ -2656,7 +2656,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       callsites: 3.1.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       source-map: 0.6.1
     dev: true
 
@@ -2675,7 +2675,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/test-result': 27.3.1
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       jest-haste-map: 27.3.1
       jest-runtime: 27.3.1
     transitivePeerDependencies:
@@ -2692,7 +2692,7 @@ packages:
       chalk: 4.1.2
       convert-source-map: 1.8.0
       fast-json-stable-stringify: 2.1.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       jest-haste-map: 27.3.1
       jest-regex-util: 27.0.6
       jest-util: 27.3.1
@@ -3601,7 +3601,7 @@ packages:
   /@sinonjs/commons/1.8.3:
     resolution: {integrity: sha512-xkNcLAn/wZaX14RPlwizcKicDk9G3F8m2nU3L7Ukm5zBgTwiT0wsoFAHx9Jq56fJA1z/7uKGtCRu16sOUCLIHQ==}
     dependencies:
-      type-detect: 4.0.8
+      type-detect: registry.nlark.com/type-detect/4.0.8
     dev: true
 
   /@sinonjs/fake-timers/8.1.0:
@@ -3989,14 +3989,6 @@ packages:
     dependencies:
       '@types/yargs-parser': 20.2.1
     dev: true
-
-  /@types/yauzl/2.9.2:
-    resolution: {integrity: sha512-8uALY5LTvSuHgloDVUvWP3pIauILm+8/0pDMokuDYIoNsOkSwd5AiHBTSEJjKTDcZr5z8UpgOWZkxBF4iJftoA==}
-    requiresBuild: true
-    dependencies:
-      '@types/node': 16.11.6
-    dev: true
-    optional: true
 
   /@typescript-eslint/eslint-plugin/4.33.0_efdc6907d1c5d54b575be520859f7a71:
     resolution: {integrity: sha512-aINiAxGVdOl1eJyVjaWn/YcVAq4Gi/Yo35qHGCnqbWVz61g39D0h23veY/MA0rFFGfxK7TySg2uwDeNv+JgVpg==}
@@ -4765,7 +4757,7 @@ packages:
       babel-plugin-istanbul: 6.1.1
       babel-preset-jest: 27.2.0_@babel+core@7.16.0
       chalk: 4.1.2
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       slash: 3.0.0
     transitivePeerDependencies:
       - supports-color
@@ -4788,7 +4780,7 @@ packages:
   /babel-plugin-add-module-exports/1.0.2:
     resolution: {integrity: sha512-4paN7RivvU3Rzju1vGSHWPjO8Y0rI6droWvSFKI6dvEQ4mvoV0zGojnlzVRfI6N8zISo6VERXt3coIuVmzuvNg==}
     optionalDependencies:
-      chokidar: 2.1.8
+      chokidar: registry.npmmirror.com/chokidar/2.1.8
     dev: true
 
   /babel-plugin-dynamic-import-node/2.3.3:
@@ -5499,7 +5491,7 @@ packages:
       readdirp: 2.2.1
       upath: 1.2.0
     optionalDependencies:
-      fsevents: 1.2.13
+      fsevents: registry.npmmirror.com/fsevents/1.2.13
     dev: true
 
   /chokidar/3.5.2:
@@ -5514,7 +5506,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: registry.npmmirror.com/fsevents/2.3.2
     dev: true
 
   /chownr/1.1.4:
@@ -5600,7 +5592,7 @@ packages:
       object-assign: 4.1.1
       string-width: 4.2.3
     optionalDependencies:
-      colors: 1.4.0
+      colors: registry.nlark.com/colors/1.4.0
     dev: true
 
   /cli-truncate/2.1.0:
@@ -5744,6 +5736,7 @@ packages:
   /colors/1.4.0:
     resolution: {integrity: sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==}
     engines: {node: '>=0.1.90'}
+    dev: false
 
   /colorspace/1.1.4:
     resolution: {integrity: sha512-BgvKJiuVu1igBUF2kEjRCZXol6wiiGbY5ipL/oVPwm0BL9sIpMIzM8IK7vwuxIIzOXMV3Ey5w+vxhm0rR/TN8w==}
@@ -5867,7 +5860,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       dot-prop: 5.3.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       make-dir: 3.1.0
       unique-string: 2.0.0
       write-file-atomic: 3.0.3
@@ -6752,14 +6745,6 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
-  /encoding/0.1.13:
-    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
-    requiresBuild: true
-    dependencies:
-      iconv-lite: 0.6.3
-    dev: true
-    optional: true
-
   /end-of-stream/1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
     dependencies:
@@ -6893,7 +6878,7 @@ packages:
       esutils: 2.0.3
       optionator: 0.8.3
     optionalDependencies:
-      source-map: 0.6.1
+      source-map: registry.nlark.com/source-map/0.6.1
     dev: true
 
   /eslint-config-airbnb-base/14.2.1_560ef94424f7023f0ab025f67f79aa67:
@@ -7405,7 +7390,7 @@ packages:
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
-      '@types/yauzl': 2.9.2
+      '@types/yauzl': registry.nlark.com/@types/yauzl/2.9.2
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -7701,7 +7686,7 @@ packages:
   /fs-extra/4.0.3:
     resolution: {integrity: sha512-q6rbdDd1o2mAnQreO7YADIxf/Whx4AHBiRf6d+/cVT8h44ss+lHgxf1FemcqDnQt9X3ct4McHr+JMGlYSsK7Cg==}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       jsonfile: 4.0.0
       universalify: 0.1.2
     dev: true
@@ -7711,7 +7696,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       at-least-node: 1.0.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       jsonfile: 6.1.0
       universalify: 1.0.0
     dev: true
@@ -7745,26 +7730,6 @@ packages:
 
   /fs.realpath/1.0.0:
     resolution: {integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=}
-
-  /fsevents/1.2.13:
-    resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
-    engines: {node: '>= 4.0'}
-    os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
-    requiresBuild: true
-    dependencies:
-      bindings: 1.5.0
-      nan: 2.15.0
-    dev: true
-    optional: true
-
-  /fsevents/2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
-    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
 
   /function-bind/1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
@@ -8081,7 +8046,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.14.3
+      uglify-js: registry.npmmirror.com/uglify-js/3.14.3
 
   /har-schema/2.0.0:
     resolution: {integrity: sha1-qUwiJOvKwEeCoNkDVSHyRzW37JI=}
@@ -9259,7 +9224,7 @@ packages:
       ci-info: 3.2.0
       deepmerge: 4.2.2
       glob: 7.2.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       jest-circus: 27.3.1
       jest-environment-jsdom: 27.3.1
       jest-environment-node: 27.3.1
@@ -9367,7 +9332,7 @@ packages:
       '@types/node': 16.11.6
       anymatch: 3.1.2
       fb-watchman: 2.0.1
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       jest-regex-util: 27.0.6
       jest-serializer: 27.0.6
       jest-util: 27.3.1
@@ -9375,7 +9340,7 @@ packages:
       micromatch: 4.0.4
       walker: 1.0.8
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: registry.npmmirror.com/fsevents/2.3.2
     dev: true
 
   /jest-jasmine2/27.3.1:
@@ -9430,7 +9395,7 @@ packages:
       '@jest/types': 27.2.5
       '@types/stack-utils': 2.0.1
       chalk: 4.1.2
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       micromatch: 4.0.4
       pretty-format: 27.3.1
       slash: 3.0.0
@@ -9479,7 +9444,7 @@ packages:
     dependencies:
       '@jest/types': 27.2.5
       chalk: 4.1.2
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       jest-haste-map: 27.3.1
       jest-pnp-resolver: 1.2.2_jest-resolve@27.3.1
       jest-util: 27.3.1
@@ -9502,7 +9467,7 @@ packages:
       chalk: 4.1.2
       emittery: 0.8.1
       exit: 0.1.2
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       jest-docblock: 27.0.6
       jest-environment-jsdom: 27.3.1
       jest-environment-node: 27.3.1
@@ -9540,7 +9505,7 @@ packages:
       execa: 5.1.1
       exit: 0.1.2
       glob: 7.2.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       jest-haste-map: 27.3.1
       jest-message-util: 27.3.1
       jest-mock: 27.3.0
@@ -9561,7 +9526,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@types/node': 16.11.6
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
     dev: true
 
   /jest-snapshot/27.3.1:
@@ -9581,7 +9546,7 @@ packages:
       babel-preset-current-node-syntax: 1.0.1_@babel+core@7.16.0
       chalk: 4.1.2
       expect: 27.3.1
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       jest-diff: 27.3.1
       jest-get-type: 27.3.1
       jest-haste-map: 27.3.1
@@ -9604,7 +9569,7 @@ packages:
       '@types/node': 16.11.6
       chalk: 4.1.2
       ci-info: 3.2.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       picomatch: 2.3.0
     dev: true
 
@@ -9791,7 +9756,7 @@ packages:
   /jsonfile/4.0.0:
     resolution: {integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=}
     optionalDependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
     dev: true
 
   /jsonfile/6.1.0:
@@ -9799,7 +9764,7 @@ packages:
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
     dev: true
 
   /jsonify/0.0.0:
@@ -10061,7 +10026,7 @@ packages:
     resolution: {integrity: sha1-L19Fq5HjMhYjT9U62rZo607AmTs=}
     engines: {node: '>=4'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       parse-json: 4.0.0
       pify: 3.0.0
       strip-bom: 3.0.0
@@ -10071,7 +10036,7 @@ packages:
     resolution: {integrity: sha512-gUD/epcRms75Cw8RT1pUdHugZYM5ce64ucs2GEISABwkRsOQr0q2wm/MV2TKThycIe5e0ytRweW2RZxclogCdQ==}
     engines: {node: '>=8'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       parse-json: 5.2.0
       strip-bom: 4.0.0
       type-fest: 0.6.0
@@ -10580,7 +10545,7 @@ packages:
       minipass-sized: 1.0.3
       minizlib: 2.1.2
     optionalDependencies:
-      encoding: 0.1.13
+      encoding: registry.npmmirror.com/encoding/0.1.13
     dev: true
 
   /minipass-flush/1.0.5:
@@ -10812,7 +10777,7 @@ packages:
     dependencies:
       env-paths: 2.2.1
       glob: 7.2.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       mkdirp: 0.5.5
       nopt: 4.0.3
       npmlog: 4.1.2
@@ -10830,7 +10795,7 @@ packages:
     dependencies:
       env-paths: 2.2.1
       glob: 7.2.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       nopt: 5.0.0
       npmlog: 4.1.2
       request: 2.88.2
@@ -10985,7 +10950,7 @@ packages:
     resolution: {integrity: sha512-lDLVkjfZmvmfvpvBzA4vzee9cn+Me4orq0QF8glbswJVEbIcSNWib7qGOffolysc3teCqbbPZZkzbr3GQZTL1g==}
     dependencies:
       byline: 5.0.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       node-gyp: 5.1.1
       resolve-from: 4.0.0
       slide: 1.1.6
@@ -11501,7 +11466,7 @@ packages:
     resolution: {integrity: sha512-whdkPIooSu/bASggZ96BWVvZTRMOFxnyUG5PnTSGKoJE2gd5mbVNmR2Nj20QFzxYYgAXpoqC+AiXzl+UMRh7zQ==}
     engines: {node: '>=8'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       hasha: 5.2.2
       lodash.flattendeep: 4.4.0
       release-zalgo: 1.0.0
@@ -12364,7 +12329,7 @@ packages:
     dependencies:
       debuglog: 1.0.1
       dezalgo: 1.0.3
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       once: 1.4.0
     dev: true
 
@@ -12372,7 +12337,7 @@ packages:
     resolution: {integrity: sha512-1JU/8q+VgFZyxwrJ+SVIOsh+KywWGpds3NTqikiKpDMZWScmAYyKIgqkO+ARvNWJfXeXR1zxz7aHF4u4CyH6vQ==}
     engines: {node: '>=0.10'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       micromatch: 3.1.10
       readable-stream: 2.3.7
     dev: true
@@ -13641,7 +13606,7 @@ packages:
     resolution: {integrity: sha512-HIeWmj77uOOHb0QX7siN3OtwV3CTntquin6TNVg6SHOqCP3hYKmox90eeFOGaY1MqJ9WYDDjkyZrW6qS5AWpbw==}
     engines: {node: '>=8'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       is-stream: 2.0.1
       make-dir: 3.1.0
       temp-dir: 1.0.0
@@ -13994,11 +13959,6 @@ packages:
       prelude-ls: 1.2.1
     dev: true
 
-  /type-detect/4.0.8:
-    resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
-    engines: {node: '>=4'}
-    dev: true
-
   /type-fest/0.18.1:
     resolution: {integrity: sha512-OIAYXk8+ISY+qTOwkHtKqzAuxchoMiD9Udx+FSGQDuiRR+PJKJHc2NJAXlbhkGwTt/4/nKZxELY1w3ReWOL8mw==}
     engines: {node: '>=10'}
@@ -14051,13 +14011,6 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
-
-  /uglify-js/3.14.3:
-    resolution: {integrity: sha512-mic3aOdiq01DuSVx0TseaEzMIVqebMZ0Z3vaeDhFEh9bsc24hV1TFvN74reA2vs08D0ZWfNjAcJ3UbVLaBss+g==}
-    engines: {node: '>=0.8.0'}
-    hasBin: true
-    requiresBuild: true
-    optional: true
 
   /uid-number/0.0.6:
     resolution: {integrity: sha1-DqEOgDXo61uOREnwbaHHMGY7qoE=}
@@ -14799,7 +14752,7 @@ packages:
   /write-file-atomic/2.4.3:
     resolution: {integrity: sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       imurmurhash: 0.1.4
       signal-exit: 3.0.5
     dev: true
@@ -14818,7 +14771,7 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       detect-indent: 5.0.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       make-dir: 2.1.0
       pify: 4.0.1
       sort-keys: 2.0.0
@@ -14830,7 +14783,7 @@ packages:
     engines: {node: '>=8.3'}
     dependencies:
       detect-indent: 6.1.0
-      graceful-fs: 4.2.8
+      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       is-plain-obj: 2.1.0
       make-dir: 3.1.0
       sort-keys: 4.2.0
@@ -14990,3 +14943,110 @@ packages:
   /zwitch/1.0.5:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
+
+  registry.nlark.com/@types/yauzl/2.9.2:
+    resolution: {integrity: sha1-xI5dVq/xREQJ45+hZLC01FUqe3o=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/@types/yauzl/download/@types/yauzl-2.9.2.tgz}
+    name: '@types/yauzl'
+    version: 2.9.2
+    requiresBuild: true
+    dependencies:
+      '@types/node': 16.11.6
+    dev: true
+    optional: true
+
+  registry.nlark.com/colors/1.4.0:
+    resolution: {integrity: sha1-xQSRR51MG9rtLJztMs98fcI2D3g=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/colors/download/colors-1.4.0.tgz}
+    name: colors
+    version: 1.4.0
+    engines: {node: '>=0.1.90'}
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.nlark.com/source-map/0.6.1:
+    resolution: {integrity: sha1-dHIq8y6WFOnCh6jQu95IteLxomM=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/source-map/download/source-map-0.6.1.tgz}
+    name: source-map
+    version: 0.6.1
+    engines: {node: '>=0.10.0'}
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.nlark.com/type-detect/4.0.8:
+    resolution: {integrity: sha1-dkb7XxiHHPu3dJ5pvTmmOI63RQw=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/type-detect/download/type-detect-4.0.8.tgz}
+    name: type-detect
+    version: 4.0.8
+    engines: {node: '>=4'}
+    dev: true
+
+  registry.npmmirror.com/chokidar/2.1.8:
+    resolution: {integrity: sha1-gEs6e2qZNYw8XGHnHYco8EHP+Rc=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/chokidar/download/chokidar-2.1.8.tgz}
+    name: chokidar
+    version: 2.1.8
+    deprecated: Chokidar 2 will break on node v14+. Upgrade to chokidar 3 with 15x less dependencies.
+    requiresBuild: true
+    dependencies:
+      anymatch: 2.0.0
+      async-each: 1.0.3
+      braces: 2.3.2
+      glob-parent: 3.1.0
+      inherits: 2.0.4
+      is-binary-path: 1.0.1
+      is-glob: 4.0.3
+      normalize-path: 3.0.0
+      path-is-absolute: 1.0.1
+      readdirp: 2.2.1
+      upath: 1.2.0
+    optionalDependencies:
+      fsevents: registry.npmmirror.com/fsevents/1.2.13
+    dev: true
+    optional: true
+
+  registry.npmmirror.com/encoding/0.1.13:
+    resolution: {integrity: sha1-VldK/deR9UqOmyeFwFgqLSYhD6k=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/encoding/download/encoding-0.1.13.tgz}
+    name: encoding
+    version: 0.1.13
+    requiresBuild: true
+    dependencies:
+      iconv-lite: 0.6.3
+    dev: true
+    optional: true
+
+  registry.npmmirror.com/fsevents/1.2.13:
+    resolution: {integrity: sha1-8yXLBFVZJCi88Rs4M3DvcOO/zDg=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/fsevents/download/fsevents-1.2.13.tgz}
+    name: fsevents
+    version: 1.2.13
+    engines: {node: '>= 4.0'}
+    os: [darwin]
+    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    requiresBuild: true
+    dependencies:
+      bindings: 1.5.0
+      nan: 2.15.0
+    dev: true
+    optional: true
+
+  registry.npmmirror.com/fsevents/2.3.2:
+    resolution: {integrity: sha1-ilJveLj99GI7cJ4Ll1xSwkwC/Ro=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/fsevents/download/fsevents-2.3.2.tgz}
+    name: fsevents
+    version: 2.3.2
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmmirror.com/graceful-fs/4.2.8:
+    resolution: {integrity: sha1-5BK40z9eAGWTy9PO5t+fLOu+gCo=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/graceful-fs/download/graceful-fs-4.2.8.tgz}
+    name: graceful-fs
+    version: 4.2.8
+    dev: true
+
+  registry.npmmirror.com/uglify-js/3.14.3:
+    resolution: {integrity: sha1-wPJd/qHo5TI+zPWWEL4ItgQ8Fc8=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/uglify-js/download/uglify-js-3.14.3.tgz?cache=0&sync_timestamp=1635829559549&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fuglify-js%2Fdownload%2Fuglify-js-3.14.3.tgz}
+    name: uglify-js
+    version: 3.14.3
+    engines: {node: '>=0.8.0'}
+    hasBin: true
+    requiresBuild: true
+    optional: true
