@@ -1,9 +1,10 @@
-import { PatchedXMLHttpRequest, XHRMonitorOptions, XHRReportData } from './types';
+import { PatchedXMLHttpRequest, XHRMonitorOptions } from './types';
 import { EventType } from '../types';
 import { patchMethod } from '../utils/patch-method';
-import { formatPlainHeadersString } from '../utils/format-plain-headers-string';
-import { getUrlData } from '../utils/get-url-data';
-import { getPerformanceEntriesByName } from '../utils/performance-entry';
+import { getRequestReportData } from '../utils/get-request-report-data';
+
+// XMLHttpRequest.DONE 在低版本 IE 中不兼容
+export const XML_HTTP_REQUEST_DONE = XMLHttpRequest.DONE || 4;
 
 /**
  * 初始化 xhr 监控
@@ -14,34 +15,6 @@ import { getPerformanceEntriesByName } from '../utils/performance-entry';
  */
 export function createXHRMonitor(options: XHRMonitorOptions) {
   const XMLHttpRequestPrototype = XMLHttpRequest.prototype;
-
-  // 生成请求报告
-  const getReportData = (patchedXhrInstance: PatchedXMLHttpRequest): XHRReportData => {
-    const current = Date.now();
-    const responseHeaders = patchedXhrInstance?.getAllResponseHeaders() || '';
-    const isError = patchedXhrInstance.status >= 400;
-
-    const {
-      monitorRecords: { url, method, startTime, requestHeaders, requestData },
-    } = patchedXhrInstance;
-    return {
-      request: {
-        ...getUrlData(url),
-        method: method.toUpperCase(),
-        headers: requestHeaders,
-        body: isError ? `${requestData}` : null,
-      },
-      response: {
-        status: patchedXhrInstance.status || -1,
-        timestamp: current,
-        headers: responseHeaders ? formatPlainHeadersString(responseHeaders) : {},
-        body: isError ? `${patchedXhrInstance.response}` : null,
-      },
-      // 如果URL有重定向， responseURL 的值会是经过多次重定向后的最终 URL
-      performance: getPerformanceEntriesByName(patchedXhrInstance.responseURL).pop(),
-      duration: current - startTime,
-    };
-  };
 
   // XMLHttpRequest.prototype.open，请求的初始化阶段
   const patchOpen = patchMethod(XMLHttpRequestPrototype, 'open', (open) => {
@@ -61,10 +34,10 @@ export function createXHRMonitor(options: XHRMonitorOptions) {
   const patchOnReadyStateChange = (target: PatchedXMLHttpRequest) => {
     return patchMethod(target, 'onreadystatechange', (origin) => {
       return function (this: PatchedXMLHttpRequest, ...event) {
-        if (this.readyState === XMLHttpRequest.DONE) {
+        if (this.readyState === XML_HTTP_REQUEST_DONE) {
           options.onReport({
             eventType: EventType.XHR,
-            data: getReportData(this),
+            data: getRequestReportData(this),
           });
         }
         return origin && origin.apply(this, event);
