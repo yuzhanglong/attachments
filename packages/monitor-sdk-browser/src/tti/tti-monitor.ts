@@ -11,6 +11,11 @@ import { observeLongTaskAndResources } from '../utils/observe-long-task-and-reso
 
 const TIME_GAP = 5000;
 
+export const getFCP = () => {
+  const fcp = getPerformanceEntriesByName('first-contentful-paint')[0];
+  return fcp ? fcp.startTime : 0;
+};
+
 /**
  * 上报 tti
  *
@@ -21,17 +26,13 @@ const TIME_GAP = 5000;
  * @param longTasks
  */
 const checkAndReportTTI = (options: TTIMonitorOptions, lastKnownNetwork2Busy: number, longTasks: TaskTimeInfo[]) => {
-  const fcp = getPerformanceEntriesByName('first-contentful-paint')[0];
-  const searchStartTime = fcp ? fcp.startTime : 0;
-
+  const searchStartTime = getFCP();
   const tti = calculateTTI({
     searchStart: searchStartTime,
     checkTimeInQuiteWindow: performance.now(),
     longTasks: longTasks,
     lastKnownNetwork2Busy: lastKnownNetwork2Busy,
   });
-
-  console.log('tti:', tti);
 
   options.onReport({
     eventType: EventType.TTI,
@@ -41,7 +42,7 @@ const checkAndReportTTI = (options: TTIMonitorOptions, lastKnownNetwork2Busy: nu
   });
 };
 
-export const createTtiMonitor = (options: TTIMonitorOptions) => {
+export const createTTIMonitor = (options: TTIMonitorOptions) => {
   const XMLHttpRequest = getXMLHttpRequest();
   const performanceObserver = getPerformanceObserver();
   const performance = getPerformance();

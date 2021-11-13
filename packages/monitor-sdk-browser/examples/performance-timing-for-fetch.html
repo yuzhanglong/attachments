@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <img src="https://data.covid19india.org/v4/min/timeseries.min.json"/>
+  </head>
+  <body>
+    <script>
+      fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=all")
+        .then(function(response) {
+          console.log(performance.getEntriesByType("resource"));
+          return response.json();
+        })
+        .then(function(myJson) {
+          console.log(performance.getEntriesByType("resource"));
+          console.log(myJson);
+        });
+      console.log(performance.getEntriesByType("resource"));
+
+    </script>
+  </body>
+</html>

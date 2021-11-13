@@ -35,6 +35,7 @@ const getDomContentLoadedEventEndTime = () => {
  * @author yuzhanglong
  * @date 2021-09-06 15:31:41
  * @param options 见 TTICalculateOptions
+ * @see TTICalculateOptions
  */
 export const calculateTTI = (options: TTICalculateOptions) => {
   const { searchStart, longTasks, checkTimeInQuiteWindow, lastKnownNetwork2Busy } = options;
@@ -44,12 +45,12 @@ export const calculateTTI = (options: TTICalculateOptions) => {
   }
 
   // 如果没有 long task，那么 FCP 时间就是 TTI 时间
-  const maybeFCI = longTasks.length === 0 ? searchStart : last(longTasks).endTime;
+  const maybeTTI = longTasks.length === 0 ? searchStart : last(longTasks).endTime;
 
   // 确保窗口期没有 long task
-  if (checkTimeInQuiteWindow - maybeFCI < 5000) {
+  if (checkTimeInQuiteWindow - maybeTTI < 5000) {
     return null;
   }
 
-  return Math.max(maybeFCI, getDomContentLoadedEventEndTime());
+  return Math.max(maybeTTI, getDomContentLoadedEventEndTime());
 };

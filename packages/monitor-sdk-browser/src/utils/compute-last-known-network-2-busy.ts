@@ -64,7 +64,7 @@ export const computeLastKnownNetwork2Busy = (
         }
         break;
       default:
-        throw Error('Internal Error: This should never happen');
+        return 0;
     }
   }
   return 0;
