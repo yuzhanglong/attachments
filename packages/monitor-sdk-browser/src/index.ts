@@ -9,7 +9,7 @@
 export { getDomLayoutScore } from './utils/get-dom-layout-score';
 export { createFMPMonitor } from './fmp/fmp-monitor';
 export { createClsMonitor } from './cls/cls-monitor';
-export { createXhrMonitor } from './xhr/xhr-monitor';
+export { createXHRMonitor } from './xhr/xhr-monitor';
 export { createJsErrorMonitor } from './js-error/js-error-monitor';
 export { createAssetsMonitor } from './assets/assets-monitor';
 export { createAssetsErrorMonitor } from './assets-error/assets-error-monitor';

@@ -12,7 +12,7 @@ import { getPerformanceEntriesByName } from '../utils/performance-entry';
  * @date 2021-08-23 21:54:29
  * @param options 监控配置
  */
-export function createXhrMonitor(options: XHRMonitorOptions) {
+export function createXHRMonitor(options: XHRMonitorOptions) {
   const XMLHttpRequestPrototype = XMLHttpRequest.prototype;
 
   // 生成请求报告
@@ -43,7 +43,7 @@ export function createXhrMonitor(options: XHRMonitorOptions) {
     };
   };
 
-  // XMLHttpRequest.prototype.open
+  // XMLHttpRequest.prototype.open，请求的初始化阶段
   const patchOpen = patchMethod(XMLHttpRequestPrototype, 'open', (open) => {
     return function (this: PatchedXMLHttpRequest, ...openOptions) {
       const [method, url] = openOptions;

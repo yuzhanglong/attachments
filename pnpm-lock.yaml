@@ -141,12 +141,14 @@ importers:
 
   packages/monitor-sdk-browser:
     specifiers:
+      '@attachments/utils': ^0.1.21
       '@babel/plugin-transform-runtime': ^7.15.8
       '@babel/preset-env': ^7.15.8
       '@babel/preset-react': ^7.16.0
       '@babel/preset-typescript': ^7.15.0
       '@babel/runtime': ^7.16.0
       '@types/lodash': ^4.14.172
+      axios: ^0.24.0
       babel-loader: ^8.2.2
       babel-plugin-lodash: ^3.3.4
       html-webpack-plugin: ^5.3.2
@@ -160,12 +162,14 @@ importers:
     dependencies:
       lodash: 4.17.21
     devDependencies:
+      '@attachments/utils': link:../utils
       '@babel/plugin-transform-runtime': 7.16.0
       '@babel/preset-env': 7.16.0
       '@babel/preset-react': 7.16.0
       '@babel/preset-typescript': 7.16.0
       '@babel/runtime': 7.16.0
       '@types/lodash': 4.14.176
+      axios: registry.npmmirror.com/axios/0.24.0
       babel-loader: 8.2.3_webpack@5.61.0
       babel-plugin-lodash: 3.3.4
       html-webpack-plugin: 5.5.0_webpack@5.61.0
@@ -7603,16 +7607,6 @@ packages:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
     dev: false
 
-  /follow-redirects/1.14.5:
-    resolution: {integrity: sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dev: true
-
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -8386,7 +8380,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.5
+      follow-redirects: registry.npmmirror.com/follow-redirects/1.14.5
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -14979,6 +14973,16 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  registry.npmmirror.com/axios/0.24.0:
+    resolution: {integrity: sha1-gE5voeS5xSiFAd2d/1anoJQNINY=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/axios/download/axios-0.24.0.tgz}
+    name: axios
+    version: 0.24.0
+    dependencies:
+      follow-redirects: registry.npmmirror.com/follow-redirects/1.14.5
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
   registry.npmmirror.com/chokidar/2.1.8:
     resolution: {integrity: sha1-gEs6e2qZNYw8XGHnHYco8EHP+Rc=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/chokidar/download/chokidar-2.1.8.tgz}
     name: chokidar
@@ -15011,6 +15015,18 @@ packages:
       iconv-lite: 0.6.3
     dev: true
     optional: true
+
+  registry.npmmirror.com/follow-redirects/1.14.5:
+    resolution: {integrity: sha1-8JpYSJgdPHcrU5Iwl3hSP42Fw4E=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/follow-redirects/download/follow-redirects-1.14.5.tgz}
+    name: follow-redirects
+    version: 1.14.5
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: true
 
   registry.npmmirror.com/fsevents/1.2.13:
     resolution: {integrity: sha1-8yXLBFVZJCi88Rs4M3DvcOO/zDg=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/fsevents/download/fsevents-1.2.13.tgz}
