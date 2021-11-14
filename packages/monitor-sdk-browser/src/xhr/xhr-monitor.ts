@@ -2,6 +2,7 @@ import { PatchedXMLHttpRequest, XHRMonitorOptions } from './types';
 import { EventType } from '../types';
 import { patchMethod } from '../utils/patch-method';
 import { getRequestReportData } from '../utils/get-request-report-data';
+import { formatPlainHeadersString } from '../utils/format-plain-headers-string';
 
 // XMLHttpRequest.DONE 在低版本 IE 中不兼容
 export const XML_HTTP_REQUEST_DONE = XMLHttpRequest.DONE || 4;
@@ -35,9 +36,22 @@ export function createXHRMonitor(options: XHRMonitorOptions) {
     return patchMethod(target, 'onreadystatechange', (origin) => {
       return function (this: PatchedXMLHttpRequest, ...event) {
         if (this.readyState === XML_HTTP_REQUEST_DONE) {
+          const { url, method, startTime, requestHeaders, requestData } = this.monitorRecords;
+          const responseHeaders = this?.getAllResponseHeaders() || '';
+
           options.onReport({
             eventType: EventType.XHR,
-            data: getRequestReportData(this),
+            data: getRequestReportData({
+              url: url,
+              method: method,
+              status: this.status,
+              requestData: requestData,
+              requestHeaders: requestHeaders,
+              responseHeaders: formatPlainHeadersString(responseHeaders),
+              startTime: startTime,
+              responseUrl: this.responseURL,
+              responseData: this.response,
+            }),
           });
         }
         return origin && origin.apply(this, event);

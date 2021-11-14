@@ -4,14 +4,30 @@ import { getUrlData } from './get-url-data';
 import { formatPlainHeadersString } from './format-plain-headers-string';
 import { getPerformanceEntriesByName } from './performance-entry';
 
-export const getRequestReportData = (patchedXhrInstance: PatchedXMLHttpRequest): XHRReportData => {
-  const current = Date.now();
-  const responseHeaders = patchedXhrInstance?.getAllResponseHeaders() || '';
-  const isError = patchedXhrInstance.status >= 400;
+export interface GetRequestReportDataOptions {
+  url: string;
+  method: string;
+  status: number;
+  startTime: number;
+  requestHeaders: Record<string, string>;
+  responseHeaders: Record<string, string>;
+  requestData: any;
+  responseData: any;
+  responseUrl: string;
+}
 
-  const {
-    monitorRecords: { url, method, startTime, requestHeaders, requestData },
-  } = patchedXhrInstance;
+/**
+ * 格式化请求上报数据
+ *
+ * @author yuzhanglong
+ * @date 2021-11-14 15:03:53
+ */
+export const getRequestReportData = (options: GetRequestReportDataOptions): XHRReportData => {
+  const { url, method, status, startTime, requestHeaders, responseUrl, responseHeaders, responseData, requestData } =
+    options;
+  const current = Date.now();
+  const isError = status >= 400;
+
   return {
     request: {
       ...getUrlData(url),
@@ -20,13 +36,13 @@ export const getRequestReportData = (patchedXhrInstance: PatchedXMLHttpRequest):
       body: isError ? `${requestData}` : null,
     },
     response: {
-      status: patchedXhrInstance.status || -1,
+      status: status || -1,
       timestamp: current,
-      headers: responseHeaders ? formatPlainHeadersString(responseHeaders) : {},
-      body: isError ? `${patchedXhrInstance.response}` : null,
+      headers: responseHeaders,
+      body: isError ? `${responseData}` : null,
     },
     // 如果URL有重定向， responseURL 的值会是经过多次重定向后的最终 URL
-    performance: getPerformanceEntriesByName(patchedXhrInstance.responseURL).pop(),
+    performance: getPerformanceEntriesByName(responseUrl).pop(),
     duration: current - startTime,
   };
 };

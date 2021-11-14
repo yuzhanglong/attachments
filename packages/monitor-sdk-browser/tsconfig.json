@@ -4,7 +4,11 @@
     "baseUrl": "./",
     "target": "ES5",
     "outDir": "lib",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "lib": [
+      "es5",
+      "dom"
+    ]
   },
   "include": [
     "src/**/*"
