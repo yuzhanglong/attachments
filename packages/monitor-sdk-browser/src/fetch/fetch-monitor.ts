@@ -28,9 +28,10 @@ export const createFetchMonitor = (options: FetchMonitorOptions) => {
 
   patchMethod(browserWindow, 'fetch', (origin: typeof window['fetch']) => {
     return async (requestInfo, requestInit) => {
-      // 提高性能，尽早开始请求
+      // 先让浏览器开启线程去执行网络请求，提高性能
       const fetchPromise = origin(requestInfo, requestInit);
 
+      // 即将被上报的数据
       const initData = {
         // REQUEST OPTIONS
         url: parseFetchUrl(requestInfo),
@@ -58,7 +59,11 @@ export const createFetchMonitor = (options: FetchMonitorOptions) => {
 
       const onResolve = async (res: Response) => {
         try {
-          const data = await res.clone().text();
+          // 只有 4xx 以上的错误才会收集响应体
+          let data = '';
+          if (res.status >= 400) {
+            data = await res.clone().text();
+          }
           initData.responseUrl = res.url;
           initData.responseHeaders = res.headers;
           initData.status = res.status || -1;

@@ -62,7 +62,6 @@ describe('xhr monitor', () => {
         console.log(e);
       }
     }, 2);
-    console.log(res);
 
     expect(res.length).to.equal(2);
     expect(res.every((item) => item.eventType === 'XHR')).to.be.true;

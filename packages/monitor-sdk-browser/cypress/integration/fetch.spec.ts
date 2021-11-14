@@ -18,7 +18,13 @@ describe('test fetch API(200 code)', function () {
         headers: {
           'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
         },
-      });
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          console.log(res);
+        });
     });
 
     expect(res.eventType).to.equal('FETCH');

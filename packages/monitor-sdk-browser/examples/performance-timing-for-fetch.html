@@ -6,20 +6,51 @@
   </head>
   <body>
     <script>
+      const originFetch = window.fetch;
+
+      const newFetch = async (url, reqOptions) => {
+        // 在这里劫持数据
+        const res = await originFetch(url, reqOptions);
+
+        // 某些情况下（例如出现了 400 以上的错误码），我们有必要记录下此时的 body
+        // 使用 tee 分流
+        const [progressStream, returnStream] = res.body.tee();
+
+        const reader = progressStream.getReader();
+
+        let finalData = "";
+        // 需要上报的响应体数据
+        const readData = () => {
+          reader.read().then(({ value, done }) => {
+            if (done) {
+              console.log(JSON.parse(finalData));
+              return;
+            }
+
+            const res = value.reduce((prev, next) => {
+              return prev + String.fromCharCode(next);
+            }, "");
+            finalData += res;
+            readData();
+          });
+        };
+
+        readData();
+
+
+        return new Response(returnStream, {
+          headers: res.headers
+        });
+      };
+
+      window.fetch = newFetch;
+
       fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=all")
+        .then((res) => {
+          return res.json();
+        })
         .then(res => {
-          const [progressStream, returnStream] = res.body.tee();
-          const reader = progressStream.getReader();
-          const log = () => {
-            reader.read().then(({ value, done }) => {
-              if (done) return;
-              // 省略输出进度
-              console.log(value.toString());
-              log();
-            });
-          };
-          log();
-          return new Response(returnStream, { headers: res.headers });
+          console.log(res);
         });
     </script>
   </body>
