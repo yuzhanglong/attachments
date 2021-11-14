@@ -21,6 +21,7 @@ export type ReportBase<Data> = {
 
 export enum EventType {
   // noinspection SpellCheckingInspection
+  FETCH = 'FETCH',
   XHR = 'XHR',
   JS_ERROR = 'JS_ERROR',
   ASSETS = 'ASSETS',

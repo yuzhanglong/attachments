@@ -1,6 +1,6 @@
 import { MonitorOptions } from '../types';
 import { XHRReportData } from '../xhr/types';
 
-type MonitorCommonTimingReportData = XHRReportData;
+export type FetchReportData = XHRReportData;
 
-export type FetchMonitorOptions = MonitorOptions<MonitorCommonTimingReportData>;
+export type FetchMonitorOptions = MonitorOptions<FetchReportData>;

@@ -3,21 +3,24 @@
   <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <img src="https://data.covid19india.org/v4/min/timeseries.min.json"/>
   </head>
   <body>
     <script>
       fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=all")
-        .then(function(response) {
-          console.log(performance.getEntriesByType("resource"));
-          return response.json();
-        })
-        .then(function(myJson) {
-          console.log(performance.getEntriesByType("resource"));
-          console.log(myJson);
+        .then(res => {
+          const [progressStream, returnStream] = res.body.tee();
+          const reader = progressStream.getReader();
+          const log = () => {
+            reader.read().then(({ value, done }) => {
+              if (done) return;
+              // 省略输出进度
+              console.log(value.toString());
+              log();
+            });
+          };
+          log();
+          return new Response(returnStream, { headers: res.headers });
         });
-      console.log(performance.getEntriesByType("resource"));
-
     </script>
   </body>
 </html>
