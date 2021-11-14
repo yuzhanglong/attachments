@@ -1,16 +1,45 @@
+import { CallBack } from '../../src/types';
+import { promisifyCounterMonitorReport } from '../utils/test-utils';
 import { createFetchMonitor } from '../../src/fetch/fetch-monitor';
+import { FetchReportData } from '../../src/fetch/types';
 
-describe('test fetch API', function () {
-  it('fetch', () => {
-    createFetchMonitor({
-      onReport: (e) => {
-        console.log(e);
-      },
+const runMonitor = async (cb: CallBack<any>, times?: number) =>
+  promisifyCounterMonitorReport<FetchReportData>({
+    afterCreateMonitorCallback: cb,
+    monitorFactory: createFetchMonitor,
+    reportTimesBeforeResolve: times,
+  });
+
+describe('test fetch API(200 code)', function () {
+  it('test fetch (GET)', async () => {
+    const [res] = await runMonitor(() => {
+      fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=all', {
+        method: 'get',
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+      });
     });
 
-    fetch('https://api.github.com/users/yuzhanglong')
-      .then((response) => response.json())
-      .then((json) => console.log(json))
-      .catch((err) => console.log('Request Failed', err));
+    expect(res.eventType).to.equal('FETCH');
+    expect(res.data.response.status).to.equal(200);
+    expect(!!res.data.performance).to.be.true;
+    // 只有400+的请求才会触发
+    expect(res.data.response.body).to.be.null;
+  });
+
+  it('test fetch error(404 code)', async () => {
+    const [res] = await runMonitor(() => {
+      fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=all', {
+        method: 'post',
+        body: 'a=1&b=2',
+      });
+    });
+
+    expect(res.eventType).to.equal('FETCH');
+    expect(res.data.response.status).to.equal(404);
+    expect(!!res.data.performance).to.be.true;
+    // 只有400+的请求才会触发
+    expect(!!res.data.response.body).to.be.true;
   });
 });
