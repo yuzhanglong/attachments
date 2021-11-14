@@ -42,4 +42,24 @@ describe('test fetch API(200 code)', function () {
     // 只有400+的请求才会触发
     expect(!!res.data.response.body).to.be.true;
   });
+
+  it('test success request more than one', async () => {
+    const res = await runMonitor(() => {
+      Promise.all([
+        fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=all', {
+          method: 'get',
+        }),
+        fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=all', {
+          method: 'get',
+        }),
+        fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=all', {
+          method: 'get',
+        }),
+      ]);
+    }, 3);
+
+    expect(res.length).to.equal(3);
+    expect(res.every((item) => item.eventType === 'FETCH')).to.be.true;
+    expect(res.every((item) => item.data.response.status === 200)).to.be.true;
+  });
 });
