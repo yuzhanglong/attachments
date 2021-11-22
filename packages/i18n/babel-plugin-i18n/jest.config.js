@@ -1,4 +1,4 @@
-const base = require('../../jest.config');
+const base = require('../../../jest.config');
 const { name } = require('./package.json');
 
 
