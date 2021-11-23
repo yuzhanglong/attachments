@@ -20,9 +20,12 @@
     "dev:link": "yarn link"
   },
   "devDependencies": {
-    "webpack": "^5.48.0"
+    "@attachments/babel-plugin-i18n": "^0.1.21",
+    "webpack": "^5.61.0",
+    "webpack-cli": "^4.8.0"
   },
   "peerDependencies": {
-    "webpack": "^5 || ^4"
+    "webpack": "^5 || ^4",
+    "@attachments/babel-plugin-i18n": "*"
   }
 }

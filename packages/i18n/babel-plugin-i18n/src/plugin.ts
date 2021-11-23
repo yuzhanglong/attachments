@@ -68,7 +68,7 @@ export function BabelPluginI18n(api: any, options: PluginOptions) {
     visitor: {
       StringLiteral(path: StringLiteralPath) {
         const {
-          node: { value: stringValue },
+          node: { value: stringValue, leadingComments },
         } = path;
 
         // 该字符串匹配了 options 中给予的 prefix
@@ -78,6 +78,14 @@ export function BabelPluginI18n(api: any, options: PluginOptions) {
         const isParentScopeHasIntlBinding = path.scope.hasBinding(intlCallee || 'intl');
 
         if (isValueStartWithProvidedIntlPrefix && !isParentScopeHasIntlBinding) {
+          const isTagged = leadingComments?.some((item) => {
+            return item?.value.includes('i18n-key-to-compress') || item?.value.includes('i18n-key-to-compress-ignore');
+          });
+
+          if (isTagged) {
+            return;
+          }
+
           if (isCallByIntlMethodDirectly(path)) {
             addComment(path, `i18n-key-to-compress: "${stringValue}" `);
           } else if (isCallByConditionalExpression(path)) {

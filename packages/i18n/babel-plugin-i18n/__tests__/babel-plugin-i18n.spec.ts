@@ -1,17 +1,17 @@
-/**
- * File: babel-plugin-i18n.spec.ts
- * Description: babel 插件单侧
- * Created: 2021-08-01 17:31:50
- * Author: yuzhanglong
- * Email: yuzl1123@163.com
- */
-
 /// <reference types="@types/jest" />
 
 import { PluginOptions, transformSync } from '@babel/core';
 import I18nBabelPlugin from '../src';
 import { removeWhiteSpace } from '@attachments/utils/lib/public';
 
+/**
+ * 调用插件逻辑转换代码
+ *
+ * @author yuzhanglong
+ * @date 2021-11-23 23:59:20
+ * @param rawCode 源代码
+ * @return 转换后的代码，注意，该结果会去除所有非空格字符
+ */
 const getParsedCode = (rawCode: string) => {
   const { code } = transformSync(rawCode, {
     filename: 'index.js',
