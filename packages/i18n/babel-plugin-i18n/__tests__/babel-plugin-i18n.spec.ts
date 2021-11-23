@@ -6,6 +6,8 @@
  * Email: yuzl1123@163.com
  */
 
+/// <reference types="@types/jest" />
+
 import { transformSync } from '@babel/core';
 import I18nBabelPlugin from '../src';
 import { PluginOptions } from '../src/plugin';
