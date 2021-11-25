@@ -78,7 +78,7 @@ export function BabelPluginI18n(api: any, options: PluginOptions) {
           const key = path.node.key as StringLiteral;
           if (key.value.startsWith(intlKeyPrefix)) {
             // 没有被 tree shaking 的 key 保留下来，做好标记
-            path.addComment('leading', ` reserved-i18n-key `);
+            path.addComment('leading', ` probably-reserved-i18n-key `);
           }
         }
       },

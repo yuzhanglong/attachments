@@ -8,7 +8,8 @@ module.exports = function(apis) {
       [
         path.resolve(__dirname, "../../../babel-plugin-i18n/lib/index.js"),
         {
-          intlKeyPrefix: "Yzl_Test"
+          intlKeyPrefix: "Yzl_Test",
+          include: "src/i18n"
         }
       ]
     ]

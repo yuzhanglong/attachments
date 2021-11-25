@@ -24,7 +24,7 @@ const config: MicroAppConfig = {
     devtool: "source-map",
     plugins: [
       // @ts-ignore
-      // new I18nWebpackPlugin()
+      new I18nWebpackPlugin()
     ]
   }
 };
