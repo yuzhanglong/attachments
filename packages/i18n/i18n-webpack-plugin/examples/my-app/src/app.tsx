@@ -8,7 +8,7 @@ import "@attachments/utils/src/browser/css/common.css";
 
 // @ts-ignore
 window.intl = (a, b) => {
-  console.log(a, b);
+  return a + JSON.stringify(b);
 };
 
 const App = () => {

@@ -1,6 +1,7 @@
 import * as path from "path";
 import { MicroAppConfig } from "@mf-lite/core/lib/node/micro-fe-app-config";
 import { sourcePath } from "@mf-lite/core/lib/common/paths";
+import { I18nWebpackPlugin } from "../../lib";
 
 const config: MicroAppConfig = {
   remotes: [],
@@ -20,8 +21,10 @@ const config: MicroAppConfig = {
     }
   ],
   webpackConfig: {
+    devtool: "source-map",
     plugins: [
-
+      // @ts-ignore
+      // new I18nWebpackPlugin()
     ]
   }
 };
