@@ -219,6 +219,12 @@ importers:
       execa: 5.1.1
       ts-node: 10.4.0_a50a247196ab3472502c09883fa645d9
 
+  playground:
+    specifiers:
+      webpack-sources: ^3.2.2
+    dependencies:
+      webpack-sources: registry.npmmirror.com/webpack-sources/3.2.2
+
 packages:
 
   /@babel/code-frame/7.12.11:
@@ -15021,3 +15027,10 @@ packages:
     name: graceful-fs
     version: 4.2.8
     dev: true
+
+  registry.npmmirror.com/webpack-sources/3.2.2:
+    resolution: {integrity: sha512-cp5qdmHnu5T8wRg2G3vZZHoJPN14aqQ89SyQ11NpGH5zEMDCclt49rzo+MaRazk7/UeILhAI+/sEtcM+7Fr0nw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/webpack-sources/download/webpack-sources-3.2.2.tgz?cache=0&sync_timestamp=1636985939046&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fwebpack-sources%2Fdownload%2Fwebpack-sources-3.2.2.tgz}
+    name: webpack-sources
+    version: 3.2.2
+    engines: {node: '>=10.13.0'}
+    dev: false
