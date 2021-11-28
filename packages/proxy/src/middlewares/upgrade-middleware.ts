@@ -33,7 +33,7 @@ function createHttpHeader(line: string, headers: Record<string, any>) {
 
 export function createUpgradeMiddleware(): ProxyServerMiddleware {
   return async (ctx, next) => {
-    const { socket, req, head, urlInstance } = ctx;
+    const { socketBetweenClientAndProxyServer, incomingRequestData, head, urlInstance } = ctx;
     // 不是 websocket 服务，进入下一个中间件
     if (urlInstance.protocol !== 'wss:' && urlInstance.protocol !== 'ws:') {
       return next();
@@ -43,32 +43,36 @@ export function createUpgradeMiddleware(): ProxyServerMiddleware {
 
     // 参考: https://github.com/http-party/node-http-proxy
     // ws 只支持 GET 方法，携带 upgrade 头
-    if (req.method !== 'GET' || !req.headers.upgrade) {
-      return socket.destroy();
+    if (incomingRequestData.method !== 'GET' || !incomingRequestData.headers.upgrade) {
+      return socketBetweenClientAndProxyServer.destroy();
     }
+
+    // Connection: Upgrade
+    // Upgrade: websocket
 
     // upgrade 请求只支持 websocket
-    if (req.headers.upgrade.toLowerCase() !== 'websocket') {
-      return socket.destroy();
+    if (incomingRequestData.headers.upgrade.toLowerCase() !== 'websocket') {
+      return socketBetweenClientAndProxyServer.destroy();
     }
 
-    socket.setTimeout(0);
-    socket.setNoDelay(true);
-    socket.setKeepAlive(true, 0);
+    // ws 连接时间不做限制
+    socketBetweenClientAndProxyServer.setTimeout(0);
+    socketBetweenClientAndProxyServer.setNoDelay(true);
+    socketBetweenClientAndProxyServer.setKeepAlive(true, 0);
 
     if (head && head.length) {
-      socket.unshift(head);
+      socketBetweenClientAndProxyServer.unshift(head);
     }
 
     const defaultPort = isSSL ? 443 : 80;
 
     const reqOptions: RequestOptions = {
-      method: req.method,
+      method: incomingRequestData.method,
       host: urlInstance.host,
       port: urlInstance.port || defaultPort,
       timeout: 3000,
       path: urlInstance.pathname,
-      headers: req.headers,
+      headers: incomingRequestData.headers,
       hostname: urlInstance.hostname,
       agent: false,
       rejectUnauthorized: false,
@@ -80,7 +84,7 @@ export function createUpgradeMiddleware(): ProxyServerMiddleware {
 
     const errorHandler = (e: Error) => {
       console.log(e);
-      socket.end();
+      socketBetweenClientAndProxyServer.end();
     };
 
     requestToRealServer.on('error', errorHandler);
@@ -88,30 +92,38 @@ export function createUpgradeMiddleware(): ProxyServerMiddleware {
     requestToRealServer.on('response', (res) => {
       // @ts-ignore
       if (!res.upgrade) {
-        socket.write(createHttpHeader(`HTTP/${res.httpVersion} ${res.statusCode} ${res.statusMessage}`, res.headers));
-        res.pipe(socket);
+        socketBetweenClientAndProxyServer.write(
+          createHttpHeader(`HTTP/${res.httpVersion} ${res.statusCode} ${res.statusMessage}`, res.headers)
+        );
+        res.pipe(socketBetweenClientAndProxyServer);
       }
     });
 
-    requestToRealServer.on('upgrade', (proxyRes, proxySocket, proxyHead) => {
-      proxySocket.on('error', errorHandler);
+    // 服务端的返回
+    // - HTTP/1.1 101 Switching Protocols
+    // - Connection: Upgrade
+    // - Upgrade: websocket
+    requestToRealServer.on('upgrade', (proxyRes, socketBetweenProxyServerAndRealServer, proxyHead) => {
+      socketBetweenProxyServerAndRealServer.on('error', errorHandler);
 
-      socket.on('error', () => {
-        proxySocket.end();
+      socketBetweenClientAndProxyServer.on('error', () => {
+        socketBetweenProxyServerAndRealServer.end();
       });
 
-      proxySocket.setTimeout(0);
-      proxySocket.setNoDelay(true);
-      proxySocket.setKeepAlive(true, 0);
+      socketBetweenProxyServerAndRealServer.setTimeout(0);
+      socketBetweenProxyServerAndRealServer.setNoDelay(true);
+      socketBetweenProxyServerAndRealServer.setKeepAlive(true, 0);
 
       if (proxyHead && proxyHead.length) {
-        proxySocket.unshift(proxyHead);
+        socketBetweenProxyServerAndRealServer.unshift(proxyHead);
       }
 
-      socket.write(createHttpHeader(`HTTP/1.1 101 Switching Protocols`, proxyRes.headers));
-      proxySocket.pipe(socket).pipe(proxySocket);
+      // 向客户端响应服务升级
+      socketBetweenClientAndProxyServer.write(createHttpHeader(`HTTP/1.1 101 Switching Protocols`, proxyRes.headers));
+      socketBetweenProxyServerAndRealServer.pipe(socketBetweenClientAndProxyServer);
+      socketBetweenClientAndProxyServer.pipe(socketBetweenProxyServerAndRealServer);
     });
 
-    req.pipe(requestToRealServer);
+    incomingRequestData.pipe(requestToRealServer);
   };
 }

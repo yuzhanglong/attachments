@@ -9,17 +9,17 @@ import { ProxyServerContext, ProxyServerMiddleware } from '../types';
 
 export function createUrlMiddleWare(): ProxyServerMiddleware {
   return async (ctx: ProxyServerContext, next) => {
-    const { req, protocol } = ctx;
+    const { incomingRequestData, protocol } = ctx;
 
     if (!protocol) {
       throw new Error('[@attachments/proxy] please give us a protocol!');
     }
 
-    const host = req.headers.host || '';
+    const host = incomingRequestData.headers.host || '';
     // origin 指 协议 + 主机的形式
     const origin = `${protocol}://${host}`;
     // req.url 为 nodejs 的 API，指的是 url 串除了 origin 一部分（search、params 所在的地方）
-    ctx.urlInstance = new URL(req.url, origin);
+    ctx.urlInstance = new URL(incomingRequestData.url, origin);
 
     // 略去 80 端口
     if (ctx.urlInstance.port === '80') {

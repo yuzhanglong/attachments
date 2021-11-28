@@ -32,6 +32,7 @@ export class ProxyServer {
    * @date 2021-08-11 00:48:00
    */
   async initServers() {
+    // 证书和 server 初始化
     const httpsServerCert = await this.certificationManager.createCertificationByDomain('localhost');
 
     this.proxyServer = new HttpServer();
@@ -50,6 +51,7 @@ export class ProxyServer {
       },
     });
 
+    // compose 中间件
     const handlers = compose<ProxyServerContext>([
       createUrlMiddleWare(),
       createProxyRuleMiddleware(this.ruleManager),
@@ -60,8 +62,8 @@ export class ProxyServer {
     // 在收到 XHR 的代理请求时做些什么
     this.proxyServer.on('request', async (req: IncomingMessage, res: ServerResponse) => {
       await handlers({
-        req: req,
-        res: res,
+        incomingRequestData: req,
+        proxyServerResponse: res,
         protocol: 'http',
       });
     });
@@ -69,30 +71,30 @@ export class ProxyServer {
     // 在收到通过 CONNECT 方法建立而来的隧道传来的数据后做些什么
     this.httpsServer.on('request', async (req: IncomingMessage, res: ServerResponse) => {
       await handlers({
-        req: req,
-        res: res,
+        incomingRequestData: req,
+        proxyServerResponse: res,
         protocol: 'https',
       });
     });
 
-    // 在收到 XHR CONNECT 请求时做些什么
-    // 如果我们要代理的请求为 https 协议，如果将请求代理到本服务器，浏览器会发送一个 CONNECT 请求
+    // 在收到 HTTP CONNECT 请求时做些什么
+    // 如果我们要代理的请求为 https 协议，如果将请求代理到本服务器，浏览器会发送一个 CONNECT 请求，建立双向隧道
     // 在 nodejs 的官方文档中提供了这样一个 DEMO：http://nodejs.cn/api/http.html#http_event_connect
-    // 但是，这个 DEMO 中我们无法获取到相关的传输信息，并对信息作出定制化的修改，node 好像也没有给出相关的 API
     // 于是我们可以将这个请求转发到一个新的服务器上，然后让这个新的服务器去请求实际资源
     this.proxyServer.on('connect', (req: IncomingMessage, clientSocket: Duplex, head: Buffer) => {
       // 只有 https 请求走代理才会走到这一步，所以直接连接我们的 https 服务器就可以了
       const { domain, port } = divideConnectMethodReqUrl(req.url);
 
       // 是否匹配用户配置的域名, 如果不匹配我们不用走 proxy 服务器，这样一是可以优化性能
-      // 二是防止某些请求由于使用自签名证书而错误返回
+      // 二是防止某些服务器使用了 TLS Pinning 技术，会对证书的摘要进行验证
       const isProxyMatched = this.ruleManager.matchDomain(domain);
 
-      const resDomain = isProxyMatched ? LOCAL_HOST : domain;
-      const resPort = isProxyMatched ? PROXY_PASS_SERVICE_PORT : port;
+      const finalDomain = isProxyMatched ? LOCAL_HOST : domain;
+      const finalPort = isProxyMatched ? PROXY_PASS_SERVICE_PORT : port;
 
-      const proxyPassServiceSocket = net.connect(resPort, resDomain, () => {
+      const proxyPassServiceSocket = net.connect(finalPort, finalDomain, () => {
         clientSocket.write(`HTTP/${req.httpVersion} 200 OK\r\n\r\n`, 'utf-8', () => {
+          // 隧道流的第一个数据包（可能为空）
           proxyPassServiceSocket.write(head);
           proxyPassServiceSocket.pipe(clientSocket);
           clientSocket.pipe(proxyPassServiceSocket);
@@ -112,8 +114,8 @@ export class ProxyServer {
     // 在收到 http 升级请求时做些什么
     this.proxyServer.on('upgrade', async (req: IncomingMessage, socket: Socket, head: Buffer) => {
       await handlers({
-        req: req,
-        socket: socket,
+        incomingRequestData: req,
+        socketBetweenClientAndProxyServer: socket,
         head: head,
         protocol: 'ws',
       });
@@ -122,8 +124,8 @@ export class ProxyServer {
     // 在收到 https 升级请求时做些什么
     this.httpsServer.on('upgrade', async (req: IncomingMessage, socket: Socket, head: Buffer) => {
       await handlers({
-        req: req,
-        socket: socket,
+        incomingRequestData: req,
+        socketBetweenClientAndProxyServer: socket,
         head: head,
         protocol: 'wss',
       });

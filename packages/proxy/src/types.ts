@@ -4,12 +4,12 @@ import { Socket } from 'net';
 
 export interface ProxyServerContext {
   // for http(s)
-  req: IncomingMessage;
-  res?: ServerResponse;
+  incomingRequestData: IncomingMessage;
+  proxyServerResponse?: ServerResponse;
   protocol?: string;
   urlInstance?: URL;
   // for websocket
-  socket?: Socket;
+  socketBetweenClientAndProxyServer?: Socket;
   head?: Buffer;
 }
 
