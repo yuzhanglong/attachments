@@ -1,3 +1,4 @@
+/// <reference types="@types/jest" />
 import * as path from 'path';
 import { pathCert, pathCertKey } from '../src/const';
 

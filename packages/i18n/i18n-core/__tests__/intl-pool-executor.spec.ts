@@ -1,13 +1,6 @@
-/**
- * File: intl-pool-executor.spec.ts
- * Description: intl-pool-executor.spec.ts 单测
- * Created: 2021-07-31 11:06:42
- * Author: yuzhanglong
- * Email: yuzl1123@163.com
- */
-
-import { IntlPoolExecutor } from '../src/intl-pool-executor';
-import { LANGUAGE_MAP } from '../src/common';
+/// <reference types="@types/jest" />
+import { IntlPoolExecutor } from '../src';
+import { LANGUAGE_MAP } from '../src';
 
 describe('test intl-pool-executor', () => {
   test('init', () => {

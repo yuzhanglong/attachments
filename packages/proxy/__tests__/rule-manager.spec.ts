@@ -1,5 +1,4 @@
-// noinspection DuplicatedCode
-
+/// <reference types="@types/jest" />
 import { RuleManager } from '../src/rule-manager';
 
 describe('test rule manager', () => {

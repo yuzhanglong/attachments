@@ -1,11 +1,4 @@
-/**
- * File: utils.spec.ts
- * Description: 工具函数测试
- * Created: 2021-08-12 23:41:00
- * Author: yuzhanglong
- * Email: yuzl1123@163.com
- */
-
+/// <reference types="@types/jest" />
 import { comparePathAndGetDivision, getUrlPaths, removeWWWAndProtocol } from '../src/utils';
 
 describe('test utils', () => {

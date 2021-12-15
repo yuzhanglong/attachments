@@ -1,3 +1,4 @@
+/// <reference types="@types/jest" />
 import { ESLint } from 'eslint';
 import * as path from 'path';
 
