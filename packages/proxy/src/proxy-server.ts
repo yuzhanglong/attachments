@@ -163,4 +163,14 @@ export class ProxyServer {
   addRule(domain: string, ...ruleConfig: RuleConfig[]) {
     this.ruleManager.addRule(domain, ...ruleConfig);
   }
+
+  /**
+   * 清除所有的代理规则
+   *
+   * @author yuzhanglong
+   * @date 2021-12-16 00:12:46
+   */
+  clearRules() {
+    this.ruleManager.clear();
+  }
 }
