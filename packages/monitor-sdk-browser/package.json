@@ -1,6 +1,6 @@
 {
   "name": "@attachments/monitor-sdk-browser",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@attachments/utils": "^0.1.25",
+    "@attachments/utils": "^0.1.26",
     "@babel/plugin-transform-runtime": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.16.0",

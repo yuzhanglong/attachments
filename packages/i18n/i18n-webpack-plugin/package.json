@@ -1,6 +1,6 @@
 {
   "name": "@attachments/i18n-webpack-plugin",
-  "version": "0.1.21",
+  "version": "0.1.26",
   "description": "> TODO: description",
   "author": "yuzhanglong <yuzl1123@163.com>",
   "homepage": "",
@@ -20,12 +20,12 @@
     "dev:link": "yarn link"
   },
   "devDependencies": {
-    "@attachments/babel-plugin-i18n": "^0.1.21",
+    "@attachments/babel-plugin-i18n": "^0.1.26",
     "webpack": "^5.61.0",
     "webpack-cli": "^4.8.0"
   },
   "peerDependencies": {
-    "webpack": "^5 || ^4",
-    "@attachments/babel-plugin-i18n": "*"
+    "@attachments/babel-plugin-i18n": "*",
+    "webpack": "^5 || ^4"
   }
 }
