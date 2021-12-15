@@ -58,7 +58,7 @@ importers:
 
   packages/assets:
     specifiers:
-      '@attachments/utils': ^0.1.25
+      '@attachments/utils': ^0.1.26
       commander: ^8.2.0
       execa: ^5.1.1
       minimist: ^1.2.5
@@ -106,7 +106,7 @@ importers:
 
   packages/i18n/babel-plugin-i18n:
     specifiers:
-      '@attachments/utils': ^0.1.25
+      '@attachments/utils': ^0.1.26
       '@babel/core': ^7.14.8
       '@babel/preset-typescript': ^7.15.0
     dependencies:
@@ -138,7 +138,7 @@ importers:
 
   packages/i18n/i18n-webpack-plugin:
     specifiers:
-      '@attachments/babel-plugin-i18n': ^0.1.21
+      '@attachments/babel-plugin-i18n': ^0.1.26
       webpack: ^5.61.0
       webpack-cli: ^4.8.0
     devDependencies:
@@ -148,7 +148,7 @@ importers:
 
   packages/monitor-sdk-browser:
     specifiers:
-      '@attachments/utils': ^0.1.25
+      '@attachments/utils': ^0.1.26
       '@babel/plugin-transform-runtime': ^7.15.8
       '@babel/preset-env': ^7.15.8
       '@babel/preset-react': ^7.16.0

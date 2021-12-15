@@ -18,7 +18,7 @@ export function createProxyPassMiddleware(): ProxyServerMiddleware {
       rejectUnauthorized: false,
     };
 
-    const requestToRealServer = client.request(urlInstance, options, (realServerResponse) => {
+    const requestToRealServer = client.request(urlInstance.toString(), options, (realServerResponse) => {
       // 覆写 proxyServerResponse, 即用户实际接收到的内容
       proxyServerResponse.statusCode = realServerResponse.statusCode;
       proxyServerResponse.statusMessage = realServerResponse.statusMessage;
