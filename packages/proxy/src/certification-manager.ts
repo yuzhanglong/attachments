@@ -1,6 +1,6 @@
 import { CertificateCreationOptions, CertificateCreationResult, createCertificate } from 'pem';
 import * as fs from 'fs';
-import { MAX_DAYS, pathCert, pathCertKey } from './const';
+import { CERT, KEY, MAX_DAYS, pathCert, pathCertKey } from './const';
 
 interface Certification {
   key: string;
@@ -39,12 +39,9 @@ export class CertificationManager {
    */
   async createCertificationByDomain(domain: string): Promise<Certification> {
     if (!this.rootCertification) {
-      const cert = fs.readFileSync(pathCert).toString();
-      const key = fs.readFileSync(pathCertKey).toString();
-
       this.rootCertification = {
-        key: key,
-        cert: cert,
+        key: KEY,
+        cert: CERT,
       };
     }
 
