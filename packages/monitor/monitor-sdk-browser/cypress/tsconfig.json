@@ -1,5 +1,5 @@
 {
-  "extends": "../../../tsconfig.json",
+  "extends": "../../../../tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
     "types": [
@@ -7,7 +7,7 @@
     ]
   },
   "include": [
-    "../../../node_modules/cypress",
+    "../../../../node_modules/cypress",
     "./**/*.ts"
   ]
 }

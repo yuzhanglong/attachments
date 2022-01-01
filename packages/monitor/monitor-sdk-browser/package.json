@@ -5,12 +5,12 @@
   "module": "esm/index.js",
   "license": "MIT",
   "scripts": {
-    "dev:start": "webpack --node-env development -w",
+    "dev:start": "node_modules/.bin/webpack --node-env development -w",
     "build": "npm-run-all --parallel build:*",
-    "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
-    "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
-    "build:umd": "rimraf ./dist && webpack --node-env production",
-    "build:dev-umd": "rimraf ./dist && webpack --node-env development",
+    "build:cjs": "rimraf lib && tsc --module commonjs --outDir lib",
+    "build:esm": "rimraf esm && tsc --module ESNext --outDir esm",
+    "build:umd": "rimraf dist && webpack --node-env production",
+    "build:dev-umd": "rimraf dist && webpack --node-env development",
     "dev:link": "yarn link",
     "test:cypress": "cypress open-ct"
   },
