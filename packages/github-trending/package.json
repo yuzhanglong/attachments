@@ -1,0 +1,31 @@
+{
+  "name": "@attachments/github-trending",
+  "version": "0.0.1",
+  "description": "github trending API wrapper",
+  "author": "yuzhanglong <yuzl1123@163.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "files": [
+    "src",
+    "esm",
+    "lib"
+  ],
+  "scripts": {
+    "dev:start": "tsc -w",
+    "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
+    "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
+    "build": "npm-run-all --parallel build:*",
+    "lint": "eslint --ext js,jsx,ts,tsx src",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "cheerio": "^1.0.0-rc.10"
+  }
+}
