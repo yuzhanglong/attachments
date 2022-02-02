@@ -1,0 +1,37 @@
+{
+  "name": "@attachments/generator-eslint",
+  "version": "0.0.0",
+  "description": "> TODO: add description",
+  "author": "> TODO: add author",
+  "homepage": "",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "files": [
+    "src",
+    "esm",
+    "lib"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "scripts": {
+    "dev:start": "tsc -w",
+    "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib",
+    "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
+    "build": "npm-run-all --parallel build:*",
+    "lint": "eslint --ext js,jsx,ts,tsx src",
+    "test": "jest",
+    "dev:run": "node lib/index.js"
+  },
+  "devDependencies": {
+    "@types/yeoman-generator": "^5.2.8",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "typescript": "4.3.5"
+  },
+  "dependencies": {
+    "yeoman-environment": "^3.9.1",
+    "yeoman-generator": "^5.6.1"
+  }
+}

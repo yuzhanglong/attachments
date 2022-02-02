@@ -2,3 +2,4 @@ packages:
   - 'packages/i18n/*'
   - 'packages/monitor/*'
   - 'packages/*'
+  - 'packages/generator/*'
