@@ -1,4 +1,4 @@
-import ESLint from 'eslint';
+import { ESLint } from 'eslint';
 import { rules } from './rules';
 
 module.exports = {
@@ -13,15 +13,21 @@ module.exports = {
           version: 'detect',
         },
       },
-      plugins: ['@typescript-eslint', 'jest', 'prettier', 'react'],
+      plugins: ['@typescript-eslint', 'jest', 'prettier', 'react', 'jsdoc'],
       extends: [
         'eslint:recommended',
         'plugin:react/recommended',
         'eslint-config-prettier',
         'plugin:jest/recommended',
         'plugin:prettier/recommended',
+        'plugin:jsdoc/recommended',
       ],
       rules: rules,
     },
+    settings: {
+      jest: {
+        version: 27,
+      },
+    },
   },
-} as ESLint.ESLint.Options;
+} as ESLint.Options;
