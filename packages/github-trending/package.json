@@ -1,6 +1,6 @@
 {
   "name": "@attachments/github-trending",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "github trending API wrapper",
   "author": "yuzhanglong <yuzl1123@163.com>",
   "homepage": "",
