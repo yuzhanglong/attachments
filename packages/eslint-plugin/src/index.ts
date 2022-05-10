@@ -13,7 +13,7 @@ module.exports = {
           version: 'detect',
         },
       },
-      plugins: ['@typescript-eslint', 'jest', 'prettier', 'react', 'jsdoc'],
+      plugins: ['@typescript-eslint', 'jest', 'prettier', 'react', 'jsdoc', 'decorator-position'],
       extends: [
         'eslint:recommended',
         'plugin:react/recommended',
@@ -21,6 +21,7 @@ module.exports = {
         'plugin:jest/recommended',
         'plugin:prettier/recommended',
         'plugin:jsdoc/recommended',
+        'plugin:decorator-position/ember',
       ],
       rules: rules,
     },

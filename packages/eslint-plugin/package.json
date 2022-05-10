@@ -30,6 +30,7 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-config-standard-with-typescript": "^21.0.1",
     "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-decorator-position": "^4.0.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^25.2.2",
     "eslint-plugin-jsdoc": "^39.1.0",
