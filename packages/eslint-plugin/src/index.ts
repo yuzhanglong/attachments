@@ -22,6 +22,7 @@ module.exports = {
         'plugin:prettier/recommended',
         'plugin:jsdoc/recommended',
         'plugin:decorator-position/ember',
+        'plugin:import/recommended',
       ],
       rules: rules,
     },
