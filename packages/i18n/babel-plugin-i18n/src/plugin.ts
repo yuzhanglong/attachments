@@ -8,7 +8,6 @@
 
 import type { Node, NodePath, PluginObj } from '@babel/core';
 import type { StringLiteral } from '@babel/types';
-import { ObjectProperty } from '@babel/types';
 import type { PluginOptions, StringLiteralPath } from './types';
 
 /**
@@ -24,7 +23,6 @@ function isCallByIntlMethodDirectly(path: NodePath<Node>) {
   const isParentIntlCallExpression = parent.type === 'CallExpression';
 
   // 2. 全局变量名是否符合我们的要求
-  // @ts-expect-error
   const isCalleeNamedIntl = parent?.callee?.name === 'intl';
 
   return isParentIntlCallExpression && isCalleeNamedIntl;
@@ -38,7 +36,10 @@ function isCallByIntlMethodDirectly(path: NodePath<Node>) {
  * @param path 目标节点的 path 属性
  */
 function isCallByConditionalExpression(path: StringLiteralPath) {
-  const { parent, parentPath } = path;
+  const {
+    parent,
+    parentPath,
+  } = path;
   // 父表达式是否为三元表达式
   if (!(parent.type === 'ConditionalExpression'))
     return false;
@@ -64,7 +65,11 @@ export const addComment = (path: NodePath<Node>, comment: string) => {
  * @date 2021-11-23 23:41:38
  */
 export function BabelPluginI18n(api: any, options: PluginOptions) {
-  const { intlKeyPrefix, intlCallee, include } = options;
+  const {
+    intlKeyPrefix,
+    intlCallee,
+    include,
+  } = options;
 
   const pluginInstance: PluginObj = {
     visitor: {
@@ -84,7 +89,10 @@ export function BabelPluginI18n(api: any, options: PluginOptions) {
       },
       StringLiteral(path: StringLiteralPath, pluginPass) {
         const {
-          node: { value: stringValue, leadingComments },
+          node: {
+            value: stringValue,
+            leadingComments,
+          },
         } = path;
 
         // 文案表不遍历，提高性能

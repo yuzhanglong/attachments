@@ -48,6 +48,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 
+
 /**
  * 初始化资源异常监听器
  *
@@ -55,15 +56,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  * @date 2021-08-25 21:55:26
  * @param options 初始化选项
  */
-
 var createAssetsErrorMonitor = function createAssetsErrorMonitor(options) {
   // 保证 window 存在
   var window = (0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_2__.getBrowserWindow)();
-
-  if (!window) {
-    return;
-  } // 从捕获到的 error 时间中筛选出有用的异常信息，如果这个 error 和资源异常无关，我们返回 undefined
-
+  if (!window) return; // 从捕获到的 error 时间中筛选出有用的异常信息，如果这个 error 和资源异常无关，我们返回 undefined
 
   var getErrorInfoFromErrorEvent = function getErrorInfoFromErrorEvent(e) {
     var target = e.target;
@@ -89,11 +85,7 @@ var createAssetsErrorMonitor = function createAssetsErrorMonitor(options) {
 
   var errorListener = function errorListener(e) {
     var res = getErrorInfoFromErrorEvent(e);
-
-    if (!res) {
-      return;
-    }
-
+    if (!res) return;
     var url = res.url,
         tagName = res.tagName;
     var urlData = (0,_utils_get_url_data__WEBPACK_IMPORTED_MODULE_3__.getUrlData)(url);
@@ -139,11 +131,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lodash_noop__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/noop */ "../../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/noop.js");
 /* harmony import */ var lodash_noop__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_noop__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../types */ "./src/types.ts");
-/* harmony import */ var _utils_observe_performance__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/observe-performance */ "./src/utils/observe-performance.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types */ "./src/types.ts");
+/* harmony import */ var _utils_observe_performance__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/observe-performance */ "./src/utils/observe-performance.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _utils_on_page_load__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/on-page-load */ "./src/utils/on-page-load.ts");
 /* harmony import */ var _utils_performance_entry__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/performance-entry */ "./src/utils/performance-entry.ts");
+
 
 
 
@@ -156,10 +149,9 @@ __webpack_require__.r(__webpack_exports__);
  * @author yuzhanglong
  * @date 2021-10-29 23:19:38
  */
-
 function createAssetsMonitor(options) {
   var observerOptions = {
-    entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_1__.PERFORMANCE_ENTRY_TYPES.RESOURCE]
+    entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_3__.PERFORMANCE_ENTRY_TYPES.RESOURCE]
   };
 
   var reportAll = function reportAll(entryList) {
@@ -169,7 +161,7 @@ function createAssetsMonitor(options) {
           timeStamp: Date.now(),
           performance: entry
         },
-        eventType: _types__WEBPACK_IMPORTED_MODULE_2__.EventType.ASSETS
+        eventType: _types__WEBPACK_IMPORTED_MODULE_1__.EventType.ASSETS
       });
     });
   };
@@ -177,7 +169,7 @@ function createAssetsMonitor(options) {
   var destroy = (lodash_noop__WEBPACK_IMPORTED_MODULE_0___default());
 
   var reportResourceInfoInitiative = function reportResourceInfoInitiative() {
-    var res = (0,_utils_performance_entry__WEBPACK_IMPORTED_MODULE_5__.getPerformanceEntriesByType)(_constants__WEBPACK_IMPORTED_MODULE_1__.PERFORMANCE_ENTRY_TYPES.RESOURCE);
+    var res = (0,_utils_performance_entry__WEBPACK_IMPORTED_MODULE_5__.getPerformanceEntriesByType)(_constants__WEBPACK_IMPORTED_MODULE_3__.PERFORMANCE_ENTRY_TYPES.RESOURCE);
     reportAll(res);
   }; // 为什么要基于 onload 后的资源监听 + onload 之前的资源主动获取的模式，而不是直接监听？
   // 第一：大量资源加载的发生时机一般都是网页的首屏加载
@@ -187,7 +179,7 @@ function createAssetsMonitor(options) {
 
   (0,_utils_on_page_load__WEBPACK_IMPORTED_MODULE_4__.onPageLoad)(function () {
     reportResourceInfoInitiative();
-    destroy = (0,_utils_observe_performance__WEBPACK_IMPORTED_MODULE_3__.observePerformance)(observerOptions, function (entryList) {
+    destroy = (0,_utils_observe_performance__WEBPACK_IMPORTED_MODULE_2__.observePerformance)(observerOptions, function (entryList) {
       reportAll(entryList);
     });
   });
@@ -223,6 +215,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
+
 /**
  * 累计布局偏移监控
  *
@@ -230,7 +223,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  * @date 2021-08-27 23:17:43
  * @param clsMonitorOptions 相关选项
  */
-
 function createClsMonitor(clsMonitorOptions) {
   // CLS 是衡量偏移频率的一个指标，它代表整个页面生命周期内发生的所有意外布局偏移中最大连续布局偏移分数。
   // 可以参考：
@@ -373,23 +365,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /**
  * 创建 fid 监听器
  *
  * @author yuzhanglong
  * @date 2021-11-10 23:39:55
  */
-
 var createFIDMonitor = function createFIDMonitor(options) {
-  if (!(0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getPerformanceObserver)()) {
-    return;
-  }
+  if (!(0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getPerformanceObserver)()) return;
 
   var reportData = function reportData(entry) {
-    if (!entry) {
-      return;
-    }
-
+    if (!entry) return;
     options.onReport({
       data: {
         fid: entry
@@ -414,12 +401,7 @@ var createFIDMonitor = function createFIDMonitor(options) {
 
 
   var entry = getFIDDirectly();
-
-  if (!entry) {
-    observeFID();
-  } else {
-    reportData(entry);
-  }
+  if (!entry) observeFID();else reportData(entry);
 };
 
 /***/ }),
@@ -475,11 +457,7 @@ var calculateFMP = function calculateFMP(scoredData) {
 };
 var createFMPMonitor = function createFMPMonitor(options) {
   var MutationObserver = (0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_3__.getMutationObserver)();
-
-  if (!MutationObserver) {
-    return;
-  }
-
+  if (!MutationObserver) return;
   var startTime = Date.now();
   var scoredData = [];
 
@@ -540,19 +518,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /**
  * javaScript 异常监控能力
  *
  * @author yuzhanglong
  * @date 2021-08-24 17:08:10
  */
-
 function createJsErrorMonitor(options) {
   var window = (0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getBrowserWindow)();
-
-  if (!window) {
-    return;
-  }
+  if (!window) return;
 
   var handleError = function handleError(e) {
     var data = (0,_utils_format_error__WEBPACK_IMPORTED_MODULE_2__.formatError)(e);
@@ -628,10 +603,7 @@ var MPFID_REPORT_TIMEOUT_AFTER_ONLOAD = 200;
  */
 
 var createMPFIDMonitor = function createMPFIDMonitor(options) {
-  if (!(0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_4__.getPerformance)() || !(0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_4__.getPerformanceObserver)()) {
-    return;
-  }
-
+  if (!(0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_4__.getPerformance)() || !(0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_4__.getPerformanceObserver)()) return;
   var longTaskEntries = [];
   var performanceOptions = {
     entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_5__.PERFORMANCE_ENTRY_TYPES.LONG_TASK]
@@ -724,11 +696,7 @@ var FIRST_PAINT = 'first-paint';
 var FIRST_CONTENTFUL_PAINT = 'first-contentful-paint';
 function createPaintMonitor(options) {
   var performance = (0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_5__.getPerformance)();
-
-  if (!performance) {
-    return;
-  } // 销毁回调合集
-
+  if (!performance) return; // 销毁回调合集
 
   var destroyCallback = [];
 
@@ -893,11 +861,7 @@ var createTTIMonitor = function createTTIMonitor(options) {
   var XMLHttpRequest = (0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getXMLHttpRequest)();
   var performanceObserver = (0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getPerformanceObserver)();
   var performance = (0,_utils_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getPerformance)();
-
-  if (!XMLHttpRequest || !performanceObserver || !performance) {
-    return;
-  }
-
+  if (!XMLHttpRequest || !performanceObserver || !performance) return;
   var longTasks = [];
   var networkRequests = [];
   var ttiCalculatorScheduler = (0,_utils_create_scheduler__WEBPACK_IMPORTED_MODULE_4__.createScheduler)();
@@ -983,8 +947,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 var assignKeysBetweenObjects = function assignKeysBetweenObjects(obj1, obj2, keys) {
   for (var i = 0; i < keys.length; i += 1) {
-    var k = keys[i]; // eslint-disable-next-line no-param-reassign
-
+    var k = keys[i];
     obj2[k] = obj1[k];
   }
 };
@@ -1015,49 +978,29 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var getBrowserWindow = function getBrowserWindow() {
-  if (lodash_isObject__WEBPACK_IMPORTED_MODULE_0___default()(window)) {
-    return window;
-  }
-
+  if (lodash_isObject__WEBPACK_IMPORTED_MODULE_0___default()(window)) return window;
   return null;
 };
 var getPerformance = function getPerformance() {
-  if (getBrowserWindow() && lodash_isObject__WEBPACK_IMPORTED_MODULE_0___default()(window.performance)) {
-    return window.performance;
-  }
-
+  if (getBrowserWindow() && lodash_isObject__WEBPACK_IMPORTED_MODULE_0___default()(window.performance)) return window.performance;
   return null;
 };
 var getPerformanceObserver = function getPerformanceObserver() {
-  if (getBrowserWindow() && lodash_isFunction__WEBPACK_IMPORTED_MODULE_1___default()(window.PerformanceObserver)) {
-    return window.PerformanceObserver;
-  }
-
+  if (getBrowserWindow() && lodash_isFunction__WEBPACK_IMPORTED_MODULE_1___default()(window.PerformanceObserver)) return window.PerformanceObserver;
   return null;
 };
 var getXMLHttpRequest = function getXMLHttpRequest() {
-  if (getBrowserWindow() && lodash_isFunction__WEBPACK_IMPORTED_MODULE_1___default()(window.XMLHttpRequest)) {
-    return window.XMLHttpRequest;
-  }
-
+  if (getBrowserWindow() && lodash_isFunction__WEBPACK_IMPORTED_MODULE_1___default()(window.XMLHttpRequest)) return window.XMLHttpRequest;
   return null;
 };
 var getDocument = function getDocument() {
   var window = getBrowserWindow();
-
-  if (!window || !window.document) {
-    return null;
-  }
-
+  if (!window || !window.document) return null;
   return window.document;
 };
 var getAnimationFrame = function getAnimationFrame() {
   var window = getBrowserWindow();
-
-  if (!window) {
-    return null;
-  }
-
+  if (!window) return null;
   return {
     raf: window.requestAnimationFrame,
     caf: window.cancelAnimationFrame
@@ -1065,11 +1008,7 @@ var getAnimationFrame = function getAnimationFrame() {
 };
 var getMutationObserver = function getMutationObserver() {
   var window = getBrowserWindow();
-
-  if (!window) {
-    return undefined;
-  }
-
+  if (!window) return undefined;
   return window.MutationObserver;
 };
 
@@ -1126,17 +1065,11 @@ var calculateTTI = function calculateTTI(options) {
       checkTimeInQuiteWindow = options.checkTimeInQuiteWindow,
       lastKnownNetwork2Busy = options.lastKnownNetwork2Busy; // 确保静默窗口期中没有请求数超过 2 的时刻
 
-  if (checkTimeInQuiteWindow - lastKnownNetwork2Busy < 5000) {
-    return null;
-  } // 如果没有 long task，那么 FCP 时间就是 TTI 时间
-
+  if (checkTimeInQuiteWindow - lastKnownNetwork2Busy < 5000) return null; // 如果没有 long task，那么 FCP 时间就是 TTI 时间
 
   var maybeTTI = longTasks.length === 0 ? searchStart : lodash_last__WEBPACK_IMPORTED_MODULE_0___default()(longTasks).endTime; // 确保窗口期没有 long task
 
-  if (checkTimeInQuiteWindow - maybeTTI < 5000) {
-    return null;
-  }
-
+  if (checkTimeInQuiteWindow - maybeTTI < 5000) return null;
   return Math.max(maybeTTI, getDomContentLoadedEventEndTime());
 };
 
@@ -1169,10 +1102,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  */
 var computeLastKnownNetwork2Busy = function computeLastKnownNetwork2Busy(incompleteRequestStarts, observedResourceRequests) {
   // 当前进行的请求超过 2 个，直接返回当前时间
-  if (incompleteRequestStarts.length > 2) {
-    return performance.now();
-  } // endpoints 包含了每个请求的开始时间点和结束时间点，最后会按时间先后顺序排序
-
+  if (incompleteRequestStarts.length > 2) return performance.now(); // endpoints 包含了每个请求的开始时间点和结束时间点，最后会按时间先后顺序排序
 
   var endpoints = [];
 
@@ -1234,11 +1164,7 @@ var computeLastKnownNetwork2Busy = function computeLastKnownNetwork2Busy(incompl
 
       case 'request-end':
         currentActive += 1;
-
-        if (currentActive > 2) {
-          return endpoint.timestamp;
-        }
-
+        if (currentActive > 2) return endpoint.timestamp;
         break;
 
       default:
@@ -1286,15 +1212,9 @@ var createScheduler = function createScheduler() {
   };
 
   var resetScheduler = function resetScheduler(newScheduleTime) {
-    if (!callback) {
-      return;
-    } // 新配置的时间早于即将调度的时间，不处理
+    if (!callback) return; // 新配置的时间早于即将调度的时间，不处理
 
-
-    if (newScheduleTime < scheduleTime) {
-      return;
-    }
-
+    if (newScheduleTime < scheduleTime) return;
     clearCurrentScheduleTimer();
     var newTime = newScheduleTime - getCurrentTime();
     taskId = window.setTimeout(function () {
@@ -1354,7 +1274,7 @@ function formatError(e) {
   } else if ((0,_instance_of__WEBPACK_IMPORTED_MODULE_0__.instanceOf)(e, ErrorEvent)) {
     error = e.error;
   } else {
-    // @ts-ignore
+    // @ts-expect-error
     error = e.reason || e.error;
   }
 
@@ -1444,11 +1364,7 @@ var IGNORE_TAGS = ['SCRIPT', 'STYLE', 'META', 'HEAD'];
 var getDomLayoutScore = function getDomLayoutScore(element, depth, isSiblingExists, exact, onGetScore) {
   var tagName = element.tagName,
       children = element.children;
-
-  if (!element || IGNORE_TAGS.includes(tagName)) {
-    return 0;
-  }
-
+  if (!element || IGNORE_TAGS.includes(tagName)) return 0;
   var childNodes = Array.from(children || []);
   var childrenScore = childNodes.reduceRight(function (siblingScore, currentNode) {
     // 如果它的右子树兄弟分数存在，则无需计算 dom 位置
@@ -1460,9 +1376,7 @@ var getDomLayoutScore = function getDomLayoutScore(element, depth, isSiblingExis
   var isPositionCheckNeeded = childrenScore <= 0 && !isSiblingExists;
 
   if (isPositionCheckNeeded) {
-    if (!lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(element.getBoundingClientRect)) {
-      return 0;
-    }
+    if (!lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(element.getBoundingClientRect)) return 0;
 
     var _element$getBoundingC = element.getBoundingClientRect(),
         top = _element$getBoundingC.top,
@@ -1476,26 +1390,13 @@ var getDomLayoutScore = function getDomLayoutScore(element, depth, isSiblingExis
 
     var isUnderView = top > window.innerHeight;
     var isNotVisible;
-
-    if (!exact) {
-      isNotVisible = height <= 0;
-    } else {
-      isNotVisible = height <= 0 || width <= 0 || element.style.visibility === 'hidden';
-    }
-
+    if (!exact) isNotVisible = height <= 0;else isNotVisible = height <= 0 || width <= 0 || element.style.visibility === 'hidden';
     var isElementOutOfView = isUnderView || isNotVisible;
-
-    if (isElementOutOfView) {
-      return 0;
-    }
+    if (isElementOutOfView) return 0;
   }
 
   var score = childrenScore + 1 + 0.5 * depth;
-
-  if (lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(onGetScore)) {
-    onGetScore(element, score, depth, isPositionCheckNeeded);
-  }
-
+  if (lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(onGetScore)) onGetScore(element, score, depth, isPositionCheckNeeded);
   return score;
 };
 
@@ -1620,10 +1521,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "instanceOf": () => (/* binding */ instanceOf)
 /* harmony export */ });
 var instanceOf = function instanceOf(a, b) {
-  if (b) {
-    return a instanceof b;
-  }
-
+  if (b) return a instanceof b;
   return false;
 };
 
@@ -1642,7 +1540,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _patch_method__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./patch-method */ "./src/utils/patch-method.ts");
 
-
 /**
  * 使用劫持方式监听正在进行中的请求
  *
@@ -1652,6 +1549,7 @@ __webpack_require__.r(__webpack_exports__);
  * 如果是 **XMLHttpRequest**, 为偶数，如果是 **fetch** 则为奇数，对应的 value 为这次请求开始的时间戳
  * @return getIncomingRequestsTimes 基于所有 incomingRequests 的 value 合并得到的一个数组
  */
+
 var observeIncomingRequests = function observeIncomingRequests() {
   var incomingRequests = {}; // 监听 XMLHttpRequest open 方法
 
@@ -1674,10 +1572,7 @@ var observeIncomingRequests = function observeIncomingRequests() {
         args[_key2] = arguments[_key2];
       }
 
-      if (this.taggedMethod !== 'GET') {
-        return origin.apply(this, args);
-      } // uniqueId 为偶数
-
+      if (this.taggedMethod !== 'GET') return origin.apply(this, args); // uniqueId 为偶数
 
       uniqueId += 2;
       var reqId = uniqueId;
@@ -1706,11 +1601,7 @@ var observeIncomingRequests = function observeIncomingRequests() {
       var request = args[0],
           init = args[1];
       var method = (request === null || request === void 0 ? void 0 : request.method) || init.method;
-
-      if (method !== 'GET') {
-        return origin.apply(void 0, args);
-      }
-
+      if (method !== 'GET') return origin.apply(void 0, args);
       return new Promise(function (resolve, reject) {
         uniqueId += 2;
         var reqId = uniqueId;
@@ -1752,14 +1643,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "observeLongTaskAndResources": () => (/* binding */ observeLongTaskAndResources)
 /* harmony export */ });
-/* harmony import */ var _observe_performance__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./observe-performance */ "./src/utils/observe-performance.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
+/* harmony import */ var _observe_performance__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./observe-performance */ "./src/utils/observe-performance.ts");
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 
 
@@ -1771,9 +1661,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  * @param onLongTask 在监听到长任务时做些什么，第一个回调参数为本次长任务的开始时间和结束时间，第二个为对应的 performanceEntry 对象
  * @param onNetworkRequest 在监听到网络请求后做些什么，参数同上
  */
+
 var observeLongTaskAndResources = function observeLongTaskAndResources(onLongTask, onNetworkRequest) {
-  (0,_observe_performance__WEBPACK_IMPORTED_MODULE_0__.observePerformance)({
-    entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_1__.PERFORMANCE_ENTRY_TYPES.LONG_TASK, _constants__WEBPACK_IMPORTED_MODULE_1__.PERFORMANCE_ENTRY_TYPES.RESOURCE]
+  (0,_observe_performance__WEBPACK_IMPORTED_MODULE_1__.observePerformance)({
+    entryTypes: [_constants__WEBPACK_IMPORTED_MODULE_0__.PERFORMANCE_ENTRY_TYPES.LONG_TASK, _constants__WEBPACK_IMPORTED_MODULE_0__.PERFORMANCE_ENTRY_TYPES.RESOURCE]
   }, function (entryList) {
     var _iterator = _createForOfIteratorHelper(entryList),
         _step;
@@ -1785,12 +1676,12 @@ var observeLongTaskAndResources = function observeLongTaskAndResources(onLongTas
             duration = _entry.duration,
             entryType = _entry.entryType;
 
-        if (entryType === _constants__WEBPACK_IMPORTED_MODULE_1__.PERFORMANCE_ENTRY_TYPES.LONG_TASK) {
+        if (entryType === _constants__WEBPACK_IMPORTED_MODULE_0__.PERFORMANCE_ENTRY_TYPES.LONG_TASK) {
           onLongTask({
             startTime: startTime,
             endTime: startTime + duration
           }, _entry);
-        } else if (_entry.entryType === _constants__WEBPACK_IMPORTED_MODULE_1__.PERFORMANCE_ENTRY_TYPES.RESOURCE) {
+        } else if (_entry.entryType === _constants__WEBPACK_IMPORTED_MODULE_0__.PERFORMANCE_ENTRY_TYPES.RESOURCE) {
           var _ref = _entry,
               fetchStart = _ref.fetchStart,
               responseEnd = _ref.responseEnd;
@@ -1848,11 +1739,8 @@ var observePerformance = function observePerformance(options, callback) {
   if (PerformanceObserver) {
     var observerInstance = new PerformanceObserver(function (list) {
       // 用户配置了只回调一次，并且已经执行过，我们不再执行
-      if (once && isExecuted) {
-        return;
-      } // performanceEntries 是【某小一段时间】得到的性能结果
+      if (once && isExecuted) return; // performanceEntries 是【某小一段时间】得到的性能结果
       // 我们再遍历他们，并逐一调用 callback, 这样上层调用者无需再额外处理
-
 
       var performanceEntries = list.getEntries();
       callback(performanceEntries);
@@ -1886,10 +1774,7 @@ __webpack_require__.r(__webpack_exports__);
 var onPageLoad = function onPageLoad(callback) {
   var window = (0,_browser_interfaces__WEBPACK_IMPORTED_MODULE_0__.getBrowserWindow)();
   var document = (0,_browser_interfaces__WEBPACK_IMPORTED_MODULE_0__.getDocument)();
-
-  if (!window || !document) {
-    return;
-  }
+  if (!window || !document) return;
 
   if (document.readyState === 'complete') {
     callback();
@@ -1923,11 +1808,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var onPageUnload = function onPageUnload(callback) {
   var window = (0,_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getBrowserWindow)();
-
-  if (!window || !lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(window.addEventListener)) {
-    return;
-  }
-
+  if (!window || !lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(window.addEventListener)) return;
   ['beforeunload', 'pagehide', 'unload'].forEach(function (event) {
     window.addEventListener(event, function (e) {
       callback(e);
@@ -1966,7 +1847,6 @@ var patchMethod = function patchMethod(obj, key, patchFn) {
       params[_key] = arguments[_key];
     }
 
-    // eslint-disable-next-line no-param-reassign
     obj[key] = patchFn.apply(void 0, [obj[key]].concat(params));
   };
 };
@@ -2000,11 +1880,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var getPerformanceEntriesByName = function getPerformanceEntriesByName(name) {
   var performance = (0,_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getPerformance)();
-
-  if (performance && lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(performance.getEntriesByName)) {
-    return performance.getEntriesByName(name);
-  }
-
+  if (performance && lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(performance.getEntriesByName)) return performance.getEntriesByName(name);
   return [];
 };
 /**
@@ -2017,11 +1893,7 @@ var getPerformanceEntriesByName = function getPerformanceEntriesByName(name) {
 
 var getPerformanceEntriesByType = function getPerformanceEntriesByType(type) {
   var performance = (0,_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getPerformance)();
-
-  if (performance && lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(performance.getEntriesByType)) {
-    return performance.getEntriesByType(type);
-  }
-
+  if (performance && lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(performance.getEntriesByType)) return performance.getEntriesByType(type);
   return [];
 };
 
@@ -2043,27 +1915,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _browser_interfaces__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./browser-interfaces */ "./src/utils/browser-interfaces.ts");
 
 
-/**
- * 使用 request animation frame 调度某个回调函数
- *
- * @author yuzhanglong
- * @date 2021-11-06 23:18:15
- */
-
 var useRequestAnimationFrame = function useRequestAnimationFrame(callback) {
   var apis = (0,_browser_interfaces__WEBPACK_IMPORTED_MODULE_1__.getAnimationFrame)();
-
-  if (!apis) {
-    return;
-  }
-
+  if (!apis) return;
   var raf = apis.raf,
       caf = apis.caf;
-
-  if (!lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(raf) || !lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(caf)) {
-    return;
-  } // raf 的返回值为非 0 数字
-
+  if (!lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(raf) || !lodash_isFunction__WEBPACK_IMPORTED_MODULE_0___default()(caf)) return; // raf 的返回值为非 0 数字
 
   var rafTimer = 0;
 
@@ -2081,9 +1938,7 @@ var useRequestAnimationFrame = function useRequestAnimationFrame(callback) {
   };
 
   var cancelCallback = function cancelCallback() {
-    if (rafTimer) {
-      caf(rafTimer);
-    }
+    if (rafTimer) caf(rafTimer);
   };
 
   return {
@@ -2113,8 +1968,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // XMLHttpRequest.DONE 在低版本 IE 中不兼容
 
+// XMLHttpRequest.DONE 在低版本 IE 中不兼容
 var XML_HTTP_REQUEST_DONE = XMLHttpRequest.DONE || 4;
 /**
  * 初始化 xhr 监控

@@ -24,6 +24,7 @@
     "@babel/preset-typescript": "^7.15.0"
   },
   "dependencies": {
-    "@attachments/utils": "^0.2.0"
+    "@attachments/utils": "^0.2.0",
+    "@babel/types": "^7.20.0"
   }
 }
