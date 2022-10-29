@@ -1,10 +1,10 @@
 const base = require('../../jest.config');
-// @ts-ignore
+// @ts-expect-error
 const { name } = require('./package.json');
 
 module.exports = {
   ...base,
-  name: name,
+  name,
   displayName: name,
   collectCoverage: true,
 };

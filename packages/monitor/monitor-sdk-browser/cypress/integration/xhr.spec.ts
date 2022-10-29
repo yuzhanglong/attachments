@@ -1,9 +1,9 @@
 import axios from 'axios';
 import faker from 'faker';
-import { CallBack } from '../../src/types';
+import type { CallBack } from '../../src/types';
 import { promisifyCounterMonitorReport } from '../utils/test-utils';
 import { createXHRMonitor } from '../../src';
-import { XHRReportData } from '../../src/xhr/types';
+import type { XHRReportData } from '../../src/xhr/types';
 
 const runMonitor = async (cb: CallBack<any>, t?: number) =>
   promisifyCounterMonitorReport<XHRReportData>({
@@ -21,7 +21,8 @@ describe('xhr monitor', () => {
         await axios.get(fakeUrl, {
           timeout: 2000,
         });
-      } catch (e) {
+      }
+      catch (e) {
         console.log(e);
       }
     });
@@ -40,7 +41,8 @@ describe('xhr monitor', () => {
     const [res] = await runMonitor(async () => {
       try {
         await axios.get(fakeUrl);
-      } catch (e) {
+      }
+      catch (e) {
         console.log(e);
       }
     });
@@ -58,14 +60,15 @@ describe('xhr monitor', () => {
     const res = await runMonitor(async () => {
       try {
         await Promise.all([axios.get(fakeUrl), axios.get(fakeUrl), axios.get(fakeUrl)]);
-      } catch (e) {
+      }
+      catch (e) {
         console.log(e);
       }
     }, 2);
 
     expect(res.length).to.equal(2);
-    expect(res.every((item) => item.eventType === 'XHR')).to.be.true;
-    expect(res.every((item) => item.data.request.href === fakeUrl)).to.be.true;
-    expect(res.every((item) => item.data.response.status === 200)).to.be.true;
+    expect(res.every(item => item.eventType === 'XHR')).to.be.true;
+    expect(res.every(item => item.data.request.href === fakeUrl)).to.be.true;
+    expect(res.every(item => item.data.response.status === 200)).to.be.true;
   });
 });

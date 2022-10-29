@@ -1,4 +1,4 @@
-import { UrlData } from '../types';
+import type { UrlData } from '../types';
 import { getBrowserWindow } from './browser-interfaces';
 import { assignKeysBetweenObjects } from './assign-keys-between-objects';
 
@@ -7,7 +7,7 @@ export const getUrlData = (url: string): UrlData => {
   const keys: string[] = ['hash', 'host', 'hostname', 'href', 'origin', 'pathname', 'port', 'protocol', 'search'];
 
   const res = {
-    url: url,
+    url,
     hash: '',
     host: '',
     hostname: '',

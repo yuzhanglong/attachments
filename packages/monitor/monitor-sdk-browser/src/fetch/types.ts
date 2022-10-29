@@ -1,5 +1,5 @@
-import { MonitorOptions } from '../types';
-import { XHRReportData } from '../xhr/types';
+import type { MonitorOptions } from '../types';
+import type { XHRReportData } from '../xhr/types';
 
 export type FetchReportData = XHRReportData;
 

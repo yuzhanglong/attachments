@@ -1,7 +1,7 @@
 import * as https from 'https';
 import * as http from 'http';
-import { RequestOptions } from 'https';
-import { ProxyServerContext, ProxyServerMiddleware } from '../types';
+import type { RequestOptions } from 'https';
+import type { ProxyServerContext, ProxyServerMiddleware } from '../types';
 
 export function createProxyPassMiddleware(): ProxyServerMiddleware {
   return (ctx: ProxyServerContext) => {
@@ -27,9 +27,8 @@ export function createProxyPassMiddleware(): ProxyServerMiddleware {
       proxyServerResponse.setHeader('x-response-from', '@attachments/proxy');
 
       const headers = Object.entries(realServerResponse.headers);
-      for (const [k, v] of headers) {
+      for (const [k, v] of headers)
         proxyServerResponse.setHeader(k, v);
-      }
 
       // 连接真实服务器的响应流(可读流)和代理服务器的响应流(可写流)
       realServerResponse.pipe(proxyServerResponse);

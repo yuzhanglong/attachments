@@ -24,7 +24,7 @@ export const createAddManyTemplatesAction = (name: string, destination: string) 
 
   return {
     type: 'addMany',
-    destination: destination,
+    destination,
     templateFiles: `${tsTemplatePath}/**/*`,
     base: tsTemplatePath,
   };

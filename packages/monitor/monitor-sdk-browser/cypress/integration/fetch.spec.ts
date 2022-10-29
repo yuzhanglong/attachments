@@ -1,7 +1,7 @@
-import { CallBack } from '../../src/types';
+import type { CallBack } from '../../src/types';
 import { promisifyCounterMonitorReport } from '../utils/test-utils';
 import { createFetchMonitor } from '../../src/fetch/fetch-monitor';
-import { FetchReportData } from '../../src/fetch/types';
+import type { FetchReportData } from '../../src/fetch/types';
 
 const runMonitor = async (cb: CallBack<any>, times?: number) =>
   promisifyCounterMonitorReport<FetchReportData>({
@@ -10,7 +10,7 @@ const runMonitor = async (cb: CallBack<any>, times?: number) =>
     reportTimesBeforeResolve: times,
   });
 
-describe('test fetch API(200 code)', function () {
+describe('test fetch API(200 code)', () => {
   it('test fetch (GET)', async () => {
     const [res] = await runMonitor(() => {
       fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=all', {
@@ -65,7 +65,7 @@ describe('test fetch API(200 code)', function () {
     }, 3);
 
     expect(res.length).to.equal(3);
-    expect(res.every((item) => item.eventType === 'FETCH')).to.be.true;
-    expect(res.every((item) => item.data.response.status === 200)).to.be.true;
+    expect(res.every(item => item.eventType === 'FETCH')).to.be.true;
+    expect(res.every(item => item.data.response.status === 200)).to.be.true;
   });
 });

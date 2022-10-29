@@ -3,9 +3,8 @@ import { getBrowserWindow, getDocument } from './browser-interfaces';
 export const onPageLoad = (callback: () => void) => {
   const window = getBrowserWindow();
   const document = getDocument();
-  if (!window || !document) {
+  if (!window || !document)
     return;
-  }
 
   if (document.readyState === 'complete') {
     callback();
@@ -19,6 +18,6 @@ export const onPageLoad = (callback: () => void) => {
         callback();
       }, 0);
     },
-    false
+    false,
   );
 };

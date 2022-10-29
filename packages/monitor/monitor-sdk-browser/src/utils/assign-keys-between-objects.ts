@@ -1,4 +1,4 @@
-import { BaseObject } from '../types';
+import type { BaseObject } from '../types';
 
 /**
  * 传入多个 key, 将 object1 对应的值赋值到 object2 对应的值
@@ -9,7 +9,7 @@ import { BaseObject } from '../types';
 export const assignKeysBetweenObjects = (obj1: BaseObject, obj2: BaseObject, keys: string[]) => {
   for (let i = 0; i < keys.length; i += 1) {
     const k = keys[i];
-    // eslint-disable-next-line no-param-reassign
+
     obj2[k] = obj1[k];
   }
 };

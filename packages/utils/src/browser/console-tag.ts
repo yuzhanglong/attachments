@@ -6,10 +6,10 @@
  * Email: yuzl1123@163.com
  */
 interface ConsoleTagConfig {
-  key: string;
-  value: string;
-  keyColor?: string;
-  valueColor?: string;
+  key: string
+  value: string
+  keyColor?: string
+  valueColor?: string
 }
 
 export const consoleTag = (...config: ConsoleTagConfig[]) => {

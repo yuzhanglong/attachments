@@ -1,8 +1,8 @@
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
-import { ClsMonitorOptions, LayoutShift } from './types';
 import { EventType } from '../types';
 import { observePerformance } from '../utils/observe-performance';
 import { onPageUnload } from '../utils/on-page-unload';
+import type { ClsMonitorOptions, LayoutShift } from './types';
 
 /**
  * 累计布局偏移监控
@@ -22,10 +22,10 @@ export function createClsMonitor(clsMonitorOptions: ClsMonitorOptions) {
   };
 
   let clsValue = 0;
-  let entries: LayoutShift[] = [];
+  const entries: LayoutShift[] = [];
 
   const destroy = observePerformance(observerOptions, (entryList: LayoutShift[]) => {
-    for (let entry of entryList) {
+    for (const entry of entryList) {
       // 在用户输入 500 毫秒内发生的布局偏移会带有 hadRecentInput 标志，便于在计算中排除这些偏移。
       // 适用于不连续输入事件，如轻触、点击或按键操作。滚动、拖动或捏拉缩放手势等连续性交互操作不算作"最近输入"
       // 相关介绍：https://wicg.github.io/layout-instability/#dom-layoutshift-hadrecentinput
@@ -39,8 +39,8 @@ export function createClsMonitor(clsMonitorOptions: ClsMonitorOptions) {
   const getReportData = () => {
     return {
       data: {
-        clsValue: clsValue,
-        entries: entries,
+        clsValue,
+        entries,
       },
       eventType: EventType.CUMULATIVE_LAYOUT_SHIFT,
     };
@@ -55,7 +55,7 @@ export function createClsMonitor(clsMonitorOptions: ClsMonitorOptions) {
   });
 
   return {
-    destroy: destroy,
-    getReportData: getReportData,
+    destroy,
+    getReportData,
   };
 }

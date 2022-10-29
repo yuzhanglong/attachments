@@ -1,8 +1,8 @@
-import { PatchedXMLHttpRequest, XHRMonitorOptions } from './types';
 import { EventType } from '../types';
 import { patchMethod } from '../utils/patch-method';
 import { getRequestReportData } from '../utils/get-request-report-data';
 import { formatPlainHeadersString } from '../utils/format-plain-headers-string';
+import type { PatchedXMLHttpRequest, XHRMonitorOptions } from './types';
 
 // XMLHttpRequest.DONE 在低版本 IE 中不兼容
 export const XML_HTTP_REQUEST_DONE = XMLHttpRequest.DONE || 4;
@@ -42,13 +42,13 @@ export function createXHRMonitor(options: XHRMonitorOptions) {
           options.onReport({
             eventType: EventType.XHR,
             data: getRequestReportData({
-              url: url,
-              method: method,
+              url,
+              method,
               status: this.status,
-              requestData: requestData,
-              requestHeaders: requestHeaders,
+              requestData,
+              requestHeaders,
               responseHeaders: formatPlainHeadersString(responseHeaders),
-              startTime: startTime,
+              startTime,
               responseUrl: this.responseURL,
               responseData: this.response,
             }),

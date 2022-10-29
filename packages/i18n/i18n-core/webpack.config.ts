@@ -1,4 +1,4 @@
-import * as webpack from 'webpack';
+import type * as webpack from 'webpack';
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';

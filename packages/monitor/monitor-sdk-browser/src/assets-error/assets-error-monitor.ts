@@ -1,8 +1,8 @@
-import { AssetsErrorMonitorOptions } from './types';
 import { EventType } from '../types';
 import { getBrowserWindow } from '../utils/browser-interfaces';
 import { getUrlData } from '../utils/get-url-data';
 import { getPerformanceEntriesByName } from '../utils/performance-entry';
+import type { AssetsErrorMonitorOptions } from './types';
 
 /**
  * 初始化资源异常监听器
@@ -15,9 +15,8 @@ export const createAssetsErrorMonitor = (options: AssetsErrorMonitorOptions) => 
   // 保证 window 存在
   const window = getBrowserWindow();
 
-  if (!window) {
+  if (!window)
     return;
-  }
 
   // 从捕获到的 error 时间中筛选出有用的异常信息，如果这个 error 和资源异常无关，我们返回 undefined
   const getErrorInfoFromErrorEvent = (e: ErrorEvent) => {
@@ -40,16 +39,15 @@ export const createAssetsErrorMonitor = (options: AssetsErrorMonitorOptions) => 
     const hrefAttr = target?.getAttribute('href');
 
     return {
-      tagName: tagName,
+      tagName,
       url: srcAttr || hrefAttr,
     };
   };
 
   const errorListener = (e: ErrorEvent) => {
     const res = getErrorInfoFromErrorEvent(e);
-    if (!res) {
+    if (!res)
       return;
-    }
 
     const { url, tagName } = res;
     const urlData = getUrlData(url);
@@ -58,13 +56,13 @@ export const createAssetsErrorMonitor = (options: AssetsErrorMonitorOptions) => 
     const data = {
       tagName: tagName.toLowerCase(),
       timestamp: Date.now(),
-      performance: performance,
+      performance,
       ...urlData,
     };
 
     // 上报
     options.onReport({
-      data: data,
+      data,
       eventType: EventType.ASSETS_ERROR,
     });
   };

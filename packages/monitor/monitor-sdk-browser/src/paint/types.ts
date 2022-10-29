@@ -5,35 +5,35 @@
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
-import { MonitorOptions } from '../types';
+import type { MonitorOptions } from '../types';
 
 export interface PaintReportData {
   // FP
-  firstPaint: Record<string, any>;
+  firstPaint: Record<string, any>
   // FCP
-  firstContentfulPaint: Record<string, any>;
+  firstContentfulPaint: Record<string, any>
   // 汇报时间戳
-  timeStamp: number;
+  timeStamp: number
 }
 
 export interface LargestContentfulPaint {
-  duration: number;
-  element: Element;
-  entryType: string;
-  id: string;
-  loadTime: number;
-  name: string;
-  renderTime: number;
-  size: number;
-  startTime: number;
-  url: string;
+  duration: number
+  element: Element
+  entryType: string
+  id: string
+  loadTime: number
+  name: string
+  renderTime: number
+  size: number
+  startTime: number
+  url: string
 }
 
 export interface LargestContentfulPaintReportData {
   // LCP
-  largestContentfulPaint: LargestContentfulPaint;
+  largestContentfulPaint: LargestContentfulPaint
   // 汇报时间戳
-  timeStamp: number;
+  timeStamp: number
 }
 
 export type PaintMonitorOptions = MonitorOptions<PaintReportData | LargestContentfulPaintReportData>;

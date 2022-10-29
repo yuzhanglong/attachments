@@ -48,7 +48,7 @@ describe('test intl-pool-executor', () => {
     expect(
       executor.getMessage('Yzl_test_Name', {
         name: 'yuzhanglong',
-      })
+      }),
     ).toStrictEqual('姓名: yuzhanglong');
 
     await executor.setLocal(LANGUAGE_MAP.en);
@@ -56,7 +56,7 @@ describe('test intl-pool-executor', () => {
     expect(
       executor.getMessage('Yzl_test_Name', {
         name: 'yuzhanglong',
-      })
+      }),
     ).toStrictEqual('name: yuzhanglong');
   });
 
@@ -82,13 +82,13 @@ describe('test intl-pool-executor', () => {
     expect(
       executor.getMessage('Yzl_test_Name', {
         name: 'yuzhanglong',
-      })
+      }),
     ).toStrictEqual('姓名: yuzhanglong');
 
     expect(
       executor.getMessage('Yzl_test_Hobby', {
         hobby: 'coding',
-      })
+      }),
     ).toStrictEqual('爱好: coding');
 
     // 改变语言
@@ -96,13 +96,13 @@ describe('test intl-pool-executor', () => {
     expect(
       executor.getMessage('Yzl_test_Name', {
         name: 'yuzhanglong',
-      })
+      }),
     ).toStrictEqual('name: yuzhanglong');
 
     expect(
       executor.getMessage('Yzl_test_Hobby', {
         hobby: 'coding',
-      })
+      }),
     ).toStrictEqual('hobby: coding');
   });
 
@@ -126,13 +126,13 @@ describe('test intl-pool-executor', () => {
     expect(
       executor.getMessage('Yzl_test_Name', {
         name: 'yuzhanglong',
-      })
+      }),
     ).toStrictEqual('姓名: yuzhanglong');
 
     expect(
       executor.getMessage('Yzl_test_Hobby', {
         hobby: 'coding',
-      })
+      }),
     ).toStrictEqual('爱好: coding');
 
     // 销毁 group 1， 我们接下来无法通过 Yzl_test_Name 这个key 获取文案
@@ -142,7 +142,7 @@ describe('test intl-pool-executor', () => {
       executor.getMessage('Yzl_test_Name', {
         name: 'yuzhanglong',
       });
-    }).toThrowError("the key 'Yzl_test_Name' was not found!");
+    }).toThrowError('the key \'Yzl_test_Name\' was not found!');
 
     // deactivate 不是将文案组从文案池中移除
     expect(executor.intlGroups.length).toStrictEqual(2);
@@ -152,21 +152,21 @@ describe('test intl-pool-executor', () => {
     console.warn = jest.fn();
     const executor = new IntlPoolExecutor();
     executor.unregister('not exist!');
-    expect(console.warn).toBeCalledWith("intl group 'not exist!' not found!");
+    expect(console.warn).toBeCalledWith('intl group \'not exist!\' not found!');
   });
 
   test('deactivate group that not exist, we should log warning', () => {
     console.warn = jest.fn();
     const executor = new IntlPoolExecutor();
     executor.deactivate('not exist!');
-    expect(console.warn).toBeCalledWith("intl group 'not exist!' not found!");
+    expect(console.warn).toBeCalledWith('intl group \'not exist!\' not found!');
   });
 
   test('activate group that not exist, we should log warning', async () => {
     console.warn = jest.fn();
     const executor = new IntlPoolExecutor();
     await executor.activate('not exist!');
-    expect(console.warn).toBeCalledWith("intl group 'not exist!' not found!");
+    expect(console.warn).toBeCalledWith('intl group \'not exist!\' not found!');
   });
 
   test('register the same group', async () => {
@@ -174,7 +174,7 @@ describe('test intl-pool-executor', () => {
     const executor = new IntlPoolExecutor();
     await executor.register('aaa', {});
     await executor.register('aaa', {});
-    expect(console.warn).toBeCalledWith("message group 'aaa' has been registered!");
+    expect(console.warn).toBeCalledWith('message group \'aaa\' has been registered!');
   });
 
   test('getMessage, but we did not set current local', () => {
@@ -199,7 +199,7 @@ describe('test intl-pool-executor', () => {
     expect(
       executor.getMessage('Yzl_test_Name', {
         name: 'yzl',
-      })
+      }),
     ).toStrictEqual('姓名: yzl');
 
     executor.deactivate('group 1');

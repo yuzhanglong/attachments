@@ -12,21 +12,21 @@ export type IntlSources = Record<string, (() => MessageMap) | (() => Promise<Mes
 
 export interface IIntlGroupExecutor {
   // 修改当前语言
-  setLocal: (local: string) => Promise<void>;
+  setLocal: (local: string) => Promise<void>
 
   // 激活某个文案组
-  activate: (name: string) => Promise<void>;
+  activate: (name: string) => Promise<void>
 
   // 取消激活某个文案组
-  deactivate: (name: string) => void;
+  deactivate: (name: string) => void
 
   // 注册一个 intl group
-  register: (name: string, sources: IntlSources) => IIntlGroupExecutor;
+  register: (name: string, sources: IntlSources) => IIntlGroupExecutor
 
   // 移除一个 intl group
-  unregister: (name: string) => IIntlGroupExecutor;
+  unregister: (name: string) => IIntlGroupExecutor
 }
 
 export type GlobalIntl = IIntlGroupExecutor & {
-  (key: string, args: any): string;
+  (key: string, args: any): string
 };

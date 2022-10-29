@@ -18,7 +18,7 @@ describe('index test', () => {
       spokenLanguage: 'zh',
       period: 'daily',
     });
-    expect(res['javascript'].length).toBeTruthy();
-    expect(res['java'].length).toBeTruthy();
+    expect(res.javascript.length).toBeTruthy();
+    expect(res.java.length).toBeTruthy();
   }, 20000);
 });

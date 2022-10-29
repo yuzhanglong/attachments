@@ -1,5 +1,5 @@
+import type { PatchedXMLHttpRequest } from '../tti/types';
 import { patchMethod } from './patch-method';
-import { PatchedXMLHttpRequest } from '../tti/types';
 
 /**
  * 使用劫持方式监听正在进行中的请求
@@ -26,9 +26,9 @@ export const observeIncomingRequests = () => {
   patchMethod(XMLHttpRequest.prototype, 'send', (origin) => {
     let uniqueId = 0;
     return function (this: PatchedXMLHttpRequest, ...args: Parameters<XMLHttpRequest['send']>) {
-      if (this.taggedMethod !== 'GET') {
+      if (this.taggedMethod !== 'GET')
         return origin.apply(this, args);
-      }
+
       // uniqueId 为偶数
       uniqueId += 2;
       const reqId = uniqueId;
@@ -55,9 +55,8 @@ export const observeIncomingRequests = () => {
     return function (...args: Parameters<typeof window['fetch']>) {
       const [request, init] = args;
       const method = (request as Request)?.method || init.method;
-      if (method !== 'GET') {
+      if (method !== 'GET')
         return origin(...args);
-      }
 
       return new Promise<Response>((resolve, reject) => {
         uniqueId += 2;

@@ -2,10 +2,10 @@ import { first } from 'lodash';
 import { observePerformance } from '../utils/observe-performance';
 import { getPerformance, getPerformanceObserver } from '../utils/browser-interfaces';
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
-import { MPFIDMonitorOptions } from './types';
 import { getPerformanceEntriesByName } from '../utils/performance-entry';
 import { EventType } from '../types';
 import { onPageLoad } from '../utils/on-page-load';
+import type { MPFIDMonitorOptions } from './types';
 
 export const MPFID_REPORT_TIMEOUT_AFTER_ONLOAD = 200;
 
@@ -16,9 +16,8 @@ export const MPFID_REPORT_TIMEOUT_AFTER_ONLOAD = 200;
  * @date 2021-11-11 00:55:37
  */
 export const createMPFIDMonitor = (options: MPFIDMonitorOptions) => {
-  if (!getPerformance() || !getPerformanceObserver()) {
+  if (!getPerformance() || !getPerformanceObserver())
     return;
-  }
 
   const longTaskEntries: PerformanceEntry[] = [];
 

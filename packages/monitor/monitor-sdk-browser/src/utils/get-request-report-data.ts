@@ -1,19 +1,20 @@
 // 生成请求报告
-import { PatchedXMLHttpRequest, XHRReportData } from '../xhr/types';
+import type { XHRReportData } from '../xhr/types';
+import { PatchedXMLHttpRequest } from '../xhr/types';
 import { getUrlData } from './get-url-data';
 import { formatPlainHeadersString } from './format-plain-headers-string';
 import { getPerformanceEntriesByName } from './performance-entry';
 
 export interface GetRequestReportDataOptions {
-  url: string;
-  method: string;
-  status: number;
-  startTime: number;
-  requestHeaders: Record<string, string>;
-  responseHeaders: Record<string, string>;
-  requestData: any;
-  responseData: any;
-  responseUrl: string;
+  url: string
+  method: string
+  status: number
+  startTime: number
+  requestHeaders: Record<string, string>
+  responseHeaders: Record<string, string>
+  requestData: any
+  responseData: any
+  responseUrl: string
 }
 
 /**
@@ -23,8 +24,8 @@ export interface GetRequestReportDataOptions {
  * @date 2021-11-14 15:03:53
  */
 export const getRequestReportData = (options: GetRequestReportDataOptions): XHRReportData => {
-  const { url, method, status, startTime, requestHeaders, responseUrl, responseHeaders, responseData, requestData } =
-    options;
+  const { url, method, status, startTime, requestHeaders, responseUrl, responseHeaders, responseData, requestData }
+    = options;
   const current = Date.now();
   const isError = status >= 400;
 

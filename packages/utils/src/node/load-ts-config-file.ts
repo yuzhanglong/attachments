@@ -1,4 +1,4 @@
-import { Service } from 'ts-node';
+import type { Service } from 'ts-node';
 import { interopRequireDefault } from './interop-require-default';
 
 /**
@@ -17,10 +17,11 @@ export const loadTsConfigFile = async <T>(configPath: string): Promise<T> => {
         module: 'CommonJS',
       },
     });
-  } catch (e) {
+  }
+  catch (e) {
     if (e.code === 'MODULE_NOT_FOUND') {
       throw new Error(
-        `'ts-node' is required for the TypeScript configuration files. Make sure it is installed\nError: ${e.message}`
+        `'ts-node' is required for the TypeScript configuration files. Make sure it is installed\nError: ${e.message}`,
       );
     }
 
@@ -32,9 +33,8 @@ export const loadTsConfigFile = async <T>(configPath: string): Promise<T> => {
   let configObject = interopRequireDefault(require(configPath)).default;
 
   // 配置文件是一个函数，调用之
-  if (typeof configObject === 'function') {
+  if (typeof configObject === 'function')
     configObject = await configObject();
-  }
 
   tsNodeService.enabled(false);
 

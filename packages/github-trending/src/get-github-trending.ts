@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { GetGithubTrendingOptions, Repository } from './types';
+import type { GetGithubTrendingOptions, Repository } from './types';
 
 /**
  * 获取 GitHub 趋势
@@ -12,13 +12,13 @@ export const getGithubTrending = async (options: GetGithubTrendingOptions) => {
   const { period = 'daily', language, spokenLanguage = 'zh' } = options;
   const response = await axios.get(
     `https://github.com/trending/${encodeURIComponent(
-      language
+      language,
     )}?since=${period}&spoken_language_code=${spokenLanguage}`,
     {
       headers: {
         Accept: 'text/html',
       },
-    }
+    },
   );
   const $ = cheerio.load(response.data);
   const repositories: Repository[] = [];
@@ -33,13 +33,12 @@ export const getGithubTrending = async (options: GetGithubTrendingOptions) => {
     const forkLink = `/${title.replace(/ /g, '')}/network/members.${name}`;
 
     let text: string;
-    if (period === 'daily') {
+    if (period === 'daily')
       text = 'stars today';
-    } else if (period === 'weekly') {
+    else if (period === 'weekly')
       text = 'stars this week';
-    } else {
+    else
       text = 'stars this month';
-    }
 
     const indexRepo: Repository = {
       author,
@@ -51,7 +50,7 @@ export const getGithubTrending = async (options: GetGithubTrendingOptions) => {
       forks: parseInt($(repo).find(`[href="${forkLink}"]`).text().trim().replace(',', '') || '0', 0),
       starsInPeriod: parseInt(
         $(repo).find(`span.float-sm-right:contains('${text}')`).text().trim().replace(text, '').replace(',', '') || '0',
-        0
+        0,
       ),
     };
 

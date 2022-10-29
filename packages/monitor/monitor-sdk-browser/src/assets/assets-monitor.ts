@@ -1,10 +1,10 @@
-import { PERFORMANCE_ENTRY_TYPES } from '../constants';
-import { AssetsMonitorOptions } from './types';
+import { noop } from 'lodash';
 import { EventType } from '../types';
 import { observePerformance } from '../utils/observe-performance';
-import { noop } from 'lodash';
+import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { onPageLoad } from '../utils/on-page-load';
 import { getPerformanceEntriesByType } from '../utils/performance-entry';
+import type { AssetsMonitorOptions } from './types';
 
 /**
  * 资源性能相关监控
@@ -48,6 +48,6 @@ export function createAssetsMonitor(options: AssetsMonitorOptions) {
   });
 
   return {
-    destroy: destroy,
+    destroy,
   };
 }

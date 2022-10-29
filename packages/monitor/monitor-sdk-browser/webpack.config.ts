@@ -1,4 +1,4 @@
-import webpack from 'webpack';
+import type webpack from 'webpack';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 
 const env = process.env.NODE_ENV;

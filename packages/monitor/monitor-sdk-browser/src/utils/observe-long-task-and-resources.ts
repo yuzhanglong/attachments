@@ -1,6 +1,6 @@
-import { observePerformance } from './observe-performance';
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
-import { TaskTimeInfo } from '../tti/types';
+import type { TaskTimeInfo } from '../tti/types';
+import { observePerformance } from './observe-performance';
 
 /**
  * 监听长任务和资源请求
@@ -12,7 +12,7 @@ import { TaskTimeInfo } from '../tti/types';
  */
 export const observeLongTaskAndResources = (
   onLongTask: (timeInfo: TaskTimeInfo, entry: PerformanceEntry) => void,
-  onNetworkRequest: (timeInfo: TaskTimeInfo, resourceEntry: PerformanceResourceTiming) => void
+  onNetworkRequest: (timeInfo: TaskTimeInfo, resourceEntry: PerformanceResourceTiming) => void,
 ) => {
   observePerformance(
     {
@@ -25,12 +25,13 @@ export const observeLongTaskAndResources = (
         if (entryType === PERFORMANCE_ENTRY_TYPES.LONG_TASK) {
           onLongTask(
             {
-              startTime: startTime,
+              startTime,
               endTime: startTime + duration,
             },
-            entry
+            entry,
           );
-        } else if (entry.entryType === PERFORMANCE_ENTRY_TYPES.RESOURCE) {
+        }
+        else if (entry.entryType === PERFORMANCE_ENTRY_TYPES.RESOURCE) {
           const { fetchStart, responseEnd } = entry as PerformanceResourceTiming;
 
           onNetworkRequest(
@@ -38,10 +39,10 @@ export const observeLongTaskAndResources = (
               startTime: fetchStart,
               endTime: responseEnd,
             },
-            entry as PerformanceResourceTiming
+            entry as PerformanceResourceTiming,
           );
         }
       }
-    }
+    },
   );
 };

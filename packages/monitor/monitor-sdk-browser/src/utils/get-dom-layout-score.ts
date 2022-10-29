@@ -1,7 +1,7 @@
 import { isFunction } from 'lodash';
 
 type HTMLElementWithCss = HTMLElement & {
-  readonly style?: CSSStyleDeclaration;
+  readonly style?: CSSStyleDeclaration
 };
 
 // 需要忽略的功能性标签
@@ -24,13 +24,12 @@ export const getDomLayoutScore = (
   depth: number,
   isSiblingExists: boolean,
   exact?: boolean,
-  onGetScore?: (element: HTMLElementWithCss, score: number, depth: number, isPositionCheckNeeded: boolean) => void
+  onGetScore?: (element: HTMLElementWithCss, score: number, depth: number, isPositionCheckNeeded: boolean) => void,
 ) => {
   const { tagName, children } = element;
 
-  if (!element || IGNORE_TAGS.includes(tagName)) {
+  if (!element || IGNORE_TAGS.includes(tagName))
     return 0;
-  }
 
   const childNodes = Array.from(children || []) as HTMLElementWithCss[];
 
@@ -45,9 +44,8 @@ export const getDomLayoutScore = (
   const isPositionCheckNeeded = childrenScore <= 0 && !isSiblingExists;
 
   if (isPositionCheckNeeded) {
-    if (!isFunction(element.getBoundingClientRect)) {
+    if (!isFunction(element.getBoundingClientRect))
       return 0;
-    }
 
     const { top, height, width } = element.getBoundingClientRect();
 
@@ -59,23 +57,20 @@ export const getDomLayoutScore = (
     const isUnderView = top > window.innerHeight;
     let isNotVisible: boolean;
 
-    if (!exact) {
+    if (!exact)
       isNotVisible = height <= 0;
-    } else {
+    else
       isNotVisible = height <= 0 || width <= 0 || element.style.visibility === 'hidden';
-    }
 
     const isElementOutOfView = isUnderView || isNotVisible;
-    if (isElementOutOfView) {
+    if (isElementOutOfView)
       return 0;
-    }
   }
 
   const score = childrenScore + 1 + 0.5 * depth;
 
-  if (isFunction(onGetScore)) {
+  if (isFunction(onGetScore))
     onGetScore(element, score, depth, isPositionCheckNeeded);
-  }
 
   return score;
 };

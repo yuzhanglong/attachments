@@ -1,4 +1,4 @@
-import { JsErrorReportData } from '../js-error/types';
+import type { JsErrorReportData } from '../js-error/types';
 import { instanceOf } from './instance-of';
 
 /**
@@ -16,10 +16,12 @@ export function formatError(e: ErrorEvent | PromiseRejectionEvent): JsErrorRepor
 
   if (instanceOf(e, PromiseRejectionEvent)) {
     error = (e as PromiseRejectionEvent).reason;
-  } else if (instanceOf(e, ErrorEvent)) {
+  }
+  else if (instanceOf(e, ErrorEvent)) {
     error = (e as ErrorEvent).error;
-  } else {
-    // @ts-ignore
+  }
+  else {
+    // @ts-expect-error
     error = e.reason || e.error;
   }
 

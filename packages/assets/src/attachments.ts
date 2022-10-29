@@ -11,13 +11,12 @@ program
   .command('generate [template-name]')
   .description('初始化一个项目模板')
   .action(async (name: string) => {
-    if (name === 'ts') {
+    if (name === 'ts')
       await launchPlopByConfig('ts-project-generator');
-    } else if (name === 'micro-fe') {
+    else if (name === 'micro-fe')
       await launchPlopByConfig('micro-fe-generator');
-    } else {
+    else
       console.log('没有这个模板呜呜呜~');
-    }
   });
 
 program.parse(process.argv);

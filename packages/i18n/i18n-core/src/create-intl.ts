@@ -6,7 +6,7 @@
  * Email: yuzl1123@163.com
  */
 import { IntlPoolExecutor } from './intl-pool-executor';
-import { GlobalIntl } from './types';
+import type { GlobalIntl } from './types';
 
 export function createIntl() {
   const executor = new IntlPoolExecutor();

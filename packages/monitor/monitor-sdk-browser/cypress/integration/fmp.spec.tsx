@@ -3,7 +3,7 @@ import { mount } from '@cypress/react';
 import { getDomLayoutScore } from '../../src';
 import { calculateFMP } from '../../src/fmp/fmp-monitor';
 
-describe('test fmp monitor dom-score algorithm', function () {
+describe('test fmp monitor dom-score algorithm', () => {
   const getScore = (isNotExact?: boolean) => {
     return new Promise((resolve) => {
       const getScore = () =>
@@ -16,7 +16,7 @@ describe('test fmp monitor dom-score algorithm', function () {
             const el = document.createElement('div');
             el.innerHTML = `isPositionCheckNeeded:${String(isPositionCheckNeeded)}, depth:${depth}, score: ${score}`;
             element.appendChild(el);
-          }
+          },
         );
 
       let isCalled = false;

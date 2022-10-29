@@ -1,10 +1,10 @@
 import { first } from 'lodash';
-import { FIDEntry, FIDMonitorOptions } from './types';
 import { getPerformanceObserver } from '../utils/browser-interfaces';
 import { observePerformance } from '../utils/observe-performance';
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
 import { getPerformanceEntriesByType } from '../utils/performance-entry';
 import { EventType } from '../types';
+import type { FIDEntry, FIDMonitorOptions } from './types';
 
 /**
  * 创建 fid 监听器
@@ -13,14 +13,13 @@ import { EventType } from '../types';
  * @date 2021-11-10 23:39:55
  */
 export const createFIDMonitor = (options: FIDMonitorOptions) => {
-  if (!getPerformanceObserver()) {
+  if (!getPerformanceObserver())
     return;
-  }
 
   const reportData = (entry: FIDEntry) => {
-    if (!entry) {
+    if (!entry)
       return;
-    }
+
     options.onReport({
       data: {
         fid: entry,
@@ -38,7 +37,7 @@ export const createFIDMonitor = (options: FIDMonitorOptions) => {
         const entry = first(entryList);
         reportData(entry as FIDEntry);
       },
-      true
+      true,
     );
   };
 
@@ -48,9 +47,8 @@ export const createFIDMonitor = (options: FIDMonitorOptions) => {
 
   // 先尝试直接获取，如果没有再开启监听器
   const entry = getFIDDirectly();
-  if (!entry) {
+  if (!entry)
     observeFID();
-  } else {
+  else
     reportData(entry as FIDEntry);
-  }
 };

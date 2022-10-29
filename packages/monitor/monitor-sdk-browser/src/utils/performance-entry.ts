@@ -11,9 +11,9 @@ import { getPerformance } from './browser-interfaces';
 export const getPerformanceEntriesByName = (name: string) => {
   const performance = getPerformance();
 
-  if (performance && isFunction(performance.getEntriesByName)) {
+  if (performance && isFunction(performance.getEntriesByName))
     return performance.getEntriesByName(name);
-  }
+
   return [];
 };
 
@@ -26,8 +26,8 @@ export const getPerformanceEntriesByName = (name: string) => {
  */
 export const getPerformanceEntriesByType = (type: string) => {
   const performance = getPerformance();
-  if (performance && isFunction(performance.getEntriesByType)) {
+  if (performance && isFunction(performance.getEntriesByType))
     return performance.getEntriesByType(type);
-  }
+
   return [];
 };

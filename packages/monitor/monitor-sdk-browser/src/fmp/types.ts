@@ -1,9 +1,9 @@
-import { MonitorOptions } from '../types';
+import type { MonitorOptions } from '../types';
 
 interface FMPReportData {
-  fmp: number;
+  fmp: number
 }
 
 export type FMPMonitorOptions = MonitorOptions<FMPReportData> & {
-  exact?: boolean;
+  exact?: boolean
 };

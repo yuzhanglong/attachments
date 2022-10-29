@@ -6,8 +6,8 @@
  * Email: yuzl1123@163.com
  */
 
-import { ProxyServerMiddleware } from '../types';
-import { RuleManager } from '../rule-manager';
+import type { ProxyServerMiddleware } from '../types';
+import type { RuleManager } from '../rule-manager';
 
 export function createProxyRuleMiddleware(ruleManager: RuleManager): ProxyServerMiddleware {
   return async (context, next) => {

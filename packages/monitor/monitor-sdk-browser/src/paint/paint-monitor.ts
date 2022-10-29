@@ -1,9 +1,9 @@
+import { isFunction, noop } from 'lodash';
 import { PERFORMANCE_ENTRY_TYPES } from '../constants';
-import { LargestContentfulPaint, PaintMonitorOptions } from './types';
 import { EventType } from '../types';
 import { getPerformance } from '../utils/browser-interfaces';
 import { observePerformance } from '../utils/observe-performance';
-import { isFunction, noop } from 'lodash';
+import type { LargestContentfulPaint, PaintMonitorOptions } from './types';
 
 const FIRST_PAINT = 'first-paint';
 const FIRST_CONTENTFUL_PAINT = 'first-contentful-paint';
@@ -11,17 +11,16 @@ const FIRST_CONTENTFUL_PAINT = 'first-contentful-paint';
 export function createPaintMonitor(options: PaintMonitorOptions) {
   const performance = getPerformance();
 
-  if (!performance) {
+  if (!performance)
     return;
-  }
 
   // 销毁回调合集
   const destroyCallback = [];
 
   const getDataFromPaintPreferenceArray = (entries: PerformanceEntry[]) => {
     // 无法确定由于浏览器的差异造成的可能的先后顺序问题，我们使用 filter name 来拿到相关指标
-    const [firstPaintEntry] = entries.filter((entry) => entry.name === FIRST_PAINT);
-    const [firstContentfulPaintEntry] = entries.filter((entry) => entry.name === FIRST_CONTENTFUL_PAINT);
+    const [firstPaintEntry] = entries.filter(entry => entry.name === FIRST_PAINT);
+    const [firstContentfulPaintEntry] = entries.filter(entry => entry.name === FIRST_CONTENTFUL_PAINT);
     return [firstPaintEntry, firstContentfulPaintEntry];
   };
 
@@ -61,7 +60,7 @@ export function createPaintMonitor(options: PaintMonitorOptions) {
           destroy();
         }
       },
-      false
+      false,
     );
 
     destroyCallback.push(destroy);
@@ -93,7 +92,7 @@ export function createPaintMonitor(options: PaintMonitorOptions) {
 
   return {
     destroy: () => {
-      destroyCallback.forEach((fn) => (isFunction(fn) ? fn() : noop()));
+      destroyCallback.forEach(fn => (isFunction(fn) ? fn() : noop()));
     },
   };
 }

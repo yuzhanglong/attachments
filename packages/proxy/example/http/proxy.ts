@@ -13,7 +13,7 @@ async function runApp() {
     {
       location: '/hello/world',
       proxyPass: 'http://localhost:8001/hello_world',
-    }
+    },
   );
 
   await server.initServers();

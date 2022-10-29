@@ -13,11 +13,11 @@ export type CallBack<P> = (params: P) => void;
 
 export type BaseObject<T = any> = Record<string, T>;
 
-export type ReportBase<Data> = {
+export interface ReportBase<Data> {
   // 上报事件的类型
-  eventType: EventType;
-  data: Data;
-};
+  eventType: EventType
+  data: Data
+}
 
 export enum EventType {
   // noinspection SpellCheckingInspection
@@ -38,20 +38,20 @@ export enum EventType {
 
 export interface MonitorOptions<Report> {
   // 发送报告回调
-  onReport: CallBack<ReportBase<Report>>;
+  onReport: CallBack<ReportBase<Report>>
   // window 实例
-  window?: Window;
+  window?: Window
 }
 
 export interface UrlData {
-  url: string;
-  hash: string;
-  host: string;
-  hostname: string;
-  href: string;
-  origin: string;
-  pathname: string;
-  port: string;
-  protocol: string;
-  search: string;
+  url: string
+  hash: string
+  host: string
+  hostname: string
+  href: string
+  origin: string
+  pathname: string
+  port: string
+  protocol: string
+  search: string
 }

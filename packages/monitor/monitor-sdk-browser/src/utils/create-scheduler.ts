@@ -25,14 +25,12 @@ export const createScheduler = () => {
   };
 
   const resetScheduler = (newScheduleTime: number) => {
-    if (!callback) {
+    if (!callback)
       return;
-    }
 
     // 新配置的时间早于即将调度的时间，不处理
-    if (newScheduleTime < scheduleTime) {
+    if (newScheduleTime < scheduleTime)
       return;
-    }
 
     clearCurrentScheduleTimer();
 

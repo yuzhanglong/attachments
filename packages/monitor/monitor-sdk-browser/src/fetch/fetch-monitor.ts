@@ -4,24 +4,22 @@
  * @author yuzhanglong
  * @date 2021-11-14 12:08:25
  */
+import { isString } from 'lodash';
 import { patchMethod } from '../utils/patch-method';
 import { getBrowserWindow } from '../utils/browser-interfaces';
-import { FetchMonitorOptions } from './types';
 import { EventType } from '../types';
 import { getRequestReportData } from '../utils/get-request-report-data';
-import { isString } from 'lodash';
+import type { FetchMonitorOptions } from './types';
 
 export const createFetchMonitor = (options: FetchMonitorOptions) => {
   const browserWindow = getBrowserWindow();
-  if (!browserWindow) {
+  if (!browserWindow)
     return;
-  }
 
   // 获取 fetch 入参的 url 字符串
   const parseFetchUrl = (requestInfo: RequestInfo) => {
-    if (isString(requestInfo)) {
+    if (isString(requestInfo))
       return requestInfo;
-    }
 
     return requestInfo.url;
   };
@@ -61,15 +59,16 @@ export const createFetchMonitor = (options: FetchMonitorOptions) => {
         try {
           // 只有 4xx 以上的错误才会收集响应体
           let data = '';
-          if (res.status >= 400) {
+          if (res.status >= 400)
             data = await res.clone().text();
-          }
+
           initData.responseUrl = res.url;
           initData.responseHeaders = res.headers;
           initData.status = res.status || -1;
           initData.responseData = data;
           reportData();
-        } catch (e) {
+        }
+        catch (e) {
           console.error(e);
         }
       };

@@ -1,10 +1,11 @@
-import { CertificateCreationOptions, CertificateCreationResult, createCertificate } from 'pem';
 import * as fs from 'fs';
+import type { CertificateCreationOptions, CertificateCreationResult } from 'pem';
+import { createCertificate } from 'pem';
 import { CERT, KEY, MAX_DAYS, pathCert, pathCertKey } from './const';
 
 interface Certification {
-  key: string;
-  cert: string;
+  key: string
+  cert: string
 }
 
 export class CertificationManager {
@@ -22,9 +23,9 @@ export class CertificationManager {
   static createCertification(option: CertificateCreationOptions): Promise<CertificateCreationResult> {
     return new Promise((resolve, reject) => {
       createCertificate(option, (error, result) => {
-        if (error) {
+        if (error)
           reject(error);
-        }
+
         resolve(result);
       });
     });

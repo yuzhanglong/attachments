@@ -6,7 +6,8 @@
  * Email: yuzl1123@163.com
  */
 
-import { IntlGroup, IntlSources } from '../src';
+import type { IntlSources } from '../src';
+import { IntlGroup } from '../src';
 import { INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE, LANGUAGE_MAP } from '../src/common';
 
 const I18nChunkMap: IntlSources = {
@@ -93,7 +94,8 @@ describe('test intl packages', () => {
       executor.getMessage('App_Name', {
         name: 'yuzhanglong',
       });
-    } catch (e) {
+    }
+    catch (e) {
       expect(e.message).toStrictEqual('please set current local string by calling updateCurrentLocal()!');
     }
   });
@@ -117,8 +119,9 @@ describe('test intl packages', () => {
 
     try {
       await executor.updateCurrentLocal(LANGUAGE_MAP.en);
-    } catch (e) {
-      expect(e.message).toStrictEqual("local string 'en-US' was not loaded, did you forget to local intl source file?");
+    }
+    catch (e) {
+      expect(e.message).toStrictEqual('local string \'en-US\' was not loaded, did you forget to local intl source file?');
     }
   });
 
@@ -133,7 +136,8 @@ describe('test intl packages', () => {
 
     try {
       await executor.loadIntlSource(['foo']);
-    } catch (e) {
+    }
+    catch (e) {
       expect(e.message).toStrictEqual('bad intl source!');
     }
   });
@@ -141,8 +145,9 @@ describe('test intl packages', () => {
   test('call loadIntlSource() but intl key does not in the intlSources', async () => {
     try {
       await executor.loadIntlSource('key does not exist!');
-    } catch (e) {
-      expect(e.message).toStrictEqual("the local 'key does not exist!' does not have any intl source!'");
+    }
+    catch (e) {
+      expect(e.message).toStrictEqual('the local \'key does not exist!\' does not have any intl source!\'');
     }
   });
 
@@ -152,7 +157,7 @@ describe('test intl packages', () => {
       {
         [LANGUAGE_MAP.zh]: () => import('./data/zh-cn.json'),
       },
-      false
+      false,
     );
     expect(Object.keys(executor.intlSources).length).toStrictEqual(2);
 
@@ -161,7 +166,7 @@ describe('test intl packages', () => {
       {
         [LANGUAGE_MAP.en]: () => import('./data/en-us.json'),
       },
-      true
+      true,
     );
     expect(Object.keys(executor.intlSources).length).toStrictEqual(1);
   });

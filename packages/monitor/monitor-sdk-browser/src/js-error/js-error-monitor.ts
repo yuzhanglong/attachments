@@ -1,7 +1,7 @@
-import { JsErrorMonitorOptions } from './types';
 import { EventType } from '../types';
 import { getBrowserWindow } from '../utils/browser-interfaces';
 import { formatError } from '../utils/format-error';
+import type { JsErrorMonitorOptions } from './types';
 
 /**
  * javaScript 异常监控能力
@@ -12,16 +12,15 @@ import { formatError } from '../utils/format-error';
 export function createJsErrorMonitor(options: JsErrorMonitorOptions) {
   const window = getBrowserWindow();
 
-  if (!window) {
+  if (!window)
     return;
-  }
 
   const handleError = (e: ErrorEvent) => {
     const data = formatError(e);
     if (data) {
       options.onReport({
         eventType: EventType.JS_ERROR,
-        data: data,
+        data,
       });
     }
   };

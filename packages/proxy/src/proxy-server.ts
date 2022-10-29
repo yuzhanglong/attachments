@@ -1,16 +1,17 @@
-import { IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
+import type { IncomingMessage, ServerResponse } from 'http';
+import { Server as HttpServer } from 'http';
 import { Server as HttpsServer } from 'https';
 import { createSecureContext } from 'tls';
-import compose from 'koa-compose';
-import { Duplex } from 'stream';
-import * as Buffer from 'buffer';
+import type { Duplex } from 'stream';
+import type * as Buffer from 'buffer';
 import * as net from 'net';
-import { Socket } from 'net';
+import type { Socket } from 'net';
+import compose from 'koa-compose';
 import { createProxyPassMiddleware } from './middlewares/proxy-pass-middleware';
 import { CertificationManager } from './certification-manager';
 import { LOCAL_HOST, PROXY_PASS_SERVICE_PORT, PROXY_SERVER_PORT } from './const';
 import { createUrlMiddleWare } from './middlewares/url-middleware';
-import { ProxyServerContext, RuleConfig } from './types';
+import type { ProxyServerContext, RuleConfig } from './types';
 import { createProxyRuleMiddleware } from './middlewares/proxy-rule-middleware';
 import { RuleManager } from './rule-manager';
 import { createUpgradeMiddleware } from './middlewares/upgrade-middleware';
@@ -44,9 +45,9 @@ export class ProxyServer {
         callback(
           null,
           createSecureContext({
-            key: key,
-            cert: cert,
-          })
+            key,
+            cert,
+          }),
         );
       },
     });
@@ -116,7 +117,7 @@ export class ProxyServer {
       await handlers({
         incomingRequestData: req,
         socketBetweenClientAndProxyServer: socket,
-        head: head,
+        head,
         protocol: 'ws',
       });
     });
@@ -126,7 +127,7 @@ export class ProxyServer {
       await handlers({
         incomingRequestData: req,
         socketBetweenClientAndProxyServer: socket,
-        head: head,
+        head,
         protocol: 'wss',
       });
     });
@@ -139,9 +140,8 @@ export class ProxyServer {
    * @date 2021-08-11 13:07:59
    */
   async listen() {
-    if (!this.httpsServer || !this.proxyServer) {
+    if (!this.httpsServer || !this.proxyServer)
       throw new Error('[@attachments/proxy] please init server!');
-    }
 
     this.proxyServer.listen(PROXY_SERVER_PORT, LOCAL_HOST, () => {
       console.log('[@attachments/proxy] proxy server is running...');

@@ -1,6 +1,6 @@
 import { onPageLoad } from '../utils/on-page-load';
-import { CommonTimingMonitorOptions } from './types';
 import { EventType } from '../types';
+import type { CommonTimingMonitorOptions } from './types';
 
 export const createCommonTimingMonitor = (options: CommonTimingMonitorOptions) => {
   onPageLoad(() => {

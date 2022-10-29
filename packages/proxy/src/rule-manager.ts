@@ -6,7 +6,7 @@
  * Email: yuzl1123@163.com
  */
 import { URL } from 'url';
-import { RuleConfig } from './types';
+import type { RuleConfig } from './types';
 import { comparePathAndGetDivision, getUrlPaths, removeWWWAndProtocol } from './utils';
 
 export class RuleManager {
@@ -29,7 +29,8 @@ export class RuleManager {
     if (this.mapDomainToRules.has(domainWithoutWWW)) {
       totConfig = this.mapDomainToRules.get(domainWithoutWWW);
       totConfig.push(...ruleConfig);
-    } else {
+    }
+    else {
       totConfig = [...ruleConfig];
       this.mapDomainToRules.set(domainWithoutWWW, totConfig);
     }
@@ -67,9 +68,9 @@ export class RuleManager {
     // 去掉前面的 www（如果有的话）
     const domainWithoutWWW = removeWWWAndProtocol(domain);
     const targetRules = this.mapDomainToRules.get(domainWithoutWWW);
-    if (!targetRules) {
+    if (!targetRules)
       return null;
-    }
+
     return targetRules;
   }
 
@@ -87,9 +88,8 @@ export class RuleManager {
 
     const targetRules = this.matchRuleConfigurations(removeWWWAndProtocol(host));
 
-    if (!targetRules) {
+    if (!targetRules)
       return null;
-    }
 
     for (const targetRule of targetRules) {
       const { location, proxyPass } = targetRule;

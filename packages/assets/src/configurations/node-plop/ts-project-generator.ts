@@ -1,5 +1,5 @@
-import * as plop from 'node-plop';
 import * as path from 'path';
+import type * as plop from 'node-plop';
 import { createAddConfigAction, createAddManyTemplatesAction } from '../../utils';
 
 const project = function (plop: plop.NodePlopAPI) {

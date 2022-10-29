@@ -18,7 +18,7 @@
 
         const reader = progressStream.getReader();
 
-        let finalData = "";
+        let finalData = '';
         // 需要上报的响应体数据
         const readData = () => {
           reader.read().then(({ value, done }) => {
@@ -29,7 +29,7 @@
 
             const res = value.reduce((prev, next) => {
               return prev + String.fromCharCode(next);
-            }, "");
+            }, '');
             finalData += res;
             readData();
           });
@@ -37,19 +37,18 @@
 
         readData();
 
-
         return new Response(returnStream, {
-          headers: res.headers
-        });
+          headers: res.headers,
+  });
       };
 
       window.fetch = newFetch;
 
-      fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=all")
+      fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=all')
         .then((res) => {
           return res.json();
         })
-        .then(res => {
+        .then((res) => {
           console.log(res);
         });
     </script>

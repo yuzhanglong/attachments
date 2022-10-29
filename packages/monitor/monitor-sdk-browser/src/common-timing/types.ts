@@ -1,7 +1,7 @@
-import { MonitorOptions } from '../types';
+import type { MonitorOptions } from '../types';
 
 interface CommonTimingReportData {
-  timing: PerformanceTiming;
+  timing: PerformanceTiming
 }
 
 export type CommonTimingMonitorOptions = MonitorOptions<CommonTimingReportData>;

@@ -7,12 +7,12 @@
  */
 import { INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE } from './common';
 import { IntlGroup } from './intl-group';
-import { IIntlGroupExecutor } from './types';
+import type { IIntlGroupExecutor } from './types';
 
 interface IntlGroupWrapper {
-  name: string;
-  isActive: boolean;
-  intlGroup: IntlGroup;
+  name: string
+  isActive: boolean
+  intlGroup: IntlGroup
 }
 
 export class IntlPoolExecutor implements IIntlGroupExecutor {
@@ -23,7 +23,7 @@ export class IntlPoolExecutor implements IIntlGroupExecutor {
   // 由于性能要求，在 setLocal 的时候我们只会去处理活跃的文案组，
   // 例如在微前端架构下没有展示的微应用也有对应的文案组(未激活状态，isActive = false)，
   // 于是也没必要 setLocal 去拉取它的的文案 js 文件
-  currentLocal: string = '';
+  currentLocal = '';
 
   /**
    * 通过名称，匹配相应的文案组，如果没有，则返回一个 undefined
@@ -33,7 +33,7 @@ export class IntlPoolExecutor implements IIntlGroupExecutor {
    * @param name 文案组名称
    */
   getIntlGroupWrapperByName(name: string) {
-    return this.intlGroups.find((item) => item.name === name);
+    return this.intlGroups.find(item => item.name === name);
   }
 
   /**
@@ -45,17 +45,15 @@ export class IntlPoolExecutor implements IIntlGroupExecutor {
    * @param args 文案参数
    */
   getMessage(key: string, args?: any) {
-    if (!this.currentLocal) {
+    if (!this.currentLocal)
       throw new Error('your should set local string at first!');
-    }
 
     for (let i = 0; i < this.intlGroups.length; i += 1) {
       const { intlGroup, isActive } = this.intlGroups[i];
       if (isActive) {
         const tmpMsg = intlGroup.getMessage(key, args || {});
-        if (tmpMsg !== INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE) {
+        if (tmpMsg !== INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE)
           return tmpMsg;
-        }
       }
     }
     throw new Error(`the key '${key}' was not found!`);
@@ -65,9 +63,8 @@ export class IntlPoolExecutor implements IIntlGroupExecutor {
     for (let i = 0; i < this.intlGroups.length; i += 1) {
       const g = this.intlGroups[i];
       const { isActive, intlGroup } = g;
-      if (isActive) {
+      if (isActive)
         await intlGroup.updateCurrentLocal(local, true);
-      }
     }
     this.currentLocal = local;
   }
@@ -92,7 +89,7 @@ export class IntlPoolExecutor implements IIntlGroupExecutor {
 
     const wrapperItem = {
       intlGroup: newIntlGroup,
-      name: name,
+      name,
       isActive: false,
     };
 
@@ -108,7 +105,7 @@ export class IntlPoolExecutor implements IIntlGroupExecutor {
    * @param name 需要卸载的文案组名称
    */
   unregister(name: string) {
-    const targetGroup = this.intlGroups.findIndex((item) => item.name === name);
+    const targetGroup = this.intlGroups.findIndex(item => item.name === name);
     if (targetGroup < 0) {
       console.warn(`intl group '${name}' not found!`);
       return;

@@ -6,11 +6,11 @@
  * Email: yuzl1123@163.com
  */
 import { IntlMessageFormat } from 'intl-messageformat';
-import { IntlSources, MessageMap } from './types';
+import type { IntlSources, MessageMap } from './types';
 import { INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE } from './common';
 
 interface IntlExecutorOptions {
-  intlSources: IntlSources;
+  intlSources: IntlSources
 }
 
 export class IntlGroup {
@@ -27,7 +27,7 @@ export class IntlGroup {
   currentMessageMap: MessageMap = {};
 
   // 当前 local string
-  currentLocal: string = '';
+  currentLocal = '';
 
   constructor(options: IntlExecutorOptions) {
     const { intlSources } = options;
@@ -42,18 +42,17 @@ export class IntlGroup {
    * @param params 文案参数
    */
   public getMessage(key: string, params?: any) {
-    if (!this.currentLocal) {
+    if (!this.currentLocal)
       throw new Error('please set current local string by calling updateCurrentLocal()!');
-    }
 
     let targetFormatter = this.currentCachedFormatters[key];
 
     // 没有命中缓存
     if (!targetFormatter) {
       const messageTemplate = this.currentMessageMap[key];
-      if (!messageTemplate) {
+      if (!messageTemplate)
         return INTL_KEY_NOT_EXIST_DEFAULT_MESSAGE;
-      }
+
       targetFormatter = new IntlMessageFormat(messageTemplate, this.currentLocal);
       this.currentCachedFormatters[key] = targetFormatter;
     }
@@ -69,10 +68,9 @@ export class IntlGroup {
    * @param newLocal 新的语言
    * @param loadWhenNotFound 如果这个参数置为 true，在匹配不到新语言的文案 map，我们会尝试从注册过的 source 中加载之
    */
-  public async updateCurrentLocal(newLocal: string, loadWhenNotFound: boolean = false) {
-    if (this.currentLocal === newLocal) {
+  public async updateCurrentLocal(newLocal: string, loadWhenNotFound = false) {
+    if (this.currentLocal === newLocal)
       return;
-    }
 
     let newLocalMap = this.cachedIntlMessageMaps[newLocal];
 
@@ -80,7 +78,8 @@ export class IntlGroup {
       if (loadWhenNotFound) {
         await this.loadIntlSource(newLocal);
         newLocalMap = this.cachedIntlMessageMaps[newLocal];
-      } else {
+      }
+      else {
         throw new Error(`local string '${newLocal}' was not loaded, did you forget to local intl source file?`);
       }
     }
@@ -103,11 +102,9 @@ export class IntlGroup {
       const local = resLocals[i];
       if (!this.cachedIntlMessageMaps[local]) {
         const targetSource = this.intlSources[local];
-        if (!targetSource) {
+        if (!targetSource)
           throw new Error(`the local '${local}' does not have any intl source!'`);
-        }
 
-        // eslint-disable-next-line no-await-in-loop
         this.cachedIntlMessageMaps[local] = typeof targetSource === 'function' ? await targetSource() : targetSource;
       }
     }
@@ -121,10 +118,11 @@ export class IntlGroup {
    * @param sources 国际化源
    * @param override 是否覆盖旧的国际化源，这个值默认为 false
    */
-  public updateIntlSources(sources: IntlSources, override: boolean = false) {
+  public updateIntlSources(sources: IntlSources, override = false) {
     if (override) {
       this.intlSources = sources;
-    } else {
+    }
+    else {
       this.intlSources = {
         ...this.intlSources,
         ...sources,

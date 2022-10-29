@@ -1,8 +1,8 @@
-import { MonitorOptions } from '../types';
+import type { MonitorOptions } from '../types';
 
-export type AssetsReportData = {
-  timeStamp: number;
-  performance: Record<string, any>;
-};
+export interface AssetsReportData {
+  timeStamp: number
+  performance: Record<string, any>
+}
 
 export type AssetsMonitorOptions = MonitorOptions<AssetsReportData>;

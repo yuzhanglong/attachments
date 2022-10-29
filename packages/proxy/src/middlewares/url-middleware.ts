@@ -5,15 +5,14 @@
  * Author: yuzhanglong
  * Email: yuzl1123@163.com
  */
-import { ProxyServerContext, ProxyServerMiddleware } from '../types';
+import type { ProxyServerContext, ProxyServerMiddleware } from '../types';
 
 export function createUrlMiddleWare(): ProxyServerMiddleware {
   return async (ctx: ProxyServerContext, next) => {
     const { incomingRequestData, protocol } = ctx;
 
-    if (!protocol) {
+    if (!protocol)
       throw new Error('[@attachments/proxy] please give us a protocol!');
-    }
 
     const host = incomingRequestData.headers.host || '';
     // origin 指 协议 + 主机的形式
@@ -22,9 +21,8 @@ export function createUrlMiddleWare(): ProxyServerMiddleware {
     ctx.urlInstance = new URL(incomingRequestData.url, origin);
 
     // 略去 80 端口
-    if (ctx.urlInstance.port === '80') {
+    if (ctx.urlInstance.port === '80')
       ctx.urlInstance.port = '';
-    }
 
     await next();
   };

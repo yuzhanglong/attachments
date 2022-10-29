@@ -1,7 +1,7 @@
-import { createAssetsMonitor } from '../../src';
 import faker from 'faker';
-import { ReportBase } from '../../src/types';
-import { AssetsReportData } from '../../src/assets/types';
+import { createAssetsMonitor } from '../../src';
+import type { ReportBase } from '../../src/types';
+import type { AssetsReportData } from '../../src/assets/types';
 
 const createAndInsertImageTag = () => {
   const img = document.createElement('img');
@@ -25,17 +25,16 @@ describe('test assets monitor', () => {
       const data = [];
       createAssetsMonitor({
         onReport: (e) => {
-          if (e.data.performance.name.includes('placeimg.com')) {
+          if (e.data.performance.name.includes('placeimg.com'))
             data.push(e);
-          }
-          if (data.length === 3) {
+
+          if (data.length === 3)
             resolve(data);
-          }
         },
       });
     });
 
-    expect(res.every((item) => item.eventType === 'ASSETS')).to.be.true;
+    expect(res.every(item => item.eventType === 'ASSETS')).to.be.true;
   });
 
   it('test create images after monitor creation', async () => {
@@ -43,12 +42,11 @@ describe('test assets monitor', () => {
       const data = [];
       createAssetsMonitor({
         onReport: (e) => {
-          if (e.data.performance.name.includes('placeimg.com')) {
+          if (e.data.performance.name.includes('placeimg.com'))
             data.push(e);
-          }
-          if (data.length === 3) {
+
+          if (data.length === 3)
             resolve(data);
-          }
         },
       });
       createAndInsertImageTag();
@@ -58,6 +56,6 @@ describe('test assets monitor', () => {
 
     expect(res.length).to.equal(3);
 
-    expect(res.every((item) => item.eventType === 'ASSETS')).to.be.true;
+    expect(res.every(item => item.eventType === 'ASSETS')).to.be.true;
   });
 });

@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
-  extends: ['plugin:@attachments/eslint-plugin/recommended'],
-  plugins: ['@attachments/eslint-plugin'],
+  extends: ['plugin:@attachments/eslint-config/recommended'],
+  plugins: ['@attachments/eslint-config'],
   ignorePatterns: ['lib', 'esm', 'cjs'],
   rules: {
     // if you use prettier, open it

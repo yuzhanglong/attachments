@@ -1,8 +1,8 @@
-import { TaskTimeInfo } from '../tti/types';
+import type { TaskTimeInfo } from '../tti/types';
 
 interface Endpoint {
-  timestamp: number;
-  type: 'request-start' | 'request-end';
+  timestamp: number
+  type: 'request-start' | 'request-end'
 }
 
 /**
@@ -15,12 +15,11 @@ interface Endpoint {
  */
 export const computeLastKnownNetwork2Busy = (
   incompleteRequestStarts: number[],
-  observedResourceRequests: TaskTimeInfo[]
+  observedResourceRequests: TaskTimeInfo[],
 ) => {
   // 当前进行的请求超过 2 个，直接返回当前时间
-  if (incompleteRequestStarts.length > 2) {
+  if (incompleteRequestStarts.length > 2)
     return performance.now();
-  }
 
   // endpoints 包含了每个请求的开始时间点和结束时间点，最后会按时间先后顺序排序
   const endpoints: Endpoint[] = [];
@@ -59,9 +58,9 @@ export const computeLastKnownNetwork2Busy = (
         break;
       case 'request-end':
         currentActive += 1;
-        if (currentActive > 2) {
+        if (currentActive > 2)
           return endpoint.timestamp;
-        }
+
         break;
       default:
         return 0;

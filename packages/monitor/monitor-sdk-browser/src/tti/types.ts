@@ -1,16 +1,16 @@
-import { MonitorOptions } from '../types';
+import type { MonitorOptions } from '../types';
 
 export interface TTIReportData {
-  tti: number;
+  tti: number
 }
 
 export type TTIMonitorOptions = MonitorOptions<TTIReportData>;
 
 export interface PatchedXMLHttpRequest extends XMLHttpRequest {
-  taggedMethod: string;
+  taggedMethod: string
 }
 
 export interface TaskTimeInfo {
-  startTime: number;
-  endTime: number;
+  startTime: number
+  endTime: number
 }

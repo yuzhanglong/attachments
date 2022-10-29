@@ -10,12 +10,12 @@ import execa from 'execa';
 
 export const runCommand = async (command: string, args?: string[], path?: string): Promise<execa.ExecaChildProcess> => {
   let p = path;
-  if (!p) {
+  if (!p)
     p = process.cwd();
-  }
+
   if (!args) {
     // \s 匹配任何空白字符，包括空格、制表符、换页符
-    // eslint-disable-next-line no-param-reassign
+
     [command, ...args] = command.split(/\s+/);
   }
 

@@ -1,9 +1,10 @@
-import { createClsMonitor } from '../../src';
 import { noop } from 'lodash';
 import { mount } from '@cypress/react';
 import React, { useEffect, useState } from 'react';
-import { EventType, ReportBase } from '../../src/types';
-import { ClsReportData } from '../../src/cls/types';
+import { createClsMonitor } from '../../src';
+import type { ReportBase } from '../../src/types';
+import { EventType } from '../../src/types';
+import type { ClsReportData } from '../../src/cls/types';
 
 describe('test cls monitor', () => {
   it('test cls monitor', async () => {

@@ -24,31 +24,31 @@ export enum ServerTaskStatus {
 
 interface ServerTaskReturnWithFormat {
   // 任务状态
-  status: ServerTaskStatus;
+  status: ServerTaskStatus
   // 百分比
-  percent: number;
+  percent: number
   // 附加消息
-  message: string;
+  message: string
 
   // 其它参数
-  [key: string]: any;
+  [key: string]: any
 }
 
 interface ServerTaskOptions<P = any, R = any> {
   // 格式化响应体回调
-  formatResult?: (data: R) => ServerTaskReturnWithFormat;
+  formatResult?: (data: R) => ServerTaskReturnWithFormat
 
   // 轮询的时间间隔
-  timeGap?: number;
+  timeGap?: number
 
   // 成功回调
-  successCallback?: (res: ServerTaskReturnWithFormat) => void;
+  successCallback?: (res: ServerTaskReturnWithFormat) => void
 
   // 失败回调
-  errorCallback?: (res: any, e?: Error) => void;
+  errorCallback?: (res: any, e?: Error) => void
 
   // 请求参数
-  requestParams?: P;
+  requestParams?: P
 }
 
 export function useServerTask<P, R>(service: (params: P) => Promise<R>, options: ServerTaskOptions<P, R>) {
@@ -61,7 +61,7 @@ export function useServerTask<P, R>(service: (params: P) => Promise<R>, options:
   const { formatResult, successCallback, errorCallback, requestParams } = options;
 
   const { current } = useRef<{
-    taskTimer: number | null;
+    taskTimer: number | null
   }>({
     taskTimer: null,
   });
@@ -110,22 +110,22 @@ export function useServerTask<P, R>(service: (params: P) => Promise<R>, options:
       if (isSuccess) {
         setCurrentStatus(ServerTaskStatus.SUCCESS);
         // 当任务完成时，执行相关回调
-        if (successCallback) {
+        if (successCallback)
           successCallback(formattedResponse);
-        }
-      } else {
+      }
+      else {
         // 错误态
-        if (errorCallback) {
+        if (errorCallback)
           errorCallback(formattedResponse);
-        }
+
         setCurrentStatus(ServerTaskStatus.FAILED);
       }
-    } catch (e) {
+    }
+    catch (e) {
       // 错误态
       setCurrentStatus(ServerTaskStatus.FAILED);
-      if (errorCallback) {
+      if (errorCallback)
         errorCallback(formatResult, e);
-      }
     }
   };
 

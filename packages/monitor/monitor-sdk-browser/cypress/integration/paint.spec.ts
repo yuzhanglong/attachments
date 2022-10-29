@@ -1,7 +1,7 @@
 import { createPaintMonitor } from '../../src';
 import { promisifyCounterMonitorReport } from '../utils/test-utils';
-import { LargestContentfulPaintReportData, PaintReportData } from '../../src/paint/types';
-import { CallBack } from '../../src/types';
+import type { LargestContentfulPaintReportData, PaintReportData } from '../../src/paint/types';
+import type { CallBack } from '../../src/types';
 
 const createMonitor = (cb: CallBack<any>, times: number) =>
   promisifyCounterMonitorReport<PaintReportData & LargestContentfulPaintReportData>({
@@ -28,7 +28,7 @@ describe('test assets monitor', () => {
       smallElement.style.width = '100px';
       smallElement.style.height = '100px';
       smallElement.style.backgroundColor = '#9375de';
-      smallElement.innerHTML = `I'm the small element`;
+      smallElement.innerHTML = 'I\'m the small element';
       el.appendChild(smallElement);
     };
 
@@ -37,7 +37,7 @@ describe('test assets monitor', () => {
       largestElement.style.width = '300px';
       largestElement.style.height = '300px';
       largestElement.style.backgroundColor = '#409eff';
-      largestElement.innerHTML = `I'm the largest element!I'm the largest element!I'm the largest element!I'm the largest element!`;
+      largestElement.innerHTML = 'I\'m the largest element!I\'m the largest element!I\'m the largest element!I\'m the largest element!';
       el.appendChild(largestElement);
     };
 

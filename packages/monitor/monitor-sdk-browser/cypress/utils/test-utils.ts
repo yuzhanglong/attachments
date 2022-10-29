@@ -1,16 +1,17 @@
-import { CallBack, MonitorOptions, ReportBase } from '../../src/types';
 import { noop } from 'lodash';
+import type { CallBack, ReportBase } from '../../src/types';
+import { MonitorOptions } from '../../src/types';
 import { MPFIDMonitorOptions } from '../../src/mpfid/types';
 
 interface PromisifyMonitorReportOptions<T> {
   // monitor 的工厂函数
-  monitorFactory: CallBack<any>;
+  monitorFactory: CallBack<any>
 
   // 在 monitor 创建后做些什么
-  afterCreateMonitorCallback?: CallBack<any>;
+  afterCreateMonitorCallback?: CallBack<any>
 
   // 在 onReport 方法调用多少次后将 promise resolve
-  reportTimesBeforeResolve?: number;
+  reportTimesBeforeResolve?: number
 }
 
 /**
@@ -23,22 +24,21 @@ interface PromisifyMonitorReportOptions<T> {
  */
 export const promisifyCounterMonitorReport = <MonitorReportData>(
   options: PromisifyMonitorReportOptions<MonitorReportData>,
-  monitorOptions?: Record<any, any>
+  monitorOptions?: Record<any, any>,
 ) => {
   const { monitorFactory, afterCreateMonitorCallback = noop, reportTimesBeforeResolve = 1 } = options;
   return new Promise<ReportBase<MonitorReportData>[]>((resolve) => {
     const reportData = [];
 
     // 如果次数为 0 直接 resolve 即可
-    if (reportTimesBeforeResolve === 0) {
+    if (reportTimesBeforeResolve === 0)
       resolve([]);
-    }
+
     monitorFactory({
       onReport: (e) => {
         reportData.push(e);
-        if (reportData.length >= reportTimesBeforeResolve) {
+        if (reportData.length >= reportTimesBeforeResolve)
           resolve(reportData.slice());
-        }
       },
       ...(monitorOptions || {}),
     });
@@ -62,7 +62,7 @@ export const initSpecWindow = () => {
   // 插入一个 style 标签，给予 visibility 属性为 initial
   const el = document.createElement('style');
   el.setAttribute('type', 'text/css');
-  el.innerHTML = `.spec-iframe{height: 100% !important;width: 100% !important;visibility: initial !important;background-color: #ffffff !important}`;
+  el.innerHTML = '.spec-iframe{height: 100% !important;width: 100% !important;visibility: initial !important;background-color: #ffffff !important}';
   data.body.appendChild(el);
 
   const testContainer = document.createElement('div');

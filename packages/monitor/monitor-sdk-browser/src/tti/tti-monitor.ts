@@ -4,10 +4,10 @@ import { getPerformanceEntriesByName } from '../utils/performance-entry';
 import { EventType } from '../types';
 import { createScheduler } from '../utils/create-scheduler';
 import { calculateTTI } from '../utils/calculate-tti';
-import { TaskTimeInfo, TTIMonitorOptions } from './types';
 import { computeLastKnownNetwork2Busy } from '../utils/compute-last-known-network-2-busy';
 import { observeIncomingRequests } from '../utils/observe-incoming-requests';
 import { observeLongTaskAndResources } from '../utils/observe-long-task-and-resources';
+import type { TTIMonitorOptions, TaskTimeInfo } from './types';
 
 const TIME_GAP = 5000;
 
@@ -30,14 +30,14 @@ const checkAndReportTTI = (options: TTIMonitorOptions, lastKnownNetwork2Busy: nu
   const tti = calculateTTI({
     searchStart: searchStartTime,
     checkTimeInQuiteWindow: performance.now(),
-    longTasks: longTasks,
-    lastKnownNetwork2Busy: lastKnownNetwork2Busy,
+    longTasks,
+    lastKnownNetwork2Busy,
   });
 
   options.onReport({
     eventType: EventType.TTI,
     data: {
-      tti: tti,
+      tti,
     },
   });
 };
@@ -47,9 +47,8 @@ export const createTTIMonitor = (options: TTIMonitorOptions) => {
   const performanceObserver = getPerformanceObserver();
   const performance = getPerformance();
 
-  if (!XMLHttpRequest || !performanceObserver || !performance) {
+  if (!XMLHttpRequest || !performanceObserver || !performance)
     return;
-  }
 
   const longTasks: TaskTimeInfo[] = [];
   const networkRequests: TaskTimeInfo[] = [];
@@ -72,7 +71,7 @@ export const createTTIMonitor = (options: TTIMonitorOptions) => {
       networkRequests.push(timeInfo);
       // 遇到资源请求，在最后一次请求数大于 2 的时刻五秒后尝试获取 tti
       ttiCalculatorScheduler.resetScheduler(getLastKnownNetworkBusy() + TIME_GAP);
-    }
+    },
   );
 
   const checkAndReport = () => {

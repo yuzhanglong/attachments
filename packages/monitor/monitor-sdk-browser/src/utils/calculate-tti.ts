@@ -3,13 +3,13 @@ import { getPerformance } from './browser-interfaces';
 
 interface TTICalculateOptions {
   // 起始点
-  searchStart: number;
+  searchStart: number
   // 距离最近的，具有至少 2 个网络请求的时间点
-  lastKnownNetwork2Busy: number;
+  lastKnownNetwork2Busy: number
   // 检测时间点，该时间位于静默窗口期内
-  checkTimeInQuiteWindow: number;
+  checkTimeInQuiteWindow: number
   // 长任务集合
-  longTasks: { startTime: number; endTime: number }[];
+  longTasks: { startTime: number; endTime: number }[]
 }
 
 const getDomContentLoadedEventEndTime = () => {
@@ -40,17 +40,15 @@ const getDomContentLoadedEventEndTime = () => {
 export const calculateTTI = (options: TTICalculateOptions) => {
   const { searchStart, longTasks, checkTimeInQuiteWindow, lastKnownNetwork2Busy } = options;
   // 确保静默窗口期中没有请求数超过 2 的时刻
-  if (checkTimeInQuiteWindow - lastKnownNetwork2Busy < 5000) {
+  if (checkTimeInQuiteWindow - lastKnownNetwork2Busy < 5000)
     return null;
-  }
 
   // 如果没有 long task，那么 FCP 时间就是 TTI 时间
   const maybeTTI = longTasks.length === 0 ? searchStart : last(longTasks).endTime;
 
   // 确保窗口期没有 long task
-  if (checkTimeInQuiteWindow - maybeTTI < 5000) {
+  if (checkTimeInQuiteWindow - maybeTTI < 5000)
     return null;
-  }
 
   return Math.max(maybeTTI, getDomContentLoadedEventEndTime());
 };

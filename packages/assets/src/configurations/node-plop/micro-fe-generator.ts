@@ -1,5 +1,5 @@
-import * as plop from 'node-plop';
 import * as path from 'path';
+import type * as plop from 'node-plop';
 import { createAddConfigAction, createAddManyTemplatesAction, getTemplatePath } from '../../utils';
 
 export enum MICRO_FE_TYPE {
@@ -22,12 +22,12 @@ const project = function (plop: plop.NodePlopAPI) {
         name: 'projectName',
         message: 'Please enter the name of the package:',
         validate: (v: any) => {
-          if (!v || typeof v !== 'string') {
+          if (!v || typeof v !== 'string')
             return 'invalid project name, the name cannot be empty!';
-          }
-          if (!v.match(/^[^\s]*$/)) {
+
+          if (!v.match(/^[^\s]*$/))
             return 'invalid project name, the name cannot not contain space!';
-          }
+
           return true;
         },
       },
@@ -45,7 +45,7 @@ const project = function (plop: plop.NodePlopAPI) {
         ],
       },
     ],
-    actions: function (data) {
+    actions(data) {
       const isBaseApp = data.appType === MICRO_FE_TYPE.BASE_APP;
       return [
         // 基本代码模板

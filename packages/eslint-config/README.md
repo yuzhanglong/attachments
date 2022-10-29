@@ -5,5 +5,5 @@ Typescript App @attachments/eslint-plugin
 ## Usage
 
 ```bash
-yarn add @attachments/eslint-plugin
+yarn add @attachments/eslint-config
 ```

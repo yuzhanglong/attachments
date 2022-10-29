@@ -1,13 +1,13 @@
 import { EventType } from '../types';
-import { FMPMonitorOptions } from './types';
 import { useRequestAnimationFrame } from '../utils/use-request-animation-frame';
 import { getDomLayoutScore } from '../utils/get-dom-layout-score';
 import { getMutationObserver } from '../utils/browser-interfaces';
 import { onPageLoad } from '../utils/on-page-load';
+import type { FMPMonitorOptions } from './types';
 
 interface FMPRecodeData {
-  time: number;
-  domScore: number;
+  time: number
+  domScore: number
 }
 
 export const calculateFMP = (scoredData: FMPRecodeData[]) => {
@@ -40,9 +40,8 @@ export const calculateFMP = (scoredData: FMPRecodeData[]) => {
 export const createFMPMonitor = (options: FMPMonitorOptions) => {
   const MutationObserver = getMutationObserver();
 
-  if (!MutationObserver) {
+  if (!MutationObserver)
     return;
-  }
 
   const startTime = Date.now();
 

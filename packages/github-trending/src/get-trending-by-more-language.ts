@@ -1,4 +1,4 @@
-import { GetGithubTrendingOptions, Repository } from './types';
+import type { GetGithubTrendingOptions, Repository } from './types';
 import { getGithubTrending } from './get-github-trending';
 
 /**
@@ -11,12 +11,11 @@ export const getTrendingByMoreLanguage = async (languages: string[], options: Ge
   const res: Record<string, Repository[]> = {};
   await Promise.all(
     languages.map(async (language) => {
-      const repos = await getGithubTrending({
+      res[language] = await getGithubTrending({
         ...options,
-        language: language,
+        language,
       });
-      res[language] = repos;
-    })
+    }),
   );
   return res;
 };

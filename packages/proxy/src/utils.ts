@@ -55,17 +55,16 @@ export function comparePathAndGetDivision(basePath: string[], providedPath: stri
 
   let dividedPos = -1;
   for (let i = 0; i < providedPath.length; i += 1) {
-    if (providedPath[i] === basePath[i]) {
+    if (providedPath[i] === basePath[i])
       dividedPos = i + 1;
-    } else {
+    else
       break;
-    }
   }
 
   return {
     samePaths: dividedPos === -1 ? [] : basePath.slice(0, dividedPos),
     otherPaths: dividedPos === -1 ? [] : basePath.slice(dividedPos),
-    dividedPos: dividedPos,
+    dividedPos,
   };
 }
 
@@ -78,7 +77,7 @@ export function comparePathAndGetDivision(basePath: string[], providedPath: stri
 export const divideConnectMethodReqUrl = (url: string) => {
   const [domain, port] = url.split(':');
   return {
-    domain: domain,
+    domain,
     port: port ? parseInt(port, 10) : 443,
   };
 };

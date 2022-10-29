@@ -1,4 +1,4 @@
-import { MethodKeys } from '../types';
+import type { MethodKeys } from '../types';
 
 /**
  * patch 一个方法（方法劫持）
@@ -15,10 +15,9 @@ import { MethodKeys } from '../types';
 export const patchMethod = <O extends {}, K extends MethodKeys<O>, P extends any[]>(
   obj: O,
   key: K,
-  patchFn: (origin: O[K], ...params: P) => O[K] & Function
+  patchFn: (origin: O[K], ...params: P) => O[K] & Function,
 ) => {
   return (...params: P) => {
-    // eslint-disable-next-line no-param-reassign
     obj[key] = patchFn(obj[key], ...params);
   };
 };

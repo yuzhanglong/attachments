@@ -4,24 +4,22 @@
  * @author yuzhanglong
  * @date 2021-11-06 23:18:15
  */
-import { getAnimationFrame } from './browser-interfaces';
 import { isFunction } from 'lodash';
+import { getAnimationFrame } from './browser-interfaces';
 
 export const useRequestAnimationFrame = (callback: FrameRequestCallback) => {
   const apis = getAnimationFrame();
 
-  if (!apis) {
+  if (!apis)
     return;
-  }
 
   const { raf, caf } = apis;
 
-  if (!isFunction(raf) || !isFunction(caf)) {
+  if (!isFunction(raf) || !isFunction(caf))
     return;
-  }
 
   // raf 的返回值为非 0 数字
-  let rafTimer: number = 0;
+  let rafTimer = 0;
 
   const runCallback = () => {
     if (rafTimer) {
@@ -31,15 +29,15 @@ export const useRequestAnimationFrame = (callback: FrameRequestCallback) => {
       // 设定一个 timer，如果接下来回调再次被调度，那么撤销上一个
       // https://www.w3.org/TR/animation-timing/#dom-windowanimationtiming-requestanimationframe
       caf(rafTimer);
-    } else {
+    }
+    else {
       rafTimer = raf(callback);
     }
   };
 
   const cancelCallback = () => {
-    if (rafTimer) {
+    if (rafTimer)
       caf(rafTimer);
-    }
   };
 
   return {

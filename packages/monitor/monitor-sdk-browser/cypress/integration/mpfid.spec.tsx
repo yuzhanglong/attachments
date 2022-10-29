@@ -1,7 +1,8 @@
 import { createMPFIDMonitor } from '../../src';
-import { CallBack, EventType } from '../../src/types';
+import type { CallBack } from '../../src/types';
+import { EventType } from '../../src/types';
 import { promisifyCounterMonitorReport } from '../utils/test-utils';
-import { MPFIDReportData } from '../../src/mpfid/types';
+import type { MPFIDReportData } from '../../src/mpfid/types';
 
 const runMonitor = async (cb: CallBack<any>) =>
   promisifyCounterMonitorReport<MPFIDReportData>(
@@ -11,25 +12,25 @@ const runMonitor = async (cb: CallBack<any>) =>
     },
     {
       timeout: 2000,
-    }
+    },
   );
 
 describe('test mpfid monitor', () => {
   it('mpfid', async () => {
     const data = await runMonitor(async () => {
-      //递归版的斐波那契数列，比较耗时的一个任务，可以作为 long task
+      // 递归版的斐波那契数列，比较耗时的一个任务，可以作为 long task
       const fib = (n: number) => {
-        if (n <= 2) {
+        if (n <= 2)
           return 1;
-        }
+
         return fib(n - 1) + fib(n - 2);
       };
       await Promise.all([
-        new Promise((resolve) =>
+        new Promise(resolve =>
           setTimeout(() => {
             console.log(`fib(40) = ${fib(40)}`);
             resolve(true);
-          }, 1000)
+          }, 1000),
         ),
       ]);
     });

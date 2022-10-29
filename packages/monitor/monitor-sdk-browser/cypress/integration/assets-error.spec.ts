@@ -1,7 +1,7 @@
-import { createAssetsErrorMonitor } from '../../src';
-import { CallBack } from '../../src/types';
-import { AssetsErrorReportData } from '../../src/assets-error/types';
 import faker from 'faker';
+import { createAssetsErrorMonitor } from '../../src';
+import type { CallBack } from '../../src/types';
+import type { AssetsErrorReportData } from '../../src/assets-error/types';
 import { promisifyCounterMonitorReport } from '../utils/test-utils';
 
 const runMonitor = async (cb: CallBack<any>) =>
