@@ -1,6 +1,6 @@
 {
   "name": "@attachments/i18n-webpack-plugin",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "> TODO: description",
   "author": "yuzhanglong <yuzl1123@163.com>",
   "homepage": "",
@@ -20,7 +20,7 @@
     "dev:link": "yarn link"
   },
   "devDependencies": {
-    "@attachments/babel-plugin-i18n": "^0.2.0",
+    "@attachments/babel-plugin-i18n": "^0.3.1",
     "webpack": "^5.61.0",
     "webpack-cli": "^4.8.0"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@attachments/eslint-config",
-  "version": "0.2.2",
+  "version": "0.3.1",
   "description": "useful eslint config",
   "author": "yuzhanglong <loveyzl1123@gmail.com>",
   "homepage": "",
@@ -24,6 +24,6 @@
   },
   "dependencies": {
     "@antfu/eslint-config": "^0.27.0",
-    "@attachments/eslint-config": "^0.2.2"
+    "@attachments/eslint-config": "^0.3.1"
   }
 }
