@@ -16,7 +16,7 @@
     "rename-template": "ts-node scripts/add-extension.ts"
   },
   "devDependencies": {
-    "@attachments/eslint-config": "^0.2.2",
+    "@attachments/eslint-config": "^0.3.1",
     "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.15.8",
     "@cypress/code-coverage": "^3.9.11",
