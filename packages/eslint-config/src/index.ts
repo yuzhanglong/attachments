@@ -10,5 +10,7 @@ module.exports = {
     '@typescript-eslint/semi': ['error', 'always'],
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/comma-dangle': 'off',
+    'react/jsx-tag-spacing': 'error',
+    'curly': 'off',
   },
 } as Linter.Config;
