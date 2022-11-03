@@ -12,5 +12,7 @@ module.exports = {
     '@typescript-eslint/comma-dangle': 'off',
     'react/jsx-tag-spacing': 'error',
     'curly': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    'no-console': 'warn',
   },
 } as Linter.Config;
