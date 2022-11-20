@@ -1,12 +1,11 @@
-/**
- * 批量添加后缀名
- *
- * @author yuzhanglong
- * @date 2021-10-04 00:27:23
- */
 import * as path from 'path';
 import * as fs from 'fs-extra';
 
+/**
+ * 批量添加后缀名
+ *
+ * @author YuZhanglong <loveyzl1123@gmail.com>
+ */
 export const addExtension = (baseDir: string, extension: string) => {
   const res = fs.readdirSync(baseDir);
   for (const re of res) {

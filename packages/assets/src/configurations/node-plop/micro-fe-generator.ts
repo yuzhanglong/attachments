@@ -11,7 +11,7 @@ const project = function (plop: plop.NodePlopAPI) {
   const basePath = path.resolve(process.cwd(), '{{projectName}}');
   const templatePath = path.resolve(getTemplatePath(), 'micro-frontend');
 
-  // eg: ^0.3.6	匹配：0.3.6 <= v < 0.4.0
+  // ^0.3.6 匹配：0.3.6 <= v <0.4.0
   const MF_LITE_CORE_VERSION = '0.1.0';
 
   plop.setGenerator('micro frontend generator', {
@@ -90,7 +90,6 @@ const project = function (plop: plop.NodePlopAPI) {
   });
 
   plop.setHelper('underlinedProjectName', (name: string) => {
-    console.log(name);
     return name.replace(/-/g, '_');
   });
 };

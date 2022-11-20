@@ -8,13 +8,13 @@
 
 <div align="center">
 
-实用的前端开发工具集
+**I hear and I forget. I see and I remember. I do and I understand.**
 
 </div>
 
 ## 介绍
 
-TODO
+平时造的小轮子，用于练手或个人使用。
 
 ## License
 
