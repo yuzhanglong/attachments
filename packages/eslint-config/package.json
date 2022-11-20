@@ -1,6 +1,6 @@
 {
   "name": "@attachments/eslint-config",
-  "version": "0.3.3",
+  "version": "0.3.5",
   "description": "useful eslint config",
   "author": "yuzhanglong <loveyzl1123@gmail.com>",
   "homepage": "",
@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@antfu/eslint-config": "^0.27.0",
-    "@antfu/eslint-config-react": "^0.27.0",
-    "@attachments/eslint-config": "^0.3.3"
+    "@antfu/eslint-config-react": "^0.27.0"
   }
 }

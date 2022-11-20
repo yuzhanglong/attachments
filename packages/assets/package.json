@@ -1,6 +1,6 @@
 {
   "name": "@attachments/assets",
-  "version": "0.3.1",
+  "version": "0.3.5",
   "license": "MIT",
   "description": "common resource tool packages, such as the CSS and project templates",
   "author": "yuzhanglong <loveyzl1123@gmail.com>",
@@ -24,7 +24,7 @@
     "micro-app-template": "cd playground && plop --plopfile ../lib/configurations/node-plop/micro-fe-generator.js"
   },
   "dependencies": {
-    "@attachments/utils": "^0.3.1",
+    "@attachments/utils": "^0.3.5",
     "commander": "^8.2.0",
     "execa": "^5.1.1",
     "minimist": "^1.2.5",
