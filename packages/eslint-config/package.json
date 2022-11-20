@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@antfu/eslint-config": "^0.27.0",
-    "@antfu/eslint-config-react": "^0.27.0",
-    "@attachments/eslint-config": "^0.3.3"
+    "@antfu/eslint-config-react": "^0.27.0"
   }
 }
