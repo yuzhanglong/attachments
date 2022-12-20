@@ -20,8 +20,7 @@
     "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm",
     "build-umd:development": "webpack --node-env development",
     "build-umd:production": "webpack --node-env production",
-    "build:umd": "rimraf ./dist && npm-run-all --parallel build-umd:*",
-    "dev:link": "yarn link"
+    "build:umd": "rimraf ./dist && npm-run-all --parallel build-umd:*"
   },
   "dependencies": {
     "intl-messageformat": "^9.8.1"
