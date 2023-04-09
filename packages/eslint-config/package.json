@@ -23,7 +23,7 @@
     "eslint": "^7 || ^8"
   },
   "dependencies": {
-    "@antfu/eslint-config": "^0.27.0",
-    "@antfu/eslint-config-react": "^0.27.0"
+    "@antfu/eslint-config": "^0.38.4",
+    "@antfu/eslint-config-react": "^0.38.4"
   }
 }
